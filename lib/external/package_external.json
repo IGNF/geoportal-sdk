@@ -1,0 +1,34 @@
+{
+    "requirejs" : {
+        "desc" : "JavaScript file and module loader",
+        "url" : "http://requirejs.org/",
+        "version" : "2.1.18"
+    },
+    "woodman" : {
+        "desc" : "Flexible JavaScript logger utility based on log4j. Runs client-side and server-side.",
+        "url" : "https://github.com/joshfire/woodman",
+        "version" : "1.1.0"
+    },
+    "es6-promise" : {
+        "desc" : "This is a polyfill of the ES6 Promise.",
+        "url" : "https://github.com/jakearchibald/es6-promise",
+        "version" : "3.0.2"
+    },
+    "geoportail-services" : {
+      "date" : "2016-11-15",
+      "desc" : "API Geoportail Services",
+      "url" : "https://github.com/IGNF/geoportal-access-lib",
+      "version" : "1.0.0-beta3 - commit 56948af (master)"
+    },
+    "geoportail-plugins" : {
+        "date" : "2016-11-28",
+        "desc" : "API Geoportail Extensions OpenLayers 3",
+        "url" : "https://github.com/IGNF/geoportal-extensions",
+        "version" : "0.1.0 - rev : 0889157 (master)"
+    },
+    "openlayers" : {
+        "desc" : "OpenLayers 3 is a high-performance, feature-packed library for creating interactive maps on the web.",
+        "url" : "https://github.com/openlayers/ol3/",
+        "version" : "3.14.2"
+    }
+}

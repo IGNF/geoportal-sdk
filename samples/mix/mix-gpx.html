@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOL3VG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+          }
+        </style>
+        <script src="../../dist/mix/GpOL3VG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test de l'ajout d'un fichier GPX</h1>
+        <p>Ajout d'un fichier test GPX issu des données exemples OpenLayers </p>
+        <div id="BoutonSwitchToVg" hidden>
+            <input type="button" name="switch" onclick="switchToVG();" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3">
+            <input type="button" name="switch" onclick="switchToOL3();" value="Switch from 3D to 2D"/><br/>
+        </div>
+        <div id="geoportalMap1"></div>
+
+        <script type="text/javascript">
+
+        var map = Gp.Map.load("geoportalMap1",{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "vg",
+            center : {
+                x : -71.12,
+                y : 42.45
+            },
+            zoom : 3,
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                maCoucheKML : {
+                    opacity : 0.7,
+                    minZoom : 8,
+                    maxZoom : 15,
+                    visibility : true,
+                    format : "gpx",
+                    url : "http://openlayers.org/en/master/examples/data/gpx/fells_loop.gpx",
+                    extractStyles : true
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+
+        function switchToVG() {
+            map = map.switchToLib("vg");
+            document.getElementById("BoutonSwitchToOl3").style.display = "inline";
+            document.getElementById("BoutonSwitchToVg").style.display = "none";
+        };
+
+        function switchToOL3() {
+            map = map.switchToLib("ol3");
+            document.getElementById("BoutonSwitchToVg").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl3").style.display = "none";
+        };
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/virtual/GpVG-src.css" type="text/css">
+        <style>
+        #geoportalMap {
+            height: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        </style>
+        <script src="../../dist/virtual/GpVG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Couche KML de croquis</h1>
+        <div id="geoportalMap"></div>
+        <script type="text/javascript">
+            var map = Gp.Map.load('geoportalMap',{
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                library : "vg",
+                center : {
+                    x : 0.38452148437499967,
+                    y : 49.332281984737705
+                },
+                zoom : 6,
+                controlsOptions : {
+                    "layerSwitcher" : {}
+                },
+                layersOptions : {
+                    "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {},
+                    maCoucheKML : {
+                        visibility : true,
+                        format : "kml",
+                        url : "http://localhost/api-v3-ahn/samples/data/croquis.kml",
+                        extractStyles : true
+                    },
+                    top100 : {
+                        visibility : true,
+                        format : "kml",
+                        url : "http://localhost/api-v3-ahn/samples/data/S_TOP100.kml",
+                        extractStyles : true
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

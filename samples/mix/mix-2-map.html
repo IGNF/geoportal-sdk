@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOL3VG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position: relative;
+          }
+          #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+          }
+        </style>
+        <script src="../../dist/mix/GpOL3VG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test du paramètre zoom</h1>
+        <h2>CAS 1 : Carte 3D.</h2>
+        <p>La carte est zoomée au niveau 5 (étendue correspondant à l'Ile de France).</p>
+        <div id="geoportalMap1"></div>
+        <h2>CAS 2 : Carte 2D.</h2>
+        <p>La carte est zoomée sur la résolution 9.554628535647032 (étendue correspondant à l'île Saint Louis).</p>
+        <div id="geoportalMap2"></div>
+
+        <script type="text/javascript">
+            Gp.Map.load('geoportalMap1', {
+                library : "vg",
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                zoom : 5
+            });
+
+            Gp.Map.load('geoportalMap2', {
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                zoom : 9.554628535647032
+            });
+
+        </script>
+    </body>
+</html>

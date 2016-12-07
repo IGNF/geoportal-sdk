@@ -1,0 +1,30 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": ["plugins/markdown"],
+    "source": {
+        "include": [
+            "./src/",
+            "./doc/images/",
+            "./doc/README"
+        ]
+    },
+    "templates": {
+        "cleverLinks"     : false,
+        "applicationName" : "Geoportal SDK"
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true
+    },
+    "opts": {
+        "template": "target/doc/jaguarjs-jsdoc",
+        "encoding": "utf8",
+        "destination": "./target/doc/",
+        "recurse": true,
+        "lenient": true,
+        "verbose": true,
+        "tutorials": "doc/tutorials"
+    }
+}

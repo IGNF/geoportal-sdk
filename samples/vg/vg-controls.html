@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/virtual/GpVG-src.css" type="text/css">
+        <style>
+          #geoportalMap {
+            height: 1000px;
+            width: 1300px;
+            position:relative;
+          }
+
+        </style>
+        <script src="../../dist/virtual/GpVG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Gestion des controles avec le SDK</h1>
+        <div id="extControlDiv"></div>
+        <div id="geoportalMap"></div>
+        <div id="idDiv">
+            <p>ControlId : <input type="text" id="controlId"/></p>
+            <input type="button" value="Remove" onclick="removeControl();"/><br>
+            <input type="button" value="Modify" onclick="modify();"/><br>
+        </div>
+        <script type="text/javascript">
+
+            var map = Gp.Map.load('geoportalMap',{
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                azimuth : 45,
+                zoom : 12,
+                library : "vg",
+                center : {
+                    x : 4.84671,
+                    y : 45.74846
+                },
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {}
+                },
+                controlsOptions : {
+                    layerSwitcher : {
+                        maximised : false
+                    },
+                    attributions : {},
+                    mousePosition : {
+                        displayCoordinates : false
+                    }
+                }
+                //autoconfUrl : "./resources/autoconf/callback-autoconf-xml",
+                //callbakSuffix : ""
+            });
+
+            function modify() {
+                var elem = document.getElementById("controlId") ;
+                if (elem.value) {
+                    var ctrlOpts = {}
+                    ctrlOpts[elem.value] = {};
+                    ctrlOpts[elem.value]["maximised"] = true ;
+                    // mouseposition
+                    if (elem.value.toLowerCase() == "mouseposition") {
+                        ctrlOpts[elem.value]["displayCoordinates"] = true ;
+                        ctrlOpts[elem.value]["systems"] = [
+                        {
+                            crs : "EPSG:4326",
+                            label : "Géographiques",
+                            type : "Geographical"
+                        },
+                        {
+                            crs : "EPSG:3857",
+                            label : "Web Mercator",
+                            type : "Metric"
+                        }
+                    ] ;
+                        ctrlOpts[elem.value]["units"] = ["m","dec","rad"] ;
+                        ctrlOpts[elem.value]["altitude"] = {} ;
+                        ctrlOpts[elem.value]["altitude"].triggerDelay = 1500 ;
+                    }
+                    map.modifyControls(ctrlOpts) ;
+                }
+            }
+            function removeControl() {
+                var elem = document.getElementById("controlId") ;
+                map.removeControls([elem.value]) ;
+            }
+
+        </script>
+    </body>
+</html>

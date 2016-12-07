@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOL3VG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position : relative;
+          }
+          #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+            position : relative;
+          }
+        </style>
+        <script src="../../dist/mix/GpOL3VG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test du paramètre zoom</h1>
+        <h2>CAS 1 : l'utilisateur connaît le niveau de zoom auquel il souhaite zoomer sur la carte.</h2>
+        <p>La carte est zoomée au niveau 9 (étendue correspondant à l'Ile de France).</p>
+        <div id="BoutonSwitchToVg">
+            <input type="button" name="switch" onclick="switchToVG(map1);" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3" hidden>
+            <input type="button" name="switch" onclick="switchToOL3(map1);" value="Switch from 3D to 2D"/><br/>
+        </div>
+        <div id="geoportalMap1"></div>
+        <h2>CAS 2 : l'utilisateur connaît la résolution à laquelle il souhaite zoomer sur la carte.</h2>
+        <p>La carte est zoomée sur la résolution 9.554628535647032 (étendue correspondant à l'île Saint Louis).</p>
+        <div id="BoutonSwitchToVg">
+            <input type="button" name="switch" onclick="switchToVG(map2);" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3" hidden>
+            <input type="button" name="switch" onclick="switchToOL3(map2);" value="Switch from 3D to 2D"/><br/>
+        </div>
+        <div id="geoportalMap2"></div>
+
+        <script type="text/javascript">
+            var map1 = Gp.Map.load('geoportalMap1', {
+                // library: "ol3",
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                zoom : 9
+            });
+
+            var map2 = Gp.Map.load('geoportalMap2', {
+                // library: "ol3",
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                zoom : 9.554628535647032
+            });
+
+            function switchToVG(map) {
+                map = map.switchToLib("vg");
+                document.getElementById("BoutonSwitchToOl3").style.display = "inline";
+                document.getElementById("BoutonSwitchToVg").style.display = "none";
+            };
+
+            function switchToOL3(map) {
+                map = map.switchToLib("ol3");
+                document.getElementById("BoutonSwitchToVg").style.display = "inline";
+                document.getElementById("BoutonSwitchToOl3").style.display = "none";
+            };
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,783 @@
+/**
+ * The VirtualGeoWeb main stylesheet
+ */
+
+/* The map canvas, take all the space available from its parent by default */
+#VirtualGeo_Map {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	background-color: black;
+}
+
+/* Positionning the widget */
+#VirtualGeo_PanRotateControl {
+	position: absolute;
+	/* Corresponding of the center of the 'navball', all the widget is relative to this position */
+	right: 50px;
+	top: 70px;
+}
+
+#VirtualGeo_ZoomControl {
+	position: absolute;
+	/* Corresponding of the center of the 'navball', all the widget is relative to this position */
+	right: 50px;
+	top: 129px;
+}
+
+/* The position tracker specific rules */
+#VirtualGeo_Position_Tracker {
+	position: absolute;
+    background-color: rgba(0,0,0,100);
+    border-color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 5px;
+    opacity: 0.70;
+	width: 120px;
+    height: 30px;
+    text-align: center;
+	margin-left: -60px;
+	margin-top: -50px;
+	line-height: normal;
+}
+
+
+/******************************************************************************
+*				LOADING SCREEN											  	  *
+******************************************************************************/
+/* The loading 'screen' take the map full place */
+
+#VirtualGeo_VrLoading {
+	background-color: black;
+	z-index: 999;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%
+}
+
+/* Center all the content */
+#VirtualGeo_VrLoading > div {
+	display: inline-block;
+	position: absolute;
+}
+
+/* The container of the loading screen with the spinner, the logo and the text message */
+#VirtualGeo_VrLoading_Container {
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 300px;
+	height: 300px;
+	/* Center it */
+	left: 50%;
+	right: 50%;
+	margin-left: -150px;
+	top: 50%;
+	bottom: 50%;
+	margin-top: -150px;
+}
+
+/* Positionning the message of the loading */
+#VirtualGeo_VrLoading_Message {
+	font-family: sans-serif;
+	margin-top: 60px;
+	position: absolute;
+	width: 300px;
+}
+
+/* If the loading is cancel, display a simple logo whith the error message */
+#VirtualGeo_VrLoading_Container.cancelLoading {
+    background-image: url("../res/img/logo.png") !important;
+	background-size: 65px 65px;
+	/* Grayscale */
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+}
+
+/* Specific to browser that support the CSS3 Animation */
+/* Some rules specific when the browser support the CSS3 animation */
+#VirtualGeo_VrLoading.css3spinner {
+	background-color: black;
+	-webkit-transition: opacity 1s ease-in-out, visibility 1s;
+	-moz-transition: opacity 1s ease-in-out, visibility 1s;
+	-ms-transition: opacity 1s ease-in-out, visibility 1s;
+	-o-transition: opacity 1s ease-in-out, visibility 1s;
+}
+
+/* If the browser support the CSS3 animation, display a simple logo */
+#VirtualGeo_VrLoading.css3spinner #VirtualGeo_VrLoading_Container{
+	background-image: url("../res/img/logo.png");
+	background-size: 65px 65px;
+	color: white;
+}
+
+/* Hide the loading screen */
+#VirtualGeo_VrLoading.css3spinner.loaded {
+	opacity: 0;
+	visibility: hidden;
+}
+
+/* All that is needed for the spinner animation */
+#VirtualGeo_VrLoading .spinner:not(:required) {
+	position: absolute;
+	/* Center the spinner around the background image */
+	margin-left: 143px;
+    margin-top: 143px;
+	-moz-animation: spinner-loader 1500ms infinite linear;
+	-webkit-animation: spinner-loader 1500ms infinite linear;
+	animation: spinner-loader 1500ms infinite linear;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+	font-size: 10px;
+	width: 15px;
+	height: 15px;
+	overflow: hidden;
+	float: none;
+	-moz-box-shadow:  	rgba(50, 150, 255, 0.1) 50px 0 0 0,
+						rgba(50, 150, 255, 0.25) 35px 35px 0 0,
+						rgba(50, 150, 255, 0.4) 0 50px 0 0,
+						rgba(50, 150, 255, 0.55) -35px 35px 0 0,
+						rgba(50, 150, 255, 0.7) -50px 0 0 0,
+						rgba(50, 150, 255, 0.85) -35px -35px 0 0;
+	-webkit-box-shadow: rgba(50, 150, 255, 0.1) 50px 0 0 0,
+						rgba(50, 150, 255, 0.25) 35px 35px 0 0,
+						rgba(50, 150, 255, 0.4) 0 50px 0 0,
+						rgba(50, 150, 255, 0.55) -35px 35px 0 0,
+						rgba(50, 150, 255, 0.7) -50px 0 0 0,
+						rgba(50, 150, 255, 0.85) -35px -35px 0 0;
+	box-shadow: 		rgba(50, 150, 255, 0.1) 50px 0 0 0,
+						rgba(50, 150, 255, 0.25) 35px 35px 0 0,
+						rgba(50, 150, 255, 0.4) 0 50px 0 0,
+						rgba(50, 150, 255, 0.55) -35px 35px 0 0,
+						rgba(50, 150, 255, 0.7) -50px 0 0 0,
+						rgba(50, 150, 255, 0.85) -35px -35px 0 0;
+}
+
+
+@-moz-keyframes spinner-loader {
+	0% {
+		-moz-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-moz-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spinner-loader {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes spinner-loader {
+	0% {
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-moz-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+/******************************************************************************
+*				GLOBAL CONTROL 											  	  *
+******************************************************************************/
+.VirtualGeo_Control {
+	/* Use white and opaque font color */
+	color:#FFFFFF;
+	opacity: 1.0;
+	/* Init the font style */
+	font-size: 11px;
+    font-weight: normal;
+	font-family: sans-serif;
+	line-height: 22px;
+	text-align: center;
+
+	/* Each control has an absolute position */
+	position: absolute;
+}
+
+.VirtualGeo_Control div {
+	/* Each Navigation div has a absolute position (relative to his parent/container) */
+	position: absolute;
+	/* Avoid text selection */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+/* Controls buttons background color */
+.VirtualGeo_Control .hasBackground,
+.VirtualGeo_Control.hasBackground {
+	background-color: rgba(154,154,154,0.6);
+}
+
+/* Class used on hovered elements */
+.VirtualGeo_Control .hover:hover {
+	cursor: pointer;
+	background-color:  rgba(85, 115, 145, 0.8);
+}
+
+/* Class used on activated elements */
+.VirtualGeo_Control .active {
+	background-color:  rgba(200, 200, 200, 0.8);
+}
+
+/* Font used in interaction controls (zoom cursor...) */
+.boldFont {
+	font-weight:bold;
+	font-size: 12px;
+}
+/******************************************************************************
+*				IPR CONTROL 											      *
+******************************************************************************/
+/* The element that conten all the widget*/
+#VirtualGeo_Drawing {
+    top: 354px;
+    right: 50px;
+}
+
+#VirtualGeo_Drawing div {
+    height: 24px;
+    width: 24px;
+    margin-left: -12px;
+    margin-top: -12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 2px;
+}
+
+#VirtualGeo_Drawing_Polygon {
+    background-image:url(../../lib/external/virtual/res/gui/drawing/polygon.png);
+    left: -32px;
+}
+
+#VirtualGeo_Drawing_Line {
+    background-image:url(../../lib/external/virtual/res/gui/drawing/line.png);
+}
+
+#VirtualGeo_Drawing_Point {
+    background-image:url(../../lib/external/virtual/res/gui/drawing/point.png);
+    left: 32px;
+}
+
+#VirtualGeo_Drawing_Edition {
+    background-image:url(../../lib/external/virtual/res/gui/drawing/edit.png);
+    top: 32px;
+    left: -16px;
+}
+
+#VirtualGeo_Drawing_Delete {
+    background-image:url(../../lib/external/virtual/res/gui/drawing/delete.png);
+    top: 32px;
+    left: 16px;
+}
+
+/******************************************************************************
+*				IPR CONTROL 											      *
+******************************************************************************/
+/* The element that conten all the widget*/
+#VirtualGeo_IPR {
+    opacity: 0.6;
+    /* Positionning the widget */
+    right: 0;
+    bottom: 0;
+}
+
+#VirtualGeo_IPR:hover {
+    opacity: 0.9;
+}
+
+/* The IPR subelements */
+#VirtualGeo_IPR_Image,
+#VirtualGeo_IPR_Other {
+    /* Display the image block and other ipr on differents line*/
+    display: block;
+    /* Align in the parent div */
+    position: relative;
+    /* Align to the same direction as the IPR position (right: 0)*/
+    text-align: right;
+}
+
+/* The div that will contains the images IPR */
+#VirtualGeo_IPR_Image img {
+    margin: 10px;
+    border-radius: 2px;
+    /*height of the image, keep the ratio in the width*/
+    height: 32px;
+    /* Display the image on a line */
+    display: inline;
+}
+
+/* The div that will contains all other IPR (texts, links, etc)*/
+#VirtualGeo_IPR_Other {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 2px;
+}
+
+/* IPR links color */
+#VirtualGeo_IPR_Other a:link    { color: #2222BB;}
+#VirtualGeo_IPR_Other a:visited { color: #2222BB;}
+#VirtualGeo_IPR_Other a:hover   { color: #222222;}
+#VirtualGeo_IPR_Other a:active  { color: #222222;}
+/******************************************************************************
+*				LAYERLIST CONTROL 											      *
+******************************************************************************/
+/* The element that contains all the widget*/
+#VirtualGeo_LayerList {
+   /* Positionning the widget */
+    left: 0;
+    top: 0;
+}
+
+#VirtualGeo_LayerList ul {
+    list-style: none;
+}
+
+
+#VirtualGeo_LayerList li {
+  margin: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+ }
+/******************************************************************************
+*				IPR CONTROL 											      *
+******************************************************************************/
+/* The element that conten all the widget*/
+#VirtualGeo_Measure {
+    top: 418px;
+    right: 50px;
+}
+
+#VirtualGeo_Measure div {
+    height: 24px;
+    width: 24px;
+    margin-left: -12px;
+    margin-top: -12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 2px;
+}
+
+#VirtualGeo_Measure_Distance {
+    background-image:url(../../lib/external/virtual/res/gui/measure/distance.png);
+    left: -32px;
+}
+
+#VirtualGeo_Measure_Azimut {
+    background-image:url(../../lib/external/virtual/res/gui/measure/azimut.png);
+}
+
+#VirtualGeo_Measure_Position {
+    background-image:url(../../lib/external/virtual/res/gui/measure/position.png);
+    left: 32px;
+}
+
+#VirtualGeo_Measure_Area {
+    background-image:url(../../lib/external/virtual/res/gui/measure/surface.png);
+    top: 32px;
+    left: -16px;
+}
+
+#VirtualGeo_Measure_Stop {
+    background-image:url(../../lib/external/virtual/res/gui/measure/stop.png);
+    top: 32px;
+    left: 16px;
+}
+
+#VirtualGeo_MiniMap {
+   text-align: justify;
+   pointer-events: none;
+   opacity: 0.6;
+}
+
+#VirtualGeo_MiniMap_Cross {
+   left: 50%;
+   top: 50%;
+}
+
+#VirtualGeo_MiniMap_Cross:before,
+#VirtualGeo_MiniMap_Cross:after {
+    position: absolute;
+    content: "";
+    background: #FF2222;
+}
+
+#VirtualGeo_MiniMap_Cross:before {
+    height: 2px;
+    margin-top: -1px;
+
+    width: 10px;
+    margin-left: -5px;
+}
+
+#VirtualGeo_MiniMap_Cross:after {
+    width: 2px;
+    margin-left: -1px;
+
+    height: 10px;
+    margin-top: -5px;
+}
+
+#VirtualGeo_MiniMap_Arrow {
+   pointer-events: initial;
+   text-align: initial;
+   top: 100%;
+   margin-top: -10px;
+   width: 10px;
+   height: 10px;
+   position: relative;
+}
+
+#VirtualGeo_MiniMap_Arrow:before, #VirtualGeo_MiniMap_Arrow:after {
+  content: "";
+  position: absolute;
+  background: #FFFFFF;
+}
+
+#VirtualGeo_MiniMap_Arrow:before {
+  width: 20%;
+  height: 100%;
+}
+
+#VirtualGeo_MiniMap_Arrow:after {
+  top: 80%;
+  height: 20%;
+  width: 100%;
+}
+
+#VirtualGeo_MiniMap_Arrow_Tail {
+  position: absolute;
+  background: #FFFFFF;
+  height: 100%;
+  width: 20%;
+  left: 35%;
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+/******************************************************************************
+*				ANVIGATION CONTROL 											  *
+******************************************************************************/
+
+/* Little button size (zoomIn, zoomOut...) */
+.VirtualGeo_Control .littleButton {
+	height: 22px;
+	width:  22px;
+	/* Half of the size used to position button relative to his center */
+	margin-left: -11px;
+	margin-top: -11px;
+}
+
+/* Medium button size (Altitude, ZoomCursor)  */
+.VirtualGeo_Control .mediumButton {
+	height: 22px;
+	width: 48px;
+	/* Half of the size used to position button relative to his center */
+	margin-left: -24px;
+	margin-top: -11px;
+}
+
+.VirtualGeo_Control #areaNavigation {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/areaNavigation.png);
+	background-size:contain;
+	/* The size of the navigation area */
+	height: 42px;
+	width: 42px;
+	/* Must be half of the size to get it centered on the parent */
+	margin-left: -21px;
+	margin-top: -21px;
+}
+
+.VirtualGeo_Control #areaRotation {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/areaRotation.png);
+	background-size:contain;
+	/* The size of the rotation area */
+	height: 64px;
+	width: 64px;
+	/* Must be half of the size to get it centered on the parent */
+	margin-left: -32px;
+	margin-top: -32px;
+}
+
+.VirtualGeo_Control #areaRotation:hover {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/areaRotation_Hover.png);
+}
+
+.VirtualGeo_Control #pointNavigator:hover {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/pointNavigator_Hover.png);
+}
+
+.VirtualGeo_Control #pointNavigator {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/pointNavigator.png);
+	/* The size of the 'trackball' */
+	width:  8px;
+	height: 8px;
+	/* Must be half of the size to get it centered on the parent */
+	margin-left: -4px;
+	margin-top: -4px;
+}
+
+/* The slider used for the tilt */
+.VirtualGeo_Control #tiltSlider {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/tiltSlider.png);
+
+	height: 44px;
+	width: 44px;
+
+	left: -43px;
+	top: -43px;
+}
+
+/* The tilt cursor */
+.VirtualGeo_Control #tiltCursor {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/tiltCursor.png);
+
+	height: 10px;
+	width:  10px;
+
+	/* Isnt really the half size to 'compensate' the tilt slider bar thickness */
+	margin-top: -3px;
+	margin-left: -3px;
+	/* No need to place it, it would be automaticly positionned on the tiltSlider on map event */
+}
+
+.VirtualGeo_Control #tiltCursor:hover {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/tiltCursor_Hover.png);
+}
+
+.VirtualGeo_Control #resetTilt {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/resetTilt.png);
+	/* Juste under the rotation area at the right */
+	left: 13px;
+	top: 45px;
+}
+
+.VirtualGeo_Control #resetTilt.setTilt {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/setTilt.png);
+}
+
+.VirtualGeo_Control #turnAround {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/turnAroundNavigator.png);
+	/* Just under the rotation area at the left*/
+	left: -13px;
+	top: 45px;
+}
+
+/* The slider without the cursor*/
+.VirtualGeo_Control #zoomSlider {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/zoomSlider.png);
+
+	height: 145px;
+	width: 10px;
+
+	margin-left: -5px;
+    top: 0px;
+}
+
+/* The cursor */
+.VirtualGeo_Control #zoomCursor {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/zoomSliderButton.png);
+	/* No need to place it, it would be automaticly positionned on the zoomSlider on map event */
+}
+
+.VirtualGeo_Control #zoomMore{
+	background-image:url(../../lib/external/virtual/res/gui/navigation/riseDownNavigator.png);
+	left: 13px;
+	top: 160px;
+}
+
+.VirtualGeo_Control #zoomLess {
+	background-image:url(../../lib/external/virtual/res/gui/navigation/riseUpNavigator.png);
+	left: -13px;
+	top: 160px;
+}
+
+.VirtualGeo_Control #altitude {
+	font-size: 11px;
+    top: 186px;
+}
+/******************************************************************************
+*				SCALE BAR CONTROL 											  *
+******************************************************************************/
+#VirtualGeo_ScaleBar {
+    opacity: 0.6;
+    border-radius: 2px;
+    padding-bottom: 2px;
+    /* Size of the scale bar */
+    width: 200px;
+    /* Position it at the bottom left */
+    left: 0;
+    bottom: 0;
+}
+
+#VirtualGeo_ScaleBar:hover {
+    opacity: 0.9;
+}
+
+/* The div that contain respectively the two label and the scale bar canvas */
+#VirtualGeo_ScaleBar_Text,
+#VirtualGeo_ScaleBar_Distance_Text,
+#VirtualGeo_ScaleBar_Container {
+    /* Set the width to 90% of all the control */
+    width: 95%;
+    /* Center horizontally in the div */
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    /* Font  Override */
+    font-size: 10;
+    line-height: normal;
+    /* Size of each line */
+    height: 9px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+#VirtualGeo_ScaleBar_Text div {
+    /* Set the label to be display inline */
+    display: inline;
+}
+
+/* Move the label to the right place */
+#VirtualGeo_ScaleBar_Left  { left:  0;}
+#VirtualGeo_ScaleBar_Right { right: 0;}
+ /* Feature info popup */
+
+ .gp-feature-info-div-vg {
+   bottom: 17px;
+   max-width: calc(100vw - 80px);
+   min-height: 30px;
+   padding: 10px;
+   border-radius: 10px;
+   font-size: 0.75em;
+   font-family: "Open Sans", sans-serif;
+   color: #002A50;
+   background-color: #FFF;
+   box-shadow: 0 0 5px #000;
+ }
+/*
+ .gp-feature-info-div-vg::before {
+   content: "";
+   position: absolute;
+   border-top: 15px solid #FFF;
+   border-right: 14px solid transparent;
+   border-left: 14px solid transparent;
+   bottom: -15px;
+   margin-left: -14px;
+   left: 50%;
+ }*/
+
+ .gp-feature-info-div-vg .closer {
+   position: absolute;
+   display: block;
+   width: 30px;
+   height: 30px;
+   top: 0;
+   right: 0;
+   border: none;
+   cursor: pointer;
+   border-top-right-radius: 10px;
+   background-color: #FFF;
+   background-repeat: no-repeat;
+   background-image: url("./img/close-emeraud.svg");
+   background-size: 14px 14px;
+   background-position: center;
+ }
+
+ .gp-features-content-div-vg {
+   max-width: 420px;
+   min-width: 260px;
+   max-height: 340px;
+   /*overflow: auto;*/
+ }
+
+ .gp-features-content-div-vg h5,
+ .gp-features-content-div-vg h6,
+ .gp-features-content-div-vg p,
+ .gp-features-content-div-vg ul {
+   margin: 0;
+ }
+
+ .gp-features-content-div-vg ul {
+   padding: 0;
+   list-style-type: none;
+ }
+
+ .geoportail-popup-content h5,
+ .geoportail-popup-content h6,
+ .geoportail-popup-content p,
+ .gp-att-name-div,
+ .gp-att-description-div,
+ .gp-att-others-div {
+   padding: 0 10px;
+ }
+
+ .geoportail-popup-content h5:not(:last-child),
+ .geoportail-popup-content h6:not(:last-child),
+ .geoportail-popup-content p:not(:last-child),
+ .gp-att-description-div:not(:last-child),
+ .gp-att-others-div:not(:last-child) {
+   margin-bottom: 15px;
+ }
+
+ .geoportail-popup-content h5:last-child,
+ .geoportail-popup-content h6:last-child,
+ .geoportail-popup-content p:last-child,
+ .gp-att-description-div:last-child,
+ .gp-att-others-div:last-child,
+ .gp-att-name-div {
+   margin-bottom: 10px;
+ }
+
+ .geoportail-popup-content h5:first-child,
+ .geoportail-popup-content h6:first-child,
+ .geoportail-popup-content p:first-child,
+ .gp-att-name-div:first-child,
+ .gp-att-description-div:first-child,
+ .gp-att-others-div:first-child {
+   margin-top: 10px;
+ }
+
+ .gp-att-name-div,
+ .gp-features-content-div-vg h5 {
+   padding-right: 35px;
+   font-weight: bold;
+   font-size: 1.2em;
+   text-transform: uppercase;
+   color: #0B6BA7;
+ }
+
+ .gp-features-content-div-vg h6 {
+   font-size: 1.1em;
+ }
+
+ .gp-att-description-div:not(:last-child),
+ .gp-att-others-div:not(:last-child) {
+   padding-bottom: 10px;
+   border-bottom: 1px dotted #666;
+ }

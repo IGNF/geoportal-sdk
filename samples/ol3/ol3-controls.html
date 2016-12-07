@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/ol3/GpOl3-src.css" type="text/css">
+        <style>
+        #geoportalMap {
+            height: 600px;
+            width: 100%;
+        }
+        #extControlDiv {
+            height: 60px;
+            width : 100%;
+            border : 1px solid;
+        }
+        </style>
+        <script src="../../dist/ol3/GpOl3-src.js"></script>
+    </head>
+    <body>
+        <h1>Gestion des controles avec le SDK</h1>
+        <div id="extControlDiv"></div>
+        <input type="button" value="addLayer" onclick="addLayer();"/><br>
+        <div id="geoportalMap"></div>
+        <div id="idDiv">
+            <p>ControlId : <input type="text" id="controlId"/></p>
+            <input type="button" value="Remove" onclick="removeControl();"/><br>
+            <input type="button" value="Modify" onclick="modify();"/><br>
+        </div>
+        <script type="text/javascript">
+
+            var map = Gp.Map.load('geoportalMap',{
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                azimuth : 45,
+                zoom : 12,
+                // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    },
+                    'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    },
+                    'osmLyr' : {
+                        format : "osm",
+                        url : "http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                        title : "OSM Layer",
+                        description : "Couche Open Street Map",
+                        quicklookUrl : "http://wiki.openstreetmap.org/osm_logo_wiki.png",
+                        metadataUrl : [{ url : "http://wiki.openstreetmap.org/wiki/Main_Page"}]
+
+                    }
+                },
+                controlsOptions : {
+                    overview : {
+                        maximised : true,
+                        layers : ["GEOGRAPHICALGRIDSYSTEMS.MAPS.OVERVIEW"],
+                        projection : "EPSG:3857",
+                        minZoom : 1,
+                        maxZoom : 7
+                    },
+                    attributions : {
+                        maximised : true
+                    },
+                    layerSwitcher : {
+                        maximised : false
+                    },
+                    zoom : {
+                    },
+                    orientation : {
+                        // div : "extControlDiv"
+                    },
+                    graphicScale : {
+                        units : "m",
+                        minWidth : 100
+                    },
+                    search : {
+                        maximised : true
+                    },
+                    reverseSearch : {
+                    },
+                    mousePosition : {
+                    },
+                    graticule : {
+                        strokeWidth : 3
+                    },
+                    route : {
+                    },
+                    isocurve : {
+                    },
+                    drawing : {
+                        cursorStyle : {
+                            radius : 5,
+                            strokeColor: '#F90',
+                            strokeWidth: 1,
+                            fillColor : 'rgba(255, 155, 0, 0.4)'
+                        }
+                    },
+                    layerimport : {
+                    },
+                    area : {
+                    },
+                    length : {
+                    },
+                    azimuth : {
+                    },
+                    elevationPath : {
+                    }
+                }
+            });
+
+            function modify() {
+                var elem = document.getElementById("controlId") ;
+                if (elem.value) {
+                    var ctrlOpts = {}
+                    ctrlOpts[elem.value] = {}
+                    ctrlOpts[elem.value]["maximised"] = true ;
+                    // graphicscale
+                    if (elem.value.toLowerCase() == "graphicscale") {
+                        ctrlOpts[elem.value]["units"] = "deg" ;
+                    }
+                    // mouseposition
+                    if (elem.value.toLowerCase() == "mouseposition") {
+                        ctrlOpts[elem.value]["displayCoordinates"] = true ;
+                        ctrlOpts[elem.value]["systems"] = [{
+                            crs : "EPSG:4326",
+                            label : "Géographiques",
+                            type : "Geographic"
+                        },{
+                            crs : "EPSG:3857",
+                            label : "Web Mercator",
+                            type : "Metric"
+                        }] ;
+                        ctrlOpts[elem.value]["units"] = ["m","dec","rad"] ;
+                        ctrlOpts[elem.value]["altitude"] = {} ;
+                        ctrlOpts[elem.value]["altitude"].triggerDelay = 1500 ;
+                    }
+                    // overview
+                    // ctrlOpts[elem.value]["layers"] = ["GEOGRAPHICALGRIDSYSTEMS.MAPS.OVERVIEW"] ;
+                    ctrlOpts[elem.value]["layers"] = ["GEOGRAPHICALGRIDSYSTEMS.MAPS"] ;
+                    ctrlOpts[elem.value]["strokeOpacity"] = 1 ;
+                    ctrlOpts[elem.value]["strokeColor"] = "#ff0000" ;
+                    // route
+                    if (elem.value.toLowerCase() == "route") {
+                        ctrlOpts[elem.value]["graphs"] = ["Pieton"] ;
+                        ctrlOpts[elem.value]["exclusions"] = {
+                            toll : true,
+                            tunnel : true
+                        } ;
+                    }
+                    // isocurve
+                    if (elem.value.toLowerCase() == "isocurve") {
+                        ctrlOpts[elem.value]["graphs"] = ["Pieton"] ;
+                        ctrlOpts[elem.value]["exclusions"] = {
+                            toll : true,
+                            tunnel : true
+                        } ;
+                        ctrlOpts[elem.value]["methods"] = ["time"] ;
+                        ctrlOpts[elem.value]["directions"] = ["departure"] ;
+                    }
+                    // search
+                    if (elem.value.toLowerCase() == "search") {
+                        ctrlOpts[elem.value]["displayAdvancedSearch"] = true ;
+                        ctrlOpts[elem.value]["resources"] = {
+                            geocode : ["StreetAddress"],
+                            autocomplete : ["StreetAddress"]
+                        } ;
+                    }
+                    // reverse search
+                    if (elem.value.toLowerCase() == "reversesearch") {
+                        ctrlOpts[elem.value]["maximised"] = true ;
+                        ctrlOpts[elem.value]["delimitations"] = ["Circle"] ;
+                        ctrlOpts[elem.value]["resources"] = ["CadastralParcel"] ;
+                    }
+                    map.modifyControls(ctrlOpts) ;
+                }
+            }
+            function removeControl() {
+                var elem = document.getElementById("controlId") ;
+                map.removeControls([elem.value]) ;
+            }
+            function addLayer() {
+               map.addLayers({
+                   'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                        title : "Cartes modifiées",
+                        legends : [{
+                           format : "image/gif",
+                           url : "http://www.geoportail.gouv.fr/depot/fiches/cartesIGN/legendes/25k.gif"
+                       }]
+                   },
+                   "kml" : {
+                       title : "Couche KML",
+                       url : "../data/S_TOP100.kml",
+                       format : "kml",
+                       originators : [{
+                           logo : "http://www.ign.fr/sites/all/themes/ign_portail/logo.png",
+                           url : "http://www.ign.fr",
+                           name : "IGN"
+                       }]
+                   },
+                   "MigrationKML" : {
+                       title : "Couche KML (migration)",
+                       format : "kml",
+                       url : "../data/1160569.kml",
+                       originators : [{
+                           logo : "http://www.ign.fr/sites/all/themes/ign_portail/logo.png",
+                           url : "http://www.ign.fr",
+                           name : "IGN"
+                       }]
+                   }
+               }) ;
+            }
+        </script>
+    </body>
+</html>

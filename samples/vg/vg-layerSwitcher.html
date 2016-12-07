@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/virtual/GpVG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+          }
+        </style>
+        <script src="../../dist/virtual/GpVG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test de l'ajout du control LayerSwitcher</h1>
+        <p>Ajout du control à la carte avec les couches MAPS et ORTHOPHOTOS</p>
+        <div id="geoportalMap1"></div>
+
+        <script type="text/javascript">
+
+        var m1 = Gp.Map.load("geoportalMap1",{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "vg",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    opacity : 0.5
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {},
+                attributions : {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+
+        </script>
+    </body>
+</html>

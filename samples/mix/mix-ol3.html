@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOL3VG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+          }
+          #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+          }
+        </style>
+        <script src="../../dist/mix/GpOL3VG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test de la bascule 3D / 2D</h1>
+        <div id="BoutonDiv">
+            <input type="button" name="export" onclick="exporte();" value="2D"/><br/>
+        </div>
+        <div id="geoportalMap1"></div>
+        <div id="geoportalMap2"></div>
+        <div id="outputDiv"></div>
+
+        <script type="text/javascript">
+
+        var map = Gp.Map.load("geoportalMap1",{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "vg",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+/*
+        var m2 = Gp.Map.load("geoportalMap2", {
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "vg",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });*/
+
+        function exporte() {
+            var centerVG = map.getCenter();
+            centerVG = [centerVG.lon, centerVG.lat];
+            var xy = ol.proj.transform(centerVG, 'EPSG:4326', 'EPSG:3857');
+            var centerOL3 = {x : xy[0], y : xy[1]};
+            var layersOptions = map.getLayersOptions() ;
+            var controlsOptions = map.getControlsOptions() ;
+            var outputDiv = document.getElementById("outputDiv") ;
+            outputDiv.innerHTML = "<p>" ;
+            for (var key in layersOptions) {
+                outputDiv.innerHTML += "(" + layersOptions[key].position + ") " + key + " - opacity : " + layersOptions[key].opacity + " - visbility : " + layersOptions[key].visibility + "<br/>" ;
+            }
+            outputDiv.innerHTML += "</p>" ;
+            // Mise à jour de la carte exportée
+            if ( typeof map2 !== "undefined") {
+                // Changement des paramètres des couches (opacité, visibilité)
+                map2.modifyLayers(layersOptions);
+                // Changement des paramètres sur les controles
+                map2.modifyControls(controlsOptions);
+                // Centrage et réglage de la caméra
+                map2.setXYCenter(centerOL3);
+                map2.setZoom(map.getZoom());
+                map2.setAzimuth(map.getAzimuth());
+
+            } else {
+                // creation d'une nouvelle carte à l'identique
+                map2 = Gp.Map.load('geoportalMap2', {
+                    apiKey : ['jhyvi0fgmnuxvfv0zjzorvdn'],
+                    center : centerOL3,
+                    layersOptions : layersOptions,
+                    controlsOptions : controlsOptions, // TODO
+                    zoom : map.getZoom(),
+                    azimuth : map.getAzimuth()
+                });
+            }
+        }
+
+
+        </script>
+    </body>
+</html>

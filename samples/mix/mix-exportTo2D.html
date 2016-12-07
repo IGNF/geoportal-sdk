@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOL3VG-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+            display:"inline";
+          }
+          #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+            display:"inline";
+          }
+        </style>
+        <script src="../../dist/mix/GpOL3VG-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test de la bascule 3D / 2D</h1>
+        <div id="BoutonDiv2D" hidden>
+            <input type="button" name="export" onclick="exportToOL3();" value="Export 3D to 2D"/><br/>
+        </div>
+        <div id="BoutonDiv3D">
+            <input type="button" name="export" onclick="exportToVG();" value="Export 2D to 3D"/><br/>
+        </div>
+        <div id="geoportalMap1"></div>
+
+        <div id="geoportalMap2"></div>
+
+        <script type="text/javascript">
+
+        var map = Gp.Map.load("geoportalMap1",{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            /*layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                }
+            },*/
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "HY.PhysicalWaters" : {
+                },
+                "TN.RoadTransportNetwork" : {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+
+        function exportToVG() {
+            document.getElementById("BoutonDiv2D").style.display = "inline";
+            document.getElementById("BoutonDiv3D").style.display = "none";
+            var centerOL3 = map.getCenter();
+            centerOL3 = [centerOL3.x, centerOL3.y];
+            var lonlat = ol.proj.transform(centerOL3, 'EPSG:3857', 'EPSG:4326');
+            var centerVG = {x : lonlat[0], y : lonlat[1]};
+            var layersOptions = map.getLayersOptions() ;
+            var controlsOptions = map.getControlsOptions() ;
+            map.removeControls(["layerSwitcher"]);
+            if ( typeof map2 !== "undefined") {
+                // Mise à jour de la vue du globe VG
+                map2.addControls(controlsOptions);
+                map2.modifyControls(controlsOptions);
+                map2.modifyLayers(layersOptions);
+                map2.setXYCenter(centerVG);
+                map2.setZoom(map.getZoom());
+                map2.setAzimuth(map.getAzimuth());
+            } else {
+                // creation d'une nouvelle carte à l'identique
+                map2 = Gp.Map.load('geoportalMap2', {
+                    apiKey : ['jhyvi0fgmnuxvfv0zjzorvdn'],
+                    library : "vg",
+                    center : centerVG,
+                    layersOptions : layersOptions,
+                    controlsOptions : controlsOptions, // TODO
+                    zoom : map.getZoom(),
+                    azimuth : map.getAzimuth()
+                });
+            }
+        }
+
+        function exportToOL3() {
+            document.getElementById("BoutonDiv3D").style.display = "inline";
+            document.getElementById("BoutonDiv2D").style.display = "none";
+            var centerVG = map2.getCenter();
+            centerVG = [centerVG.lon, centerVG.lat];
+            var xy = ol.proj.transform(centerVG, 'EPSG:4326', 'EPSG:3857');
+            var centerOL3 = {x : xy[0], y : xy[1]};
+            var layersOptions = map2.getLayersOptions() ;
+            var controlsOptions = map2.getControlsOptions() ;
+            map2.removeControls(["layerSwitcher"]);
+            // Mise à jour de la carte exportée
+            if ( typeof map !== "undefined") {
+                // Changement des paramètres sur les controles
+                map.addControls(controlsOptions);
+                map.modifyControls(controlsOptions);
+                // Changement des paramètres des couches (opacité, visibilité)
+                map.modifyLayers(layersOptions);
+                // Centrage et réglage de la caméra
+                map.setXYCenter(centerOL3);
+                map.setZoom(map2.getZoom());
+                map.setAzimuth(map2.getAzimuth());
+            } else {
+                console.log("No OL3 DIV MAP Loaded...");
+            }
+        }
+
+        </script>
+    </body>
+</html>
