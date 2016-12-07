@@ -1433,6 +1433,9 @@ function (
             layerOpts = evt.layerChanged ;
             idx = this._getLayerIndexByLayerOpts(layerOpts) ;
             // Maj des options de la couche
+            if (layerOpts[this._layers[idx].id].opacity == null) {
+                layerOpts[this._layers[idx].id].opacity = 1;
+            }
             this._layers[idx].options.opacity = layerOpts[this._layers[idx].id].opacity ;
             this._layers[idx].options.visibility = layerOpts[this._layers[idx].id].visible ;
             // MaJ de l'objet VG à l'entrée du tableau _layers correspondant à la couche
