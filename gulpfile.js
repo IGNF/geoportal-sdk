@@ -81,7 +81,7 @@
 
     // date auto
     var npmConf = require("./package.json") ;
-    var buildDate = new Date().toISOString() ;
+    var buildDate = new Date().toISOString().split("T")[0];
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ jsonlint

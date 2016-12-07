@@ -44,3 +44,4 @@
 /test/bower_dependencies/
 /test/node_modules/
 /lib/external/virtual/
+/dist/
