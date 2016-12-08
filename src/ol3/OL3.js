@@ -2584,6 +2584,9 @@ define([
             // ou uniquement la première en partant du dessus...
             var requests = [];
             var positions = Object.keys(layers); // FIXME reverse !?
+            positions.sort( function (a,b) {
+                return b - a;
+            });
             for (var k = 0 ; k < positions.length ; k++) {
                 var p = positions[k];
                 var l = layers[p];
@@ -2649,11 +2652,11 @@ define([
                 var nextItemIndex = 0;
 
                 /** function report next request */
-                function report () {
+                function report (displayed) {
 
                     nextItemIndex++;
 
-                    if (nextItemIndex === list.length) {
+                    if (displayed || nextItemIndex === list.length) {
                         callback();
                     } else {
                         iterator(list[nextItemIndex], report);
@@ -2689,12 +2692,12 @@ define([
                             }
 
                             // on reporte sur la prochaine requête...
-                            report();
+                            report(!exception);
                         },
                         /** Handles GFI response error */
                         onFailure : function (error) {
-                            // FIXME si erreur, on reporte sur la prochaine requete ?
                             console.log(error);
+                            report(false);
                         }
                     }) ;
                 },
