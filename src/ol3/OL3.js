@@ -747,7 +747,7 @@ define([
                 lengthOpts.styles = {} ;
                 // pointer style creation
                 if (controlOpts.styles.hasOwnProperty("pointer")) {
-                    lengthOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ; 
+                    lengthOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ;
                 }
                 // drawStart style creation
                 if (controlOpts.styles.hasOwnProperty("start")) {
@@ -758,7 +758,7 @@ define([
                             color : controlOpts.styles.start.fillColor
                         }) ;
                     }
-                    lengthOpts.styles.start = new ol.style.Style(startOpts) ; 
+                    lengthOpts.styles.start = new ol.style.Style(startOpts) ;
                 }
                 // drawEnd style creation
                 if (controlOpts.styles.hasOwnProperty("finish")) {
@@ -769,7 +769,7 @@ define([
                             color : controlOpts.styles.finish.fillColor
                         }) ;
                     }
-                    lengthOpts.styles.finish = new ol.style.Style(finishOpts) ; 
+                    lengthOpts.styles.finish = new ol.style.Style(finishOpts) ;
                 }
             }
             // geodesic
@@ -799,7 +799,7 @@ define([
                 areaOpts.styles = {} ;
                 // pointer style creation
                 if (controlOpts.styles.hasOwnProperty("pointer")) {
-                    areaOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ; 
+                    areaOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ;
                 }
                 // drawStart style creation
                 if (controlOpts.styles.hasOwnProperty("start")) {
@@ -810,7 +810,7 @@ define([
                             color : controlOpts.styles.start.fillColor
                         }) ;
                     }
-                    areaOpts.styles.start = new ol.style.Style(startOpts) ; 
+                    areaOpts.styles.start = new ol.style.Style(startOpts) ;
                 }
                 // drawEnd style creation
                 if (controlOpts.styles.hasOwnProperty("finish")) {
@@ -821,7 +821,7 @@ define([
                             color : controlOpts.styles.finish.fillColor
                         }) ;
                     }
-                    areaOpts.styles.finish = new ol.style.Style(finishOpts) ; 
+                    areaOpts.styles.finish = new ol.style.Style(finishOpts) ;
                 }
             }
 
@@ -851,7 +851,7 @@ define([
                 azimuthOpts.styles = {} ;
                 // pointer style creation
                 if (controlOpts.styles.hasOwnProperty("pointer")) {
-                    azimuthOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ; 
+                    azimuthOpts.styles.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ;
                 }
                 // drawStart style creation
                 if (controlOpts.styles.hasOwnProperty("start")) {
@@ -862,7 +862,7 @@ define([
                             color : controlOpts.styles.start.fillColor
                         }) ;
                     }
-                    azimuthOpts.styles.start = new ol.style.Style(startOpts) ; 
+                    azimuthOpts.styles.start = new ol.style.Style(startOpts) ;
                 }
                 // drawEnd style creation
                 if (controlOpts.styles.hasOwnProperty("finish")) {
@@ -873,7 +873,7 @@ define([
                             color : controlOpts.styles.finish.fillColor
                         }) ;
                     }
-                    azimuthOpts.styles.finish = new ol.style.Style(finishOpts) ; 
+                    azimuthOpts.styles.finish = new ol.style.Style(finishOpts) ;
                 }
             }
 
@@ -927,7 +927,7 @@ define([
                 // pointer style creation
                 if (controlOpts.styles.hasOwnProperty("pointer")) {
                     elevOpts.stylesOptions.draw = {} ;
-                    elevOpts.stylesOptions.draw.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ; 
+                    elevOpts.stylesOptions.draw.pointer = this._fillPointerStyles(controlOpts.styles.pointer) ;
                 }
                 // drawStart style creation
                 if (controlOpts.styles.hasOwnProperty("start")) {
@@ -995,7 +995,7 @@ define([
 
             // zoomTo
             searchOpts.zoomTo = controlOpts.zoomTo || null;
-            
+
             // resources
             if (controlOpts.hasOwnProperty("resources")) {
                 searchOpts.resources = {} ;
@@ -1514,7 +1514,7 @@ define([
                     if (layerOpts.version) {
                         params.VERSION = layerOpts.version;
                     }
-                    // au cas ou maintien de l'ancien nom de paramètre : 
+                    // au cas ou maintien de l'ancien nom de paramètre :
                     // layerOpts.styleName (sans "s")
                     layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName ;
                     if (layerOpts.stylesNames) {
@@ -2584,8 +2584,11 @@ define([
             // ou uniquement la première en partant du dessus...
             var requests = [];
             var positions = Object.keys(layers); // FIXME reverse !?
-            for (var i = 0 ; i < positions.length ; i++) {
-                var p = positions[i];
+            positions.sort( function (a,b) {
+                return b - a;
+            });
+            for (var k = 0 ; k < positions.length ; k++) {
+                var p = positions[k];
                 var l = layers[p];
                 this.logger.trace("[OL3] : _onMapClick : analyzing wms") ;
                 var minMaxZoomOk = true ;
@@ -2598,7 +2601,7 @@ define([
                     minMaxZoomOk = false ;
                 }
                 if (l.options.format &&
-                    l.options.format.toLowerCase() == "wms" &&
+                    (l.options.format.toLowerCase() == "wms" || l.options.format.toLowerCase() == "wmts" ) &&
                     l.options.queryable &&
                     l.obj.getVisible() &&
                     minMaxZoomOk
@@ -2608,14 +2611,27 @@ define([
                     var _format = l.options.gfiFormat || "text/html";
                     var _coord  = evt.coordinate;
                     var _res    = this.libMap.getView().getResolution();
-                    var _url    = l.obj.getSource().getGetFeatureInfoUrl(
-                        _coord,
-                        _res,
-                        this.getProjection(), // 'EPSG:3857',
-                        {
-                            INFO_FORMAT : _format
-                        }
-                    );
+                    var _url    = null;
+                    if (l.options.format.toLowerCase() == "wmts") {
+                        _url = Gp.olUtils.getGetFeatureInfoUrl(
+                            l.obj.getSource(),
+                            _coord,
+                            _res,
+                            this.getLibMap().getView().getProjection(),
+                            {
+                                INFOFORMAT : _format
+                            }
+                        );
+                    } else {
+                        _url = l.obj.getSource().getGetFeatureInfoUrl(
+                            _coord,
+                            _res,
+                            this.getLibMap().getView().getProjection(),
+                            {
+                                INFO_FORMAT : _format
+                            }
+                        );
+                    }
 
                     requests.push({
                         id : _id,
@@ -2636,11 +2652,11 @@ define([
                 var nextItemIndex = 0;
 
                 /** function report next request */
-                function report () {
+                function report (displayed) {
 
                     nextItemIndex++;
 
-                    if (nextItemIndex === list.length) {
+                    if (displayed || nextItemIndex === list.length) {
                         callback();
                     } else {
                         iterator(list[nextItemIndex], report);
@@ -2676,12 +2692,12 @@ define([
                             }
 
                             // on reporte sur la prochaine requête...
-                            report();
+                            report(!exception);
                         },
                         /** Handles GFI response error */
                         onFailure : function (error) {
-                            // FIXME si erreur, on reporte sur la prochaine requete ?
                             console.log(error);
+                            report(false);
                         }
                     }) ;
                 },

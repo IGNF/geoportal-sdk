@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/ol3/GpOl3-src.css" type="text/css">
+        <style>
+        body {
+            width : 100% !important;
+        }
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+        </style>
+        <script src="../../dist/ol3/GpOl3-src.js"></script>
+    </head>
+    <body>
+        <h1>WMS Géoportail "externe" et GetFeatureInfo</h1>
+        <p>couche WMS SHOM chargée avec l'option tiled : true => logos parfois tronqués</p>
+        <p>couche WMS Ecoles chargée sans l'option tiled => logos non tronqués</p>
+        <div id="geoportalMap"></div>
+        <script type="text/javascript">
+
+            var map = Gp.Map.load('geoportalMap',{
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+                center : {
+                    x : 22700,
+                    y : 6395900
+                },
+                zoom : 15,
+                controlsOptions : {
+                    "layerSwitcher" : {},
+                    "mousePosition" : {}
+                },
+                layersOptions : {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+                    'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
+                        minZoom : 14,
+                        maxZoom : 21,
+                        format : "wms",
+                        title : "Ecoles maternelles et élémentaires",
+                        description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
+                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/v/wms",
+                        layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
+                        outputFormat : "image/png",
+                        queryable : true,
+                        originators: [{
+                                "name":"IGN",
+                                "attribution":"Institut national de l'information géographique et forestière",
+                                "url":"http://www.ign.fr",
+                                "constraints":[{"crs":"EPSG:4326","bbox":{"left":-63.09696,"right":55.826077,"top":51.073032,"bottom":-21.385712},"minScaleDenominator":0,"maxScaleDenominator":559082265,"temporalExtent":["2016-02-18","2016-02-18"]}]
+                            },
+                            {
+                                "name":"MEN",
+                                "attribution":"Ministère de l’Education nationale",
+                                // "logo":"http://wxs.ign.fr/static/logos/MEN/MEN.gif",
+                                "url":"http://www.education.gouv.fr",
+                                "constraints":[{"crs":"EPSG:4326","bbox":{"left":-63.09696,"right":55.826077,"top":51.073032,"bottom":-21.385712},"minScaleDenominator":0,"maxScaleDenominator":559082265,"temporalExtent":["2016-02-18","2016-02-18"]}]
+                            }
+                        ],
+                        metadata : [
+                            {"format":"xml","url":"http://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=ECOLES.xml"}
+                        ],
+                        legends : [
+                            {
+                               format : "image/jpg",
+                               url : "http://www.geoportail.gouv.fr/depot/fiches/ecoles-maternelles-elementaires/enseignement_maternelles-elementaires.png",
+                               minScaleDenominator: null
+                            }
+                        ]
+                    },
+                    'ADMINISTRATIVEUNITS.BOUNDARIES' : {
+                        minZoom : 6,
+                        maxZoom : 16,
+                        format : "wms",
+                        title : "Limites administratives",
+                        description : "blah blah",
+                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/r/wms",
+                        layers : ["ADMINISTRATIVEUNITS.BOUNDARIES"],
+                        outputFormat : "image/png",
+                        queryable : true, //pour test devait etre false
+                        originators : [],
+                        metadata : [],
+                        legends : []
+                    },
+                    'RPG.2012' : {
+                        minZoom : 6,
+                        maxZoom : 16,
+                        format : "wmts",
+                        title : "RPG 2012",
+                        description : "blah blah",
+                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/wmts",
+                        layer : "RPG-2012_BDD_WLD_WGS84_20161124",
+                        gfiFormat : "text/html",
+                        tileMatrixSet : "PM",
+                        styleName : "normal",
+                        outputFormat : "image/png",
+                        queryable : true,
+                        originators : [],
+                        metadata : [],
+                        legends : []
+                    },
+                    'RAILWAYS' : {
+                        minZoom : 6,
+                        maxZoom : 16,
+                        format : "wmts",
+                        title : "Réseau ferroviaire",
+                        description : "blah blah",
+                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/wmts",
+                        layer : "TRANSPORTNETWORKS.RAILWAYS",
+                        tileMatrixSet : "PM",
+                        styleName : "normal",
+                        outputFormat : "image/png",
+                        queryable : true, // pour test (devrait etre a false)
+                        originators : [],
+                        metadata : [],
+                        legends : []
+                    },
+                    'DGAC-PEB-POI_BDD_WLD_WM::GEOPORTAIL:OGC:WMS' : {
+                        minZoom : 6,
+                        maxZoom : 16,
+                        format : "wms",
+                        title : "Plan d'exposition au bruit (PEB)",
+                        description : "blah blah",
+                        url : "https://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/v/wms",
+                        layers : ["DGAC-PEB-POI_BDD_WLD_WM"],
+                        outputFormat : "image/png",
+                        queryable : true,
+                        originators : [],
+                        metadata : [],
+                        legends : []
+                    },
+                }
+            });
+
+        </script>
+    </body>
+</html>
