@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 0.11.0
- * @date 2016-12-04
+ * @version 0.12.0-dev
+ * @date 2016-12-09
  *
  */
 /* MOUSE POSITION */
@@ -910,11 +910,11 @@ div[id^=GPisochronReset]:hover {
 
 /* LAYER SWITCHER */
 
-#GPlayerSwitcher {
+div[id^=GPlayerSwitcher-] {
   font-size: 11px;
 }
 
-#GPlayerSwitcher [draggable] {
+div[id^=GPlayerSwitcher-] [draggable] {
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -926,18 +926,18 @@ div[id^=GPisochronReset]:hover {
 
 /* Manage opening of the components through hiden checkboxes */
 
-#GPlayerSwitcher input[type="checkbox"] + div,
-#GPlayerSwitcher input[type="checkbox"] + label + div {
+div[id^=GPlayerSwitcher-] input[type="checkbox"] + div,
+div[id^=GPlayerSwitcher-] input[type="checkbox"] + label + div {
   max-height: 0px;
 }
 
-#GPlayerSwitcher label {
+div[id^=GPlayerSwitcher-] label {
   display: block;
 }
 
 /* Showing/hiding layers list */
 
-#GPshowLayersListPicto {
+label[id^=GPshowLayersListPicto] {
   position: relative;
   float: right;
   display: block;
@@ -946,34 +946,34 @@ div[id^=GPisochronReset]:hover {
   cursor: pointer;
 }
 
-#GPshowLayersListOpen,
-#GPshowLayersListClose {
+span[id^=GPshowLayersListOpen],
+span[id^=GPshowLayersListClose] {
   position: absolute;
   display: block;
   transition: border-radius 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
 }
 
-#GPshowLayersListOpen {
+span[id^=GPshowLayersListOpen] {
   background-position: 0 0;
   opacity: 1;
 }
 
-#GPshowLayersListClose {
+span[id^=GPshowLayersListClose] {
   opacity: 0;
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + div + #GPshowLayersListPicto {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + div + #GPshowLayersListPicto #GPshowLayersListClose {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
   opacity: 1;
 }
 
 /* Layers list */
 
-#GPlayersList {
+div[id^=GPlayersList] {
   position: relative;
   width: 180px;
   border-bottom-right-radius: 0;
@@ -982,7 +982,7 @@ div[id^=GPisochronReset]:hover {
   transition: max-height 0.5s ease-out 0s, opacity 0.5s ease-out 0.25s;
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + #GPlayersList {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div[id^=GPlayersList] {
   max-height: 232px;
   opacity: 1;
   transition: max-height 0.5s ease-in 0s, opacity 0.25s ease-in 0s;
@@ -998,7 +998,7 @@ div[id^=GPisochronReset]:hover {
   overflow: hidden;
 }
 
-#GPlayersList .GPlayerSwitcher_layer:last-child {
+div[id^=GPlayersList] .GPlayerSwitcher_layer:last-child {
   border-bottom: none;
 }
 
@@ -1078,7 +1078,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   transition: max-height 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + label + .GPlayerAdvancedTools {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + label + .GPlayerAdvancedTools {
   max-height: 28px;
   opacity: 1;
 }
@@ -1210,7 +1210,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
 
 /* Layer info panel */
 
-#GPlayerInfoPanel {
+div[id^=GPlayerInfoPanel] {
   position: absolute;
   top: 0;
   overflow-y: hidden;
@@ -1226,7 +1226,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   display: none;
 }
 
-#GPlayerInfoContent {
+div[id^=GPlayerInfoContent] {
   position: relative;
   width: 280px;
   max-height: 200px;
@@ -1235,7 +1235,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   padding-right: 10px;
 }
 
-#GPlayerInfoTitle {
+div[id^=GPlayerInfoTitle] {
   width: calc(100% - 52px);
   margin: auto;
   margin-bottom: 10px;
@@ -1245,7 +1245,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   font-weight: bold;
 }
 
-#GPlayerInfoQuicklook {
+div[id^=GPlayerInfoQuicklook] {
   position: absolute;
   top: -2px;
   left: 10px;
@@ -1254,7 +1254,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   cursor: pointer;
 }
 
-#GPlayerInfoClose {
+div[id^=GPlayerInfoClose] {
   position: absolute;
   top: -8px;
   right: 10px;
@@ -1263,8 +1263,16 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   cursor: pointer;
 }
 
-#GPlayerInfoDescription {
+div[id^=GPlayerInfoDescription] {
   font-size: 0.9em;
+}
+
+div[id^=GPlayerInfoLegend] {
+
+}
+
+div[id^=GPlayerInfoMetadata] {
+
 }
 
 .GPlayerInfoSubtitle {
@@ -1302,6 +1310,7 @@ input[type="checkbox"]:checked + .GPlayerVisibility {
   text-decoration: none;
   color: inherit;
 }
+
 /* Location */
 
 /* Location form */
@@ -2197,10 +2206,6 @@ div[id^=GProuteResultsDetails] {
 
 input[id^=GPshowSearchEngine-] + label + form[id^=GPsearchInput-] {
   max-width: 0px;
-}
-
-#GPlayerSwitcher label { /* FIXME !? */
-  display: block;
 }
 
 /* Showing/hiding search engine input */
@@ -3402,20 +3407,20 @@ div[id^="GPimportGetCapResults-"] {
 
 /* LAYER SWITCHER OL3 */
 
-#GPlayerSwitcher {
+div[id^=GPlayerSwitcher-] {
   top: 8px;
   right: 8px;
 }
 
 /* Showing/hiding layers list */
 
-#GPshowLayersListPicto {
+label[id^=GPshowLayersListPicto] {
   width: 38px;
   height: 38px;
 }
 
-#GPshowLayersListOpen,
-#GPshowLayersListClose {
+span[id^=GPshowLayersListOpen],
+span[id^=GPshowLayersListClose] {
   top: 3px;
   left: 3px;
   width: 32px;
@@ -3423,20 +3428,20 @@ div[id^="GPimportGetCapResults-"] {
   background-image: url("img/GPshowLayersList.png");
 }
 
-#GPshowLayersListClose {
+span[id^=GPshowLayersListClose] {
   background-position: -32px 0;
 }
 
 
-#GPlayerSwitcher input[type="checkbox"]:checked + div + #GPshowLayersListPicto #GPshowLayersListOpen {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen] {
   opacity: 0.7;
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + div + #GPshowLayersListPicto #GPshowLayersListClose {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
   background-color: rgba(0,60,136,0.3);
 }
 
-#GPlayerSwitcher input[type="checkbox"]:checked + div + #GPshowLayersListPicto:hover #GPshowLayersListClose {
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto]:hover span[id^=GPshowLayersListClose] {
   background-color: rgba(0,60,136,0.4);
 }
 
@@ -3470,20 +3475,20 @@ div[id^="GPimportGetCapResults-"] {
 
 /* Layer info panel */
 
-#GPlayerInfoPanel {
+div[id^=GPlayerInfoPanel] {
   right: 190px;
 }
 
-#GPlayerInfoTitle {
+div[id^=GPlayerInfoTitle] {
   color: #366291;
   border-bottom: 1px solid #366291;
 }
 
-#GPlayerInfoQuicklook {
+div[id^=GPlayerInfoQuicklook] {
   background-image: url("img/GPlayerInfo.png");
 }
 
-#GPlayerInfoClose {
+div[id^=GPlayerInfoClose] {
   background-image: url("img/GPlayerInfoClose.png");
 }
 
@@ -3551,6 +3556,31 @@ span[id^=GPshowMeasureLengthOpen-] {
   background-position: -26px;
 }
 
+/* MOUSE POSITION */
+
+div[id^=GPmousePosition-] {
+  bottom: 8px;
+  left: 10px;
+}
+
+/* Showing/hiding mouse position panel */
+
+span[id^=GPshowMousePositionOpen] {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* General panels */
+
+div[id^=GPmousePositionPanelClose]  {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* Map center localisation */
+
+#GPmapCenter {
+  background-image: url("img/GPmapCenter.png");
+}
+
 /* REVERSE GEOCODING */
 
 [id^="GPreverseGeocoding-"] {
@@ -3594,31 +3624,6 @@ div[id^=GPreverseGeocodingReturnPicto-] {
 .GPreverseGeocodedLocationHighlight {
     background-color: rgba(255,200,0,0.25);
     color: #222;
-}
-
-/* MOUSE POSITION */
-
-div[id^=GPmousePosition-] {
-  bottom: 8px;
-  left: 10px;
-}
-
-/* Showing/hiding mouse position panel */
-
-span[id^=GPshowMousePositionOpen] {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* General panels */
-
-div[id^=GPmousePositionPanelClose]  {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* Map center localisation */
-
-#GPmapCenter {
-  background-image: url("img/GPmapCenter.png");
 }
 
 /* ROUTE */
@@ -3700,62 +3705,6 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   min-width: 230px;
 }
 
-/* SEARCH ENGINE */
-
-[id^="GPsearchEngine-"] {
-  top: 8px;
-  left: 46px;
-}
-
-/* Showing/hiding search engine input */
-
-[id^="GPshowSearchEngineOpen"] {
-  background-image: url("img/GPsearchEngineOpen.png");
-  transition: border-radius 0.5s ease-out 0s;
-}
-
-/* Simple search input */
-
-[id^="GPsearchInput"] {
-  height: 32px;
-}
-
-[id^="GPsearchInputReset"] {
-  background-image: url("img/GPsearchEngineClose.png");
-}
-
-/* General panels */
-
-[id^="GPgeocodeResultsClose"] {
-  background-image: url("img/GPsearchEngineClose.png");
-}
-
-[id^="GPadvancedSearchClose"] {
-  background-image: url("img/GPsearchEngineOpen.png");
-  background-position: -50px 3px;
-}
-
-/* Advanced search picto */
-
-[id^="GPshowAdvancedSearchOpen"] {
-  background-image: url("img/GPsearchEngineOpen.png");
-  background-position: -26px 0;
-  transition: border-radius 0.5s ease-out 0s;
-}
-
-/* Autocomplete list / geocode results */
-
-[id^="GPautoCompleteList"],
-[id^="GPgeocodeResultsList"] {
-  margin-left: 33px;
-  box-shadow: 0 0 6px #000;
-}
-
-[id^="GPgeocodeResultsList"] {
-  top: 40px;
-  border-radius: 4px;
-}
-
 /* TODO coller un peu plus à la charte
 - liseret blanc transparent 32x32 autour du pictogramme
 - pictogramme 26x26
@@ -3820,4 +3769,60 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
 
 #GPtoolbox-measure-main:hover #GPtoolbox-measure-button {
     background-color: rgba(0,60,136,0.7);
+}
+
+/* SEARCH ENGINE */
+
+[id^="GPsearchEngine-"] {
+  top: 8px;
+  left: 46px;
+}
+
+/* Showing/hiding search engine input */
+
+[id^="GPshowSearchEngineOpen"] {
+  background-image: url("img/GPsearchEngineOpen.png");
+  transition: border-radius 0.5s ease-out 0s;
+}
+
+/* Simple search input */
+
+[id^="GPsearchInput"] {
+  height: 32px;
+}
+
+[id^="GPsearchInputReset"] {
+  background-image: url("img/GPsearchEngineClose.png");
+}
+
+/* General panels */
+
+[id^="GPgeocodeResultsClose"] {
+  background-image: url("img/GPsearchEngineClose.png");
+}
+
+[id^="GPadvancedSearchClose"] {
+  background-image: url("img/GPsearchEngineOpen.png");
+  background-position: -50px 3px;
+}
+
+/* Advanced search picto */
+
+[id^="GPshowAdvancedSearchOpen"] {
+  background-image: url("img/GPsearchEngineOpen.png");
+  background-position: -26px 0;
+  transition: border-radius 0.5s ease-out 0s;
+}
+
+/* Autocomplete list / geocode results */
+
+[id^="GPautoCompleteList"],
+[id^="GPgeocodeResultsList"] {
+  margin-left: 33px;
+  box-shadow: 0 0 6px #000;
+}
+
+[id^="GPgeocodeResultsList"] {
+  top: 40px;
+  border-radius: 4px;
 }
