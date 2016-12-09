@@ -34,14 +34,30 @@
 
         <script type="text/javascript">
             Gp.Map.load('geoportalMap1', {
-                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn"
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                controlsOptions : {
+                  "search" : {
+                     maximised : true
+                   },
+                   "layerswitcher" : {},
+                   area : {},
+                   length : {},
+                   azimuth : {}
+                }
             });
 
             Gp.Map.load(document.getElementById('geoportalMap2'), {
-                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn"
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                controlsOptions : {
+                  "search" : {
+                     maximised : true
+                   },
+                   "layerswitcher" : {},
+                   area : {}
+                }
             });
 
-            Gp.Map.load('geoportalMap', {
+            Gp.Map.load('inconnu', {
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn"
             });
         </script>
