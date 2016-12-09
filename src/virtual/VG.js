@@ -633,10 +633,12 @@ function (
         var vglayers = this._getLayersObj([layerId]) ;
         if (vglayers.length > 0) {
             var vgLayerList = this._controls[idxLS].obj._layerListContainer ;
+            var divId = vgLayerList.id;
+            var uid = divId.substring(divId.indexOf("-"));
             if (vgLayerList && vgLayerList.childNodes) {
                 for (var layerDivKey = 0; layerDivKey < vgLayerList.childNodes.length; layerDivKey++) {
-                    if (vgLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID" + layerId) {
-                        var foundId = "GPlayerSwitcher_ID" + layerId;
+                    if (vgLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
+                        var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
                         return foundId;
                     }
                 }
