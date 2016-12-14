@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2016-12-09
+ * @date 2016-12-14
  *
  */
 /* MOUSE POSITION */
@@ -117,60 +117,87 @@ input.marker-input-radio:checked + label {
 
 /* CSS : default */
 
-/* suppression des puces sur les listes */
-div#profileElevationByDefault {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: -webkit-box;
-  display: flex;
-  flex-direction: column;
-  /*flex-flow: row wrap;*/
-  height: inherit;
-  width: inherit;
+#profileElevationByDefault,
+.z-title-vertical,
+.z-title-vertical ul,
+.profileElevationContent,
+.profileElevationContent ul,
+.x-title-horizontal,
+.x-title-horizontal ul{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:95%;
+
+}
+.z-title-vertical,
+.z-title-vertical ul,
+.profileElevationContent
+{
+  flex-direction:column;
+  height:95%;
 }
 
-div#profileElevationByDefault > * {
-  -webkit-flex: 1;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1 100%;
+.z-title-vertical ul,
+.x-title-horizontal ul{
+  /*padding:0;*/
+  margin:0;
+  list-style-type:none;
 }
 
-ul#data-default {
-    list-style: none;
-    box-sizing: border-box;
-    padding: 0px;
-    position : relative;
-    margin : 10px ;￼
-    margin-top: auto;
-￼    margin-bottom: auto;
-    height: 100px;
-    /*width: 100%*/
-}
+.z-title-vertical{
+  /*background:green;*/
+  flex:0 1 auto;
 
-.z-title-vertical {
-  align-self: flex-start;
-  padding-left: 10px;
-  /*position: absolute;*/
-  /*transform: rotate(-90deg);*/
 }
+.z-title-vertical ul{
+  /*background:pink;*/
+  justify-content:space-between;
+  padding:2px 5px 2px 2px;
+  /*border-right:1px solid #888;*/
+}
+.z-title-vertical .unit{
+  /*background:gray;*/
+  width:100%;
+  text-align:center;
+  padding:5px 5px 2px 2px;
+}
+.profileElevationContent{
+  /*background:yellow;*/
+  flex:1 0 auto;
 
-.x-title-horizontal {
-  align-self: flex-end;
-  padding-right: 10px;
-  /*position: absolute;*/
-  /*transform: translate(120px, -30px);*/
+}
+.profileElevationContent ul {
+  /*background:white;*/
+  flex:1 0 auto;
+  width:100%;
+  justify-content:flex-start;
+  align-items:flex-end;
+
+  /*margin:0;*/
+  padding:0;
+
+}
+.x-title-horizontal{
+  /*background:blue;*/
+  width:100%;
+}
+.x-title-horizontal ul{
+  /*background:orange;*/
+  justify-content:space-between;
+  padding:5px 2px 2px 2px;
+  /*border-top:1px solid #888;*/
 }
 
 .z-axis {
     border-right: none;
-    border-left: solid 2px;
+    border-left: solid 2px #888;
     cursor: default;
 }
 
 .x-axis {
     border-top: none;
-    border-bottom: solid 2px;
+    border-bottom: solid 2px #888;
     cursor: default;
 }
 
@@ -185,7 +212,7 @@ ul#data-default li.percent {
 }
 
 li.axe span.bottom-axis {
-    vertical-align: bottom;
+    /*vertical-align: bottom;*/
 }
 
 ul#data-default .percent:hover {
@@ -3766,7 +3793,7 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
 - pictogramme 26x26
 - ...
 */
-#GPtoolbox-measure-main {
+div[id^=GPtoolbox-measure-main] {
   float: left;
   left: 78px;
   top: 8px;
@@ -3775,7 +3802,7 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   z-index: 1;
 }
 
-#GPtoolbox-measure-button {
+button[id^=GPtoolbox-measure-button] {
   color: white;
   border-color: rgba(255, 255, 255, 0.8);
   border-style: none;
@@ -3788,12 +3815,12 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   padding: 0px;
 }
 
-#GPtoolbox-measure-button {
+button[id^=GPtoolbox-measure-button] {
   background-repeat: no-repeat;
   background-image: url("img/GPtoolBoxMeasureOpen.png");
 }
 
-#GPtoolbox-measure-widget {
+div[id^=GPtoolbox-measure-widget] {
   left:auto;
   display: none;
   /*visibility: hidden;*/
@@ -3804,7 +3831,7 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
 }
 
-#GPtoolbox-measure-widget > div {
+div[id^=GPtoolbox-measure-widget] > div {
   display: block;
   /*visibility: visible;*/
   position: relative;
@@ -3814,15 +3841,15 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   right: auto;
 }
 
-#GPtoolbox-measure-main:hover {
+div[id^=GPtoolbox-measure-main]:hover {
     /*display: block;*/
     /*visibility: visible;*/
 }
 
-#GPtoolbox-measure-main:hover:not(.active) {
+div[id^=GPtoolbox-measure-main]:hover:not(.active) {
     /*background-color: rgba(0,60,136,0.3);*/
 }
 
-#GPtoolbox-measure-main:hover #GPtoolbox-measure-button {
+div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
     background-color: rgba(0,60,136,0.7);
 }
