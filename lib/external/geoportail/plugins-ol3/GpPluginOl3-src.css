@@ -3542,31 +3542,6 @@ div[class*="GPlocationPoint"] {
     margin-bottom: 5px;
 }
 
-/* MOUSE POSITION */
-
-div[id^=GPmousePosition-] {
-  bottom: 8px;
-  left: 10px;
-}
-
-/* Showing/hiding mouse position panel */
-
-span[id^=GPshowMousePositionOpen] {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* General panels */
-
-div[id^=GPmousePositionPanelClose]  {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* Map center localisation */
-
-#GPmapCenter {
-  background-image: url("img/GPmapCenter.png");
-}
-
 /* MEASURELENGTH POSITION */
 
 div[id^=GPmeasureArea-] {
@@ -3606,6 +3581,31 @@ div[id^=GPmeasureLength-] {
 span[id^=GPshowMeasureLengthOpen-] {
   background-image: url("img/GPmeasuresOpen.png");
   background-position: -26px;
+}
+
+/* MOUSE POSITION */
+
+div[id^=GPmousePosition-] {
+  bottom: 8px;
+  left: 10px;
+}
+
+/* Showing/hiding mouse position panel */
+
+span[id^=GPshowMousePositionOpen] {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* General panels */
+
+div[id^=GPmousePositionPanelClose]  {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* Map center localisation */
+
+#GPmapCenter {
+  background-image: url("img/GPmapCenter.png");
 }
 
 /* REVERSE GEOCODING */
