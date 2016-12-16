@@ -405,9 +405,9 @@
 
         /**
          * Control options object.
-         * 
+         *
          * Holds options for a specific control present on the map. May be used for map creation (See **controlsOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Map.html) function) or for map modification (See [Gp.Map.addControls()](Gp.Map.html#addControls) or [Gp.Map.modifyControls()](Gp.Map.html#modifyControls)).
-         * 
+         *
          * Given a specific control, availables options are the following :
          *
          * <a id="zoom"></a>
@@ -533,7 +533,7 @@
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
          * | maximised | Boolean | if the control has to be opened or not. |
-         * | layerTypes | Array | data types that could be imported : "KML", "GPX", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "WMS", "WMTS"] |
+         * | layerTypes | Array | data types that could be imported : "KML", "GPX", "GeoJSON", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "GeoJSON", "WMS", "WMTS"] |
          * | webServicesOptions | Object | Options to import WMS or WMTS layers |
          * | webServicesOptions.proxyUrl | String | Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer. |
          * | webServicesOptions.noProxyDomains | Array(String) | Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions) |
@@ -554,6 +554,15 @@
          * | defaultStyles.GPX.strokeColor | String | Stroke color for GPX routes or tracks styling (RGB hex value). Default is "#002A50" |
          * | defaultStyles.GPX.strokeWidth | Number | Stroke width in pixels for GPX routes or tracks styling. Default is 4 |
          * | defaultStyles.GPX.strokeOpacity | Number | Stroke opacity for GPX routes or tracks styling (alpha value between 0:transparent and 1:opaque). Default is 0.8 |
+         * | defaultStyles.GeoJSON | Object | Styles to apply by default to imported GeoJSON layers |
+         * | defaultStyles.GeoJSON.markerSrc | String | URL of a marker image (for GeoJSON points styling). Default is an orange marker. |
+         * | defaultStyles.GeoJSON.markerXAnchor | Float | Position of marker anchor in X from left of the image expressed in proportion of 1 (for GeoJSON points styling). Default is 25.5 |
+         * | defaultStyles.GeoJSON.markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in proportion of 1 (for GeoJSON points styling). Default is 38 |
+         * | defaultStyles.GeoJSON.strokeColor | String | Stroke color for GeoJSON lines styling (RGB hex value). Default is "#002A50" |
+         * | defaultStyles.GeoJSON.strokeWidth | Number | Stroke width in pixels for GeoJSON lines styling. Default is 4 |
+         * | defaultStyles.GeoJSON.strokeOpacity | Number | Stroke opacity for GeoJSON lines styling (alpha value between 0:transparent and 1:opaque). Default is 0.8 |
+         * | defaultStyles.GeoJSON.polyFillColor | String | GeoJSON polygons fill color (RGB hex value). Default is "#00B798" |
+         * | defaultStyles.GeoJSON.polyFillOpacity | Number | GeoJSON polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5 |
          *
          * <a id="length"></a>
          *

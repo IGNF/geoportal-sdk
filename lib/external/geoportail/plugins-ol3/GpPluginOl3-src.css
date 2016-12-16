@@ -2589,13 +2589,6 @@ input.GPinputSubmit {
   border-bottom: 1px dotted #666;
 }
 
-/* Geoportal Attribution */
-
-.ol-attribution .gp-control-attribution-image {
-  max-height: 30px;
-  max-width: inherit;
-  vertical-align: middle;
-}
 /* MOUSE POSITION */
 
 div[id^=GPdrawing-] {
@@ -3052,6 +3045,13 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
+/* Geoportal Attribution */
+
+.ol-attribution .gp-control-attribution-image {
+  max-height: 30px;
+  max-width: inherit;
+  vertical-align: middle;
+}
 div[id^=GPelevationPath-] {
   bottom: 48px;
   left: 10px;
