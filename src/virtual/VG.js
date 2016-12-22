@@ -507,6 +507,10 @@ function (
     * @param {Object} controlOpts - options du controle
     */
     VG.prototype.addAttributionsControl = function (controlOpts) {
+        // if the div already exist, we clean it
+        if (document.getElementById("VirtualGeo_IPR")) {
+            document.getElementById("VirtualGeo_IPR").parentNode.removeChild(document.getElementById("VirtualGeo_IPR"));
+        }
         if (!document.getElementById("VirtualGeo_IPR")) {
             this.logger.trace("[VG] addAttributionsControl...");
             var control = new VirtualGeo.IPRControl();
@@ -903,8 +907,10 @@ function (
                 if (LSControl) {
                     LSControl._addedLayerConf[layerId] = layerOpts;
                 }
-                // this will launch the addedLayer callback (dans "VG._onLayerChanged")
+
                 this.libMap.addImageryLayer(layer) ;
+
+                // Once added, set opacity and visibility of the layer
                 // On règle l'opacité de la couche
                 this.libMap.setLayerOpacity({
                     id : layerId,

@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 5.0.0
- * @date 2016-12-09
+ * @date 2016-12-22
  *
  */
 /* MOUSE POSITION */
@@ -117,60 +117,87 @@ input.marker-input-radio:checked + label {
 
 /* CSS : default */
 
-/* suppression des puces sur les listes */
-div#profileElevationByDefault {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: -webkit-box;
-  display: flex;
-  flex-direction: column;
-  /*flex-flow: row wrap;*/
-  height: inherit;
-  width: inherit;
+#profileElevationByDefault,
+.z-title-vertical,
+.z-title-vertical ul,
+.profileElevationContent,
+.profileElevationContent ul,
+.x-title-horizontal,
+.x-title-horizontal ul{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:95%;
+
+}
+.z-title-vertical,
+.z-title-vertical ul,
+.profileElevationContent
+{
+  flex-direction:column;
+  height:95%;
 }
 
-div#profileElevationByDefault > * {
-  -webkit-flex: 1;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1 100%;
+.z-title-vertical ul,
+.x-title-horizontal ul{
+  /*padding:0;*/
+  margin:0;
+  list-style-type:none;
 }
 
-ul#data-default {
-    list-style: none;
-    box-sizing: border-box;
-    padding: 0px;
-    position : relative;
-    margin : 10px ;￼
-    margin-top: auto;
-￼    margin-bottom: auto;
-    height: 100px;
-    /*width: 100%*/
-}
+.z-title-vertical{
+  /*background:green;*/
+  flex:0 1 auto;
 
-.z-title-vertical {
-  align-self: flex-start;
-  padding-left: 10px;
-  /*position: absolute;*/
-  /*transform: rotate(-90deg);*/
 }
+.z-title-vertical ul{
+  /*background:pink;*/
+  justify-content:space-between;
+  padding:2px 5px 2px 2px;
+  /*border-right:1px solid #888;*/
+}
+.z-title-vertical .unit{
+  /*background:gray;*/
+  width:100%;
+  text-align:center;
+  padding:5px 5px 2px 2px;
+}
+.profileElevationContent{
+  /*background:yellow;*/
+  flex:1 0 auto;
 
-.x-title-horizontal {
-  align-self: flex-end;
-  padding-right: 10px;
-  /*position: absolute;*/
-  /*transform: translate(120px, -30px);*/
+}
+.profileElevationContent ul {
+  /*background:white;*/
+  flex:1 0 auto;
+  width:100%;
+  justify-content:flex-start;
+  align-items:flex-end;
+
+  /*margin:0;*/
+  padding:0;
+
+}
+.x-title-horizontal{
+  /*background:blue;*/
+  width:100%;
+}
+.x-title-horizontal ul{
+  /*background:orange;*/
+  justify-content:space-between;
+  padding:5px 2px 2px 2px;
+  /*border-top:1px solid #888;*/
 }
 
 .z-axis {
     border-right: none;
-    border-left: solid 2px;
+    border-left: solid 2px #888;
     cursor: default;
 }
 
 .x-axis {
     border-top: none;
-    border-bottom: solid 2px;
+    border-bottom: solid 2px #888;
     cursor: default;
 }
 
@@ -185,7 +212,7 @@ ul#data-default li.percent {
 }
 
 li.axe span.bottom-axis {
-    vertical-align: bottom;
+    /*vertical-align: bottom;*/
 }
 
 ul#data-default .percent:hover {
@@ -2452,6 +2479,39 @@ input.GPinputSubmit {
   max-width: inherit;
   vertical-align: middle;
 }
+/* ISOCHRON */
+
+#GPisochron {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+#GPshowIsochronOpen {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* General panels */
+
+#GPisochronPanel {
+  left: 8px;
+}
+
+#GPisochronPanelClose {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -2544,39 +2604,6 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
-/* ISOCHRON */
-
-#GPisochron {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-#GPshowIsochronOpen {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* General panels */
-
-#GPisochronPanel {
-  left: 8px;
-}
-
-#GPisochronPanelClose {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -2602,6 +2629,27 @@ div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmapCenter.png");
 }
 
+/* REVERSE GEOCODING */
+
+#GPreverseGeocoding {
+  left: 10px;
+}
+
+/* Showing/hiding reverse geocoding panel */
+
+#GPshowReverseGeocodingOpen {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+/* General panels */
+
+#GPreverseGeocodingPanel {
+  left: 8px;
+}
+
+#GPreverseGeocodingPanelClose {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
 /* ROUTE */
 
 #GProute {
@@ -2652,27 +2700,6 @@ div[id^=GPmousePositionPanelClose]  {
 #GProuteResultsShowDetails + label:hover,
 #GProuteResultsShowDetails + label + label:hover {
   color: #366291;
-}
-/* REVERSE GEOCODING */
-
-#GPreverseGeocoding {
-  left: 10px;
-}
-
-/* Showing/hiding reverse geocoding panel */
-
-#GPshowReverseGeocodingOpen {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-/* General panels */
-
-#GPreverseGeocodingPanel {
-  left: 8px;
-}
-
-#GPreverseGeocodingPanelClose {
-  background-image: url("img/GPreverseGeocodingOpen.png");
 }
 /* SEARCH ENGINE */
 
