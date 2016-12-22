@@ -504,7 +504,7 @@ define([
          * @param {Object} controlOpts - control options
          * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
          * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
-         * @param {Array} controlOpts.layerTypes - data types that could be imported : "KML", "GPX", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "WMS", "WMTS"]
+         * @param {Array} controlOpts.layerTypes - data types that could be imported : "KML", "GPX", "GeoJSON", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "GeoJSON", "WMS", "WMTS"]
          * @param {Object} controlOpts.webServicesOptions - Options to import WMS or WMTS layers
          * @param {String} controlOpts.webServicesOptions.proxyUrl - Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer.
          * @param {Array.<String>} [controlOpts.webServicesOptions.noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions)
@@ -525,6 +525,15 @@ define([
          * @param {String} [controlOpts.defaultStyles.GPX.strokeColor = "#002A50"] - Stroke color for GPX routes or tracks styling (RGB hex value).
          * @param {Number} [controlOpts.defaultStyles.GPX.strokeWidth = 4] - Stroke width in pixels for GPX routes or tracks styling.
          * @param {Number} [controlOpts.defaultStyles.GPX.strokeOpacity = 0.8] - Stroke opacity for GPX routes or tracks styling (alpha value between 0:transparent and 1:opaque)
+         * @param {Object} [controlOpts.defaultStyles.GeoJSON] - Styles to apply by default to imported GeoJSON layers
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.markerSrc] - URL of a marker image (for GeoJSON points styling). Default is an orange marker.
+         * @param {Float} [controlOpts.defaultStyles.GeoJSON.markerXAnchor = 25.5] - position of marker anchor in X from left of the image expressed in proportion of 1 (for GeoJSON points styling).
+         * @param {Float} [controlOpts.defaultStyles.GeoJSON.markerYAnchor = 38] - position of marker anchor in Y from top of the image expressed in proportion of 1 (for GeoJSON points styling).
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.strokeColor = "#002A50"] - Stroke color for GeoJSON lines styling (RGB hex value).
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.strokeWidth = 4] - Stroke width in pixels for GeoJSON lines styling.
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.strokeOpacity = 0.8] - Stroke opacity for GeoJSON lines styling (alpha value between 0:transparent and 1:opaque)
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.polyFillColor = "#00B798"] - GeoJSON polygons fill color (RGB hex value).
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.polyFillOpacity = 0.5] - GeoJSON polygons fill opacity (alpha value between 0:transparent and 1:opaque).
          */
         OL3.prototype.addLayerImportControl = function (controlOpts) {
             var importOpts = {};
@@ -603,6 +612,36 @@ define([
                         importOpts.vectorStyleOptions.GPX.defaultStyle.stroke = new ol.style.Stroke({
                             color : IMap._hexToRgba(strokeColor, strokeOpacity),
                             width : gpxDefaultStyles.strokeWidth || 4
+                        });
+                    }
+                }
+                if ( controlOpts.defaultStyles.GeoJSON ) {
+                    var geoJSONDefaultStyles = controlOpts.defaultStyles.GeoJSON;
+                    importOpts.vectorStyleOptions.GeoJSON = {
+                        defaultStyle : {}
+                    };
+                    if ( geoJSONDefaultStyles.markerSrc || geoJSONDefaultStyles.markerXAnchor ||  geoJSONDefaultStyles.markerYAnchor ) {
+                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.image = new ol.style.Icon({
+                            src : geoJSONDefaultStyles.markerSrc || defaultMarkerSrc,
+                            anchor : [ geoJSONDefaultStyles.markerXAnchor || 25.5, geoJSONDefaultStyles.markerYAnchor || 38],
+                            anchorOrigin : "top-left",
+                            anchorXUnits : "pixels",
+                            anchorYUnits : "pixels"
+                        });
+                    }
+                    if ( geoJSONDefaultStyles.strokeColor || geoJSONDefaultStyles.strokeWidth) {
+                        strokeOpacity = geoJSONDefaultStyles.strokeOpacity || 0.8;
+                        strokeColor = geoJSONDefaultStyles.strokeColor || "#002A50";
+                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.stroke = new ol.style.Stroke({
+                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                            width : geoJSONDefaultStyles.strokeWidth || 4
+                        });
+                    }
+                    if ( geoJSONDefaultStyles.polyFillColor || geoJSONDefaultStyles.polyFillOpacity ) {
+                        fillOpacity = geoJSONDefaultStyles.polyFillOpacity || 0.5;
+                        fillColor = geoJSONDefaultStyles.polyFillColor || "#00B798";
+                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.fill = new ol.style.Fill({
+                            color : IMap._hexToRgba(strokeColor, strokeOpacity)
                         });
                     }
                 }
