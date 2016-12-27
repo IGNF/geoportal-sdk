@@ -729,6 +729,7 @@ function (
                         url : layerOpts.url,
                         protocol : layerOpts.format,
                         id : layerId,
+                        title : layerOpts.title || layerId,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
                         extractStyle : "true"
@@ -741,6 +742,7 @@ function (
                         url : layerOpts.url,
                         protocol : layerOpts.format,
                         id : layerId,
+                        title : layerOpts.title || layerId,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
                         extractStyle : "true"
