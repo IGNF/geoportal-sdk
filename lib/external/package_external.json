@@ -15,16 +15,16 @@
         "version" : "3.0.2"
     },
     "geoportail-services" : {
-      "date" : "2016-12-15",
+      "date" : "2016-12-16",
       "desc" : "API Geoportail Services",
       "url" : "https://github.com/IGNF/geoportal-access-lib",
-      "version" : "1.0.0-beta3 - commit 49d0834 (master)"
+      "version" : "1.0.0-beta3 - commit f07492f (master)"
     },
     "geoportail-plugins" : {
-        "date" : "2016-12-16",
+        "date" : "2017-12-06",
         "desc" : "API Geoportail Extensions OpenLayers 3",
         "url" : "https://github.com/IGNF/geoportal-extensions",
-        "version" : "0.1.0 - commit 8075ab5 (master)"
+        "version" : "0.1.0 - commit 0941975 (master)"
     },
     "openlayers" : {
         "desc" : "OpenLayers 3 is a high-performance, feature-packed library for creating interactive maps on the web.",
