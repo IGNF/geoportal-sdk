@@ -1670,9 +1670,16 @@ define([
             switch (layerOpts.format.toUpperCase()) {
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
+
+                    // FIXME pourquoi ça ne marche pas !?
+                    //   Je crois qu'il ne va pas chercher la bonne fonction de parsing :
+                    //     readFeatures()
+                    //   car cette fonction appartient à la classe heritée (appel dans le constructeur !):
+                    //     ol.format.Feature / ol.format.XMLFeature
+
                     // constructorOpts.source = new ol.source.Vector({
                     //     url : this.setProxy(layerOpts.url),
-                    //     format : new ol.format.KML({
+                    //     format : new ol.format.KMLExtended({
                     //         extractStyles : layerOpts.extractStyles,
                     //         showPointNames : false
                     //     })
