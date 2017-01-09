@@ -1574,7 +1574,8 @@ define([
                     }
                     var sourceOpts = {
                         url : layerOpts.url,
-                        params : params
+                        params : params,
+                        crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
                         sourceOpts.projection = layerOpts.projection ;
@@ -1601,6 +1602,7 @@ define([
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
+                        crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
                                 layerOpts.topLeftCorner.x,
@@ -2770,6 +2772,92 @@ define([
             // this._displayInfo(evt.coordinate,content,"text/html") ;
 
         } ;
+
+        /**
+         * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
+         *
+         * @param {Object} ol3Obj - objet ol3
+         */
+        OL3._getOL3Id = function (ol3Obj) {
+            if (!ol3Obj) {
+                return ;
+            }
+            for (var key in ol3Obj) {
+                if (! typeof(key) == "string" || key.indexOf("closure_uid") < 0) {
+                    continue ;
+                }
+                // on a trouvé :
+                return ol3Obj[key] ;
+            }
+            return null ;
+        };
+
+        /**
+         *  Function changing color/grayscale of a layer from its map ID
+         *
+         * @param {Boolean} colorToGray - indicate transformation nature (from or to grayscale)
+         * @param {String} layerId - layer identifier
+         */
+        OL3.prototype.changeLayerColor = function (colorToGray,layerId) {
+
+            var layerIndex = this._getLayerIndexByLayerId(layerId);
+
+            var lsControl = this.getLibMapControl("layerSwitcher");
+            var layerOrder = lsControl._layersOrder.map(function (layer) {
+                return layer.id;
+            });
+
+            var gpLayer = this._layers[layerIndex];
+            var opacity = gpLayer.obj.getOpacity();
+            var visible = gpLayer.obj.getVisible();
+
+            this.libMap.removeLayer(gpLayer.obj);
+
+            if (!colorToGray) {
+                var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
+
+                constructorOpts.source = new ol.source.Raster({
+                    sources : [gpLayer.obj.getSource()],
+                    grayScale : true,
+                    operation : function (pixels, data) {
+                                    var pixel = pixels[0];
+                                    var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
+                                    return [lightness, lightness, lightness, pixel[3]];
+                                }
+                });
+
+                gpLayer.objOrigin = gpLayer.obj;
+
+                gpLayer.obj = new ol.layer.Image(constructorOpts);
+                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
+            } else {
+                gpLayer.obj = gpLayer.objOrigin;
+                gpLayer.objOrigin = null;
+            }
+
+            this._layers.push(gpLayer);
+            this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
+            this._resetLayerChangedEvent();
+
+            // update layer switcher display
+            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
+            document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked = true;
+
+            // update layer order
+            var maxZIndex = layerOrder.length;
+            for (var i = 0; i < layerOrder.length; i++) {
+                var id = layerOrder[i];
+                var layer = lsControl._layers[id].layer;
+                if (layer.setZIndex) {
+                    layer.setZIndex(maxZIndex);
+                    maxZIndex--;
+                }
+            }
+            // update layer properties
+            document.getElementById(lsControl._addUID("GPlayerColorInput_ID_" + gpLayer.obj.gpLayerId)).checked = colorToGray;
+            gpLayer.obj.setOpacity(opacity);
+            gpLayer.obj.setVisible(visible);
+        };
 
         return OL3;
     });
