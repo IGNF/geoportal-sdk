@@ -1,4 +1,3 @@
-/* globals Gp: true */
 define([
     "Utils/LoggerByDefault",
     "ol",
