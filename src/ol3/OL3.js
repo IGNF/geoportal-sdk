@@ -1575,6 +1575,7 @@ define([
                     var sourceOpts = {
                         url : layerOpts.url,
                         params : params,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
                         crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
@@ -1602,6 +1603,7 @@ define([
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
                         crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
@@ -1627,6 +1629,7 @@ define([
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
                         url : layerOpts.url,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
                         crossOrigin : "anonymous"
                     });
                     break;
@@ -1879,6 +1882,7 @@ define([
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
 
+            // ajout pour pouvoir utiliser la fonction changeLayerColor
             olLayer.getSource().crossOrigin = "anonymous";
 
             this._layers.push({
@@ -2787,7 +2791,7 @@ define([
                 return ;
             }
             for (var key in ol3Obj) {
-                if (! typeof(key) == "string" || key.indexOf("closure_uid") < 0) {
+                if ( typeof(key) != "string" || key.indexOf("closure_uid") < 0) {
                     continue ;
                 }
                 // on a trouvé :
@@ -2797,7 +2801,7 @@ define([
         };
 
         /**
-         *  Function changing color/grayscale of a layer from its map ID
+         *  Function to disable/enable layer color (grayscale or color mode).
          *
          * @param {Boolean} colorToGray - indicate transformation nature (from or to grayscale)
          * @param {String} layerId - layer identifier
@@ -2819,7 +2823,6 @@ define([
             var layerOrder = lsControl._layersOrder.map(function (layer) {
                 return layer.id;
             });
-
 
             var opacity = gpLayer.obj.getOpacity();
             var visible = gpLayer.obj.getVisible();
