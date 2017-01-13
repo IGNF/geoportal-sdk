@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2017-01-06
+ * @date 2017-01-13
  *
  */
 /* MOUSE POSITION */
@@ -3466,6 +3466,24 @@ div[id^="GPimportGetCapResults-"] {
   background-color: #CEDBEF
 }
 
+/* Location */
+
+.GPlocationOriginPointerImg,
+.GPlocationStageRemove,
+div[id^=GPlocationStageAdd],
+.GPlocationTransportImg {
+  background-image: url("img/GPlocationOptions.png");
+}
+
+/* All div elements whose class attribute value begins with "GPlocationPoint" */
+div[class*="GPlocationPoint"] {
+    position: relative;
+}
+
+.GPlocationStageFlexInput {
+    margin-bottom: 5px;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-] {
@@ -3556,24 +3574,6 @@ div[id^=GPlayerInfoClose] {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
-}
-
-/* Location */
-
-.GPlocationOriginPointerImg,
-.GPlocationStageRemove,
-div[id^=GPlocationStageAdd],
-.GPlocationTransportImg {
-  background-image: url("img/GPlocationOptions.png");
-}
-
-/* All div elements whose class attribute value begins with "GPlocationPoint" */
-div[class*="GPlocationPoint"] {
-    position: relative;
-}
-
-.GPlocationStageFlexInput {
-    margin-bottom: 5px;
 }
 
 /* MEASURELENGTH POSITION */
