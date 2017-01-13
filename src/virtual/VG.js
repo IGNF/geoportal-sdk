@@ -572,36 +572,43 @@ function (
         var zoomLevel = this.getZoom();
         for (var i = 0; i < layersAHN.length; i++) {
             // srcAttributionHtml : html, composed of all layer's attributions html
+            // empty by default
             var srcAttributionHtml = "";
-            // count the number of attributions associated to a layer
-            countLayerAttribution = 0;
+            // if the view is further that the farthest zoom defined for the layer
+            // we do not display its originators
+            if (zoomLevel >= layersAHN[i].options.minZoom ) {
+                // count the number of attributions associated to a layer
+                countLayerAttribution = 0;
+                // give all the attributions of the layer based on the zoom and extend
+                // constraints of the originators
+                var layerAttributions = Gp.LayerUtils.getAttributions({
+                    extent : bbox,
+                    crs : "EPSG:4326",
+                    zoom : this.getZoom(),
+                    visibility : layersAHN[i].obj.visible,
+                    originators : layersAHN[i].options.originators
+                });
 
-            var layerAttributions = Gp.LayerUtils.getAttributions({
-                extent : bbox,
-                crs : "EPSG:4326",
-                zoom : this.getZoom(),
-                visibility : layersAHN[i].obj.visible,
-                originators : layersAHN[i].options.originators
-            });
-
-            for ( var j = 0; j < layerAttributions.length; j++ ) {
-                var attributionj = layerAttributions[j];
-                // check that this attribution hasn't been added yet for another layer
-                if ( !mapAttributions || !mapAttributions[attributionj] ) {
-                    if (countLayerAttribution != 0) {
-                        // if it is not the first attribution of the layer, we add a separator
-                        // (several attributions for the same layer)
-                        srcAttributionHtml = srcAttributionHtml + "| " + attributionj;
-                    } else {
-                        // add attribution html to source attributions html
-                        srcAttributionHtml += attributionj;
+                for ( var j = 0; j < layerAttributions.length; j++ ) {
+                    var attributionj = layerAttributions[j];
+                    // check that this attribution hasn't been added yet for another layer
+                    if ( !mapAttributions || !mapAttributions[attributionj] ) {
+                        if (countLayerAttribution != 0) {
+                            // if it is not the first attribution of the layer, we add a separator
+                            // (several attributions for the same layer)
+                            srcAttributionHtml = srcAttributionHtml + "| " + attributionj;
+                        } else {
+                            // add attribution html to source attributions html
+                            srcAttributionHtml += attributionj;
+                        }
+                        // add attribution to mapAttributions, to manage all layers attributions
+                        mapAttributions[attributionj] = true;
+                        countLayerAttribution ++;
                     }
-                    // add attribution to mapAttributions, to manage all layers attributions
-                    mapAttributions[attributionj] = true;
-                    countLayerAttribution ++;
-                }
-            };
+                };
+            }
             // VG method to add attribution on the map (automatically add the separator between the layers)
+            // an empty attribution "" deletes the layer IPR
             this.libMap.setLayerIPR({
                 id : layersAHN[i].id,
                 ipr : srcAttributionHtml

@@ -2663,6 +2663,27 @@ div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmapCenter.png");
 }
 
+/* REVERSE GEOCODING */
+
+#GPreverseGeocoding {
+  left: 10px;
+}
+
+/* Showing/hiding reverse geocoding panel */
+
+#GPshowReverseGeocodingOpen {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+/* General panels */
+
+#GPreverseGeocodingPanel {
+  left: 8px;
+}
+
+#GPreverseGeocodingPanelClose {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
 /* ROUTE */
 
 #GProute {
@@ -2713,27 +2734,6 @@ div[id^=GPmousePositionPanelClose]  {
 #GProuteResultsShowDetails + label:hover,
 #GProuteResultsShowDetails + label + label:hover {
   color: #366291;
-}
-/* REVERSE GEOCODING */
-
-#GPreverseGeocoding {
-  left: 10px;
-}
-
-/* Showing/hiding reverse geocoding panel */
-
-#GPshowReverseGeocodingOpen {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-/* General panels */
-
-#GPreverseGeocodingPanel {
-  left: 8px;
-}
-
-#GPreverseGeocodingPanelClose {
-  background-image: url("img/GPreverseGeocodingOpen.png");
 }
 /* SEARCH ENGINE */
 
