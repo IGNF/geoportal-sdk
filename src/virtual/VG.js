@@ -555,7 +555,7 @@ function (
             return control;
         } else {
             // call the function again after 500 milliseconds if the footer DOM is not totally created (IE11 bug)
-            // setTimeout(this.addAttributionsControl, 500);
+            setTimeout(this.addAttributionsControl, 500);
         }
     };
 
