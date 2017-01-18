@@ -1507,22 +1507,22 @@ function (
             nameDiv = document.createElement("div") ;
             nameDiv.className =  "gp-att-name-div" ;
             if (props.hasOwnProperty("name")) {
-                nameDiv.appendChild(document.createTextNode(props["name"])) ;
+                nameDiv.innerHTML = props["name"] ;
                 content.appendChild(nameDiv) ;
             } else if (f.featureId !== "") {
-                nameDiv.appendChild(document.createTextNode(f["featureId"])) ;
+                nameDiv.innerHTML = f["featureId"];
                 content.appendChild(nameDiv) ;
             } else if (f.properties.description) {
-                nameDiv.appendChild(document.createTextNode(props["description"])) ;
+                nameDiv.innerHTML = props["description"];
                 content.appendChild(nameDiv) ;
             }  else {
-                nameDiv.appendChild(document.createTextNode("UNKNOWN FEATURE NAME")) ;
+                nameDiv.innerHTML = "UNKNOWN FEATURE NAME";
                 content.appendChild(nameDiv) ;
             }
             if (props.hasOwnProperty("description")) {
                 var descDiv = document.createElement("div") ;
                 descDiv.className = "gp-att-description-div" ;
-                descDiv.appendChild(document.createTextNode(props["description"])) ;
+                descDiv.innerHTML = props["description"] ;
                 content.appendChild(descDiv) ;
             }
             var p = null ;
@@ -1543,7 +1543,7 @@ function (
                 li = document.createElement("li") ;
                 var span = document.createElement("span") ;
                 span.className = "gp-attname-others-span" ;
-                span.appendChild(document.createTextNode(p + " : ")) ;
+                span.innerHTML = p + " : ";
                 li.appendChild(span) ;
                 li.appendChild(document.createTextNode(props[p])) ;
                 ul.appendChild(li) ;
