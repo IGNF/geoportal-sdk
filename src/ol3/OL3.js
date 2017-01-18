@@ -1695,25 +1695,30 @@ define([
                                 extractStyles : layerOpts.extractStyles,
                                 showPointNames : false
                             });
+
                             var _projData = format.readProjection(response);
                             var _projFeature = self.getProjection();
                             var features = format.readFeatures(response, {
                                 dataProjection : _projData,
                                 featureProjection : _projFeature
                             });
+
                             constructorOpts.source = new ol.source.Vector({
-                                features : features
+                                features : new ol.Collection()
                             });
-                            console.log(features);
+                            constructorOpts.source.addFeatures(features);
+
                             if (layerOpts.hasOwnProperty("originators")) {
                                 constructorOpts.source._originators = layerOpts.originators;
                             }
+
                             var _layer = new ol.layer.Vector(constructorOpts);
                             self._layers.push({
                                 id : layerId,
                                 obj : _layer,
                                 options : layerOpts
                             });
+                            
                             self.libMap.addLayer(_layer);
                             self._addLayerConfToLayerSwitcher(_layer, layerOpts);
                         },
