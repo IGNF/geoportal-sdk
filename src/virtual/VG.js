@@ -803,13 +803,31 @@ function (
                 layer._originators = layerOpts.originators ;
             }
 
+            // Dans le cas où aucune visibilité n'est spécifiée
+            if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
+                // on la règle à "true" par défaut
+                layerOpts.visibility = 1;
+            }
+
             this._layers.push({
                 id : layerId,
                 obj : layer,
                 options : layerOpts
             }) ;
+
+            var LSControl = this.getLibMapControl("layerswitcher");
+            // if the LS already exists, we have to save the conf of the layer to add it to the LS
+            if (LSControl) {
+                LSControl._addedLayerConf[layerId] = layerOpts;
+            }
+
             this.libMap.addFeatureLayer(layer) ;
-            this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+            // Once added
+            // On règle la visibilité de la couche
+            this.libMap.setLayerVisible({
+                id : layerId,
+                visible : layerOpts.visibility
+            });
         }
     } ;
 
@@ -1620,8 +1638,11 @@ function (
         var visibleFeatures = [];
         for (var i = 0; i < features.length; i++) {
             // on ne tient pas compte de la feature si la couche à laquelle elle appartient n'est pas visible
-            if (this.mapOptions.layersOptions[features[i].layerId].visibility === true) {
-                visibleFeatures.push(features[i]);
+            for (var idx = 0; idx < this._layers.length; idx++) {
+                if (this._layers[idx].id === features[i].layerId && this._layers[idx].obj.visible === true) {
+                    visibleFeatures.push(features[i]);
+                    break;
+                }
             }
         }
 
