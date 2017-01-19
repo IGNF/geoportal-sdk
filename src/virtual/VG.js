@@ -540,6 +540,8 @@ function (
             var control = new VirtualGeo.IPRControl();
             control.listenToMap("centerchanged", this._displayOriginators.bind(this));
             control.listenToMap("zoomchanged", this._displayOriginators.bind(this));
+            control.listenToMap("layeradded", this._displayOriginators.bind(this));
+            control.listenToMap("layerremoved", this._displayOriginators.bind(this));
             this.libMap.addControl(control);
             this._displayOriginators();
             if (document.getElementById("VirtualGeo_IPR")) {
