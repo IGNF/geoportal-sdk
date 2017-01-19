@@ -1718,7 +1718,7 @@ define([
                                 obj : _layer,
                                 options : layerOpts
                             });
-                            
+
                             self.libMap.addLayer(_layer);
                             self._addLayerConfToLayerSwitcher(_layer, layerOpts);
                         },
@@ -2205,7 +2205,7 @@ define([
             var ol3layers = this._getLayersObj([layerId]) ;
             if (ol3layers.length > 0) {
                 var ol3ls = this._controls[idxLS].obj ;
-                return ol3ls.getLayerDOMId(ol3layers[0].obj) ; ;
+                return ol3ls.getLayerDOMId(ol3layers[0].obj) ;
             }
             this.logger.trace("[OL3] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !") ;
             return id ;
