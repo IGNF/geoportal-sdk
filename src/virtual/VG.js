@@ -817,12 +817,6 @@ function (
                 options : layerOpts
             }) ;
 
-            var LSControl = this.getLibMapControl("layerswitcher");
-            // if the LS already exists, we have to save the conf of the layer to add it to the LS
-            if (LSControl) {
-                LSControl._addedLayerConf[layerId] = layerOpts;
-            }
-
             this.libMap.addFeatureLayer(layer) ;
             // Once added
             // On règle la visibilité de la couche
@@ -956,24 +950,19 @@ function (
                 // this will launch the addedLayer callback (dans "VG._onLayerChanged")
                 this.libMap.addElevationLayer(layer) ;
             } else {
-                var LSControl = this.getLibMapControl("layerswitcher");
-                // if the LS already exists, we have to save the conf of the layer to add it to the LS
-                if (LSControl) {
-                    LSControl._addedLayerConf[layerId] = layerOpts;
-                }
-
+                var layerConf = JSON.parse(JSON.stringify(layerOpts));
                 this.libMap.addImageryLayer(layer) ;
 
                 // Once added, set opacity and visibility of the layer
                 // On règle l'opacité de la couche
                 this.libMap.setLayerOpacity({
                     id : layerId,
-                    opacity : layerOpts.opacity
+                    opacity : layerConf.opacity
                 });
                 // On règle la visibilité de la couche
                 this.libMap.setLayerVisible({
                     id : layerId,
-                    visible : layerOpts.visibility
+                    visible : layerConf.visibility
                 });
             }
 
