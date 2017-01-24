@@ -1680,20 +1680,20 @@ define([
                     //     })
                     // }) ;
 
-                    var url = this.setProxy(layerOpts.url);
-                    var format = new ol.format.KMLExtended({
+                    var urlKml = this.setProxy(layerOpts.url);
+                    var formatKml = new ol.format.KMLExtended({
                         extractStyles : layerOpts.extractStyles,
                         showPointNames : false
                     });
                     constructorOpts.source = new ol.source.Vector({
                         loader : function (extent, resolution, projectionFeature) {
                             Gp.Protocols.XHR.call({
-                                url : url,
+                                url : urlKml,
                                 method : "GET",
                                 timeOut : 15000,
                                 onResponse : function (response) {
-                                    var projectionData = format.readProjection(response);
-                                    var features = format.readFeatures(response, {
+                                    var projectionData = formatKml.readProjection(response);
+                                    var features = formatKml.readFeatures(response, {
                                         dataProjection : projectionData,
                                         featureProjection : projectionFeature
                                     });
@@ -2185,7 +2185,7 @@ define([
             var ol3layers = this._getLayersObj([layerId]) ;
             if (ol3layers.length > 0) {
                 var ol3ls = this._controls[idxLS].obj ;
-                return ol3ls.getLayerDOMId(ol3layers[0].obj) ; ;
+                return ol3ls.getLayerDOMId(ol3layers[0].obj) ;
             }
             this.logger.trace("[OL3] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !") ;
             return id ;

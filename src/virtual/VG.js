@@ -540,6 +540,8 @@ function (
             var control = new VirtualGeo.IPRControl();
             control.listenToMap("centerchanged", this._displayOriginators.bind(this));
             control.listenToMap("zoomchanged", this._displayOriginators.bind(this));
+            control.listenToMap("layeradded", this._displayOriginators.bind(this));
+            control.listenToMap("layerremoved", this._displayOriginators.bind(this));
             this.libMap.addControl(control);
             this._displayOriginators();
             if (document.getElementById("VirtualGeo_IPR")) {
@@ -803,13 +805,25 @@ function (
                 layer._originators = layerOpts.originators ;
             }
 
+            // Dans le cas où aucune visibilité n'est spécifiée
+            if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
+                // on la règle à "true" par défaut
+                layerOpts.visibility = 1;
+            }
+
             this._layers.push({
                 id : layerId,
                 obj : layer,
                 options : layerOpts
             }) ;
+
             this.libMap.addFeatureLayer(layer) ;
-            this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+            // Once added
+            // On règle la visibilité de la couche
+            this.libMap.setLayerVisible({
+                id : layerId,
+                visible : layerOpts.visibility
+            });
         }
     } ;
 
@@ -936,24 +950,19 @@ function (
                 // this will launch the addedLayer callback (dans "VG._onLayerChanged")
                 this.libMap.addElevationLayer(layer) ;
             } else {
-                var LSControl = this.getLibMapControl("layerswitcher");
-                // if the LS already exists, we have to save the conf of the layer to add it to the LS
-                if (LSControl) {
-                    LSControl._addedLayerConf[layerId] = layerOpts;
-                }
-
+                var layerConf = JSON.parse(JSON.stringify(layerOpts));
                 this.libMap.addImageryLayer(layer) ;
 
                 // Once added, set opacity and visibility of the layer
                 // On règle l'opacité de la couche
                 this.libMap.setLayerOpacity({
                     id : layerId,
-                    opacity : layerOpts.opacity
+                    opacity : layerConf.opacity
                 });
                 // On règle la visibilité de la couche
                 this.libMap.setLayerVisible({
                     id : layerId,
-                    visible : layerOpts.visibility
+                    visible : layerConf.visibility
                 });
             }
 
@@ -1507,22 +1516,22 @@ function (
             nameDiv = document.createElement("div") ;
             nameDiv.className =  "gp-att-name-div" ;
             if (props.hasOwnProperty("name")) {
-                nameDiv.appendChild(document.createTextNode(props["name"])) ;
+                nameDiv.innerHTML = props["name"] ;
                 content.appendChild(nameDiv) ;
             } else if (f.featureId !== "") {
-                nameDiv.appendChild(document.createTextNode(f["featureId"])) ;
+                nameDiv.innerHTML = f["featureId"];
                 content.appendChild(nameDiv) ;
             } else if (f.properties.description) {
-                nameDiv.appendChild(document.createTextNode(props["description"])) ;
+                nameDiv.innerHTML = props["description"];
                 content.appendChild(nameDiv) ;
             }  else {
-                nameDiv.appendChild(document.createTextNode("UNKNOWN FEATURE NAME")) ;
+                nameDiv.innerHTML = "UNKNOWN FEATURE NAME";
                 content.appendChild(nameDiv) ;
             }
             if (props.hasOwnProperty("description")) {
                 var descDiv = document.createElement("div") ;
                 descDiv.className = "gp-att-description-div" ;
-                descDiv.appendChild(document.createTextNode(props["description"])) ;
+                descDiv.innerHTML = props["description"] ;
                 content.appendChild(descDiv) ;
             }
             var p = null ;
@@ -1543,7 +1552,7 @@ function (
                 li = document.createElement("li") ;
                 var span = document.createElement("span") ;
                 span.className = "gp-attname-others-span" ;
-                span.appendChild(document.createTextNode(p + " : ")) ;
+                span.innerHTML = p + " : ";
                 li.appendChild(span) ;
                 li.appendChild(document.createTextNode(props[p])) ;
                 ul.appendChild(li) ;
@@ -1620,8 +1629,11 @@ function (
         var visibleFeatures = [];
         for (var i = 0; i < features.length; i++) {
             // on ne tient pas compte de la feature si la couche à laquelle elle appartient n'est pas visible
-            if (this.mapOptions.layersOptions[features[i].layerId].visibility === true) {
-                visibleFeatures.push(features[i]);
+            for (var idx = 0; idx < this._layers.length; idx++) {
+                if (this._layers[idx].id === features[i].layerId && this._layers[idx].obj.visible === true) {
+                    visibleFeatures.push(features[i]);
+                    break;
+                }
             }
         }
 
