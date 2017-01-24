@@ -1671,12 +1671,7 @@ define([
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
 
-                    // FIXME pourquoi ça ne marche pas !?
-                    //   Je crois qu'il ne va pas chercher la bonne fonction de parsing :
-                    //     readFeatures()
-                    //   car cette fonction appartient à la classe heritée (appel dans le constructeur !):
-                    //     ol.format.Feature / ol.format.XMLFeature
-
+                    // FIXME !?
                     // constructorOpts.source = new ol.source.Vector({
                     //     url : this.setProxy(layerOpts.url),
                     //     format : new ol.format.KMLExtended({
@@ -1684,47 +1679,32 @@ define([
                     //         showPointNames : false
                     //     })
                     // }) ;
-                    var self = this;
-                    Gp.Protocols.XHR.call({
-                        url : this.setProxy(layerOpts.url),
-                        method : "GET",
-                        timeOut : 15000,
-                        /** onResponse */
-                        onResponse : function (response) {
-                            var format = new ol.format.KMLExtended({
-                                extractStyles : layerOpts.extractStyles,
-                                showPointNames : false
-                            });
 
-                            var _projData = format.readProjection(response);
-                            var _projFeature = self.getProjection();
-                            var features = format.readFeatures(response, {
-                                dataProjection : _projData,
-                                featureProjection : _projFeature
+                    var url = this.setProxy(layerOpts.url);
+                    var format = new ol.format.KMLExtended({
+                        extractStyles : layerOpts.extractStyles,
+                        showPointNames : false
+                    });
+                    constructorOpts.source = new ol.source.Vector({
+                        loader : function (extent, resolution, projectionFeature) {
+                            Gp.Protocols.XHR.call({
+                                url : url,
+                                method : "GET",
+                                timeOut : 15000,
+                                onResponse : function (response) {
+                                    var projectionData = format.readProjection(response);
+                                    var features = format.readFeatures(response, {
+                                        dataProjection : projectionData,
+                                        featureProjection : projectionFeature
+                                    });
+                                    if (features.length > 0) {
+                                        constructorOpts.source.addFeatures(features);
+                                    }
+                                },
+                                onFailure : function (error) {
+                                    console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
+                                }
                             });
-
-                            constructorOpts.source = new ol.source.Vector({
-                                features : new ol.Collection()
-                            });
-                            constructorOpts.source.addFeatures(features);
-
-                            if (layerOpts.hasOwnProperty("originators")) {
-                                constructorOpts.source._originators = layerOpts.originators;
-                            }
-
-                            var _layer = new ol.layer.Vector(constructorOpts);
-                            self._layers.push({
-                                id : layerId,
-                                obj : _layer,
-                                options : layerOpts
-                            });
-                            
-                            self.libMap.addLayer(_layer);
-                            self._addLayerConfToLayerSwitcher(_layer, layerOpts);
-                        },
-                        /** onFailure */
-                        onFailure : function (error) {
-                            console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
                         }
                     });
                     break;
