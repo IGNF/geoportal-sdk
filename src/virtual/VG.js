@@ -155,59 +155,17 @@ function (
     };
 
     /**
-     * Retourne les coordonnées des 4 coins de la vue courante
-     * On est obligé de picker les 4 coins de la fenetre est de prendre les
-     * lon/lat min et max au cas où la vue n'est plus orientée vers le nord
-     * (dans ce cas, le haut de la fenêtre correspond au bas de la carte)
+     * Retourne les coordonnées de l'extent de la vue courante
      */
     VG.prototype.getViewExtent = function () {
-        var mapDiv = this.div;
-        var topLeft = {};
-        var bottomRight = {};
-        var topRight = {};
-        var bottomLeft = {};
-        var extent = {};
-        // on teste le pick sur l'axe des y au cas où la vue est inclinée
-        for (var x = 0; x <= mapDiv.offsetHeight; x = x + mapDiv.offsetHeight / 10) {
-            // on pick en haut à gauche de la fenêtre puis on descend d'un dixième de la hauteur de la fenêtre
-            // à chaque itération jusqu'à ne plus picker dans le ciel
-            topLeft = this.libMap.pickPosition(0, x);
-            // Si l'un des deux coordonnées n'est plus différent de 0, on ne pick plus dans le ciel
-            if (topLeft.lon !== 0 || topLeft.lat !== 0) {
-                break;
-            }
-        }
-        // on teste le pick sur l'axe des y au cas où la vue est inclinée
-        for (var y = 0; y <= mapDiv.offsetHeight; y = y + mapDiv.offsetHeight / 10) {
-            // on pick en haut à droite de la fenêtre puis on descend d'un dixième de la hauteur de la fenêtre
-            // à chaque itération jusqu'à ne plus picker dans le ciel
-            topRight = this.libMap.pickPosition(mapDiv.offsetWidth, x);
-            // Si l'un des deux coordonnées n'est plus différent de 0, on ne pick plus dans le ciel
-            if (topRight.lon !== 0 || topRight.lat !== 0) {
-                break;
-            }
-        }
-        // On pick en bas à gauche
-        bottomLeft = this.libMap.pickPosition(0, mapDiv.offsetHeight);
-        // On pick en bas à droite
-        bottomRight = this.libMap.pickPosition(mapDiv.offsetWidth, mapDiv.offsetHeight);
-        // Si l'un des picks est toujours dans le ciel malgré les précédents tests,
-        // c'est que la vue est si éloignée qu'on voit le globe complet :
-        // On renvoie donc comme extent [90, -180, -90, 180]
-        if ((topLeft.lon === 0 && topLeft.lat === 0) || (bottomRight.lon === 0 && bottomRight.lat === 0)) {
-            extent = {
-                left : -180,
-                right : 180,
-                top : 90,
-                bottom : -90
-            };
-        } else {
-            extent.left = Math.min(topLeft.lon, topRight.lon, bottomLeft.lon, bottomRight.lon);
-            extent.right = Math.max(topLeft.lon, topRight.lon, bottomLeft.lon, bottomRight.lon);
-            extent.top = Math.max(topLeft.lat, topRight.lat, bottomLeft.lat, bottomRight.lat);
-            extent.bottom = Math.min(topLeft.lat, topRight.lat, bottomLeft.lat, bottomRight.lat);
-        }
-        return extent;
+        var vgExtent = this.libMap.getViewExtent();
+        var viewExtent = {
+            left : vgExtent.west,
+            right : vgExtent.east,
+            top : vgExtent.north,
+            bottom : vgExtent.south
+        };
+        return viewExtent;
     };
 
     /**
