@@ -1,3 +1,4 @@
+/* globals Gp: true */
 define([
     "Utils/LoggerByDefault",
     "ol",
@@ -145,10 +146,10 @@ define([
                 }
             }
             // on active / desactive toutes les interactions correspondantes
-            for (var i = 0 ; i < interactions.length ; i++ ) {
-                var interaction = interactions[i] ;
+            for (var ii = 0 ; ii < interactions.length ; ii++ ) {
+                var _interaction = interactions[ii] ;
                 this.logger.trace("[OL3] : setting interaction to " + controlOpts + " for control : " + controlId) ;
-                interaction.setActive(controlOpts) ;
+                _interaction.setActive(controlOpts) ;
             }
             return interactions ;
         } ;
@@ -378,10 +379,10 @@ define([
                 Array.isArray(controlOpts.units) &&
                 controlOpts.units.length > 0 ) {
                 mpOpts.units = [] ;
-                for (var i = 0 ; i < controlOpts.units.length ; i++ ) {
-                    if ( typeof controlOpts.units[i] == "string") {
-                        this.logger.trace("[OL3] addMousePositionControl : adding unit   [" + controlOpts.units[i].toUpperCase() ) ;
-                        mpOpts.units.push(controlOpts.units[i]) ;
+                for (var ii = 0 ; ii < controlOpts.units.length ; ii++ ) {
+                    if ( typeof controlOpts.units[ii] == "string") {
+                        this.logger.trace("[OL3] addMousePositionControl : adding unit   [" + controlOpts.units[ii].toUpperCase() ) ;
+                        mpOpts.units.push(controlOpts.units[ii]) ;
                     }
                 }
             }
@@ -1338,15 +1339,16 @@ define([
             var mrkLayer = null ;
             var mo = null ;
             var context = this ;
+            var ii = 0;
             /**
               * marker open popup function
               * this == img element associated to the marker
               */
             var fopenPopup = function (evt) {
-                evtPx = context.getLibMap().getEventPixel(evt) ;
+                var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
                 context._displayInfo(
-                    "mrk-" + i,
+                    "mrk-" + ii,
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]
@@ -1355,8 +1357,8 @@ define([
                     this.mo.contentType
                  ) ;
             } ;
-            for (var i = 0 ; i < markersOptions.length ; i++) {
-                mo = markersOptions[i] ;
+            for (ii = 0 ; ii < markersOptions.length ; ii++) {
+                mo = markersOptions[ii] ;
                 // complete missing properties with default
                 if (!mo.hasOwnProperty("content")) {
                     mo.content = "" ; // empty string to avoid errors on display
@@ -1432,7 +1434,7 @@ define([
                 //  - add option for making popup opened or not at startup
 
             }
-        },
+        };
 
         /**
          * get layer params from OL3 layer params
@@ -1671,12 +1673,7 @@ define([
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
 
-                    // FIXME pourquoi ça ne marche pas !?
-                    //   Je crois qu'il ne va pas chercher la bonne fonction de parsing :
-                    //     readFeatures()
-                    //   car cette fonction appartient à la classe heritée (appel dans le constructeur !):
-                    //     ol.format.Feature / ol.format.XMLFeature
-
+                    // FIXME !?
                     // constructorOpts.source = new ol.source.Vector({
                     //     url : this.setProxy(layerOpts.url),
                     //     format : new ol.format.KMLExtended({
@@ -1684,47 +1681,36 @@ define([
                     //         showPointNames : false
                     //     })
                     // }) ;
-                    var self = this;
-                    Gp.Protocols.XHR.call({
-                        url : this.setProxy(layerOpts.url),
-                        method : "GET",
-                        timeOut : 15000,
-                        /** onResponse */
-                        onResponse : function (response) {
-                            var format = new ol.format.KMLExtended({
-                                extractStyles : layerOpts.extractStyles,
-                                showPointNames : false
+
+                    var urlKml = this.setProxy(layerOpts.url);
+                    var formatKml = new ol.format.KMLExtended({
+                        extractStyles : layerOpts.extractStyles,
+                        showPointNames : false
+                    });
+                    constructorOpts.source = new ol.source.Vector({
+                        features : new ol.Collection(),
+                        /** features loader */
+                        loader : function (extent, resolution, projectionFeature) {
+                            Gp.Protocols.XHR.call({
+                                url : urlKml,
+                                method : "GET",
+                                timeOut : 15000,
+                                /** callback on success */
+                                onResponse : function (response) {
+                                    var projectionData = formatKml.readProjection(response);
+                                    var features = formatKml.readFeatures(response, {
+                                        dataProjection : projectionData,
+                                        featureProjection : projectionFeature
+                                    });
+                                    if (features.length > 0) {
+                                        constructorOpts.source.addFeatures(features);
+                                    }
+                                },
+                                /** callback on failure */
+                                onFailure : function (error) {
+                                    console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
+                                }
                             });
-
-                            var _projData = format.readProjection(response);
-                            var _projFeature = self.getProjection();
-                            var features = format.readFeatures(response, {
-                                dataProjection : _projData,
-                                featureProjection : _projFeature
-                            });
-
-                            constructorOpts.source = new ol.source.Vector({
-                                features : new ol.Collection()
-                            });
-                            constructorOpts.source.addFeatures(features);
-
-                            if (layerOpts.hasOwnProperty("originators")) {
-                                constructorOpts.source._originators = layerOpts.originators;
-                            }
-
-                            var _layer = new ol.layer.Vector(constructorOpts);
-                            self._layers.push({
-                                id : layerId,
-                                obj : _layer,
-                                options : layerOpts
-                            });
-
-                            self.libMap.addLayer(_layer);
-                            self._addLayerConfToLayerSwitcher(_layer, layerOpts);
-                        },
-                        /** onFailure */
-                        onFailure : function (error) {
-                            console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
                         }
                     });
                     break;
