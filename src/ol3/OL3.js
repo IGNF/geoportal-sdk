@@ -120,6 +120,17 @@ define([
                 // controls : controls
             });
 
+            // ecoute gfi potentiels pour les couches vecteur
+            this.libMap.on("pointermove", function (evt) {
+                var hit = this.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                    return true;
+                });
+                if (hit) {
+                    this.getTarget().style.cursor = "pointer";
+                } else {
+                    this.getTarget().style.cursor = "";
+                }
+            });
             // ecoute gfi potentiels.
             this.libMap.on("singleclick", this._onMapClick, this) ;
 
@@ -2559,19 +2570,44 @@ define([
          * Action triggered when map is clicked
          */
         OL3.prototype._onMapClick = function (evt) {
-            this.logger.trace("[OL3] : _onMapClick...") ;
-            var interactions = this.libMap.getInteractions().getArray() ;
-            for (var i = 0 ; i < interactions.length ; i++ ) {
-                if (interactions[i].getActive() &&
-                    ( interactions[i] instanceof ol.interaction.Select ||
-                      interactions[i] instanceof ol.interaction.Modify ||
-                      interactions[i] instanceof ol.interaction.Draw     )
-                    )  {
-                    // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
-                    return ;
-                }
-            }
+             this.logger.trace("[OL3] : _onMapClick...") ;
+             var interactions = this.libMap.getInteractions().getArray() ;
+             for (var i = 0 ; i < interactions.length ; i++ ) {
+                 if (interactions[i].getActive() &&
+                     ( interactions[i] instanceof ol.interaction.Select ||
+                       interactions[i] instanceof ol.interaction.Modify ||
+                       interactions[i] instanceof ol.interaction.Draw     )
+                     )  {
+                     // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
+                     return ;
+                 }
+             }
 
+             // couches vecteur : on remplit un tableau avec les features à proximité.
+             var features = [] ;
+             this.libMap.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                 features.push(feature);
+             });
+             if (features.length == 0) {
+                 // no features
+                 return ;
+             }
+             var content = this._features2html(features) ;
+             // pas de contenu !
+             if ( content === null) {
+                 return;
+             }
+             // Affichage des features.
+             var id = "features";
+             this._displayInfo(id, evt.coordinate, content.innerHTML) ;
+             // this._displayInfo(evt.coordinate,content,"text/html") ;
+
+        };
+
+        /**
+         * Function displaying featureInfo popup for wms and wmts layers
+         */
+        OL3.prototype.displayFeatureInfo = function (coords) {
             // Layers orders
             var layers = {};
             for (var j = 0; j < this._layers.length; j++) {
@@ -2580,17 +2616,16 @@ define([
                 layers[position] = layer;
             }
 
-            // FIXME doit on afficher toutes les popup d'informations ?
-            // ou uniquement la première en partant du dessus...
+            // affichage de la première popup d'informations en partant du dessus...
             var requests = [];
-            var positions = Object.keys(layers); // FIXME reverse !?
+            // inversion de l'ordre des layers
+            var positions = Object.keys(layers);
             positions.sort( function (a,b) {
                 return b - a;
             });
             for (var k = 0 ; k < positions.length ; k++) {
                 var p = positions[k];
                 var l = layers[p];
-                this.logger.trace("[OL3] : _onMapClick : analyzing wms") ;
                 var minMaxZoomOk = true ;
                 if (l.options.minZoom  && l.options.minZoom > this.getZoom()) {
                     minMaxZoomOk = false ;
@@ -2609,7 +2644,7 @@ define([
 
                     var _id     = l.id;
                     var _format = l.options.gfiFormat || "text/html";
-                    var _coord  = evt.coordinate;
+                    var _coord  = coords;
                     var _res    = this.libMap.getView().getResolution();
                     var _url    = null;
                     if (l.options.format.toLowerCase() == "wmts") {
@@ -2705,30 +2740,7 @@ define([
                     console.log("Finish sync to GFI !");
                 }
             );
-
-            // FIXME doit on prendre en compte les features dans le processus synchrone
-            // d'affichage des popup d'information ?
-
-            // couches vecteur : on remplit un tableau avec les features à proximité.
-            var features = [] ;
-            this.libMap.forEachFeatureAtPixel(evt.pixel, function (feature) {
-                features.push(feature);
-            });
-            if (features.length == 0) {
-                // no features
-                return ;
-            }
-            var content = this._features2html(features) ;
-            // pas de contenu !
-            if ( content === null) {
-                return;
-            }
-            // Affichage des features.
-            var id = "features";
-            this._displayInfo(id, evt.coordinate, content.innerHTML) ;
-            // this._displayInfo(evt.coordinate,content,"text/html") ;
-
-        } ;
+        };
 
         /**
          * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
