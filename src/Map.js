@@ -368,6 +368,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
+         * | showPointNames | Boolean | If true, show names as labels for placemarks which contain points. |
          * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
          * | projection | String | coordinate reference system id used for Layer (default is map projection) |
          *

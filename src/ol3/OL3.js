@@ -1685,7 +1685,7 @@ define([
                     var urlKml = this.setProxy(layerOpts.url);
                     var formatKml = new ol.format.KMLExtended({
                         extractStyles : layerOpts.extractStyles,
-                        showPointNames : false
+                        showPointNames : layerOpts.showPointNames
                     });
                     constructorOpts.source = new ol.source.Vector({
                         features : new ol.Collection(),
