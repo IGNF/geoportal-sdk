@@ -774,6 +774,12 @@ function (
                 obj : layer,
                 options : layerOpts
             }) ;
+            
+            var LSControl = this.getLibMapControl("layerswitcher");
+            // if the LS already exists, we have to save the conf of the layer to add it to the LS
+            if (LSControl) {
+                LSControl._addedLayerConf[layerId] = layerOpts;
+            }
 
             this.libMap.addFeatureLayer(layer) ;
             // Once added
@@ -908,6 +914,11 @@ function (
                 // this will launch the addedLayer callback (dans "VG._onLayerChanged")
                 this.libMap.addElevationLayer(layer) ;
             } else {
+                var LSControl = this.getLibMapControl("layerswitcher");
+                // if the LS already exists, we have to save the conf of the layer to add it to the LS
+                if (LSControl) {
+                    LSControl._addedLayerConf[layerId] = layerOpts;
+                }
                 var layerConf = JSON.parse(JSON.stringify(layerOpts));
                 this.libMap.addImageryLayer(layer) ;
 
