@@ -372,6 +372,22 @@
          * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
          * | projection | String | coordinate reference system id used for Layer (default is map projection) |
          *
+         * ### KML, GPX and GeoJSON specific properties
+         *
+         * | property | Type | Description |
+         * | - | - | - |
+         * | styleOptions | Object | options for layer style (points, strokes, polygons) |
+         * | styleOptions.markerSrc | String | URL of a marker image (for points styling). Default is an orange marker. |
+         * | styleOptions.markerXAnchor | Float | Position of marker anchor in X from left of the image expressed in proportion of 1 (for points styling). Default is 25.5 |
+         * | styleOptions.markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in proportion of 1 (for points styling). Default is 38 |
+         * | styleOptions.strokeColor | String | Stroke color for lines or polygons border styling (RGB hex value). Default is "#002A50" |
+         * | styleOptions.strokeWidth | Number | Stroke width in pixels for lines or polygons border styling. Default is 4 |
+         * | styleOptions.strokeOpacity | Number | Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8 |
+         * | styleOptions.polyFillColor | String | Polygons fill color (RGB hex value). Default is "#00B798" |
+         * | styleOptions.polyFillOpacity | Number | Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5 |
+         * | styleOptions.textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF" |
+         * | styleOptions.textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000" |
+         *
          * ### WMS specific properties
          *
          * | property | Type | Description |

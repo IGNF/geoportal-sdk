@@ -151,6 +151,23 @@ define([
         } ;
 
         /**
+         * Options par défaut des styles des couches vecteur (KML, GPX, GeoJSON)
+         * @private
+         */
+        IMap.DEFAULT_VECTORLAYERS_STYLES = {
+            markerSrc : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAARDSURBVFiF3ZndaxxVGMZ/Z/YjX00Nadpo1qrFBgu56D9QbAtiLoRC7ywSNK1NURRREBKRFlSwFBW0gnSrJXY1CmISgyjFiyYSFC9ajE3MmpjdjWlMUtNos9lN9mteLzbRuCbZmTMTBB+Yi51znvd5n3nPnjnnjBIR/i/wuh4xpCpI0ojiENAA1AE1wCzwKzCE0EM5l2iShJvSyrXKnFVb8dOK4hmg3AIjifAmaU7ztMy7kYI7Zs6rQwjvka+AXcyiOMZx6XGahuE0AEHVitCFnhGAGoQugqrVaSrOKpNP4FWnSaxCGy1yWpesbyY/tLpwo7p/w0RxWHfI6Zk5q7ZSwhj6Q2sjzJLiXp1JQe+p+mllc4wA1CzHtw37lQmpCha5gbXpVxdJythh9z1kvzJJGrFixPBmOXixl+Z4mONmguZ4mIMXezG8WQsq5cs6tmDfTP7NXiSqN0vTzBD1TQfwbdmDUhX4tuyhvukATTNDlgxZ0SmUtUsgv0TZGPsv9FNSvXfNtpLqvey/0O+KTgF0zNQV7XHP4dsdtVvVKYCOmeqiPbwVOx21W9UpgI6ZWNEe2cSEo3arOgWwb0YYLp5G17Sjdqs6BdCZzYqL9B3dR2puYM221NwAfUf3uaJTAB0zaye5GmbWS6i2gdFQL5mFMCIJMgthRkO9hGobMLPFN4VWdAoptlcAQeUDRoG77YrZwDhQT4tk7JDsV6ZFMggv2+bZwyt2jYDuQnOa94GIFrc4IkzRrkPUM3NKsijatLjF0copsbJ++xec7TTPqw6EI/oB/glT+PC+13Y/aSQNv/Is+tNer09lMn7DMHwAYppp8fvTIpISkVQsFrslqww4M9OuqkgzANzl1MhCyrjZGAycm573pK1yFCyi5FoWvo/FYlPOT2fOqftRXMbB9lkEs+3zbe2f/FD5i3YMj2p3vn8/IV8DZ5yE+Gqkot+JEQCPada5dRhxEriiQ5ya90w+272916F+KpnJDLhjpkUy5HgESNqhZU2Vfr5ne+dSFtOBeso06J6cnEy6d0z0hPwEPGeH8sGVykvfjpfe1NZUci2+mHg7Go2G8z/d/goQVJ9B8S1veMYffujduo/thl+ZwUzDuBqJRGZWt7n/FcDH46lFNVLilar1uiTTxsJTnTssH/QpJVlMNQa5wbGJiWERya3Vz30zzfLb3OveY3dU5j5dp4e80Xdbd3TOu/H/yyAtpjnqgeGS8crRQRks+v5xf5gtY/KM/6NAVebhwvv90bLvHu2o/XId2pJSMmIaxo/RaHRMxN6yZtPM0K5K/7hl/FxVZgZWbs0mPDceeKcuGE95/kpSKUmaImHDNIfHrl+PiIj2zOb+MFvBY7IUOVl2ZG9g6bJH4ckJuRe/2NYZT3myKIkrGM4pNRyLjY+LW09URDb1+uaF0pfm3zJ+7zhRGdq1c9eDuwOBOzdLa/OG2X+APwE8DU64Y/5gfAAAAABJRU5ErkJggg==",
+            markerXAnchor : 25.5,
+            markerYAnchor : 38,
+            strokeColor : "#002A50",
+            strokeWidth : 4,
+            strokeOpacity : 0.8,
+            polyFillColor : "#00B798",
+            polyFillOpacity : 0.5,
+            textStrokeColor : "#000000",
+            textColor : "#FFFFFF"
+        };
+
+        /**
          * Caractéristiques par defaut pour les TMS Géoportail
          * @private
          */
@@ -300,7 +317,7 @@ define([
 
                 // Gestion du paramètre apiKeys
                 var needsGetConfig = false ;
-                if (this.apiKey || 
+                if (this.apiKey ||
                     this._opts.mapOptions.configUrl ||
                     this._opts.mapOptions.autoconfUrl  ) { // une clef est fournie
                     // on recharge l'autoconf si l'utilisateur l'a demandé
@@ -324,7 +341,7 @@ define([
                     // à moins qu'on ne le surcharge (non documenté).
                     var callbackSuffix = this._opts.mapOptions.callbackSuffix ;
                     // deprecated param autoconfUrl
-                    if (this._opts.mapOptions.configUrl  || 
+                    if (this._opts.mapOptions.configUrl  ||
                         this._opts.mapOptions.autoconfUrl  ) {
                         callbackSuffix = callbackSuffix || "" ;
                     }
@@ -847,7 +864,7 @@ define([
 
             /**
              * Sets current map's projection to given projection code (EPSG or IGNF).
-             * (FIXME : non visible pour l'instant car le changement de 
+             * (FIXME : non visible pour l'instant car le changement de
              *          projection à la volée ne fonctionne pas)
              *
              * @param {String} projection - The new map's projection code.
