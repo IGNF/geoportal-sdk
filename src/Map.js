@@ -300,6 +300,7 @@
          * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
          * @property {Float} [tilt=0] - (3d only) Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view.
          * @property {String} [library="ol3"] - Cartographic library used with the Geoportal API. Supported values are : 'ol3', '3d'.
+         * @property {Object} [defaultVectorLayersStyles] - default style options to be used for vector layers (KML, GPX, GeoJSON). Same as Gp.LayerOptions.styleOptions.
          */
         } ;
 

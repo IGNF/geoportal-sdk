@@ -1671,35 +1671,37 @@ define([
             var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
 
             var layerStyleOptions = layerOpts.styleOptions || {};
+            // TODO : l'option defaultVectorLayersStyles des mapOptions n'est pas encore documentée. 
+            var defaultMapOptions = this.mapOptions.defaultVectorLayersStyles || {};
             var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
             var styleOptions = {};
             styleOptions.image = new ol.style.Icon({
-                src : layerStyleOptions.markerSrc || defaultOptions.markerSrc,
+                src : layerStyleOptions.markerSrc || defaultMapOptions.markerSrc || defaultOptions.markerSrc,
                 anchor : [
-                    layerStyleOptions.markerXAnchor || defaultOptions.markerXAnchor,
-                    layerStyleOptions.markerYAnchor || defaultOptions.markerYAnchor
+                    layerStyleOptions.markerXAnchor || defaultMapOptions.markerXAnchor || defaultOptions.markerXAnchor,
+                    layerStyleOptions.markerYAnchor || defaultMapOptions.markerYAnchor || defaultOptions.markerYAnchor
                 ],
                 anchorOrigin : "top-left",
                 anchorXUnits : "pixels",
                 anchorYUnits : "pixels"
             });
             styleOptions.stroke = new ol.style.Stroke({
-                color : IMap._hexToRgba(layerStyleOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultOptions.strokeOpacity),
-                width : layerStyleOptions.strokeWidth || defaultOptions.strokeWidth
+                color : IMap._hexToRgba(layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
+                width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
             });
             styleOptions.fill = new ol.style.Fill({
-                color : IMap._hexToRgba(layerStyleOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
+                color : IMap._hexToRgba(layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
             });
             styleOptions.text = new ol.style.Text({
                 font : "16px Sans",
                 textAlign : "left",
                 fill : new ol.style.Fill({
-                    color : IMap._hexToRgba(layerStyleOptions.textColor || defaultOptions.textColor, 1)
+                    color : IMap._hexToRgba(layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
                 })
             });
             if ( layerStyleOptions.textStrokeColor ) {
                 styleOptions.text.stroke = new ol.style.Stroke({
-                    color : IMap._hexToRgba(layerStyleOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
+                    color : IMap._hexToRgba(layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
                     width : 1
                 });
             }
