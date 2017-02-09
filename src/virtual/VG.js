@@ -719,12 +719,9 @@ function (
                 this.logger.trace("ajout d'une couche KML");
                 var layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
                         title : layerOpts.title || layerId,
-                        version : layerOpts.version,
-                        style : layerOpts.styleName,
-                        extractStyle : "true"
+                        extractStyle : layerOpts.hasOwnProperty("extractStyles") ? layerOpts.extractStyles : true
                     };
 
                 break;
@@ -732,12 +729,9 @@ function (
                 this.logger.trace("ajout d'une couche GPX");
                 layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
                         title : layerOpts.title || layerId,
-                        version : layerOpts.version,
-                        style : layerOpts.styleName,
-                        extractStyle : "true"
+                        extractStyle : layerOpts.hasOwnProperty("extractStyles") ? layerOpts.extractStyles : true
                     };
                 break;
             case "GEORSS":
@@ -774,7 +768,7 @@ function (
                 obj : layer,
                 options : layerOpts
             }) ;
-            
+
             var LSControl = this.getLibMapControl("layerswitcher");
             // if the LS already exists, we have to save the conf of the layer to add it to the LS
             if (LSControl) {
