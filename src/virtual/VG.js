@@ -723,7 +723,7 @@ function (
                         id : layerId,
                         title : layerOpts.title || layerId,
                         version : layerOpts.version,
-                        style : layerOpts.styleName,
+                        styleName : layerOpts.styleName,
                         extractStyle : "true"
                     };
 
@@ -736,7 +736,7 @@ function (
                         id : layerId,
                         title : layerOpts.title || layerId,
                         version : layerOpts.version,
-                        style : layerOpts.styleName,
+                        styleName : layerOpts.styleName,
                         extractStyle : "true"
                     };
                 break;
@@ -774,7 +774,7 @@ function (
                 obj : layer,
                 options : layerOpts
             }) ;
-            
+
             var LSControl = this.getLibMapControl("layerswitcher");
             // if the LS already exists, we have to save the conf of the layer to add it to the LS
             if (LSControl) {
@@ -832,10 +832,10 @@ function (
                     title : layerOpts.title || layerId,
                     wmsOptions : {
                         mimeType : layerOpts.outputFormat,
-                        name : layerNames
+                        name : layerNames,
+                        style : layerOpts.styleName
                     },
                     version : layerOpts.version,
-                    style : layerOpts.styleName,
                     minScaleDenominator : minScaleDenominator || null,
                     maxScaleDenominator : maxScaleDenominator || null,
                     processingOptions : layerOpts.processingOptions
@@ -859,10 +859,10 @@ function (
                         tileMatrixSet : layerOpts.tileMatrixSet,
                         tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
                         mimeType : layerOpts.outputFormat,
-                        name : layerOpts.layer
+                        name : layerOpts.layer,
+                        style : layerOpts.styleName
                     },
                     version : layerOpts.version,
-                    style : layerOpts.styleName,
                     minScaleDenominator : minScaleDenominator || null,
                     maxScaleDenominator : maxScaleDenominator || null,
                     processingOptions : layerOpts.processingOptions
