@@ -300,7 +300,7 @@ define([
 
                 // Gestion du paramètre apiKeys
                 var needsGetConfig = false ;
-                if (this.apiKey || 
+                if (this.apiKey ||
                     this._opts.mapOptions.configUrl ||
                     this._opts.mapOptions.autoconfUrl  ) { // une clef est fournie
                     // on recharge l'autoconf si l'utilisateur l'a demandé
@@ -324,7 +324,7 @@ define([
                     // à moins qu'on ne le surcharge (non documenté).
                     var callbackSuffix = this._opts.mapOptions.callbackSuffix ;
                     // deprecated param autoconfUrl
-                    if (this._opts.mapOptions.configUrl  || 
+                    if (this._opts.mapOptions.configUrl  ||
                         this._opts.mapOptions.autoconfUrl  ) {
                         callbackSuffix = callbackSuffix || "" ;
                     }
@@ -644,24 +644,7 @@ define([
              * @private
              */
             setProxy : function (url) {
-                if (!this.mapOptions.hasOwnProperty("proxyUrl") ||
-                    this.mapOptions.proxyUrl.trim().length == 0 ) {
-                    return url ;
-                }
-                // on regarde si l'url nest pas dans les domaines sans proxy
-                if (this.mapOptions.noProxyDomains &&
-                    Array.isArray(this.mapOptions.noProxyDomains) &&
-                    this.mapOptions.noProxyDomains.length > 0 ) {
-                    for (var i in this.mapOptions.noProxyDomains) {
-                        this.logger.trace("[IMap] _setProxy : analyzing " + this.mapOptions.noProxyDomains[i]) ;
-                        if (url.indexOf(this.mapOptions.noProxyDomains[i]) !== -1 ) {
-                            this.logger.info("[IMap] _setProxy : " + url + " found in noProxyDomains list (" + this.mapOptions.noProxyDomains[i] + ").") ;
-
-                            return url ;
-                        }
-                    }
-                }
-                return this.mapOptions.proxyUrl + encodeURIComponent(url) ;
+                return Gp.Tools.setProxy(url,this.mapOptions);
             },
 
             /**
@@ -847,7 +830,7 @@ define([
 
             /**
              * Sets current map's projection to given projection code (EPSG or IGNF).
-             * (FIXME : non visible pour l'instant car le changement de 
+             * (FIXME : non visible pour l'instant car le changement de
              *          projection à la volée ne fonctionne pas)
              *
              * @param {String} projection - The new map's projection code.
@@ -1445,6 +1428,9 @@ define([
                         case "camera":
                             controlObj = this.addCameraControl(controlOpts) ;
                             break ;
+                        case "getfeatureinfo":
+                            controlObj = this.addGetFeatureInfoControl(controlOpts) ;
+                            break ;
                         default :
                             console.log("Controle " + controlId + "inconnu.") ;
                     }
@@ -1737,6 +1723,14 @@ define([
             addCameraControl : function (controlOpts) {},
 
             /**
+             * Adds getFeatureInfo control to the map.
+             *
+             * @param {Object} controlOpts - control options
+             * @private
+             */
+            addGetfeatureInfoControl : function (controlOpts) {},
+
+            /**
              * Removes given controls from the map.
              *
              * @param {Array.<String>} controlIds - A list of control's id to be removed.
@@ -1807,6 +1801,23 @@ define([
                 for (var i = 0 ; i < this._layers.length ; i++) {
                     var l = this._layers[i] ;
                     if (layerOpts.hasOwnProperty(l.id)) {
+                        return i ;
+                    }
+                }
+                return -1 ;
+            },
+
+            /**
+             * Recherche une couche dans le tableau this._layers à partir de son identifiant.
+             *
+             * @param {String} layerId - identifiant de la couche
+             * @return {Integer} l'index de la couche dans le tableau ; -1 si non trouvé.
+             * @private
+             */
+            _getLayerIndexByLayerId : function (layerId) {
+                for (var i = 0 ; i < this._layers.length ; i++) {
+                    var l = this._layers[i] ;
+                    if (layerId === l.id) {
                         return i ;
                     }
                 }
