@@ -1209,46 +1209,42 @@ define([
                 gfiOpts.options.noProxyDomains = this.mapOptions.noProxyDomains ;
             }
 
-            var map = this;
-            setTimeout( function () {
-                gfiOpts.layers = [];
-                for (gfiLayerId in controlOpts.layers) {
-                    var gfiLayer = controlOpts.layers[gfiLayerId];
+            gfiOpts.layers = [];
+            for (gfiLayerId in controlOpts.layers) {
+                var gfiLayer = controlOpts.layers[gfiLayerId];
 
-                    var layerConf = {};
+                var layerConf = {};
 
-                    if (gfiLayer.event) {
-                        layerConf.event = gfiLayer.event ;
-                    }
-                    if (gfiLayer.infoFormat) {
-                        layerConf.infoFormat = gfiLayer.infoFormat ;
-                    }
-
-                    var queryable = true;
-                    var found = false;
-                    for ( var i = 0 ; i < map._layers.length ; ++i ) {
-                        var mapLayer = map._layers[i];
-
-                        if ( gfiLayerId === mapLayer.id ) {
-                            if ( !mapLayer.options.queryable ) {
-                                queryable = false;
-                                console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
-                            }
-                            layerConf.obj = mapLayer.obj;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if ( found && queryable ) {
-                        gfiOpts.layers.push(layerConf) ;
-                    }
+                if (gfiLayer.event) {
+                    layerConf.event = gfiLayer.event ;
+                }
+                if (gfiLayer.infoFormat) {
+                    layerConf.infoFormat = gfiLayer.infoFormat ;
                 }
 
-                var control = new ol.control.GetFeatureInfo(gfiOpts) ;
-                map.libMap.addControl(control) ;
-                return control ;
+                var queryable = true;
+                var found = false;
+                for ( var i = 0 ; i < this._layers.length ; ++i ) {
+                    var mapLayer = this._layers[i];
 
-            }, 1000);
+                    if ( gfiLayerId === mapLayer.id ) {
+                        if ( !mapLayer.options.queryable ) {
+                            queryable = false;
+                            console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
+                        }
+                        layerConf.obj = mapLayer.obj;
+                        found = true;
+                        break;
+                    }
+                }
+                if ( found && queryable ) {
+                    gfiOpts.layers.push(layerConf) ;
+                }
+            }
+
+            var control = new ol.control.GetFeatureInfo(gfiOpts) ;
+            this.libMap.addControl(control) ;
+            return control ;
 
         } ;
 
@@ -1699,49 +1695,45 @@ define([
             switch (layerOpts.format.toUpperCase()) {
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
+
+                    // FIXME !?
                     // constructorOpts.source = new ol.source.Vector({
                     //     url : this.setProxy(layerOpts.url),
-                    //     format : new ol.format.KML({
+                    //     format : new ol.format.KMLExtended({
                     //         extractStyles : layerOpts.extractStyles,
                     //         showPointNames : false
                     //     })
                     // }) ;
-                    var self = this;
-                    Gp.Protocols.XHR.call({
-                        url : this.setProxy(layerOpts.url),
-                        method : "GET",
-                        timeOut : 15000,
-                        /** onResponse */
-                        onResponse : function (response) {
-                            var format = new ol.format.KMLExtended({
-                                extractStyles : layerOpts.extractStyles,
-                                showPointNames : false
+
+                    var urlKml = this.setProxy(layerOpts.url);
+                    var formatKml = new ol.format.KMLExtended({
+                        extractStyles : layerOpts.extractStyles,
+                        showPointNames : layerOpts.showPointNames
+                    });
+                    constructorOpts.source = new ol.source.Vector({
+                        features : new ol.Collection(),
+                        /** features loader */
+                        loader : function (extent, resolution, projectionFeature) {
+                            Gp.Protocols.XHR.call({
+                                url : urlKml,
+                                method : "GET",
+                                timeOut : 15000,
+                                /** callback on success */
+                                onResponse : function (response) {
+                                    var projectionData = formatKml.readProjection(response);
+                                    var features = formatKml.readFeatures(response, {
+                                        dataProjection : projectionData,
+                                        featureProjection : projectionFeature
+                                    });
+                                    if (features.length > 0) {
+                                        constructorOpts.source.addFeatures(features);
+                                    }
+                                },
+                                /** callback on failure */
+                                onFailure : function (error) {
+                                    console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
+                                }
                             });
-                            var _projData = format.readProjection(response);
-                            var _projFeature = self.getProjection();
-                            var features = format.readFeatures(response, {
-                                dataProjection : _projData,
-                                featureProjection : _projFeature
-                            });
-                            constructorOpts.source = new ol.source.Vector({
-                                features : features
-                            });
-                            console.log(features);
-                            if (layerOpts.hasOwnProperty("originators")) {
-                                constructorOpts.source._originators = layerOpts.originators;
-                            }
-                            var _layer = new ol.layer.Vector(constructorOpts);
-                            self._layers.push({
-                                id : layerId,
-                                obj : _layer,
-                                options : layerOpts
-                            });
-                            self.libMap.addLayer(_layer);
-                            self._addLayerConfToLayerSwitcher(_layer, layerOpts);
-                        },
-                        /** onFailure */
-                        onFailure : function (error) {
-                            console.log("[ol.control.LayerImport] Kml/Gpx request failed : ", error);
                         }
                     });
                     break;
