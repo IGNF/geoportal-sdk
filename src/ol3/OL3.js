@@ -2561,7 +2561,11 @@ define([
                 var ul = null ;
                 var li = null ;
                 for (p in props) {
-                    if (p == "geometry" || p == "name" || p == "description") {
+                    if (p == "geometry" || p == "name" || p == "description" || p == "styleUrl") {
+                        continue ;
+                    }
+                    // FIXME La lecture des extensions GPX n'est pas gérée !
+                    if (p == "extensionsNode_" && props[p] === undefined) {
                         continue ;
                     }
                     if (!others) {

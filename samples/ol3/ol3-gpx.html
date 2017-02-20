@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link rel="stylesheet" href="../../dist/ol3/GpOl3.css" type="text/css">
+        <link rel="stylesheet" href="../../dist/ol3/GpOl3-src.css" type="text/css">
         <style>
         #geoportalMap {
             height: 400px;
@@ -28,18 +28,19 @@
                 },
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {
-                        minZoom : 5,
-                        maxZoom : 16,
+                        minZoom : 1,
+                        maxZoom : 21,
                     },
                     maCoucheGPX : {
                         format : "gpx",
                         opacity : 0.7,
-                        minZoom : 9,
-                        maxZoom : 13,
+                        minZoom : 1,
+                        maxZoom : 21,
                         visibility : true,
                         // cross-domain sur ce fichier :
                         // url : "http://api.ign.fr/tech-docs-js/data/Campomoro-Tizzano-Sartene_3029.gpx",
                         url : "../data/Campomoro-Tizzano-Sartene_3029.gpx",
+                        // url : "../data/sample-extension.gpx"
                     }
                 },
                 mapEventsOptions : {
