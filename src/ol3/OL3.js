@@ -300,7 +300,7 @@ define([
             if (ol3units && controlOpts.units.toLowerCase() == "deg" ) {
                 ol3units = "degrees" ;
             } else if (ol3units && controlOpts.units.toLowerCase() == "m") {
-                ol3units = "meters" ; // FIXME : OL3 says "metric"
+                ol3units = "metric" ;
             }
             this.logger.trace("[OL3] addGraphicScaleControl : setting graphicscale units to " + ol3units) ;
             var control = new ol.control.ScaleLine({
