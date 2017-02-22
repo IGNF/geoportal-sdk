@@ -33,7 +33,23 @@
                 zoom : 15,
                 controlsOptions : {
                     "layerSwitcher" : {},
-                    "mousePosition" : {}
+                    "mousePosition" : {},
+                    "getFeatureInfo" : {
+                        layers : {
+                            'WMS1' : {
+                                event: "contextmenu",
+                                infoFormat : "text/html"
+                            }
+                        },
+                        options : {
+                            // active: true,
+                            // defaultInfoFormat: "text/html",
+                            // defaultEvent: "singleclick",
+                            // cursorStyle: "pointer",
+                            // noProxyDomains: [],
+                            // proxyUrl: ""
+                        }
+                    }
                 },
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {},
