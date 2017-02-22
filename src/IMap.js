@@ -644,7 +644,7 @@ define([
              * @private
              */
             setProxy : function (url) {
-                return Gp.Tools.setProxy(url,this.mapOptions);
+                return Gp.ProxyUtils.setProxy(url,this.mapOptions);
             },
 
             /**
