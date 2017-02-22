@@ -509,7 +509,7 @@
 
         if (isOl3) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*-src.css"));
-            srcdir.push(path.join(_.lib, "external", "ol3", "*-debug.css"));
+            srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
         }
         else if (isVG) {
