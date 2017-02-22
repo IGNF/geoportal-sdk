@@ -2520,12 +2520,12 @@ define([
             this.libMap.featuresOverlay = new ol.Overlay({
                 id : id,
                 element : element,
-                positioning : "bottom-center",
                 insertFirst : false, // popup appears on top of other overlays if any
                 stopEvent : true
             });
             this.libMap.addOverlay(this.libMap.featuresOverlay);
             this.libMap.featuresOverlay.setPosition(coords) ;
+            this.libMap.featuresOverlay.setPositioning("bottom-center") ;
 
         } ;
 
