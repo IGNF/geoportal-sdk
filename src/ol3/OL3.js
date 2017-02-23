@@ -1199,6 +1199,9 @@ define([
             if (controlOpts.options.hasOwnProperty("defaultEvent")) {
                 gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
             }
+            if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
+                gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
+            }
             if (controlOpts.options.hasOwnProperty("cursorStyle")) {
                 gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
             }
@@ -1213,32 +1216,26 @@ define([
             for (gfiLayerId in controlOpts.layers) {
                 var gfiLayer = controlOpts.layers[gfiLayerId];
 
-                var layerConf = {};
-
-                if (gfiLayer.event) {
-                    layerConf.event = gfiLayer.event ;
-                }
-                if (gfiLayer.infoFormat) {
-                    layerConf.infoFormat = gfiLayer.infoFormat ;
-                }
-
-                var queryable = true;
-                var found = false;
                 for ( var i = 0 ; i < this._layers.length ; ++i ) {
                     var mapLayer = this._layers[i];
 
                     if ( gfiLayerId === mapLayer.id ) {
                         if ( !mapLayer.options.queryable ) {
-                            queryable = false;
                             console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
+                        } else {
+                            var layerConf = {
+                                obj : mapLayer.obj
+                            };
+                            if (gfiLayer.event) {
+                                layerConf.event = gfiLayer.event ;
+                            }
+                            if ( mapLayer.options.gfiFormat ) {
+                                layerConf.infoFormat = mapLayer.options.gfiFormat;
+                            }
+                            gfiOpts.layers.push(layerConf) ;
+                            break;
                         }
-                        layerConf.obj = mapLayer.obj;
-                        found = true;
-                        break;
                     }
-                }
-                if ( found && queryable ) {
-                    gfiOpts.layers.push(layerConf) ;
                 }
             }
 
