@@ -2107,13 +2107,12 @@ define([
         OL3.prototype._getLayerOpts = function ( layerObj, layersStack ) {
             var layerOpts = null ;
             layersStack = layersStack || this._layers ;
-            for (var i in layersStack ) {
+            for (var i = 0; i < layersStack.length; i ++ ) {
                 var l = layersStack[i] ;
-                if (OL3._getOL3Id(l.obj) === OL3._getOL3Id(layerObj)) {
-                    this.logger.trace("[OL3] : found layer : " + l.id) ;
-                    layerOpts = {} ;
-                    layerOpts[l.id] = l.options ;
-                    break ;
+                if ( l.obj === layerObj ) {
+                    layerOpts = {};
+                    layerOpts[l.id] = l.options;
+                    break;
                 }
             }
             return layerOpts ;
@@ -2770,25 +2769,6 @@ define([
             // this._displayInfo(evt.coordinate,content,"text/html") ;
 
         } ;
-
-        /**
-         * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
-         *
-         * @param {Object} ol3Obj - objet ol3
-         */
-        OL3._getOL3Id = function (ol3Obj) {
-            if (!ol3Obj) {
-                return ;
-            }
-            for (var key in ol3Obj) {
-                if (! typeof(key) == "string" || key.indexOf("closure_uid") < 0) {
-                    continue ;
-                }
-                // on a trouvé :
-                return ol3Obj[key] ;
-            }
-            return null ;
-        };
 
         return OL3;
     });
