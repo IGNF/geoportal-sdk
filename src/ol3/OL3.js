@@ -589,7 +589,7 @@ define([
                         fillOpacity = kmlDefaultStyles.polyFillOpacity || 0.5;
                         fillColor = kmlDefaultStyles.polyFillColor || "#00B798";
                         importOpts.vectorStyleOptions.KML.defaultStyle.fill = new ol.style.Fill({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity)
+                            color : IMap._hexToRgba(fillColor, fillOpacity)
                         });
                     }
                 }
@@ -1069,7 +1069,6 @@ define([
          * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
          * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
          * @param {Array.<String>} controlOpts.resources - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
-         * @param {Boolean} [ controlOpts.displayAdvancedSearch = true ] - False to disable advanced search tools (it will not be displayed). Default is true (displayed)
          * @param {Array.<String>} controlOpts.delimitations - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
          * @param {Object} [ reverseGeocodeOptions = {} ] - reverse geocode service options. see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~reverseGeocode to know all reverse geocode options.
          */
