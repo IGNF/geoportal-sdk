@@ -141,9 +141,9 @@
          *
          * @property {Float} x - x coordinates for center
          * @property {Float} y - y coordinates for center
-         * @property {String} projection - srs center coordinates
+         * @property {String} projection - center coordinates srs
          * @property {String} location - place or address where to center the map
-         * @property {String} locationType - location types ("StreetAddres", "PositionOfInterest", "CadastralParcel")
+         * @property {Array.<String>} locationType - location types ("StreetAddress", "PositionOfInterest", "CadastralParcel"). Default is ["StreetAddress", "PositionOfInterest"]
          * @property {Boolean} geolocate - center the map by geolocation
          */
         var center = {
@@ -282,7 +282,7 @@
          * @property {String | Array.<String>} apiKey - access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats)
          * @property {Gp.Center} [center] - Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization.
          * @property {Float} [azimuth=0] - Map orientation in decimal degrees clockwise to the north.
-         * @property {Integer | Float} [zoom] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
+         * @property {Integer | Float} [zoom=10] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
          * @property {Array.<Gp.MarkerOptions>} [markersOptions] - Options for displaying markers on the map.
          * @property {Object} [layersOptions] - Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide.
          * @property {Object} [controlsOptions] - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties.
