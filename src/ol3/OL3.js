@@ -2782,25 +2782,6 @@ define([
         } ;
 
         /**
-         * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
-         *
-         * @param {Object} ol3Obj - objet ol3
-         */
-        OL3._getOL3Id = function (ol3Obj) {
-            if (!ol3Obj) {
-                return ;
-            }
-            for (var key in ol3Obj) {
-                if ( typeof(key) != "string" || key.indexOf("closure_uid") < 0) {
-                    continue ;
-                }
-                // on a trouvé :
-                return ol3Obj[key] ;
-            }
-            return null ;
-        };
-
-        /**
          *  Function to disable/enable layer color (grayscale or color mode).
          *
          * @param {Boolean} colorToGray - indicate transformation nature (from or to grayscale)
