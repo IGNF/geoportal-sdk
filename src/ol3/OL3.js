@@ -2813,14 +2813,19 @@ define([
             if (!colorToGray) {
                 var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
 
+                /**
+                 *  Function to convert colored pixels to grayscale
+                 */
+                var colorToGrayConvertor = function (pixels, data) {
+                    var pixel = pixels[0];
+                    var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
+                    return [lightness, lightness, lightness, pixel[3]];
+                };
+
                 constructorOpts.source = new ol.source.Raster({
                     sources : [gpLayer.obj.getSource()],
                     grayScale : true,
-                    operation : function (pixels, data) {
-                                    var pixel = pixels[0];
-                                    var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
-                                    return [lightness, lightness, lightness, pixel[3]];
-                                }
+                    operation : colorToGrayConvertor
                 });
 
                 gpLayer.objOrigin = gpLayer.obj;
