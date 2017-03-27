@@ -300,7 +300,7 @@ define([
             if (ol3units && controlOpts.units.toLowerCase() == "deg" ) {
                 ol3units = "degrees" ;
             } else if (ol3units && controlOpts.units.toLowerCase() == "m") {
-                ol3units = "meters" ; // FIXME : OL3 says "metric"
+                ol3units = "metric" ;
             }
             this.logger.trace("[OL3] addGraphicScaleControl : setting graphicscale units to " + ol3units) ;
             var control = new ol.control.ScaleLine({
@@ -589,7 +589,7 @@ define([
                         fillOpacity = kmlDefaultStyles.polyFillOpacity || 0.5;
                         fillColor = kmlDefaultStyles.polyFillColor || "#00B798";
                         importOpts.vectorStyleOptions.KML.defaultStyle.fill = new ol.style.Fill({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity)
+                            color : IMap._hexToRgba(fillColor, fillOpacity)
                         });
                     }
                 }
@@ -1069,7 +1069,6 @@ define([
          * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
          * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
          * @param {Array.<String>} controlOpts.resources - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
-         * @param {Boolean} [ controlOpts.displayAdvancedSearch = true ] - False to disable advanced search tools (it will not be displayed). Default is true (displayed)
          * @param {Array.<String>} controlOpts.delimitations - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
          * @param {Object} [ reverseGeocodeOptions = {} ] - reverse geocode service options. see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~reverseGeocode to know all reverse geocode options.
          */
@@ -2107,13 +2106,12 @@ define([
         OL3.prototype._getLayerOpts = function ( layerObj, layersStack ) {
             var layerOpts = null ;
             layersStack = layersStack || this._layers ;
-            for (var i in layersStack ) {
+            for (var i = 0; i < layersStack.length; i ++ ) {
                 var l = layersStack[i] ;
-                if (OL3._getOL3Id(l.obj) === OL3._getOL3Id(layerObj)) {
-                    this.logger.trace("[OL3] : found layer : " + l.id) ;
-                    layerOpts = {} ;
-                    layerOpts[l.id] = l.options ;
-                    break ;
+                if ( l.obj === layerObj ) {
+                    layerOpts = {};
+                    layerOpts[l.id] = l.options;
+                    break;
                 }
             }
             return layerOpts ;
@@ -2520,12 +2518,12 @@ define([
             this.libMap.featuresOverlay = new ol.Overlay({
                 id : id,
                 element : element,
-                positioning : "bottom-center",
                 insertFirst : false, // popup appears on top of other overlays if any
                 stopEvent : true
             });
             this.libMap.addOverlay(this.libMap.featuresOverlay);
             this.libMap.featuresOverlay.setPosition(coords) ;
+            this.libMap.featuresOverlay.setPositioning("bottom-center") ;
 
         } ;
 
@@ -2770,25 +2768,6 @@ define([
             // this._displayInfo(evt.coordinate,content,"text/html") ;
 
         } ;
-
-        /**
-         * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
-         *
-         * @param {Object} ol3Obj - objet ol3
-         */
-        OL3._getOL3Id = function (ol3Obj) {
-            if (!ol3Obj) {
-                return ;
-            }
-            for (var key in ol3Obj) {
-                if (! typeof(key) == "string" || key.indexOf("closure_uid") < 0) {
-                    continue ;
-                }
-                // on a trouvé :
-                return ol3Obj[key] ;
-            }
-            return null ;
-        };
 
         return OL3;
     });

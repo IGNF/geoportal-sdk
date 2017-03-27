@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/ol3/GpOl3-src.css" type="text/css">
+        <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+        </style>
+        <script src="../../dist/ol3/GpOl3-src.js"></script>
+    </head>
+    <body>
+        <h1>Une carte affichant une échelle graphique</h1>
+        <div id="geoportalMap"></div>
+        <script type="text/javascript">
+
+            var map = Gp.Map.load(
+				'geoportalMap',
+				{
+		            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+		            center: {
+		                location : "73 avenue de Paris, Saint-Mandé"
+		            },
+		            controlsOptions : {
+		                "layerSwitcher" : {},
+						"graphicscale" : {
+                            units : "m",
+                            minWidth : 100
+                        }
+		            },
+		            layersOptions : {
+				         "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {}
+		            },
+		            zoom : 13
+		        }
+			);
+        </script>
+    </body>
+</html>

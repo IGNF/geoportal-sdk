@@ -211,7 +211,7 @@
         // param bundle vg
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
-             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.8";
+             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
              // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
              _deps["plugins-vg"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
@@ -229,7 +229,7 @@
             _globalModules.push('ol');
 
             var pluginsDirVg = "../lib/external/geoportail/plugins-vg/";
-            _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.8";
+            _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
             // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
             _deps["plugins-vg"] = pluginsDirVg + "GpPluginVg-src";
             _includes.push("virtual/VG");
@@ -509,7 +509,7 @@
 
         if (isOl3) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*-src.css"));
-            srcdir.push(path.join(_.lib, "external", "ol3", "*-debug.css"));
+            srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
         }
         else if (isVG) {
