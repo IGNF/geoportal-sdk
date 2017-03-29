@@ -1658,6 +1658,11 @@ define([
                 this.libMap.addLayer(layer) ;
                 this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
             }
+            if (layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled) {
+                var layerIndex = this._getLayerIndexByLayerId(layerId);
+                var gpLayer = this._layers[layerIndex];
+                this._layerToGrayScale(gpLayer,true);
+            }
         } ;
 
         /**
@@ -2804,13 +2809,35 @@ define([
                 return layer.id;
             });
 
+            gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
+
+            this._layerToGrayScale(gpLayer,!colorToGray);
+
+            // update layer switcher display
+            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
+
+            // update layer order
+            var maxZIndex = layerOrder.length;
+            for (var i = 0; i < layerOrder.length; i++) {
+                var id = layerOrder[i];
+                var layer = lsControl._layers[id].layer;
+                if (layer.setZIndex) {
+                    layer.setZIndex(maxZIndex);
+                    maxZIndex--;
+                }
+            }
+        };
+
+        /**
+         *  Function to convert colored layer to grayscale
+         */
+        OL3.prototype._layerToGrayScale = function (gpLayer,toGrayScale) {
             var opacity = gpLayer.obj.getOpacity();
             var visible = gpLayer.obj.getVisible();
-            var lsControlAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
 
             this.libMap.removeLayer(gpLayer.obj);
 
-            if (!colorToGray) {
+            if (toGrayScale) {
                 var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
 
                 /**
@@ -2831,30 +2858,25 @@ define([
                 gpLayer.objOrigin = gpLayer.obj;
 
                 gpLayer.obj = new ol.layer.Image(constructorOpts);
-                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
+                if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
+                    gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
+                }
+
             } else {
+                // dans le cas ou la couche a ete initialisee en n/b
+                if ( !gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
+                    gpLayer.objOrigin.gpLayerId = gpLayer.obj.gpLayerId;
+                }
+
                 gpLayer.obj = gpLayer.objOrigin;
                 gpLayer.objOrigin = null;
             }
+            gpLayer.options.grayScaled = toGrayScale;
 
             this._layers.push(gpLayer);
             this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
             this._resetLayerChangedEvent();
 
-            // update layer switcher display
-            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
-            document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked = lsControlAdvancedTools;
-
-            // update layer order
-            var maxZIndex = layerOrder.length;
-            for (var i = 0; i < layerOrder.length; i++) {
-                var id = layerOrder[i];
-                var layer = lsControl._layers[id].layer;
-                if (layer.setZIndex) {
-                    layer.setZIndex(maxZIndex);
-                    maxZIndex--;
-                }
-            }
             // update layer properties
             gpLayer.obj.setOpacity(opacity);
             gpLayer.obj.setVisible(visible);
