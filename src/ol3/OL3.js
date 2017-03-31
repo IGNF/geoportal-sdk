@@ -2811,7 +2811,10 @@ define([
 
             gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
 
-            this._layerToGrayScale(gpLayer,!colorToGray);
+            if ( !this._layerToGrayScale(gpLayer,!colorToGray) ) {
+                // au cas ou le navigateur ne supporte pas la conversion
+                return;
+            };
 
             // update layer switcher display
             this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
@@ -2835,8 +2838,6 @@ define([
             var opacity = gpLayer.obj.getOpacity();
             var visible = gpLayer.obj.getVisible();
 
-            this.libMap.removeLayer(gpLayer.obj);
-
             if (toGrayScale) {
                 var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
 
@@ -2849,25 +2850,35 @@ define([
                     return [lightness, lightness, lightness, pixel[3]];
                 };
 
-                constructorOpts.source = new ol.source.Raster({
-                    sources : [gpLayer.obj.getSource()],
-                    grayScale : true,
-                    operation : colorToGrayConvertor
-                });
+                // patch pour les navigateurs ne supportant pas cette fonction
+                try {
+                    constructorOpts.source = new ol.source.Raster({
+                        sources : [gpLayer.obj.getSource()],
+                        operation : colorToGrayConvertor
+                    });
+                } catch (e) {
+                    return false;
+                }
 
                 gpLayer.objOrigin = gpLayer.obj;
-
+                this.libMap.removeLayer(gpLayer.obj);
                 gpLayer.obj = new ol.layer.Image(constructorOpts);
                 if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
                     gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
                 }
 
             } else {
+
+                // (suite) patch pour les navigateurs ne supportant pas cette fonction
+                if ( !gpLayer.objOrigin ) {
+                    return ;
+                }
+
                 // dans le cas ou la couche a ete initialisee en n/b
                 if ( !gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
                     gpLayer.objOrigin.gpLayerId = gpLayer.obj.gpLayerId;
                 }
-
+                this.libMap.removeLayer(gpLayer.obj);
                 gpLayer.obj = gpLayer.objOrigin;
                 gpLayer.objOrigin = null;
             }
@@ -2880,6 +2891,8 @@ define([
             // update layer properties
             gpLayer.obj.setOpacity(opacity);
             gpLayer.obj.setVisible(visible);
+
+            return true;
         };
 
         return OL3;
