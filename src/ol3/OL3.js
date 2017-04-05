@@ -1640,7 +1640,7 @@ define([
                     } else {
                         sourceOpts.requestEncoding = "KVP" ;
                     }
-                    constructorOpts.source = new ol.source.WMTS(sourceOpts);
+                    constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
                     break;
                 case "OSM":
                     this.logger.trace("ajout d'une couche OSM");

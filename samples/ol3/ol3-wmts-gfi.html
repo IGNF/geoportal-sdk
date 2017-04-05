@@ -54,13 +54,13 @@
                     }
                 },
                 layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS' : {},
                     myVectorLayer : {
                         title : "myVectorLayer",
                         format : "kml",
                         url : "../resources/KML/S_TOP100.kml",
                         queryable : true
                     },
-                    'ORTHOIMAGERY.ORTHOPHOTOS' : {},
                     'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
                         minZoom : 14,
                         maxZoom : 21,
@@ -103,7 +103,7 @@
                         format : "wms",
                         title : "Limites administratives",
                         description : "blah blah",
-                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/r/wms",
+                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/r/wms",
                         layers : ["ADMINISTRATIVEUNITS.BOUNDARIES"],
                         outputFormat : "image/png",
                         queryable : true, //pour test devait etre false
@@ -117,8 +117,8 @@
                         format : "wmts",
                         title : "RPG 2012",
                         description : "blah blah",
-                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/wmts",
-                        layer : "RPG-2012_BDD_WLD_WGS84_20161124",
+                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
+                        layer : "LANDUSE.AGRICULTURE2012",
                         tileMatrixSet : "PM",
                         styleName : "normal",
                         outputFormat : "image/png",
@@ -133,7 +133,7 @@
                         format : "wmts",
                         title : "Réseau ferroviaire",
                         description : "blah blah",
-                        url : "http://wxs.ign.fr/758iy6m09yku24f0raar57jh/geoportail/wmts",
+                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
                         layer : "TRANSPORTNETWORKS.RAILWAYS",
                         tileMatrixSet : "PM",
                         styleName : "normal",
