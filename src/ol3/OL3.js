@@ -2,7 +2,7 @@
 define([
     "Utils/LoggerByDefault",
     "ol",
-    "plugins-ol3",
+    "plugins", // "plugins-ol3"
     "IMap"
 ],
     function (

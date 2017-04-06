@@ -2,7 +2,7 @@
 define([
     "Utils/LoggerByDefault",
     "vg",
-    "plugins-vg",
+    "plugins", // "plugins-vg"
     "IMap"
 ],
 function (

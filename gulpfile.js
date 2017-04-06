@@ -199,11 +199,8 @@
         // param bundle ol3
         if (isOl3) {
             pluginsDir = "../lib/external/geoportail/plugins-ol3/";
-            // FIXME mode debug ne semble pas marcher !?
-            // _deps.ol =  (isDebug) ? "../lib/external/ol3/ol-debug" : "../lib/external/ol3/ol";
             _deps.ol =  "../lib/external/ol3/ol";
-            // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
-            _deps["plugins-ol3"] = pluginsDir + "GpPluginOl3-src";
+            _deps["plugins"] = pluginsDir + "GpPluginOl3-src";
             _includes.push("ol3/OL3");
             _globalModules.push('ol');
         }
@@ -212,27 +209,20 @@
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
              _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
-             // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
-             _deps["plugins-vg"] = pluginsDir + "GpPluginVg-src";
+            _deps["plugins"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
              // VirtualGeo est déjà déclaré globale :
-             // _globalModules.push('VirtualGeo');
+             //     _globalModules.push('VirtualGeo');
         }
 
         else if (isMix) {
-            var pluginsDirol3 = "../lib/external/geoportail/plugins-ol3/";
             _deps.ol =  "../lib/external/ol3/ol";
-            // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
-            _deps["plugins-ol3"] = pluginsDirol3 + "GpPluginOl3-src";
-            _includes.push("ol3/OL3");
-
-            _globalModules.push('ol');
-
-            var pluginsDirVg = "../lib/external/geoportail/plugins-vg/";
             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
-            // info : on ne récupère plus que la version non minifiée des extensions (-src), pour éviter de minifier un fichier déjà minifié...
-            _deps["plugins-vg"] = pluginsDirVg + "GpPluginVg-src";
+            pluginsDir = "../lib/external/geoportail/plugins-mix/";
+            _deps["plugins-mix"] = pluginsDir + "GpPluginOl3Vg-src";
+            _includes.push("ol3/OL3");
             _includes.push("virtual/VG");
+            _globalModules.push('ol');
 
         } else {
             // TODO ...
@@ -442,9 +432,8 @@
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*.png"));
         }
         else if (isMix) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*.png"));
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*.png"));
-            svgdir = path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*.svg");
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.png"));
+            svgdir = path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.svg");
         }
         else {
             $.util.log("Exception !");
@@ -474,7 +463,7 @@
         // doit on mettre la lib. dans un répertoire distinct ?
         // ex. vendor
         var builddir = path.join(build.dist, getDistDirName());
-        var srcdir   = path.join(_.lib, "external", "virtual", "js", "VirtualGeoWeb-Engine.rd.js");
+        var srcdir   = path.join(_.lib, "external", "virtual", "js", "VirtualGeoWeb-Engine.js");
 
         return gulp.src(srcdir)
             .pipe(rename({dirname :""}))
@@ -517,10 +506,9 @@
             srcdir.push(path.join(_.res, "virtual", "*.css"));
         }
         else if (isMix) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*-src.css"));
-            srcdir.push(path.join(_.lib, "external", "ol3", "*-debug.css"));
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*-src.css"));
+            srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*-src.css"));
             srcdir.push(path.join(_.res, "virtual", "*.css"));
         }
         else {
@@ -549,74 +537,6 @@
                 .pipe(gulp.dest(build.doc))
                 .pipe($.plumber())
                 .pipe($.size());
-    });
-
-    gulp.task('mix-js', function () {
-        var concat = require('gulp-concat');
-
-        var src = [] ;
-        isOl3 = true;
-        isVG  = false;
-        src.push( path.join(build.dist, getDistDirName(), (isDebug ? getDistFileNameDebug() : getDistFileName())) );
-
-        isOl3 = false;
-        isVG  = true;
-        src.push( path.join(build.dist, getDistDirName(), (isDebug ? getDistFileNameDebug() : getDistFileName())) );
-
-        isOl3 = false;
-        isVG  = false;
-        var output = (isDebug) ? getDistFileNameDebug() : getDistFileName();
-
-        return gulp.src(src)
-               .pipe( concat(output) )
-               .pipe(gulp.dest( path.join(build.dist, getDistDirName()) )) ;
-    });
-
-    gulp.task('mix-css', function () {
-        var concat = require('gulp-concat');
-
-        var src = [] ;
-
-        isOl3 = true;
-        isVG  = false;
-        src.push( path.join(build.dist, getDistDirName(), (isProduction) ? (getBaseFileName() + ".css") : (getBaseFileName() + "-src.css")) );
-
-        isOl3 = false;
-        isVG  = true;
-        src.push( path.join(build.dist, getDistDirName(), (isProduction) ? (getBaseFileName() + ".css") : (getBaseFileName() + "-src.css")) );
-
-        isOl3 = false;
-        isVG  = false;
-        var output = (isProduction) ? (getBaseFileName() + ".css") : (getBaseFileName() + "-src.css");
-
-        return gulp.src(src)
-               .pipe( concat(output) )
-               .pipe(gulp.dest( path.join(build.dist, getDistDirName()) )) ;
-    });
-
-    gulp.task('mix-img', function () {
-
-        var rename = require("gulp-rename");
-
-        var src = [];
-
-        isOl3 = true;
-        isVG  = false;
-        src.push( path.join(build.dist, getDistDirName(), "img", "*.*") );
-
-        isOl3 = false;
-        isVG  = true;
-        src.push( path.join(build.dist, getDistDirName(), "img", "*.*") );
-
-        isOl3 = false;
-        isVG  = false;
-        var builddir = path.join(build.dist, getDistDirName(), "img");
-
-        return gulp.src(src)
-            .pipe(rename({dirname :""}))
-            .pipe(gulp.dest(builddir))
-            .pipe($.plumber())
-            .pipe($.size());
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -737,7 +657,6 @@
             gulp.start("build-vg");
         }
         else if (isMix) {
-            // FIXME l'ideal serait de ne pas regenerer ol3 et vg à chaque fois...
             gulp.start("build-mix");
         }
         else {
@@ -765,7 +684,7 @@
         isVG  = false;
         isOl3 = false;
         $.util.log("# Run task for VirtualGeo 3D with OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'mix-css', 'mix-img', 'copy-vg-engine', cb);
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-vg-engine', cb);
     });
 
     gulp.task('build-dist', function(callback) {
