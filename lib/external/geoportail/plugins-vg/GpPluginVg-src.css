@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 5.0.0
- * @date 2017-03-27
+ * @date 2017-04-06
  *
  */
 /* MOUSE POSITION */
@@ -2574,6 +2574,39 @@ input.GPinputSubmit {
   max-width: inherit;
   vertical-align: middle;
 }
+/* ISOCHRON */
+
+#GPisochron {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+#GPshowIsochronOpen {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* General panels */
+
+#GPisochronPanel {
+  left: 8px;
+}
+
+#GPisochronPanelClose {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -2666,39 +2699,6 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
-/* ISOCHRON */
-
-#GPisochron {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-#GPshowIsochronOpen {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* General panels */
-
-#GPisochronPanel {
-  left: 8px;
-}
-
-#GPisochronPanelClose {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {

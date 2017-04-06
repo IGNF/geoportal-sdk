@@ -271,9 +271,9 @@ define([
                     keyboard : true,
                     selectable : false,
                     zoom : {},
-                    // attributions : {
-                    //     maximised : false
-                    // }
+                    attributions : {
+                        maximised : false
+                    }
                 } ;
             },
 
