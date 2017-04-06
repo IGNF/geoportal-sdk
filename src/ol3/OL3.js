@@ -2141,6 +2141,8 @@ define([
                 options.format = "KML" ;
             } else if (layerId.indexOf("layerimport:GPX") === 0) {
                 options.format = "GPX" ;
+            } else if (layerId.indexOf("layerimport:GeoJSON") === 0) {
+                options.format = "GeoJSON" ;
             } else if (layerId.indexOf("layerimport:WMS") === 0) {
                 options.format = "WMS" ;
                 if ( layerObj.gpGFIparams ) {
