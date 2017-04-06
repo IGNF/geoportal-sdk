@@ -489,13 +489,14 @@ function (
     * @param {Object} controlOpts - options du controle
     */
     VG.prototype.addAttributionsControl = function (controlOpts) {
+        var control;
         // if the div already exist, we clean it
         if (document.getElementById("VirtualGeo_IPR")) {
             document.getElementById("VirtualGeo_IPR").parentNode.removeChild(document.getElementById("VirtualGeo_IPR"));
         }
         if (!document.getElementById("VirtualGeo_IPR")) {
             this.logger.trace("[VG] addAttributionsControl...");
-            var control = new VirtualGeo.IPRControl();
+            control = new VirtualGeo.IPRControl();
             control.listenToMap("centerchanged", this._displayOriginators.bind(this));
             control.listenToMap("zoomchanged", this._displayOriginators.bind(this));
             control.listenToMap("layeradded", this._displayOriginators.bind(this));
@@ -509,6 +510,9 @@ function (
                     document.getElementById("VirtualGeo_IPR").style.display = "inline";
                 }
             }
+        }
+        if (!controlOpts.div && document.getElementById("VirtualGeo_IPR")) {
+            return control;
         }
         if (controlOpts && controlOpts.div && document.getElementById(controlOpts.div) && document.getElementById("VirtualGeo_IPR")) {
             document.getElementById(controlOpts.div).appendChild(document.getElementById("VirtualGeo_IPR"));
@@ -536,7 +540,7 @@ function (
             var srcAttributionHtml = "";
             // if the view is further that the farthest zoom defined for the layer
             // we do not display its originators
-            if (zoomLevel >= layersAHN[i].options.minZoom ) {
+            if (!layersAHN[i].options.minZoom || zoomLevel >= layersAHN[i].options.minZoom) {
                 // count the number of attributions associated to a layer
                 countLayerAttribution = 0;
                 // give all the attributions of the layer based on the zoom and extend
