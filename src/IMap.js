@@ -1148,24 +1148,10 @@ define([
                     }
 
                 }
+
                 // re-abonnement à l'evenement layerChanged
                 // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
-                if (this._events.hasOwnProperty("layerChanged")) {
-                    var layerChangedArray = [] ;
-                    // on recopie le tableau
-                    this._events["layerChanged"].forEach(function (eventObj) {
-                        layerChangedArray.push(eventObj) ;
-                    },
-                    this) ;
-                    layerChangedArray.forEach(function (eventObj) {
-                        // on oublie ...
-                        this.forget("layerChanged", eventObj.action) ;
-                        // ... pour mieux se souvenir
-                        this.listen("layerChanged", eventObj.action , eventObj.context) ;
-                    },
-                    this) ;
-                    layerChangedArray = null ;
-                }
+                this._resetLayerChangedEvent();
             },
 
             /**
@@ -1814,6 +1800,23 @@ define([
             },
 
             /**
+             * Recherche une couche dans le tableau this._layers à partir de son identifiant.
+             *
+             * @param {String} layerId - identifiant de la couche
+             * @return {Integer} l'index de la couche dans le tableau ; -1 si non trouvé.
+             * @private
+             */
+            _getLayerIndexByLayerId : function (layerId) {
+                for (var i = 0 ; i < this._layers.length ; i++) {
+                    var l = this._layers[i] ;
+                    if (layerId === l.id) {
+                        return i ;
+                    }
+                }
+                return -1 ;
+            },
+
+            /**
              * Rajoute une configuration de couche au LayerSwitcher
              *
              * @param {Object} layerReg - element de this._layers correspondant à la couche
@@ -2051,6 +2054,42 @@ define([
                         return false ;
                 } ;
                 return true ;
+            },
+
+            /**
+             *  Remove and re-initialize layerChanged event
+             *
+             * @private
+             */
+            _resetLayerChangedEvent : function () {
+                // re-abonnement à l'evenement layerChanged
+                // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
+                if (this._events.hasOwnProperty("layerChanged")) {
+                    var layerChangedArray = [] ;
+                    // on recopie le tableau
+                    this._events["layerChanged"].forEach(function (eventObj) {
+                        layerChangedArray.push(eventObj) ;
+                    },
+                    this) ;
+                    layerChangedArray.forEach(function (eventObj) {
+                        // on oublie ...
+                        this.forget("layerChanged", eventObj.action) ;
+                        // ... pour mieux se souvenir
+                        this.listen("layerChanged", eventObj.action , eventObj.context) ;
+                    },
+                    this) ;
+                    layerChangedArray = null ;
+                }
+            },
+
+            /**
+             *  Function to disable/enable layer color (grayscale or color mode).
+             *
+             * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
+             * @param {String} layerId - layer identifier
+             */
+            changeLayerColor : function (colorToGray,layerId) {
+                return;
             }
         };
 
