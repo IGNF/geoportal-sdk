@@ -2,13 +2,13 @@
 define([
     "Utils/LoggerByDefault",
     "vg",
-    "plugins-vg",
+    "gp", // "plugins-vg"
     "IMap"
 ],
 function (
     Logger,
     vg,
-    plugins,
+    plugins, // Gp globale !?
     IMap
 ) {
 

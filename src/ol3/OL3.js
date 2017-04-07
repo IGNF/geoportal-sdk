@@ -1,13 +1,13 @@
 define([
     "Utils/LoggerByDefault",
     "ol",
-    "plugins-ol3",
+    "gp", // "plugins-ol3"
     "IMap"
 ],
     function (
         Logger,
         ol,
-        plugins,
+        plugins, // Gp globale !?
         IMap
         ) {
 
