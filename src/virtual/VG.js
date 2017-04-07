@@ -2,13 +2,13 @@
 define([
     "Utils/LoggerByDefault",
     "vg",
-    "plugins", // "plugins-vg"
+    "gp", // "plugins-vg"
     "IMap"
 ],
 function (
     Logger,
     vg,
-    plugins,
+    plugins, // Gp globale !?
     IMap
 ) {
 
@@ -22,6 +22,8 @@ function (
         if (!(this instanceof VG)) {
             throw new TypeError("VG constructor cannot be called as a function.");
         }
+
+        console.log("PLUGINS", plugins);
 
         /**
         * Nom de la classe (heritage)

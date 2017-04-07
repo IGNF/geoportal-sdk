@@ -2,13 +2,13 @@
 define([
     "Utils/LoggerByDefault",
     "ol",
-    "plugins", // "plugins-ol3"
+    "gp", // "plugins-ol3"
     "IMap"
 ],
     function (
         Logger,
         ol,
-        plugins,
+        plugins, // Gp globale !?
         IMap
         ) {
 
@@ -22,6 +22,8 @@ define([
             if (!(this instanceof OL3)) {
                 throw new TypeError("OL3 constructor cannot be called as a function.");
             }
+
+            console.log("PLUGINS", plugins);
 
             /**
              * Nom de la classe (heritage)

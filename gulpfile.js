@@ -200,7 +200,7 @@
         if (isOl3) {
             pluginsDir = "../lib/external/geoportail/plugins-ol3/";
             _deps.ol =  "../lib/external/ol3/ol";
-            _deps["plugins"] = pluginsDir + "GpPluginOl3-src";
+            _deps["gp"] = pluginsDir + "GpPluginOl3-src";
             _includes.push("ol3/OL3");
             _globalModules.push('ol');
         }
@@ -209,19 +209,19 @@
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
              _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
-            _deps["plugins"] = pluginsDir + "GpPluginVg-src";
+            _deps["gp"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
              // VirtualGeo est déjà déclaré globale :
              //     _globalModules.push('VirtualGeo');
         }
 
         else if (isMix) {
-            _deps.ol =  "../lib/external/ol3/ol";
+            _deps.ol = "../lib/external/ol3/ol";
             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
             pluginsDir = "../lib/external/geoportail/plugins-mix/";
-            _deps["plugins-mix"] = pluginsDir + "GpPluginOl3Vg-src";
-            _includes.push("ol3/OL3");
+            _deps["gp"] = pluginsDir + "GpPluginOl3Vg-src";
             _includes.push("virtual/VG");
+            _includes.push("ol3/OL3");
             _globalModules.push('ol');
 
         } else {
