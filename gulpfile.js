@@ -208,7 +208,7 @@
         // param bundle vg
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
-             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
+             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
             _deps["gp"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
              // VirtualGeo est déjà déclaré globale :
@@ -217,7 +217,7 @@
 
         else if (isMix) {
             _deps.ol = "../lib/external/ol3/ol";
-            _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.9";
+            _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
             pluginsDir = "../lib/external/geoportail/plugins-mix/";
             _deps["gp"] = pluginsDir + "GpPluginOl3Vg-src";
             _includes.push("virtual/VG");

@@ -6,7 +6,7 @@ requirejs.config({
         // lib external
         log4js      : "../lib/external/woodman/woodman-amd",
         ol          : "../lib/external/ol3/ol",
-        vg  : "../lib/external/virtual/js/VirtualGeoWeb-5.0.9",
+        vg  : "../lib/external/virtual/js/VirtualGeoWeb-5.0.11",
         gp          : "../lib/external/geoportail/plugins-ol3/GpPluginOl3-src",
         
         // "plugins-vg"  : "../lib/external/geoportail/plugins-vg/GpPluginVg-src",

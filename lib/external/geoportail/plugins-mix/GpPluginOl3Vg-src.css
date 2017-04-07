@@ -3527,65 +3527,6 @@ div[id^="GPimportGetCapResults-"] {
   background-color: #CEDBEF
 }
 
-/* MEASURELENGTH POSITION */
-
-div[id^=GPmeasureArea-] {
-  top: 260px;
-  left: 74px;
-}
-
-/* Showing/hiding measureLength position panel */
-
-span[id^=GPshowMeasureAreaOpen-] {
-  background-image: url("img/GPmeasuresOpen.png");
-  background-position: -78px;
-}
-
-/* MEASURELENGTH POSITION */
-
-div[id^=GPmeasureAzimuth-] {
-  top: 260px;
-  left: 10px;
-}
-
-/* Showing/hiding measureLength position panel */
-
-span[id^=GPshowMeasureAzimuthOpen-] {
-  background-image: url("img/GPmeasuresOpen.png");
-}
-
-/* MEASURELENGTH POSITION */
-
-div[id^=GPmeasureLength-] {
-  top: 260px;
-  left: 42px;
-}
-
-/* Showing/hiding measureLength position panel */
-
-span[id^=GPshowMeasureLengthOpen-] {
-  background-image: url("img/GPmeasuresOpen.png");
-  background-position: -26px;
-}
-
-/* Location */
-
-.GPlocationOriginPointerImg,
-.GPlocationStageRemove,
-div[id^=GPlocationStageAdd],
-.GPlocationTransportImg {
-  background-image: url("img/GPlocationOptions.png");
-}
-
-/* All div elements whose class attribute value begins with "GPlocationPoint" */
-div[class*="GPlocationPoint"] {
-    position: relative;
-}
-
-.GPlocationStageFlexInput {
-    margin-bottom: 5px;
-}
-
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-] {
@@ -3676,6 +3617,65 @@ div[id^=GPlayerInfoClose] {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
+}
+
+/* Location */
+
+.GPlocationOriginPointerImg,
+.GPlocationStageRemove,
+div[id^=GPlocationStageAdd],
+.GPlocationTransportImg {
+  background-image: url("img/GPlocationOptions.png");
+}
+
+/* All div elements whose class attribute value begins with "GPlocationPoint" */
+div[class*="GPlocationPoint"] {
+    position: relative;
+}
+
+.GPlocationStageFlexInput {
+    margin-bottom: 5px;
+}
+
+/* MEASURELENGTH POSITION */
+
+div[id^=GPmeasureArea-] {
+  top: 260px;
+  left: 74px;
+}
+
+/* Showing/hiding measureLength position panel */
+
+span[id^=GPshowMeasureAreaOpen-] {
+  background-image: url("img/GPmeasuresOpen.png");
+  background-position: -78px;
+}
+
+/* MEASURELENGTH POSITION */
+
+div[id^=GPmeasureAzimuth-] {
+  top: 260px;
+  left: 10px;
+}
+
+/* Showing/hiding measureLength position panel */
+
+span[id^=GPshowMeasureAzimuthOpen-] {
+  background-image: url("img/GPmeasuresOpen.png");
+}
+
+/* MEASURELENGTH POSITION */
+
+div[id^=GPmeasureLength-] {
+  top: 260px;
+  left: 42px;
+}
+
+/* Showing/hiding measureLength position panel */
+
+span[id^=GPshowMeasureLengthOpen-] {
+  background-image: url("img/GPmeasuresOpen.png");
+  background-position: -26px;
 }
 
 /* MOUSE POSITION */
@@ -6518,6 +6518,39 @@ input.GPinputSubmit {
 .GPshowMoreOptions {
   background-image: url("img/GPshowMoreOptions.png");
 }
+/* ISOCHRON */
+
+#GPisochron {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+#GPshowIsochronOpen {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* General panels */
+
+#GPisochronPanel {
+  left: 8px;
+}
+
+#GPisochronPanelClose {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
 /* Geoportal Attribution */
 
 .ol-attribution .gp-control-attribution-image {
@@ -6617,39 +6650,6 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
-/* ISOCHRON */
-
-#GPisochron {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-#GPshowIsochronOpen {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* General panels */
-
-#GPisochronPanel {
-  left: 8px;
-}
-
-#GPisochronPanelClose {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
