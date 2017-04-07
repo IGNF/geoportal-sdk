@@ -837,7 +837,8 @@ function (
                     wmsOptions : {
                         mimeType : layerOpts.outputFormat,
                         name : layerNames,
-                        style : layerOpts.styleName
+                        style : layerOpts.styleName,
+                        projection : layerOpts.projection || "EPSG:4326"
                     },
                     version : layerOpts.version,
                     minScaleDenominator : minScaleDenominator || null,
