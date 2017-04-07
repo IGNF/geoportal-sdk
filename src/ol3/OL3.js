@@ -1650,18 +1650,19 @@ define([
                 } else {
                     layer = new ol.layer.Tile(constructorOpts) ;
                 }
-                this._layers.push({
+                var gpLayer = {
                     id : layerId,
                     obj : layer,
                     options : layerOpts
-                }) ;
-                this.libMap.addLayer(layer) ;
-                this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
-            }
-            if (layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled) {
-                var layerIndex = this._getLayerIndexByLayerId(layerId);
-                var gpLayer = this._layers[layerIndex];
-                this._layerToGrayScale(gpLayer,true);
+                };
+
+                if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
+                    this._convertLayerToGrayScale( gpLayer, false );
+                }
+
+                this._layers.push(gpLayer) ;
+                this.libMap.addLayer(gpLayer.obj) ;
+                this._addLayerConfToLayerSwitcher(gpLayer.obj,layerOpts) ;
             }
         } ;
 
@@ -2786,9 +2787,9 @@ define([
         } ;
 
         /**
-         *  Function to disable/enable layer color (grayscale or color mode).
+         * Function to disable/enable layer color (grayscale or color mode).
          *
-         * @param {Boolean} colorToGray - indicate transformation nature (from or to grayscale)
+         * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
          * @param {String} layerId - layer identifier
          */
         OL3.prototype.changeLayerColor = function (colorToGray,layerId) {
@@ -2811,7 +2812,7 @@ define([
 
             gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
 
-            if ( !this._layerToGrayScale(gpLayer,!colorToGray) ) {
+            if ( !this._colorGrayscaleLayerSwitch(gpLayer,!colorToGray) ) {
                 // au cas ou le navigateur ne supporte pas la conversion
                 return;
             };
@@ -2832,43 +2833,72 @@ define([
         };
 
         /**
-         *  Function to convert colored layer to grayscale
+         * Function to convert a gp colored layer to grayscale
+         *
+         * @param {Object} gpLayer - gp layer object
+         * @param {String} gpLayer.id - layer identifier
+         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
+         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
+         * @param {Boolean} mapUpdate - set to false if the layer has not already been added to the map.
+         *
+         * @returns {Boolean} isConverted indicates if the conversion has occured
          */
-        OL3.prototype._layerToGrayScale = function (gpLayer,toGrayScale) {
+        OL3.prototype._convertLayerToGrayScale = function (gpLayer, mapUpdate) {
+            if ( typeof mapUpdate === "undefined" ) {
+                mapUpdate = true;
+            }
+            var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
+
+            /**
+             *  Function to convert colored pixels to grayscale
+             */
+            var colorToGrayConvertor = function (pixels, data) {
+                var pixel = pixels[0];
+                var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
+                return [lightness, lightness, lightness, pixel[3]];
+            };
+
+            // patch pour les navigateurs ne supportant pas cette fonction
+            try {
+                constructorOpts.source = new ol.source.Raster({
+                    sources : [gpLayer.obj.getSource()],
+                    operation : colorToGrayConvertor
+                });
+            } catch (e) {
+                return false;
+            }
+
+            gpLayer.objOrigin = gpLayer.obj;
+            if ( mapUpdate ) {
+                this.libMap.removeLayer(gpLayer.obj);
+            }
+            gpLayer.obj = new ol.layer.Image(constructorOpts);
+            if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
+                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
+            }
+            return true;
+        };
+
+        /**
+         * Function to switch layer display mode between color and grayscale.
+         *
+         * @param {Object} gpLayer - gp layer object
+         * @param {String} gpLayer.id - layer identifier
+         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
+         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
+         * @param {Boolean} toGrayScale - indicates conversion direction.
+         *
+         * @returns {Boolean} isConverted indicates if the conversion has occured
+         */
+        OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
             var opacity = gpLayer.obj.getOpacity();
             var visible = gpLayer.obj.getVisible();
 
             if (toGrayScale) {
-                var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
-
-                /**
-                 *  Function to convert colored pixels to grayscale
-                 */
-                var colorToGrayConvertor = function (pixels, data) {
-                    var pixel = pixels[0];
-                    var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
-                    return [lightness, lightness, lightness, pixel[3]];
-                };
-
-                // patch pour les navigateurs ne supportant pas cette fonction
-                try {
-                    constructorOpts.source = new ol.source.Raster({
-                        sources : [gpLayer.obj.getSource()],
-                        operation : colorToGrayConvertor
-                    });
-                } catch (e) {
+                if ( !this._convertLayerToGrayScale(gpLayer) ) {
                     return false;
                 }
-
-                gpLayer.objOrigin = gpLayer.obj;
-                this.libMap.removeLayer(gpLayer.obj);
-                gpLayer.obj = new ol.layer.Image(constructorOpts);
-                if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
-                    gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
-                }
-
             } else {
-
                 // (suite) patch pour les navigateurs ne supportant pas cette fonction
                 if ( !gpLayer.objOrigin ) {
                     return ;
