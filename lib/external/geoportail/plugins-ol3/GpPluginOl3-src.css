@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2017-04-07
+ * @date 2017-04-10
  *
  */
 /* MOUSE POSITION */
@@ -2691,101 +2691,6 @@ input.GPinputSubmit {
   max-width: inherit;
   vertical-align: middle;
 }
-div[id^=GPelevationPath-] {
-  bottom: 48px;
-  left: 10px;
-}
-
-/* Showing/hiding elevationPath panel */
-
-label[id^=GPshowElevationPathPicto] {
-  display: inline-block;
-}
-
-input[id^=GPshowElevationPath-] + label {
-  display: block;
-  /*visibility: visible;*/
-}
-
-input[id^=GPshowElevationPath-]:checked + label {
-  background-color: rgba(0,60,136,0.5);
-  /* on garde le picto toujours visible... */
-  /* display: none; */
-}
-
-input[id^=GPshowElevationPath-] + label + div {
-  display: none;
-  /*visibility: hidden;*/
-}
-
-input[id^=GPshowElevationPath-]:checked + label + div {
-  display: block;
-  /*visibility: visible;*/
-}
-
-span[id^=GPshowElevationPathOpen] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-/* Panel */
-
-[id^=GPelevationPathPanelClose] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-div[id^=GPelevationPathPanelReduce] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-[id^=GPelevationPathPanel-] {
-  position : relative;
-  top : 6px;
-  left: 32px;
-  width: 280px;
-}
-
-/* ELEVATION PATH DISPLAY */
-
-[id^=GPelevationPathProfil] {
-  height: 150px;
-  width: inherit;
-}
-
-.GPpanelHeader {
-  padding: unset;
-}
-
-/*
-@media (min-width:720px) and (min-height:720px) {
-
-[id^=GPelevationPathPanel] {
-top: 15px;
-left: 15px;
-}
-
-}
-
-@media (min-width:720px) and (min-height:520px) {
-
-[id^=GPelevationPathPanel] {
-width: 460px;
-}
-
-[id^=GPelevationPathProfil] {
-height: 220px;
-}
-
-}
-
-@media (max-width:560px), (max-height:340px) {
-
-[id^=GPelevationPathPanel] {
-display: none !important;
-}
-
-}
-*/
-
 /* MOUSE POSITION */
 
 div[id^=GPdrawing-] {
@@ -3242,6 +3147,101 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
+div[id^=GPelevationPath-] {
+  bottom: 48px;
+  left: 10px;
+}
+
+/* Showing/hiding elevationPath panel */
+
+label[id^=GPshowElevationPathPicto] {
+  display: inline-block;
+}
+
+input[id^=GPshowElevationPath-] + label {
+  display: block;
+  /*visibility: visible;*/
+}
+
+input[id^=GPshowElevationPath-]:checked + label {
+  background-color: rgba(0,60,136,0.5);
+  /* on garde le picto toujours visible... */
+  /* display: none; */
+}
+
+input[id^=GPshowElevationPath-] + label + div {
+  display: none;
+  /*visibility: hidden;*/
+}
+
+input[id^=GPshowElevationPath-]:checked + label + div {
+  display: block;
+  /*visibility: visible;*/
+}
+
+span[id^=GPshowElevationPathOpen] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+/* Panel */
+
+[id^=GPelevationPathPanelClose] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+div[id^=GPelevationPathPanelReduce] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+[id^=GPelevationPathPanel-] {
+  position : relative;
+  top : 6px;
+  left: 32px;
+  width: 280px;
+}
+
+/* ELEVATION PATH DISPLAY */
+
+[id^=GPelevationPathProfil] {
+  height: 150px;
+  width: inherit;
+}
+
+.GPpanelHeader {
+  padding: unset;
+}
+
+/*
+@media (min-width:720px) and (min-height:720px) {
+
+[id^=GPelevationPathPanel] {
+top: 15px;
+left: 15px;
+}
+
+}
+
+@media (min-width:720px) and (min-height:520px) {
+
+[id^=GPelevationPathPanel] {
+width: 460px;
+}
+
+[id^=GPelevationPathProfil] {
+height: 220px;
+}
+
+}
+
+@media (max-width:560px), (max-height:340px) {
+
+[id^=GPelevationPathPanel] {
+display: none !important;
+}
+
+}
+*/
+
 /* ISOCHRON */
 
 div[id^=GPisochron-] {
@@ -3294,6 +3294,98 @@ div[id^=GPisochronPanelClose] {
 div[id^=GPisochronReset] {
   background-color: #366291;
   background-image: url("img/GPisochronOptions.png");
+}
+
+/* LAYER SWITCHER OL3 */
+
+div[id^=GPlayerSwitcher-] {
+  top: 8px;
+  right: 8px;
+}
+
+/* Showing/hiding layers list */
+
+label[id^=GPshowLayersListPicto] {
+  width: 38px;
+  height: 38px;
+}
+
+span[id^=GPshowLayersListOpen],
+span[id^=GPshowLayersListClose] {
+  top: 3px;
+  left: 3px;
+  width: 32px;
+  height: 32px;
+  background-image: url("img/GPshowLayersList.png");
+}
+
+span[id^=GPshowLayersListClose] {
+  background-position: -32px 0;
+}
+
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen] {
+  opacity: 0.7;
+}
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto]:hover span[id^=GPshowLayersListClose] {
+  background-color: rgba(0,60,136,0.4);
+}
+
+/* Layers list */
+
+.GPlayerVisibility,
+.GPshowLayerAdvancedTools,
+.GPlayerInfo,
+.GPlayerInfoOpened,
+.GPlayerRemove {
+  background-image: url("img/GPlayerTools.png");
+}
+
+/* Opacity slider : Chrome, Safari, Opera */
+
+.GPlayerOpacity input[type="range"]::-webkit-slider-runnable-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Opacity slider : Firefox */
+
+.GPlayerOpacity input[type="range"]::-moz-range-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Opacity slider : IE */
+
+.GPlayerOpacity input[type="range"]::-ms-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Layer info panel */
+
+div[id^=GPlayerInfoPanel] {
+  right: 190px;
+}
+
+div[id^=GPlayerInfoTitle] {
+  color: #366291;
+  border-bottom: 1px solid #366291;
+}
+
+div[id^=GPlayerInfoQuicklook] {
+  background-image: url("img/GPlayerInfo.png");
+}
+
+div[id^=GPlayerInfoClose] {
+  background-image: url("img/GPlayerInfoClose.png");
+}
+
+.GPlayerInfoLink,
+.GPlayerInfoPopup {
+  background-image: url("img/GPlayerInfo.png");
 }
 
 /* Layer Import */
@@ -3527,98 +3619,6 @@ div[id^="GPimportGetCapResults-"] {
   background-color: #CEDBEF
 }
 
-/* LAYER SWITCHER OL3 */
-
-div[id^=GPlayerSwitcher-] {
-  top: 8px;
-  right: 8px;
-}
-
-/* Showing/hiding layers list */
-
-label[id^=GPshowLayersListPicto] {
-  width: 38px;
-  height: 38px;
-}
-
-span[id^=GPshowLayersListOpen],
-span[id^=GPshowLayersListClose] {
-  top: 3px;
-  left: 3px;
-  width: 32px;
-  height: 32px;
-  background-image: url("img/GPshowLayersList.png");
-}
-
-span[id^=GPshowLayersListClose] {
-  background-position: -32px 0;
-}
-
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen] {
-  opacity: 0.7;
-}
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto]:hover span[id^=GPshowLayersListClose] {
-  background-color: rgba(0,60,136,0.4);
-}
-
-/* Layers list */
-
-.GPlayerVisibility,
-.GPshowLayerAdvancedTools,
-.GPlayerInfo,
-.GPlayerInfoOpened,
-.GPlayerRemove {
-  background-image: url("img/GPlayerTools.png");
-}
-
-/* Opacity slider : Chrome, Safari, Opera */
-
-.GPlayerOpacity input[type="range"]::-webkit-slider-runnable-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Opacity slider : Firefox */
-
-.GPlayerOpacity input[type="range"]::-moz-range-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Opacity slider : IE */
-
-.GPlayerOpacity input[type="range"]::-ms-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Layer info panel */
-
-div[id^=GPlayerInfoPanel] {
-  right: 190px;
-}
-
-div[id^=GPlayerInfoTitle] {
-  color: #366291;
-  border-bottom: 1px solid #366291;
-}
-
-div[id^=GPlayerInfoQuicklook] {
-  background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPlayerInfoClose] {
-  background-image: url("img/GPlayerInfoClose.png");
-}
-
-.GPlayerInfoLink,
-.GPlayerInfoPopup {
-  background-image: url("img/GPlayerInfo.png");
-}
-
 /* Location */
 
 .GPlocationOriginPointerImg,
@@ -3635,31 +3635,6 @@ div[class*="GPlocationPoint"] {
 
 .GPlocationStageFlexInput {
     margin-bottom: 5px;
-}
-
-/* MOUSE POSITION */
-
-div[id^=GPmousePosition-] {
-  bottom: 8px;
-  left: 10px;
-}
-
-/* Showing/hiding mouse position panel */
-
-span[id^=GPshowMousePositionOpen] {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* General panels */
-
-div[id^=GPmousePositionPanelClose]  {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* Map center localisation */
-
-#GPmapCenter {
-  background-image: url("img/GPmapCenter.png");
 }
 
 /* MEASURELENGTH POSITION */
@@ -3701,6 +3676,31 @@ div[id^=GPmeasureLength-] {
 span[id^=GPshowMeasureLengthOpen-] {
   background-image: url("img/GPmeasuresOpen.png");
   background-position: -26px;
+}
+
+/* MOUSE POSITION */
+
+div[id^=GPmousePosition-] {
+  bottom: 8px;
+  left: 10px;
+}
+
+/* Showing/hiding mouse position panel */
+
+span[id^=GPshowMousePositionOpen] {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* General panels */
+
+div[id^=GPmousePositionPanelClose]  {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* Map center localisation */
+
+#GPmapCenter {
+  background-image: url("img/GPmapCenter.png");
 }
 
 /* REVERSE GEOCODING */
