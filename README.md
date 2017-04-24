@@ -10,7 +10,7 @@ Il s’adresse à des gestionnaires de site internet désireux de proposer rapid
 
 * mise à disposition [d’outils d’interaction avec la carte](#controls) aux internautes
 
-* gestion de l’interaction de l’internaute avec la carte ([événements](#events)) 
+* gestion de l’interaction de l’internaute avec la carte ([événements](#events))
 
 
 ## Mise en oeuvre
@@ -34,7 +34,7 @@ Il contient l'arborescence suivante :
         img/
             (resources images utilisées par les fichiers CSS)
 
-        
+
 
 ### Intégration dans une page web
 
@@ -51,7 +51,7 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 
 ### Interfaces de programmation
 
-Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers 3](https://openlayers.org/en/v3.14.1/apidoc/) et de son [extension géoportail dédiée](https://depot.ign.fr/geoportail/extensions/ol3/develop/doc/).
+Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](https://depot.ign.fr/geoportail/extensions/ol3/develop/doc/).
 
 
 
@@ -113,7 +113,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * **Affichage d'un marker**, associé à du contenu riche, au point de centrage de la carte (*markersOptions*). [Plus d'infos sur le paramétrage des markers...](#markers) ;
 
-**Voir le code sur jsFiddle :** 
+**Voir le code sur jsFiddle :**
 
 [![jsFiddle](https://ignf.github.io/geoportal-sdk/latest/jsdoc/images/sdk-basic.png)](http://jsfiddle.net/ignfgeoportail/a9Lhp3tz/embedded/result,js,html,css/)
 
@@ -362,7 +362,7 @@ var map = Gp.Map.load(
 
 ### Configuration des markers
 
-Le SDK vous permet de rajouter des repères (markers) sur votre carte. Cela se fait à l'aide de la propriété **markersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). 
+Le SDK vous permet de rajouter des repères (markers) sur votre carte. Cela se fait à l'aide de la propriété **markersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
 Il s'agit d'un tableau javascript contenant autant d'éléments que de markers à rajouter. Chaque élément est un objet javascript de type [Gp.MarkerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MarkerOptions.html) ; il permet de préciser les caractéristiques (positionnement, apparence, ...) du repère de positionnement à afficher.
 
@@ -439,7 +439,7 @@ Les outils disponibles sont les suivants :
 
 Le SDK permet d'écouter certains événements qui se produisent lorsque les internautes intéragissent avec la carte et de définir des comportements à appliquer lorsque ces événements se produisent.
 
-Cela se fait à l'aide de la propriété **mapEventsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). 
+Cela se fait à l'aide de la propriété **mapEventsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
 Il s'agit d'un objet javascript dont les propriétés ont le nom de l'événement auquel on souhaite s'abonner et les valeurs associées sont des fonctions javascript à déclencher lorsque l'événement se produit. Chaque fonction prend comme paramètre un objet javascript représentant l'événement et ses propriétés qui vient de se produire.
 
@@ -499,7 +499,7 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 ### Interaction avec la carte créée
 
-La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**. 
+La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
 Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieursau chargement de la carte à la réception de cet événment à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
 
@@ -528,4 +528,3 @@ map = Gp.Map.load(
     }    
 ) ;
 ```
-

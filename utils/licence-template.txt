@@ -16,7 +16,7 @@
 /*!
  * OpenLayers 3. See http://openlayers.org/
  * License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
- * Version: v3.14.2
+ * Version: v4.0.1
  */
 /*!
  * Geoportal Extension for OpenLayers 3. See https://github.com/IGNF/geoportal-extensions
