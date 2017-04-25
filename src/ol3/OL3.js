@@ -1574,7 +1574,7 @@ define([
                     var sourceOpts = {
                         url : layerOpts.url,
                         params : params
-                        //,
+                        // ,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
                         // /!\ désactivation temporaire pour bon affichage de couches externes
                         // crossOrigin : "anonymous"
@@ -1603,8 +1603,7 @@ define([
                         matrixSet : layerOpts.tileMatrixSet,
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
-                        style : layerOpts.styleName
-                        //,
+                        style : layerOpts.styleName,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
                         // /!\ désactivation temporaire pour bon affichage de couches externes
                         // crossOrigin : "anonymous",
@@ -1632,7 +1631,7 @@ define([
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
                         url : layerOpts.url
-                        //,
+                        // ,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
                         // /!\ désactivation temporaire pour bon affichage de couches externes
                         // crossOrigin : "anonymous"
