@@ -1573,9 +1573,11 @@ define([
                     }
                     var sourceOpts = {
                         url : layerOpts.url,
-                        params : params,
+                        params : params
+                        // ,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        crossOrigin : "anonymous"
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
                         sourceOpts.projection = layerOpts.projection ;
@@ -1603,7 +1605,8 @@ define([
                         version : layerOpts.version,
                         style : layerOpts.styleName,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        crossOrigin : "anonymous",
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
                                 layerOpts.topLeftCorner.x,
@@ -1627,9 +1630,11 @@ define([
                 case "OSM":
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
-                        url : layerOpts.url,
+                        url : layerOpts.url
+                        // ,
                         // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        crossOrigin : "anonymous"
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous"
                     });
                     break;
                 default:
@@ -1928,7 +1933,8 @@ define([
             }
 
             // ajout pour pouvoir utiliser la fonction changeLayerColor
-            olLayer.getSource().crossOrigin = "anonymous";
+            // /!\ désactivation temporaire pour bon affichage de couches externes
+            // olLayer.getSource().crossOrigin = "anonymous";
 
             this._layers.push({
                 id : layerId,
