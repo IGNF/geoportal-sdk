@@ -1684,6 +1684,43 @@ define([
             var layerId = Object.keys(layerObj)[0] ;
             var layerOpts = layerObj[layerId] ;
             var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
+
+            var layerStyleOptions = layerOpts.styleOptions || {};
+            var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
+            var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
+            var styleOptions = {};
+            styleOptions.image = new ol.style.Icon({
+                src : layerStyleOptions.markerSrc || defaultMapOptions.markerSrc || defaultOptions.markerSrc,
+                anchor : [
+                    layerStyleOptions.markerXAnchor || defaultMapOptions.markerXAnchor || defaultOptions.markerXAnchor,
+                    layerStyleOptions.markerYAnchor || defaultMapOptions.markerYAnchor || defaultOptions.markerYAnchor
+                ],
+                anchorOrigin : "top-left",
+                anchorXUnits : "pixels",
+                anchorYUnits : "pixels"
+            });
+            styleOptions.stroke = new ol.style.Stroke({
+                color : IMap._hexToRgba(layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
+                width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
+            });
+            styleOptions.fill = new ol.style.Fill({
+                color : IMap._hexToRgba(layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
+            });
+            styleOptions.text = new ol.style.Text({
+                font : "16px Sans",
+                textAlign : "left",
+                fill : new ol.style.Fill({
+                    color : IMap._hexToRgba(layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
+                })
+            });
+            if ( layerStyleOptions.textStrokeColor ) {
+                styleOptions.text.stroke = new ol.style.Stroke({
+                    color : IMap._hexToRgba(layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
+                    width : 1
+                });
+            }
+            var vectorStyle = new ol.style.Style(styleOptions);
+
             switch (layerOpts.format.toUpperCase()) {
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
@@ -1700,7 +1737,8 @@ define([
                     var urlKml = this.setProxy(layerOpts.url);
                     var formatKml = new ol.format.KMLExtended({
                         extractStyles : layerOpts.extractStyles,
-                        showPointNames : layerOpts.showPointNames
+                        showPointNames : layerOpts.showPointNames,
+                        defaultStyle : [vectorStyle]
                     });
                     constructorOpts.source = new ol.source.Vector({
                         features : new ol.Collection(),
@@ -1735,6 +1773,7 @@ define([
                         url : this.setProxy(layerOpts.url),
                         format : new ol.format.GPX()
                     });
+                    constructorOpts.style = vectorStyle;
                     break;
                 case "GEORSS":
                     // TODO GeoRSS
@@ -1745,6 +1784,7 @@ define([
                         url : this.setProxy(layerOpts.url),
                         format : new ol.format.GeoJSON()
                     });
+                    constructorOpts.style = vectorStyle;
                     break;
                 case "WFS":
                     // TODO : gestion des valeurs par defaut

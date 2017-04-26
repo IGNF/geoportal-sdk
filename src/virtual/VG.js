@@ -723,7 +723,6 @@ function (
                 this.logger.trace("ajout d'une couche KML");
                 var layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
                         title : layerOpts.title || layerId,
                         version : layerOpts.version,
@@ -736,7 +735,6 @@ function (
                 this.logger.trace("ajout d'une couche GPX");
                 layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
                         title : layerOpts.title || layerId,
                         version : layerOpts.version,
