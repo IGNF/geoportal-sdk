@@ -284,6 +284,7 @@
          * @property {Float} [azimuth=0] - Map orientation in decimal degrees clockwise to the north.
          * @property {Integer | Float} [zoom=10] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
          * @property {Array.<Gp.MarkerOptions>} [markersOptions] - Options for displaying markers on the map.
+         * @property {Gp.StyleOptions} [defaultFeaturesStyle] - Default style options for vector layers features (KML, GPX, GeoJSON).
          * @property {Object} [layersOptions] - Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide.
          * @property {Object} [controlsOptions] - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties.
          * @property {Object} [mapEventsOptions] - Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects.
@@ -300,7 +301,6 @@
          * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
          * @property {Float} [tilt=0] - (3d only) Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view.
          * @property {String} [library="ol3"] - Cartographic library used with the Geoportal API. Supported values are : 'ol3', '3d'.
-         * @property {Object} [defaultVectorLayersStyles] - default style options to be used for vector layers (KML, GPX, GeoJSON). Same as Gp.LayerOptions.styleOptions.
          */
         } ;
 
@@ -377,17 +377,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
-         * | styleOptions | Object | options for layer style (points, strokes, polygons) |
-         * | styleOptions.markerSrc | String | URL of a marker image (for points styling). Default is an orange marker. |
-         * | styleOptions.markerXAnchor | Float | Position of marker anchor in X from left of the image expressed in proportion of 1 (for points styling). Default is 25.5 |
-         * | styleOptions.markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in proportion of 1 (for points styling). Default is 38 |
-         * | styleOptions.strokeColor | String | Stroke color for lines or polygons border styling (RGB hex value). Default is "#002A50" |
-         * | styleOptions.strokeWidth | Number | Stroke width in pixels for lines or polygons border styling. Default is 4 |
-         * | styleOptions.strokeOpacity | Number | Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8 |
-         * | styleOptions.polyFillColor | String | Polygons fill color (RGB hex value). Default is "#00B798" |
-         * | styleOptions.polyFillOpacity | Number | Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5 |
-         * | styleOptions.textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF" |
-         * | styleOptions.textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000" |
+         * | styleOptions | {@link Gp.StyleOptions} | options for layer style (points, strokes, polygons) |
          *
          * ### WMS specific properties
          *
@@ -781,6 +771,27 @@
          */
         var controlOptions = {
         } ;
+
+        /**
+        *
+        * Options for vector layers styling (KML, GPX, GeoJSON)
+        *
+        * @namespace
+        * @alias Gp.StyleOptions
+        *
+        * @property {String} markerSrc - URL of a marker image (for points styling). Default is an orange marker.
+        * @property {Float} markerXAnchor - Position of marker anchor in X from left of the image expressed in pixels (for points styling). Default is 25.5.
+        * @property {Float} markerYAnchor - Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38.
+        * @property {String} strokeColor - Stroke color for lines or polygons border styling (RGB hex value). Default is "#002A50".
+        * @property {Number} strokeWidth - Stroke width in pixels for lines or polygons border styling. Default is 4.
+        * @property {Number} strokeOpacity - Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8.
+        * @property {String} polyFillColor - Polygons fill color (RGB hex value). Default is "#00B798".
+        * @property {Number} polyFillOpacity - Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5.
+        * @property {String} textColor - Text fill color for labels (RGB hex value). Default is "#FFFFFF".
+        * @property {String} textStrokeColor - Text surrounding color for labels (RGB hex value). Default is "#000000".
+        */
+        var styleOptions = {
+        };
 
         return Map;
     });

@@ -1681,8 +1681,7 @@ define([
             var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
 
             var layerStyleOptions = layerOpts.styleOptions || {};
-            // TODO : l'option defaultVectorLayersStyles des mapOptions n'est pas encore documentée. 
-            var defaultMapOptions = this.mapOptions.defaultVectorLayersStyles || {};
+            var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
             var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
             var styleOptions = {};
             styleOptions.image = new ol.style.Icon({
