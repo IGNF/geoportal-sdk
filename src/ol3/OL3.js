@@ -1546,11 +1546,10 @@ define([
                     // au cas ou maintien de l'ancien nom de paramètre :
                     // layerOpts.styleName (sans "s")
                     layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName ;
-                    if (layerOpts.stylesNames) {
-                        params.STYLES = "";
-                        for (var i = 0; i < layerOpts.stylesNames.length; i++) {
-                            params.STYLES += layerOpts.stylesNames[i] + ",";
-                        }
+                    if ( Array.isArray(layerOpts.stylesNames) ) {
+                        params.STYLES = layerOpts.stylesNames.join();
+                    } else {
+                        console.log("'stylesNames' parameter should be an array of style names (string)");
                     }
                     if (layerOpts.outputFormat) {
                         params.FORMAT = layerOpts.outputFormat;
