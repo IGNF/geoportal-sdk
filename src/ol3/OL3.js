@@ -563,87 +563,77 @@ define([
                 var fillOpacity;
                 var fillColor;
                 if ( controlOpts.defaultStyles.KML ) {
-                    var kmlDefaultStyles = controlOpts.defaultStyles.KML;
+                    var userKMLDefaultStyles = controlOpts.defaultStyles.KML;
+                    var kmldefaultStyleOptions = {};
+                    kmldefaultStyleOptions.image = new ol.style.Icon({
+                        src : userKMLDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userKMLDefaultStyles.markerXAnchor || 25.5, userKMLDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userKMLDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userKMLDefaultStyles.strokeColor || "#002A50";
+                    kmldefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userKMLDefaultStyles.strokeWidth || 4
+                    });
+                    fillOpacity = userKMLDefaultStyles.polyFillOpacity || 0.5;
+                    fillColor = userKMLDefaultStyles.polyFillColor || "#00B798";
+                    kmldefaultStyleOptions.fill = new ol.style.Fill({
+                        color : IMap._hexToRgba(fillColor, fillOpacity)
+                    });
+                    var kmldefaultStyle = new ol.style.Style(kmldefaultStyleOptions);
                     importOpts.vectorStyleOptions.KML = {
-                        defaultStyle : {}
+                        defaultStyle : kmldefaultStyle
                     };
-                    if ( kmlDefaultStyles.markerSrc || kmlDefaultStyles.markerXAnchor ||  kmlDefaultStyles.markerYAnchor ) {
-                        importOpts.vectorStyleOptions.KML.defaultStyle.image = new ol.style.Icon({
-                            src : kmlDefaultStyles.markerSrc || defaultMarkerSrc,
-                            anchor : [ kmlDefaultStyles.markerXAnchor || 25.5, kmlDefaultStyles.markerYAnchor || 38],
-                            anchorOrigin : "top-left",
-                            anchorXUnits : "pixels",
-                            anchorYUnits : "pixels"
-                        });
-                    }
-                    if ( kmlDefaultStyles.strokeColor || kmlDefaultStyles.strokeWidth) {
-                        strokeOpacity = kmlDefaultStyles.strokeOpacity || 0.8;
-                        strokeColor = kmlDefaultStyles.strokeColor || "#002A50";
-                        importOpts.vectorStyleOptions.KML.defaultStyle.stroke = new ol.style.Stroke({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
-                            width : kmlDefaultStyles.strokeWidth || 4
-                        });
-                    }
-                    if ( kmlDefaultStyles.polyFillColor || kmlDefaultStyles.polyFillOpacity ) {
-                        fillOpacity = kmlDefaultStyles.polyFillOpacity || 0.5;
-                        fillColor = kmlDefaultStyles.polyFillColor || "#00B798";
-                        importOpts.vectorStyleOptions.KML.defaultStyle.fill = new ol.style.Fill({
-                            color : IMap._hexToRgba(fillColor, fillOpacity)
-                        });
-                    }
                 }
                 if ( controlOpts.defaultStyles.GPX ) {
-                    var gpxDefaultStyles = controlOpts.defaultStyles.GPX;
+                    var userGPXDefaultStyles = controlOpts.defaultStyles.GPX;
+                    var gpxdefaultStyleOptions = {};
+                    gpxdefaultStyleOptions.image = new ol.style.Icon({
+                        src : userGPXDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userGPXDefaultStyles.markerXAnchor || 25.5, userGPXDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userGPXDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userGPXDefaultStyles.strokeColor || "#002A50";
+                    gpxdefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userGPXDefaultStyles.strokeWidth || 4
+                    });
+                    var gpxdefaultStyle = new ol.style.Style(gpxdefaultStyleOptions);
                     importOpts.vectorStyleOptions.GPX = {
-                        defaultStyle : {}
+                        defaultStyle : gpxdefaultStyle
                     };
-                    if ( gpxDefaultStyles.markerSrc || gpxDefaultStyles.markerXAnchor ||  gpxDefaultStyles.markerYAnchor ) {
-                        importOpts.vectorStyleOptions.GPX.defaultStyle.image = new ol.style.Icon({
-                            src : gpxDefaultStyles.markerSrc || defaultMarkerSrc,
-                            anchor : [ gpxDefaultStyles.markerXAnchor || 25.5, gpxDefaultStyles.markerYAnchor || 38],
-                            anchorOrigin : "top-left",
-                            anchorXUnits : "pixels",
-                            anchorYUnits : "pixels"
-                        });
-                    }
-                    if ( gpxDefaultStyles.strokeColor || gpxDefaultStyles.strokeWidth) {
-                        strokeOpacity = gpxDefaultStyles.strokeOpacity || 0.8;
-                        strokeColor = gpxDefaultStyles.strokeColor || "#002A50";
-                        importOpts.vectorStyleOptions.GPX.defaultStyle.stroke = new ol.style.Stroke({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
-                            width : gpxDefaultStyles.strokeWidth || 4
-                        });
-                    }
                 }
                 if ( controlOpts.defaultStyles.GeoJSON ) {
-                    var geoJSONDefaultStyles = controlOpts.defaultStyles.GeoJSON;
+                    var userGeoJSONDefaultStyles = controlOpts.defaultStyles.GeoJSON;
+                    var geoJSONdefaultStyleOptions = {};
+                    geoJSONdefaultStyleOptions.image = new ol.style.Icon({
+                        src : userGeoJSONDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userGeoJSONDefaultStyles.markerXAnchor || 25.5, userGeoJSONDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userGeoJSONDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userGeoJSONDefaultStyles.strokeColor || "#002A50";
+                    geoJSONdefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userGeoJSONDefaultStyles.strokeWidth || 4
+                    });
+                    fillOpacity = userGeoJSONDefaultStyles.polyFillOpacity || 0.5;
+                    fillColor = userGeoJSONDefaultStyles.polyFillColor || "#00B798";
+                    geoJSONdefaultStyleOptions.fill = new ol.style.Fill({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity)
+                    });
+                    var geoJSONdefaultStyle = new ol.style.Style(geoJSONdefaultStyleOptions);
                     importOpts.vectorStyleOptions.GeoJSON = {
-                        defaultStyle : {}
+                        defaultStyle : geoJSONdefaultStyle
                     };
-                    if ( geoJSONDefaultStyles.markerSrc || geoJSONDefaultStyles.markerXAnchor ||  geoJSONDefaultStyles.markerYAnchor ) {
-                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.image = new ol.style.Icon({
-                            src : geoJSONDefaultStyles.markerSrc || defaultMarkerSrc,
-                            anchor : [ geoJSONDefaultStyles.markerXAnchor || 25.5, geoJSONDefaultStyles.markerYAnchor || 38],
-                            anchorOrigin : "top-left",
-                            anchorXUnits : "pixels",
-                            anchorYUnits : "pixels"
-                        });
-                    }
-                    if ( geoJSONDefaultStyles.strokeColor || geoJSONDefaultStyles.strokeWidth) {
-                        strokeOpacity = geoJSONDefaultStyles.strokeOpacity || 0.8;
-                        strokeColor = geoJSONDefaultStyles.strokeColor || "#002A50";
-                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.stroke = new ol.style.Stroke({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
-                            width : geoJSONDefaultStyles.strokeWidth || 4
-                        });
-                    }
-                    if ( geoJSONDefaultStyles.polyFillColor || geoJSONDefaultStyles.polyFillOpacity ) {
-                        fillOpacity = geoJSONDefaultStyles.polyFillOpacity || 0.5;
-                        fillColor = geoJSONDefaultStyles.polyFillColor || "#00B798";
-                        importOpts.vectorStyleOptions.GeoJSON.defaultStyle.fill = new ol.style.Fill({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity)
-                        });
-                    }
                 }
             }
             var control = new ol.control.LayerImport(importOpts);
