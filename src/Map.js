@@ -641,6 +641,7 @@
          * | styles.finish.strokeColor | String | Stroke color |
          * | styles.finish.strokeWidth | Number | Stroke width in pixels |
          * | styles.finish.strokeLineDash | Array(Number) | Line dash pattern : line and spaces widths |
+         * | geodesic | Boolean | If false (default), not use geodesic method to compute the distance |
          *
          * <a id="elevationpath"></a>
          *

@@ -906,6 +906,11 @@ define([
                 }
             }
 
+            // geodesic
+            if (controlOpts.hasOwnProperty("geodesic")) {
+                azimuthOpts.geodesic = controlOpts.geodesic ;
+            }
+
             var control = new ol.control.MeasureAzimuth(azimuthOpts);
             this.libMap.addControl(control);
             return control;
