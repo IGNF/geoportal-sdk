@@ -77,6 +77,7 @@
                 // auto detect lib. loaded
                 var OL3 = null;
                 var VG  = null;
+                var IT  = null;
 
                 if (this.__classOl !== null && typeof this.__classOl === "function") {
                     OL3 = this.__classOl;
@@ -84,6 +85,10 @@
 
                 if (this.__classVg !== null && typeof this.__classVg === "function") {
                     VG = this.__classVg;
+                }
+
+                if (this.__classItowns !== null && typeof this.__classItowns === "function") {
+                    IT = this.__classItowns;
                 }
 
                 // TODO => autres implementations
@@ -112,6 +117,18 @@
                         }
 
                         objMap = new VG({
+                            div : div,
+                            mapOptions : mapOptions
+                        });
+
+                        break;
+                    case "itowns":
+                        logger.trace("construction du globe iTowns 3D");
+                        if (IT === null || typeof IT !== "function") {
+                            throw new Error("library itowns is not loaded !");
+                        }
+
+                        objMap = new IT({
                             div : div,
                             mapOptions : mapOptions
                         });

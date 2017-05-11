@@ -38,7 +38,7 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ Options
     //| > usage : gulp [task]
-    //| > usage : gulp [task] --ol3 | --vg | --mix (ol3 by default)
+    //| > usage : gulp [task] --ol3 | --vg | --itowns | --mix (ol3+vg) | --mixIt (ol3+itowns) (ol3 by default)
     //| > usage : gulp [task] --production
     //| > usage : gulp [task] --debug
     //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -47,25 +47,27 @@
     // options
     var isOl3  = opts.ol3;
     var isVG   = opts.vg;
+    var isItowns   = opts.itowns;
     var isMix  = opts.mix;
+    var isMixIt  = opts.mixIt;
 
     var isProduction = opts.production;
     var isDebug = opts.debug;
 
     // execution par defaut
-    if (!isOl3 && !isVG && !isMix) {
+    if (!isOl3 && !isVG && !isItowns && !isMix && !isMixIt) {
         isOl3 = true; // par defaut !
     }
 
     // build dist directory
     var getDistDirName = function () {
-        var dirName = (isOl3) ? 'ol3' : (isVG) ? 'virtual' : (isMix) ? 'mix' : null;
+        var dirName = (isOl3) ? 'ol3' : (isVG) ? 'virtual' : (isItowns) ? 'itowns' : (isMix) ? 'mix' : (isMixIt) ? 'mixIt' : null;
         return dirName;
     };
 
     // bundle
     var getBaseFileName = function () {
-        var baseFileName = (isOl3) ? 'GpOl3' : (isVG) ? 'GpVG' : (isMix) ? 'GpOL3VG' : null;
+        var baseFileName = (isOl3) ? 'GpOl3' : (isVG) ? 'GpVG' : (isItowns) ? 'GpItowns' : (isMix) ? 'GpOL3VG' : (isMixIt) ? 'GpOL3Itowns' : null;
         return baseFileName;
     };
 
@@ -209,10 +211,19 @@
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
              _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
-            _deps["gp"] = pluginsDir + "GpPluginVg-src";
+             _deps["gp"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
              // VirtualGeo est déjà déclaré globale :
              //     _globalModules.push('VirtualGeo');
+        }
+
+        // param bundle itowns
+        else if (isItowns) {
+             pluginsDir = "../lib/external/geoportail/plugins-itowns/";
+             _deps.itowns = "../lib/external/itowns/js/itowns";
+            _deps["gp"] = pluginsDir + "GpPluginItowns-src";
+             _includes.push("itowns/IT");
+             _globalModules.push('itowns');
         }
 
         else if (isMix) {
@@ -224,9 +235,21 @@
             _includes.push("ol3/OL3");
             _globalModules.push('ol');
 
+        } else if (isMixIt) {
+            _deps.ol = "../lib/external/ol3/ol";
+            _deps.it = "../lib/external/itowns/js/itowns";
+            pluginsDir = "../lib/external/geoportail/plugins-mixIt/";
+            _deps["gp"] = pluginsDir + "GpPluginOl3Itowns-src";
+            _includes.push("itowns/IT");
+            _includes.push("ol3/OL3");
+            _globalModules.push('ol', 'itowns');
+
         } else {
             // TODO ...
         }
+console.log(_includes);
+console.log(_deps);
+console.log(_globalModules);
 
         // on ajoute le point d'entrée du programme
         _includes.push("AHN");
@@ -431,9 +454,16 @@
         else if (isVG) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*.png"));
         }
+        else if (isItowns) {
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-itowns", "**", "*.png"));
+        }
         else if (isMix) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.png"));
             svgdir = path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.svg");
+        }
+        else if (isMixIt) {
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.png"));
+            svgdir = path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.svg");
         }
         else {
             $.util.log("Exception !");
@@ -510,6 +540,12 @@
             srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
             srcdir.push(path.join(_.res, "virtual", "*.css"));
+        }
+        else if (isMixIt) {
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*-src.css"));
+            srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
+            srcdir.push(path.join(_.res, "ol3", "*.css"));
+            srcdir.push(path.join(_.res, "itowns", "*.css"));
         }
         else {
             $.util.log("Exception !");
@@ -656,8 +692,14 @@
         else if (isVG) {
             gulp.start("build-vg");
         }
+        else if (isItowns) {
+            gulp.start("build-itowns");
+        }
         else if (isMix) {
             gulp.start("build-mix");
+        }
+        else if (isMixIt) {
+            gulp.start("build-mixIt");
         }
         else {
             // TODO erreur !
@@ -667,6 +709,7 @@
 
     gulp.task("build-ol3", function(cb) {
         isVG = false;
+        isItowns = false;
         isOl3 = true;
         $.util.log("# Run task for OpenLayers3...");
         runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', cb);
@@ -674,17 +717,38 @@
 
     gulp.task("build-vg", function(cb) {
         isVG = true;
+        isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for VirtualGeo 3D...");
         runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', 'copy-vg-engine', cb);
     });
 
+    gulp.task("build-itowns", function(cb) {
+        isItowns = true;
+        isVG = false;
+        isOl3 = false;
+        $.util.log("# Run task for iTowns 3D...");
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', cb);
+    });
+
     gulp.task("build-mix", function(cb) {
         isMix = true;
+        isMixIt = false;
         isVG  = false;
+        isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for VirtualGeo 3D with OpenLayers3...");
         runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-vg-engine', cb);
+    });
+
+    gulp.task("build-mixIt", function(cb) {
+        isMixIt = true;
+        isMix = false;
+        isVG  = false;
+        isItowns = false;
+        isOl3 = false;
+        $.util.log("# Run task for iTowns with OpenLayers3...");
+        runSequence('check', 'test', 'sample', 'res', 'dist', cb);
     });
 
     gulp.task('build-dist', function(callback) {

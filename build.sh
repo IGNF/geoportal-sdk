@@ -26,6 +26,19 @@ function mix() {
   gulp publish
 }
 
+# mix itowns
+function mixIt() {
+  echo "####### Mix itowns debug !"
+  gulp --debug --mixIt
+  gulp publish
+  echo "####### Mix itowns production !"
+  gulp --production --mixIt
+  gulp publish
+  echo "####### Mix itowns !"
+  gulp --mixIt
+  gulp publish
+}
+
 # ol3
 function ol3() {
   echo "####### OL debug !"
@@ -52,7 +65,20 @@ function vg() {
   gulp publish
 }
 
-while getopts "aomv" opts
+# itowns
+function itowns() {
+  echo "####### iTowns debug !"
+  gulp --debug --itowns
+  gulp publish
+  echo "####### iTowns production !"
+  gulp --production --itowns
+  gulp publish
+  echo "####### iTowns !"
+  gulp --itowns
+  gulp publish
+}
+
+while getopts "aomiv" opts
 do
    case $opts in
      o)
@@ -65,6 +91,12 @@ do
         echo "####### Mixte bundle ! ########"
         mix
         ;;
+     i)
+       echo "#################################"
+       echo "####### Standalone + mixte itowns bundle ! ########"
+       itowns
+       mixIt
+       ;;
      v)
         echo "#################################"
         echo "###### VirtualGeo bundle ! ######"
@@ -78,7 +110,7 @@ do
         vg
         ;;
      \?)
-        echo "$OPTARG : invalide, use option : -a(all), -o(openlayers), -m(mix) or -v(virtualgeo) !"
+        echo "$OPTARG : invalide, use option : -a(all), -o(openlayers), -m(mix), -i(mix itowns) or -v(virtualgeo) !"
         exit -1
         ;;
    esac
@@ -86,7 +118,7 @@ done
 
 if [ $# -eq 0 ]
 then
-  echo "use option : -a(all), -o(openlayers), -m(mix) or -v(virtualgeo) !"
+  echo "use option : -a(all), -o(openlayers), -m(mix), -i(mix itowns) or -v(virtualgeo) !"
 fi
 
 echo "END"

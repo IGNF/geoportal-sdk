@@ -26,6 +26,13 @@ function (
         Gp.Map.__classVg = require("virtual/VG");
         Gp.Map._class = Gp.Map.__classOl.prototype; // IMap !
 
+    } else if ( typeof require("ol3/OL3") !== "undefined" &&
+         typeof require("itowns/IT") !== "undefined") {
+        console.log("Lib. ol3 et itowns détectées !");
+        Gp.Map.__classOl = require("ol3/OL3");
+        Gp.Map.__classItowns = require("itowns/IT");
+        Gp.Map._class = Gp.Map.__classOl.prototype; // IMap !
+
     } else if ( typeof require("ol3/OL3") !== "undefined") {
         console.log("Lib. ol3 détectée !");
         Gp.Map.__classOl = require("ol3/OL3");
@@ -35,6 +42,11 @@ function (
         console.log("Lib. virtualgeo détectée !");
         Gp.Map.__classVg = require("virtual/VG");
         Gp.Map._class = Gp.Map.__classVg.prototype; // IMap !
+
+    } else if ( typeof require("itowns/IT") !== "undefined") {
+        console.log("Lib. itowns détectée !");
+        Gp.Map.__classItowns = require("itowns/IT");
+        Gp.Map._class = Gp.Map.__classItowns.prototype; // IMap !
 
     } else {
         console.log("Aucune lib. détectée !?");
