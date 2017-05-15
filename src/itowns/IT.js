@@ -163,17 +163,21 @@ function (
                     url : layerOpts.url,
                     protocol : layerOpts.format,
                     id : layerId,
+                    name : layerNames,
+                    style : layerOpts.styleName || "normal",
                     title : layerOpts.title || layerId,
-                    wmsOptions : {
-                        mimetype : layerOpts.outputFormat,
-                        name : layerNames,
-                        style : layerOpts.styleName,
-                        projection : layerOpts.projection || "EPSG:4326"
+                    projection : layerOpts.projection || "EPSG:4326",
+                    bbox : layerOpts.bbox || [-180, -90, 180, 90],
+                    transparent : true,
+                    waterMask : false,
+                    options : {
+                        mimetype : layerOpts.outputFormat
                     },
-                    version : layerOpts.version,
-                    minScaleDenominator : minScaleDenominator || null,
-                    maxScaleDenominator : maxScaleDenominator || null,
-                    processingOptions : layerOpts.processingOptions
+                    updateStrategy : {
+                        type : 0,
+                        options : {}
+                    },
+                    version : layerOpts.version
                 };
                 break;
             case "WMTS":
@@ -205,15 +209,6 @@ function (
                     minScaleDenominator : minScaleDenominator || null,
                     maxScaleDenominator : maxScaleDenominator || null,
                     processingOptions : layerOpts.processingOptions
-                };
-                break;
-            case "VIRTUALGEO":
-                this.logger.trace("ajout d'une couche VirtualGeo");
-                var layer = {
-                    url : layerOpts.url,
-                    protocol : layerOpts.format,
-                    id : layerId,
-                    title : layerOpts.title || layerId
                 };
                 break;
             default:
@@ -283,7 +278,7 @@ function (
              console.log("no valid coordinates for map center") ;
              return ;
          }
-         // we keep the current range  
+         // we keep the current range
          var mapRange = this.libMap.viewer.getRange();
 
          var coordinates = {
@@ -296,6 +291,26 @@ function (
          this.libMap.viewer.init();
          this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
      };
+
+    /**
+      * Remove the layers listed to the map.
+      *
+      * @param {Array.<String>} layerIds - A list of layer's id or null.
+      */
+    IT.prototype.removeLayers = function (layerIds) {
+         if (!IMap.prototype.removeLayers.apply(this,arguments)) {
+             return false ;
+         }
+         if (!Array.isArray(layerIds)) {
+             layerIds = [layerIds] ;
+         }
+         // ici on sait que layerIds est un tableau
+         layerIds.forEach(function (_layerId) {
+             this.libMap.viewer.removeImageryLayer(_layerId) ;
+         },
+         this) ;
+
+     } ;
 
     return IT;
 });
