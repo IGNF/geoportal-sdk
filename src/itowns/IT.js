@@ -69,20 +69,36 @@ function (
         // creation de la view
         /* global itowns,document,GuiTools*/
         var positionOnGlobe = {
-            longitude : 2.3465,
-            latitude : 48.88,
+            longitude : 0,
+            latitude : 0,
             altitude : 25000000
         };
 
         // iTowns namespace defined here
         var viewerDiv = document.getElementById("viewerDiv");
-        itowns.viewer.createSceneGlobe(positionOnGlobe, viewerDiv);
+        // this.libMap = itowns;
+        // creation de la map vide
+        this.libMap = window.itowns;
+        this.libMap.viewer.createSceneGlobe(positionOnGlobe, viewerDiv);
+        this._afterInitMap() ;
     } ;
+
     /**
-     * Empty Map initialization
+     * center Map on a given point
+     *
+     * @param {Object} point - center point
+     * @param {Float} point.x - x coordinates for center
+     * @param {Float} point.y - y coordinates for center
+     * @param {String} point.projection - srs center coordinates
      */
-    IT.prototype.testFunction = function () {
-        console.log("test function is coming");
+    IT.prototype.setXYCenter = function (point) {
+        this.logger.trace("[IT] - setXYCenter") ;
+        if ( !point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
+            console.log("no valid coordinates for map center") ;
+            return ;
+        }
+        this.libMap.viewer.setCenter(point, false);
+        this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
     return IT;

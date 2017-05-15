@@ -247,9 +247,6 @@
         } else {
             // TODO ...
         }
-console.log(_includes);
-console.log(_deps);
-console.log(_globalModules);
 
         // on ajoute le point d'entrée du programme
         _includes.push("AHN");

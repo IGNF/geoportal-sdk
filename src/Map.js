@@ -10,13 +10,15 @@
  /* globals Gp: true */
  define([
         "Utils/LoggerByDefault",
-        "require"
+        "require",
+        "itowns/IT"
         // "ol3/OL3",
         // "virtual/VG"
     ],
     function (
         Logger,
-        require
+        require,
+        IT
         // OL3,
         // VG
     ) {
