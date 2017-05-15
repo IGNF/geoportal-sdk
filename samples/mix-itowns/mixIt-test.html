@@ -5,14 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="stylesheet" href="../../dist/mixIt/GpOL3Itowns-src.css" type="text/css">
         <style>
-          #geoportalMap1 {
+          #viewerDiv {
             height: 400px;
             width: 600px;
             position: relative;
-          }
-          #geoportalMap2 {
-            height: 400px;
-            width: 600px;
           }
         </style>
         <script src="../../dist/mixIt/GpOL3Itowns-debug.js"></script>
@@ -22,12 +18,18 @@
         <h2>CAS 1 : Carte 3D.</h2>
         <p>La carte est zoomée au niveau 5 (étendue correspondant à l'Ile de France).</p>
         <div id="viewerDiv"></div>
-        <h2>CAS 2 : Carte 2D.</h2>
-        <p>La carte est zoomée sur la résolution 9.554628535647032 (étendue correspondant à l'île Saint Louis).</p>
-        <div id="geoportalMap2"></div>
 
         <script type="text/javascript">
-
+        var map = Gp.Map.load('viewerDiv',{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "itowns",
+            "ORTHOIMAGERY.ORTHOPHOTOS" : {
+            },
+            center : {
+                x : 4.84671,
+                y : 45.74846
+            }
+        });
 
         </script>
     </body>

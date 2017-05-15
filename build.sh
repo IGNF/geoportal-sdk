@@ -94,7 +94,6 @@ do
      i)
        echo "#################################"
        echo "####### Standalone + mixte itowns bundle ! ########"
-       itowns
        mixIt
        ;;
      v)
