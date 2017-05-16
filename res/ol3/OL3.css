@@ -69,6 +69,7 @@
   max-width: 420px;
   min-width: 260px;
   max-height: 340px;
+  margin-right: 20px;
   overflow: auto;
 }
 
@@ -143,7 +144,7 @@
 
 /* Positionnement spécifique à droite des outils de mesures */
 
-#GPtoolbox-measure-main { 
+div[id^="GPtoolbox-measure-main-"] {
     float: right;
     right: 8px;
     left :auto;
@@ -152,7 +153,7 @@
     display: inline-block;
     z-index: 1;
 }
-[id^=GPelevationPathPanel-] {
+div[id^="GPelevationPathPanel-"] {
     position : absolute;
     top : 6px;
     left: auto;
@@ -162,10 +163,37 @@
 }
 
 
-/* LayerSwitcher uber alles */
+/* Gestion des z-index : cote droit */
 
-#GPlayerSwitcher {
+/* LayerSwitcher uber alles */
+div[id^="GPlayerSwitcher-"] {
   z-index: 10;
 }
 
+/* Drawing zindex > toolbox */
+div[id^="GPdrawing-"] {
+  z-index: 8;
+}
 
+
+/* Gestion des z-index : cote gauche */
+
+/* Route zindex > isocurve */
+div[id^="GProute-"] {
+  z-index: 8;
+}
+
+/* Isocurve zindex > reverse */
+div[id^="GPisochron-"] {
+  z-index: 6;
+}
+
+/* Reverse zindex > import */
+div[id^="GPreverseGeocoding-"] {
+  z-index: 4;
+}
+
+/* Import zindex min */
+div[id^="GPimport-"] {
+  z-index: 2;
+}

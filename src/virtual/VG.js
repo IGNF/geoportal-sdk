@@ -2,13 +2,13 @@
 define([
     "Utils/LoggerByDefault",
     "vg",
-    "plugins-vg",
+    "gp", // "plugins-vg"
     "IMap"
 ],
 function (
     Logger,
     vg,
-    plugins,
+    plugins, // Gp globale !?
     IMap
 ) {
 
@@ -155,35 +155,17 @@ function (
     };
 
     /**
-     * Retourne les coordonnées des 4 coins de la vue courante
+     * Retourne les coordonnées de l'extent de la vue courante
      */
     VG.prototype.getViewExtent = function () {
-        var mapDiv = this.div;
-        var topLeft = {};
-        var bottomRight = {};
-        // on teste le pick sur l'axe des y au cas où la vue est inclinée
-        for (var x = 0; x <= mapDiv.offsetHeight; x = x + mapDiv.offsetHeight / 10) {
-            // on pick en haut à gauche de la fenêtre puis on descend d'un dixième de la hauteur de la fenêtre
-            // à chaque itération jusqu'à ne plus picker dans le ciel
-            topLeft = this.libMap.pickPosition(0, x);
-            // Si l'un des deux coordonnées n'est plus différent de 0, on ne pick plus dans le ciel
-            if (topLeft.lon !== 0 || topLeft.lat !== 0) {
-                break;
-            }
-        }
-        // On pick en bas à droite
-        bottomRight = this.libMap.pickPosition(mapDiv.offsetWidth, mapDiv.offsetHeight);
-        // Si l'un des deux picks est toujours dans le ciel malgré les précédents tests,
-        // c'est que la vue est si éloignée qu'on voit le globe complet :
-        // On renvoie donc comme extent [90, -180, -90, 180]
-        if ((topLeft.lon === 0 && topLeft.lat === 0) || (bottomRight.lon === 0 && bottomRight.lat === 0)) {
-            topLeft.lat = 90;
-            topLeft.lon = -180;
-            bottomRight.lat = -90;
-            bottomRight.lon = 180;
-        }
-        var extent = [topLeft.lat, topLeft.lon, bottomRight.lat, bottomRight.lon];
-        return extent;
+        var vgExtent = this.libMap.getViewExtent();
+        var viewExtent = {
+            left : vgExtent.west,
+            right : vgExtent.east,
+            top : vgExtent.north,
+            bottom : vgExtent.south
+        };
+        return viewExtent;
     };
 
     /**
@@ -507,11 +489,18 @@ function (
     * @param {Object} controlOpts - options du controle
     */
     VG.prototype.addAttributionsControl = function (controlOpts) {
+        var control;
+        // if the div already exist, we clean it
+        if (document.getElementById("VirtualGeo_IPR")) {
+            document.getElementById("VirtualGeo_IPR").parentNode.removeChild(document.getElementById("VirtualGeo_IPR"));
+        }
         if (!document.getElementById("VirtualGeo_IPR")) {
             this.logger.trace("[VG] addAttributionsControl...");
-            var control = new VirtualGeo.IPRControl();
+            control = new VirtualGeo.IPRControl();
             control.listenToMap("centerchanged", this._displayOriginators.bind(this));
             control.listenToMap("zoomchanged", this._displayOriginators.bind(this));
+            control.listenToMap("layeradded", this._displayOriginators.bind(this));
+            control.listenToMap("layerremoved", this._displayOriginators.bind(this));
             this.libMap.addControl(control);
             this._displayOriginators();
             if (document.getElementById("VirtualGeo_IPR")) {
@@ -521,6 +510,9 @@ function (
                     document.getElementById("VirtualGeo_IPR").style.display = "inline";
                 }
             }
+        }
+        if (!controlOpts.div && document.getElementById("VirtualGeo_IPR")) {
+            return control;
         }
         if (controlOpts && controlOpts.div && document.getElementById(controlOpts.div) && document.getElementById("VirtualGeo_IPR")) {
             document.getElementById(controlOpts.div).appendChild(document.getElementById("VirtualGeo_IPR"));
@@ -540,39 +532,47 @@ function (
         var mapAttributions = {};
         var countLayerAttribution;
         var extent = this.getViewExtent();
+        var bbox = [extent.top, extent.left, extent.bottom, extent.right];
         var zoomLevel = this.getZoom();
         for (var i = 0; i < layersAHN.length; i++) {
             // srcAttributionHtml : html, composed of all layer's attributions html
+            // empty by default
             var srcAttributionHtml = "";
-            // count the number of attributions associated to a layer
-            countLayerAttribution = 0;
+            // if the view is further that the farthest zoom defined for the layer
+            // we do not display its originators
+            if (!layersAHN[i].options.minZoom || zoomLevel >= layersAHN[i].options.minZoom) {
+                // count the number of attributions associated to a layer
+                countLayerAttribution = 0;
+                // give all the attributions of the layer based on the zoom and extend
+                // constraints of the originators
+                var layerAttributions = Gp.LayerUtils.getAttributions({
+                    extent : bbox,
+                    crs : "EPSG:4326",
+                    zoom : this.getZoom(),
+                    visibility : layersAHN[i].obj.visible,
+                    originators : layersAHN[i].options.originators
+                });
 
-            var layerAttributions = Gp.LayerUtils.getAttributions({
-                extent : extent,
-                crs : "EPSG:4326",
-                zoom : this.getZoom(),
-                visibility : layersAHN[i].obj.visible,
-                originators : layersAHN[i].options.originators
-            });
-
-            for ( var j = 0; j < layerAttributions.length; j++ ) {
-                var attributionj = layerAttributions[j];
-                // check that this attribution hasn't been added yet for another layer
-                if ( !mapAttributions || !mapAttributions[attributionj] ) {
-                    if (countLayerAttribution != 0) {
-                        // if it is not the first attribution of the layer, we add a separator
-                        // (several attributions for the same layer)
-                        srcAttributionHtml = srcAttributionHtml + "| " + attributionj;
-                    } else {
-                        // add attribution html to source attributions html
-                        srcAttributionHtml += attributionj;
+                for ( var j = 0; j < layerAttributions.length; j++ ) {
+                    var attributionj = layerAttributions[j];
+                    // check that this attribution hasn't been added yet for another layer
+                    if ( !mapAttributions || !mapAttributions[attributionj] ) {
+                        if (countLayerAttribution != 0) {
+                            // if it is not the first attribution of the layer, we add a separator
+                            // (several attributions for the same layer)
+                            srcAttributionHtml = srcAttributionHtml + "| " + attributionj;
+                        } else {
+                            // add attribution html to source attributions html
+                            srcAttributionHtml += attributionj;
+                        }
+                        // add attribution to mapAttributions, to manage all layers attributions
+                        mapAttributions[attributionj] = true;
+                        countLayerAttribution ++;
                     }
-                    // add attribution to mapAttributions, to manage all layers attributions
-                    mapAttributions[attributionj] = true;
-                    countLayerAttribution ++;
-                }
-            };
+                };
+            }
             // VG method to add attribution on the map (automatically add the separator between the layers)
+            // an empty attribution "" deletes the layer IPR
             this.libMap.setLayerIPR({
                 id : layersAHN[i].id,
                 ipr : srcAttributionHtml
@@ -723,10 +723,10 @@ function (
                 this.logger.trace("ajout d'une couche KML");
                 var layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
+                        title : layerOpts.title || layerId,
                         version : layerOpts.version,
-                        style : layerOpts.styleName,
+                        styleName : layerOpts.styleName,
                         extractStyle : "true"
                     };
 
@@ -735,10 +735,10 @@ function (
                 this.logger.trace("ajout d'une couche GPX");
                 layer = {
                         url : layerOpts.url,
-                        protocol : layerOpts.format,
                         id : layerId,
+                        title : layerOpts.title || layerId,
                         version : layerOpts.version,
-                        style : layerOpts.styleName,
+                        styleName : layerOpts.styleName,
                         extractStyle : "true"
                     };
                 break;
@@ -765,13 +765,31 @@ function (
                 layer._originators = layerOpts.originators ;
             }
 
+            // Dans le cas où aucune visibilité n'est spécifiée
+            if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
+                // on la règle à "true" par défaut
+                layerOpts.visibility = 1;
+            }
+
             this._layers.push({
                 id : layerId,
                 obj : layer,
                 options : layerOpts
             }) ;
+
+            var LSControl = this.getLibMapControl("layerswitcher");
+            // if the LS already exists, we have to save the conf of the layer to add it to the LS
+            if (LSControl) {
+                LSControl._addedLayerConf[layerId] = layerOpts;
+            }
+
             this.libMap.addFeatureLayer(layer) ;
-            this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+            // Once added
+            // On règle la visibilité de la couche
+            this.libMap.setLayerVisible({
+                id : layerId,
+                visible : layerOpts.visibility
+            });
         }
     } ;
 
@@ -816,10 +834,11 @@ function (
                     title : layerOpts.title || layerId,
                     wmsOptions : {
                         mimeType : layerOpts.outputFormat,
-                        name : layerNames
+                        name : layerNames,
+                        style : layerOpts.styleName,
+                        projection : layerOpts.projection || "EPSG:4326"
                     },
                     version : layerOpts.version,
-                    style : layerOpts.styleName,
                     minScaleDenominator : minScaleDenominator || null,
                     maxScaleDenominator : maxScaleDenominator || null,
                     processingOptions : layerOpts.processingOptions
@@ -843,10 +862,10 @@ function (
                         tileMatrixSet : layerOpts.tileMatrixSet,
                         tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
                         mimeType : layerOpts.outputFormat,
-                        name : layerOpts.layer
+                        name : layerOpts.layer,
+                        style : layerOpts.styleName
                     },
                     version : layerOpts.version,
-                    style : layerOpts.styleName,
                     minScaleDenominator : minScaleDenominator || null,
                     maxScaleDenominator : maxScaleDenominator || null,
                     processingOptions : layerOpts.processingOptions
@@ -903,17 +922,19 @@ function (
                 if (LSControl) {
                     LSControl._addedLayerConf[layerId] = layerOpts;
                 }
-                // this will launch the addedLayer callback (dans "VG._onLayerChanged")
+                var layerConf = JSON.parse(JSON.stringify(layerOpts));
                 this.libMap.addImageryLayer(layer) ;
+
+                // Once added, set opacity and visibility of the layer
                 // On règle l'opacité de la couche
                 this.libMap.setLayerOpacity({
                     id : layerId,
-                    opacity : layerOpts.opacity
+                    opacity : layerConf.opacity
                 });
                 // On règle la visibilité de la couche
                 this.libMap.setLayerVisible({
                     id : layerId,
-                    visible : layerOpts.visibility
+                    visible : layerConf.visibility
                 });
             }
 
@@ -1467,22 +1488,22 @@ function (
             nameDiv = document.createElement("div") ;
             nameDiv.className =  "gp-att-name-div" ;
             if (props.hasOwnProperty("name")) {
-                nameDiv.appendChild(document.createTextNode(props["name"])) ;
+                nameDiv.innerHTML = props["name"] ;
                 content.appendChild(nameDiv) ;
             } else if (f.featureId !== "") {
-                nameDiv.appendChild(document.createTextNode(f["featureId"])) ;
+                nameDiv.innerHTML = f["featureId"];
                 content.appendChild(nameDiv) ;
             } else if (f.properties.description) {
-                nameDiv.appendChild(document.createTextNode(props["description"])) ;
+                nameDiv.innerHTML = props["description"];
                 content.appendChild(nameDiv) ;
             }  else {
-                nameDiv.appendChild(document.createTextNode("UNKNOWN FEATURE NAME")) ;
+                nameDiv.innerHTML = "UNKNOWN FEATURE NAME";
                 content.appendChild(nameDiv) ;
             }
             if (props.hasOwnProperty("description")) {
                 var descDiv = document.createElement("div") ;
                 descDiv.className = "gp-att-description-div" ;
-                descDiv.appendChild(document.createTextNode(props["description"])) ;
+                descDiv.innerHTML = props["description"] ;
                 content.appendChild(descDiv) ;
             }
             var p = null ;
@@ -1503,7 +1524,7 @@ function (
                 li = document.createElement("li") ;
                 var span = document.createElement("span") ;
                 span.className = "gp-attname-others-span" ;
-                span.appendChild(document.createTextNode(p + " : ")) ;
+                span.innerHTML = p + " : ";
                 li.appendChild(span) ;
                 li.appendChild(document.createTextNode(props[p])) ;
                 ul.appendChild(li) ;
@@ -1580,8 +1601,11 @@ function (
         var visibleFeatures = [];
         for (var i = 0; i < features.length; i++) {
             // on ne tient pas compte de la feature si la couche à laquelle elle appartient n'est pas visible
-            if (this.mapOptions.layersOptions[features[i].layerId].visibility === true) {
-                visibleFeatures.push(features[i]);
+            for (var idx = 0; idx < this._layers.length; idx++) {
+                if (this._layers[idx].id === features[i].layerId && this._layers[idx].obj.visible === true) {
+                    visibleFeatures.push(features[i]);
+                    break;
+                }
             }
         }
 

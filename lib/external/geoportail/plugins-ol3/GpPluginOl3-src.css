@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2017-04-05
+ * @date 2017-04-27
  *
  */
 /* MOUSE POSITION */
@@ -92,6 +92,8 @@ input.marker-input-radio:checked + label {
 
 .GPelevationPathCalcWaitingContainerVisible {
   display: -webkit-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -118,30 +120,63 @@ input.marker-input-radio:checked + label {
 /* CSS : default */
 
 #profileElevationByDefault {
+  display:-webkit-flex;
+  display:-webkit-box;
+  display:-ms-flexbox;
   display:flex;
-  flex-direction:column;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -webkit-flex-direction:column;
+      -ms-flex-direction:column;
+          flex-direction:column;
   height:100%;
 }
 
 .profile-box {
+  height: calc(100% - 15px);
+  display:-webkit-flex;
+  display:-webkit-box;
+  display:-ms-flexbox;
   display:flex;
-  flex:1;
-  flex-direction:row;
+  -webkit-flex:1;
+  -webkit-box-flex:1;
+      -ms-flex:1;
+          flex:1;
+  -webkit-box-orient:horizontal;
+  -webkit-box-direction:normal;
+  -webkit-flex-direction:row;
+      -ms-flex-direction:row;
+          flex-direction:row;
 }
 
 .profile-content {
-  flex:1;
-  justify-content:center;
-  align-items:center;
+  -webkit-flex:1;
+  -webkit-box-flex:1;
+      -ms-flex:1;
+          flex:1;
+  -webkit-justify-content:center;
+  -webkit-box-pack:center;
+      -ms-flex-pack:center;
+          justify-content:center;
+  -webkit-box-align:center;
+  -webkit-align-items:center;
+      -ms-flex-align:center;
+          align-items:center;
 }
 
 .profile-z-vertical,
 .profile-z-vertical ul,
 .profile-x-horizontal,
 .profile-x-horizontal ul {
+  display:-webkit-flex;
+  display:-webkit-box;
+  display:-ms-flexbox;
   display:flex;
   /*justify-content:center;*/
-  align-items:center;
+  -webkit-align-items:center;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
 }
 
 
@@ -149,7 +184,11 @@ input.marker-input-radio:checked + label {
 .profile-z-vertical ul,
 .profile-content
 {
-  flex-direction:column;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -webkit-flex-direction:column;
+      -ms-flex-direction:column;
+          flex-direction:column;
   height:100%;
 }
 
@@ -162,12 +201,18 @@ input.marker-input-radio:checked + label {
 
 .profile-z-vertical{
   /*background:green;*/
-  flex:0 1 auto;
+  -webkit-flex:0 1 auto;
+  -webkit-box-flex:0;
+      -ms-flex:0 1 auto;
+          flex:0 1 auto;
 
 }
 .profile-z-vertical ul{
   /*background:pink;*/
-  justify-content:space-between;
+  -webkit-justify-content:space-between;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between;
   padding:2px 5px 2px 2px;
   /*border-right:1px solid #888;*/
 }
@@ -184,11 +229,20 @@ input.marker-input-radio:checked + label {
 }
 .profile-content ul {
   background:white;
-  flex:1 0 auto;
+  -webkit-flex:1 0 auto;
+  -webkit-box-flex:1;
+      -ms-flex:1 0 auto;
+          flex:1 0 auto;
   height:100%;
   width:100%;
-  justify-content:flex-start;
-  align-items:flex-end;
+  -webkit-justify-content:flex-start;
+  -webkit-box-pack:start;
+      -ms-flex-pack:start;
+          justify-content:flex-start;
+  -webkit-align-items:flex-end;
+  -webkit-box-align:end;
+      -ms-flex-align:end;
+          align-items:flex-end;
 
   margin:0;
   padding:0;
@@ -196,12 +250,19 @@ input.marker-input-radio:checked + label {
 }
 .profile-x-horizontal{
   /*background:blue;*/
-  flex:0 1 auto;;
+  -webkit-flex:0 1 auto;
+  -webkit-box-flex:0;
+      -ms-flex:0 1 auto;
+          flex:0 1 auto;;
   width:100%;
+  height: 15px
 }
 .profile-x-horizontal ul{
   /*background:orange;*/
-  justify-content:space-between;
+  -webkit-justify-content:space-between;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between;
   /*padding:5px 2px 2px 2px;*/
   width:100%;
   /*border-top:1px solid #888;*/
@@ -657,36 +718,6 @@ input.GPinputSubmit:hover {
 input[type="checkbox"]:checked + .GPshowMoreOptions {
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
-}
-
-/* GET FEATURE INFO */
-
-label[id^=GPgetFeatureInfoPicto] {
-  display: inline-block;
-}
-
-div[id^=GPgetFeatureInfo-] + label {
-  display: block;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  position: absolute;
-  display: block;
-  transition: border-radius 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
-}
-
-span[id^=GPgetFeatureInfoActivate] {
-  background-position: 0 0;
-  opacity: 1;
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  opacity: 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  opacity: 1;
 }
 
 /* ISOCHRON */
@@ -3211,36 +3242,6 @@ display: none !important;
 }
 */
 
-/* GET FEATURE INFO */
-
-div[id^=GPgetFeatureInfo-] {
-  top: 260px;
-  left: 10px;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  width: 26px;
-  height: 26px;
-  background-image: url("img/GPactivateGfi.png");
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  background-position: -26px 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
-  opacity: 0.7;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.4);
-}
-
 /* ISOCHRON */
 
 div[id^=GPisochron-] {
@@ -3293,98 +3294,6 @@ div[id^=GPisochronPanelClose] {
 div[id^=GPisochronReset] {
   background-color: #366291;
   background-image: url("img/GPisochronOptions.png");
-}
-
-/* LAYER SWITCHER OL3 */
-
-div[id^=GPlayerSwitcher-] {
-  top: 8px;
-  right: 8px;
-}
-
-/* Showing/hiding layers list */
-
-label[id^=GPshowLayersListPicto] {
-  width: 38px;
-  height: 38px;
-}
-
-span[id^=GPshowLayersListOpen],
-span[id^=GPshowLayersListClose] {
-  top: 3px;
-  left: 3px;
-  width: 32px;
-  height: 32px;
-  background-image: url("img/GPshowLayersList.png");
-}
-
-span[id^=GPshowLayersListClose] {
-  background-position: -32px 0;
-}
-
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen] {
-  opacity: 0.7;
-}
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto]:hover span[id^=GPshowLayersListClose] {
-  background-color: rgba(0,60,136,0.4);
-}
-
-/* Layers list */
-
-.GPlayerVisibility,
-.GPshowLayerAdvancedTools,
-.GPlayerInfo,
-.GPlayerInfoOpened,
-.GPlayerRemove {
-  background-image: url("img/GPlayerTools.png");
-}
-
-/* Opacity slider : Chrome, Safari, Opera */
-
-.GPlayerOpacity input[type="range"]::-webkit-slider-runnable-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Opacity slider : Firefox */
-
-.GPlayerOpacity input[type="range"]::-moz-range-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Opacity slider : IE */
-
-.GPlayerOpacity input[type="range"]::-ms-track {
-  background: url("img/GPopacitySlider.png");
-}
-
-/* Layer info panel */
-
-div[id^=GPlayerInfoPanel] {
-  right: 190px;
-}
-
-div[id^=GPlayerInfoTitle] {
-  color: #366291;
-  border-bottom: 1px solid #366291;
-}
-
-div[id^=GPlayerInfoQuicklook] {
-  background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPlayerInfoClose] {
-  background-image: url("img/GPlayerInfoClose.png");
-}
-
-.GPlayerInfoLink,
-.GPlayerInfoPopup {
-  background-image: url("img/GPlayerInfo.png");
 }
 
 /* Layer Import */
@@ -3616,6 +3525,98 @@ div[id^="GPimportGetCapResults-"] {
 .GPimportGetCapProposal:hover {
   color: #000000;
   background-color: #CEDBEF
+}
+
+/* LAYER SWITCHER OL3 */
+
+div[id^=GPlayerSwitcher-] {
+  top: 8px;
+  right: 8px;
+}
+
+/* Showing/hiding layers list */
+
+label[id^=GPshowLayersListPicto] {
+  width: 38px;
+  height: 38px;
+}
+
+span[id^=GPshowLayersListOpen],
+span[id^=GPshowLayersListClose] {
+  top: 3px;
+  left: 3px;
+  width: 32px;
+  height: 32px;
+  background-image: url("img/GPshowLayersList.png");
+}
+
+span[id^=GPshowLayersListClose] {
+  background-position: -32px 0;
+}
+
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen] {
+  opacity: 0.7;
+}
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPlayerSwitcher-] input[type="checkbox"]:checked + div + label[id^=GPshowLayersListPicto]:hover span[id^=GPshowLayersListClose] {
+  background-color: rgba(0,60,136,0.4);
+}
+
+/* Layers list */
+
+.GPlayerVisibility,
+.GPshowLayerAdvancedTools,
+.GPlayerInfo,
+.GPlayerInfoOpened,
+.GPlayerRemove {
+  background-image: url("img/GPlayerTools.png");
+}
+
+/* Opacity slider : Chrome, Safari, Opera */
+
+.GPlayerOpacity input[type="range"]::-webkit-slider-runnable-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Opacity slider : Firefox */
+
+.GPlayerOpacity input[type="range"]::-moz-range-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Opacity slider : IE */
+
+.GPlayerOpacity input[type="range"]::-ms-track {
+  background: url("img/GPopacitySlider.png");
+}
+
+/* Layer info panel */
+
+div[id^=GPlayerInfoPanel] {
+  right: 190px;
+}
+
+div[id^=GPlayerInfoTitle] {
+  color: #366291;
+  border-bottom: 1px solid #366291;
+}
+
+div[id^=GPlayerInfoQuicklook] {
+  background-image: url("img/GPlayerInfo.png");
+}
+
+div[id^=GPlayerInfoClose] {
+  background-image: url("img/GPlayerInfoClose.png");
+}
+
+.GPlayerInfoLink,
+.GPlayerInfoPopup {
+  background-image: url("img/GPlayerInfo.png");
 }
 
 /* Location */

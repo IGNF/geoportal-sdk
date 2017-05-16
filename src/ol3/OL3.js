@@ -1,13 +1,13 @@
 define([
     "Utils/LoggerByDefault",
     "ol",
-    "plugins-ol3",
+    "gp", // "plugins-ol3"
     "IMap"
 ],
     function (
         Logger,
         ol,
-        plugins,
+        plugins, // Gp globale !?
         IMap
         ) {
 
@@ -142,10 +142,10 @@ define([
                 }
             }
             // on active / desactive toutes les interactions correspondantes
-            for (var i = 0 ; i < interactions.length ; i++ ) {
-                var interaction = interactions[i] ;
+            for (var ii = 0 ; ii < interactions.length ; ii++ ) {
+                var _interaction = interactions[ii] ;
                 this.logger.trace("[OL3] : setting interaction to " + controlOpts + " for control : " + controlId) ;
-                interaction.setActive(controlOpts) ;
+                _interaction.setActive(controlOpts) ;
             }
             return interactions ;
         } ;
@@ -296,7 +296,7 @@ define([
             if (ol3units && controlOpts.units.toLowerCase() == "deg" ) {
                 ol3units = "degrees" ;
             } else if (ol3units && controlOpts.units.toLowerCase() == "m") {
-                ol3units = "meters" ; // FIXME : OL3 says "metric"
+                ol3units = "metric" ;
             }
             this.logger.trace("[OL3] addGraphicScaleControl : setting graphicscale units to " + ol3units) ;
             var control = new ol.control.ScaleLine({
@@ -375,10 +375,10 @@ define([
                 Array.isArray(controlOpts.units) &&
                 controlOpts.units.length > 0 ) {
                 mpOpts.units = [] ;
-                for (var i = 0 ; i < controlOpts.units.length ; i++ ) {
-                    if ( typeof controlOpts.units[i] == "string") {
-                        this.logger.trace("[OL3] addMousePositionControl : adding unit   [" + controlOpts.units[i].toUpperCase() ) ;
-                        mpOpts.units.push(controlOpts.units[i]) ;
+                for (var ii = 0 ; ii < controlOpts.units.length ; ii++ ) {
+                    if ( typeof controlOpts.units[ii] == "string") {
+                        this.logger.trace("[OL3] addMousePositionControl : adding unit   [" + controlOpts.units[ii].toUpperCase() ) ;
+                        mpOpts.units.push(controlOpts.units[ii]) ;
                     }
                 }
             }
@@ -501,7 +501,7 @@ define([
          * @param {Object} controlOpts - control options
          * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
          * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
-         * @param {Array} controlOpts.layerTypes - data types that could be imported : "KML", "GPX", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "WMS", "WMTS"]
+         * @param {Array} controlOpts.layerTypes - data types that could be imported : "KML", "GPX", "GeoJSON", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "GeoJSON", "WMS", "WMTS"]
          * @param {Object} controlOpts.webServicesOptions - Options to import WMS or WMTS layers
          * @param {String} controlOpts.webServicesOptions.proxyUrl - Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer.
          * @param {Array.<String>} [controlOpts.webServicesOptions.noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions)
@@ -522,6 +522,15 @@ define([
          * @param {String} [controlOpts.defaultStyles.GPX.strokeColor = "#002A50"] - Stroke color for GPX routes or tracks styling (RGB hex value).
          * @param {Number} [controlOpts.defaultStyles.GPX.strokeWidth = 4] - Stroke width in pixels for GPX routes or tracks styling.
          * @param {Number} [controlOpts.defaultStyles.GPX.strokeOpacity = 0.8] - Stroke opacity for GPX routes or tracks styling (alpha value between 0:transparent and 1:opaque)
+         * @param {Object} [controlOpts.defaultStyles.GeoJSON] - Styles to apply by default to imported GeoJSON layers
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.markerSrc] - URL of a marker image (for GeoJSON points styling). Default is an orange marker.
+         * @param {Float} [controlOpts.defaultStyles.GeoJSON.markerXAnchor = 25.5] - position of marker anchor in X from left of the image expressed in proportion of 1 (for GeoJSON points styling).
+         * @param {Float} [controlOpts.defaultStyles.GeoJSON.markerYAnchor = 38] - position of marker anchor in Y from top of the image expressed in proportion of 1 (for GeoJSON points styling).
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.strokeColor = "#002A50"] - Stroke color for GeoJSON lines styling (RGB hex value).
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.strokeWidth = 4] - Stroke width in pixels for GeoJSON lines styling.
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.strokeOpacity = 0.8] - Stroke opacity for GeoJSON lines styling (alpha value between 0:transparent and 1:opaque)
+         * @param {String} [controlOpts.defaultStyles.GeoJSON.polyFillColor = "#00B798"] - GeoJSON polygons fill color (RGB hex value).
+         * @param {Number} [controlOpts.defaultStyles.GeoJSON.polyFillOpacity = 0.5] - GeoJSON polygons fill opacity (alpha value between 0:transparent and 1:opaque).
          */
         OL3.prototype.addLayerImportControl = function (controlOpts) {
             var importOpts = {};
@@ -551,57 +560,77 @@ define([
                 var fillOpacity;
                 var fillColor;
                 if ( controlOpts.defaultStyles.KML ) {
-                    var kmlDefaultStyles = controlOpts.defaultStyles.KML;
+                    var userKMLDefaultStyles = controlOpts.defaultStyles.KML;
+                    var kmldefaultStyleOptions = {};
+                    kmldefaultStyleOptions.image = new ol.style.Icon({
+                        src : userKMLDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userKMLDefaultStyles.markerXAnchor || 25.5, userKMLDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userKMLDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userKMLDefaultStyles.strokeColor || "#002A50";
+                    kmldefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userKMLDefaultStyles.strokeWidth || 4
+                    });
+                    fillOpacity = userKMLDefaultStyles.polyFillOpacity || 0.5;
+                    fillColor = userKMLDefaultStyles.polyFillColor || "#00B798";
+                    kmldefaultStyleOptions.fill = new ol.style.Fill({
+                        color : IMap._hexToRgba(fillColor, fillOpacity)
+                    });
+                    var kmldefaultStyle = new ol.style.Style(kmldefaultStyleOptions);
                     importOpts.vectorStyleOptions.KML = {
-                        defaultStyle : {}
+                        defaultStyle : kmldefaultStyle
                     };
-                    if ( kmlDefaultStyles.markerSrc || kmlDefaultStyles.markerXAnchor ||  kmlDefaultStyles.markerYAnchor ) {
-                        importOpts.vectorStyleOptions.KML.defaultStyle.image = new ol.style.Icon({
-                            src : kmlDefaultStyles.markerSrc || defaultMarkerSrc,
-                            anchor : [ kmlDefaultStyles.markerXAnchor || 25.5, kmlDefaultStyles.markerYAnchor || 38],
-                            anchorOrigin : "top-left",
-                            anchorXUnits : "pixels",
-                            anchorYUnits : "pixels"
-                        });
-                    }
-                    if ( kmlDefaultStyles.strokeColor || kmlDefaultStyles.strokeWidth) {
-                        strokeOpacity = kmlDefaultStyles.strokeOpacity || 0.8;
-                        strokeColor = kmlDefaultStyles.strokeColor || "#002A50";
-                        importOpts.vectorStyleOptions.KML.defaultStyle.stroke = new ol.style.Stroke({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
-                            width : kmlDefaultStyles.strokeWidth || 4
-                        });
-                    }
-                    if ( kmlDefaultStyles.polyFillColor || kmlDefaultStyles.polyFillOpacity ) {
-                        fillOpacity = kmlDefaultStyles.polyFillOpacity || 0.5;
-                        fillColor = kmlDefaultStyles.polyFillColor || "#00B798";
-                        importOpts.vectorStyleOptions.KML.defaultStyle.fill = new ol.style.Fill({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity)
-                        });
-                    }
                 }
                 if ( controlOpts.defaultStyles.GPX ) {
-                    var gpxDefaultStyles = controlOpts.defaultStyles.GPX;
+                    var userGPXDefaultStyles = controlOpts.defaultStyles.GPX;
+                    var gpxdefaultStyleOptions = {};
+                    gpxdefaultStyleOptions.image = new ol.style.Icon({
+                        src : userGPXDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userGPXDefaultStyles.markerXAnchor || 25.5, userGPXDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userGPXDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userGPXDefaultStyles.strokeColor || "#002A50";
+                    gpxdefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userGPXDefaultStyles.strokeWidth || 4
+                    });
+                    var gpxdefaultStyle = new ol.style.Style(gpxdefaultStyleOptions);
                     importOpts.vectorStyleOptions.GPX = {
-                        defaultStyle : {}
+                        defaultStyle : gpxdefaultStyle
                     };
-                    if ( gpxDefaultStyles.markerSrc || gpxDefaultStyles.markerXAnchor ||  gpxDefaultStyles.markerYAnchor ) {
-                        importOpts.vectorStyleOptions.GPX.defaultStyle.image = new ol.style.Icon({
-                            src : gpxDefaultStyles.markerSrc || defaultMarkerSrc,
-                            anchor : [ gpxDefaultStyles.markerXAnchor || 25.5, gpxDefaultStyles.markerYAnchor || 38],
-                            anchorOrigin : "top-left",
-                            anchorXUnits : "pixels",
-                            anchorYUnits : "pixels"
-                        });
-                    }
-                    if ( gpxDefaultStyles.strokeColor || gpxDefaultStyles.strokeWidth) {
-                        strokeOpacity = gpxDefaultStyles.strokeOpacity || 0.8;
-                        strokeColor = gpxDefaultStyles.strokeColor || "#002A50";
-                        importOpts.vectorStyleOptions.GPX.defaultStyle.stroke = new ol.style.Stroke({
-                            color : IMap._hexToRgba(strokeColor, strokeOpacity),
-                            width : gpxDefaultStyles.strokeWidth || 4
-                        });
-                    }
+                }
+                if ( controlOpts.defaultStyles.GeoJSON ) {
+                    var userGeoJSONDefaultStyles = controlOpts.defaultStyles.GeoJSON;
+                    var geoJSONdefaultStyleOptions = {};
+                    geoJSONdefaultStyleOptions.image = new ol.style.Icon({
+                        src : userGeoJSONDefaultStyles.markerSrc || defaultMarkerSrc,
+                        anchor : [ userGeoJSONDefaultStyles.markerXAnchor || 25.5, userGeoJSONDefaultStyles.markerYAnchor || 38],
+                        anchorOrigin : "top-left",
+                        anchorXUnits : "pixels",
+                        anchorYUnits : "pixels"
+                    });
+                    strokeOpacity = userGeoJSONDefaultStyles.strokeOpacity || 0.8;
+                    strokeColor = userGeoJSONDefaultStyles.strokeColor || "#002A50";
+                    geoJSONdefaultStyleOptions.stroke = new ol.style.Stroke({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                        width : userGeoJSONDefaultStyles.strokeWidth || 4
+                    });
+                    fillOpacity = userGeoJSONDefaultStyles.polyFillOpacity || 0.5;
+                    fillColor = userGeoJSONDefaultStyles.polyFillColor || "#00B798";
+                    geoJSONdefaultStyleOptions.fill = new ol.style.Fill({
+                        color : IMap._hexToRgba(strokeColor, strokeOpacity)
+                    });
+                    var geoJSONdefaultStyle = new ol.style.Style(geoJSONdefaultStyleOptions);
+                    importOpts.vectorStyleOptions.GeoJSON = {
+                        defaultStyle : geoJSONdefaultStyle
+                    };
                 }
             }
             var control = new ol.control.LayerImport(importOpts);
@@ -874,6 +903,11 @@ define([
                 }
             }
 
+            // geodesic
+            if (controlOpts.hasOwnProperty("geodesic")) {
+                azimuthOpts.geodesic = controlOpts.geodesic ;
+            }
+
             var control = new ol.control.MeasureAzimuth(azimuthOpts);
             this.libMap.addControl(control);
             return control;
@@ -1026,7 +1060,6 @@ define([
          * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
          * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
          * @param {Array.<String>} controlOpts.resources - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
-         * @param {Boolean} [ controlOpts.displayAdvancedSearch = true ] - False to disable advanced search tools (it will not be displayed). Default is true (displayed)
          * @param {Array.<String>} controlOpts.delimitations - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
          * @param {Object} [ reverseGeocodeOptions = {} ] - reverse geocode service options. see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~reverseGeocode to know all reverse geocode options.
          */
@@ -1363,12 +1396,13 @@ define([
             var mrkLayer = null ;
             var mo = null ;
             var context = this ;
+            var ii = 0;
             /**
               * marker open popup function
               * this == img element associated to the marker
               */
             var fopenPopup = function (evt) {
-                evtPx = context.getLibMap().getEventPixel(evt) ;
+                var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
                 Gp.GfiUtils.displayInfo(
                     "mrk-" + i,
@@ -1380,8 +1414,8 @@ define([
                     this.mo.contentType
                  ) ;
             } ;
-            for (var i = 0 ; i < markersOptions.length ; i++) {
-                mo = markersOptions[i] ;
+            for (ii = 0 ; ii < markersOptions.length ; ii++) {
+                mo = markersOptions[ii] ;
                 // complete missing properties with default
                 if (!mo.hasOwnProperty("content")) {
                     mo.content = "" ; // empty string to avoid errors on display
@@ -1457,7 +1491,7 @@ define([
                 //  - add option for making popup opened or not at startup
 
             }
-        },
+        };
 
         /**
          * get layer params from OL3 layer params
@@ -1581,10 +1615,11 @@ define([
                     // au cas ou maintien de l'ancien nom de paramètre :
                     // layerOpts.styleName (sans "s")
                     layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName ;
-                    if (layerOpts.stylesNames) {
-                        params.STYLES = "";
-                        for (var i = 0; i < layerOpts.stylesNames.length; i++) {
-                            params.STYLES += layerOpts.stylesNames[i] + ",";
+                    if ( layerOpts.stylesNames ) {
+                        if ( Array.isArray(layerOpts.stylesNames) ) {
+                            params.STYLES = layerOpts.stylesNames.join();
+                        } else {
+                            console.log("'stylesNames' parameter should be an array of style names (string)");
                         }
                     }
                     if (layerOpts.outputFormat) {
@@ -1599,6 +1634,10 @@ define([
                     var sourceOpts = {
                         url : layerOpts.url,
                         params : params
+                        // ,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
                         sourceOpts.projection = layerOpts.projection ;
@@ -1625,6 +1664,9 @@ define([
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
                                 layerOpts.topLeftCorner.x,
@@ -1649,6 +1691,10 @@ define([
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
                         url : layerOpts.url
+                        // ,
+                        // ajout pour pouvoir utiliser la fonction changeLayerColor
+                        // /!\ désactivation temporaire pour bon affichage de couches externes
+                        // crossOrigin : "anonymous"
                     });
                     break;
                 default:
@@ -1669,13 +1715,19 @@ define([
                 } else {
                     layer = new ol.layer.Tile(constructorOpts) ;
                 }
-                this._layers.push({
+                var gpLayer = {
                     id : layerId,
                     obj : layer,
                     options : layerOpts
-                }) ;
-                this.libMap.addLayer(layer) ;
-                this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+                };
+
+                if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
+                    this._convertLayerToGrayScale( gpLayer, false );
+                }
+
+                this._layers.push(gpLayer) ;
+                this.libMap.addLayer(gpLayer.obj) ;
+                this._addLayerConfToLayerSwitcher(gpLayer.obj,layerOpts) ;
             }
         } ;
 
@@ -1692,6 +1744,43 @@ define([
             var layerId = Object.keys(layerObj)[0] ;
             var layerOpts = layerObj[layerId] ;
             var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
+
+            var layerStyleOptions = layerOpts.styleOptions || {};
+            var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
+            var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
+            var styleOptions = {};
+            styleOptions.image = new ol.style.Icon({
+                src : layerStyleOptions.markerSrc || defaultMapOptions.markerSrc || defaultOptions.markerSrc,
+                anchor : [
+                    layerStyleOptions.markerXAnchor || defaultMapOptions.markerXAnchor || defaultOptions.markerXAnchor,
+                    layerStyleOptions.markerYAnchor || defaultMapOptions.markerYAnchor || defaultOptions.markerYAnchor
+                ],
+                anchorOrigin : "top-left",
+                anchorXUnits : "pixels",
+                anchorYUnits : "pixels"
+            });
+            styleOptions.stroke = new ol.style.Stroke({
+                color : IMap._hexToRgba(layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
+                width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
+            });
+            styleOptions.fill = new ol.style.Fill({
+                color : IMap._hexToRgba(layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
+            });
+            styleOptions.text = new ol.style.Text({
+                font : "16px Sans",
+                textAlign : "left",
+                fill : new ol.style.Fill({
+                    color : IMap._hexToRgba(layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
+                })
+            });
+            if ( layerStyleOptions.textStrokeColor ) {
+                styleOptions.text.stroke = new ol.style.Stroke({
+                    color : IMap._hexToRgba(layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
+                    width : 1
+                });
+            }
+            var vectorStyle = new ol.style.Style(styleOptions);
+
             switch (layerOpts.format.toUpperCase()) {
                 case "KML":
                     this.logger.trace("ajout d'une couche KML");
@@ -1708,7 +1797,8 @@ define([
                     var urlKml = this.setProxy(layerOpts.url);
                     var formatKml = new ol.format.KMLExtended({
                         extractStyles : layerOpts.extractStyles,
-                        showPointNames : layerOpts.showPointNames
+                        showPointNames : layerOpts.showPointNames,
+                        defaultStyle : [vectorStyle]
                     });
                     constructorOpts.source = new ol.source.Vector({
                         features : new ol.Collection(),
@@ -1743,6 +1833,7 @@ define([
                         url : this.setProxy(layerOpts.url),
                         format : new ol.format.GPX()
                     });
+                    constructorOpts.style = vectorStyle;
                     break;
                 case "GEORSS":
                     // TODO GeoRSS
@@ -1753,6 +1844,7 @@ define([
                         url : this.setProxy(layerOpts.url),
                         format : new ol.format.GeoJSON()
                     });
+                    constructorOpts.style = vectorStyle;
                     break;
                 case "WFS":
                     // TODO : gestion des valeurs par defaut
@@ -1899,6 +1991,11 @@ define([
             if (layerOpts.hasOwnProperty("originators")) {
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
+
+            // ajout pour pouvoir utiliser la fonction changeLayerColor
+            // /!\ désactivation temporaire pour bon affichage de couches externes
+            // olLayer.getSource().crossOrigin = "anonymous";
+
             this._layers.push({
                 id : layerId,
                 obj : olLayer,
@@ -2130,13 +2227,12 @@ define([
         OL3.prototype._getLayerOpts = function ( layerObj, layersStack ) {
             var layerOpts = null ;
             layersStack = layersStack || this._layers ;
-            for (var i in layersStack ) {
+            for (var i = 0; i < layersStack.length; i ++ ) {
                 var l = layersStack[i] ;
-                if (OL3._getOL3Id(l.obj) === OL3._getOL3Id(layerObj)) {
-                    this.logger.trace("[OL3] : found layer : " + l.id) ;
-                    layerOpts = {} ;
-                    layerOpts[l.id] = l.options ;
-                    break ;
+                if ( l.obj === layerObj ) {
+                    layerOpts = {};
+                    layerOpts[l.id] = l.options;
+                    break;
                 }
             }
             return layerOpts ;
@@ -2166,6 +2262,8 @@ define([
                 options.format = "KML" ;
             } else if (layerId.indexOf("layerimport:GPX") === 0) {
                 options.format = "GPX" ;
+            } else if (layerId.indexOf("layerimport:GeoJSON") === 0) {
+                options.format = "GeoJSON" ;
             } else if (layerId.indexOf("layerimport:WMS") === 0) {
                 options.format = "WMS" ;
                 if ( layerObj.gpGFIparams ) {
@@ -2214,7 +2312,7 @@ define([
             var ol3layers = this._getLayersObj([layerId]) ;
             if (ol3layers.length > 0) {
                 var ol3ls = this._controls[idxLS].obj ;
-                return ol3ls.getLayerDOMId(ol3layers[0].obj) ; ;
+                return ol3ls.getLayerDOMId(ol3layers[0].obj) ;
             }
             this.logger.trace("[OL3] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !") ;
             return id ;
@@ -2441,22 +2539,141 @@ define([
         } ;
 
         /**
-         * Retourne l'identifiant d'un objet OL3 (closure_uid_xxx)
          *
-         * @param {Object} ol3Obj - objet ol3
+         * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
+         * @param {String} layerId - layer identifier
          */
-        OL3._getOL3Id = function (ol3Obj) {
-            if (!ol3Obj) {
-                return ;
+        OL3.prototype.changeLayerColor = function (colorToGray,layerId) {
+            var layerIndex = this._getLayerIndexByLayerId(layerId);
+            var gpLayer = this._layers[layerIndex];
+
+            switch (gpLayer.options.format.toUpperCase()) {
+                case "KML":
+                case "GPX":
+                case "WFS":
+                case "drawing":
+                    console.log("[OL3.prototype.changeLayerColor] warning : changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
+                    return;
             }
-            for (var key in ol3Obj) {
-                if (! typeof(key) == "string" || key.indexOf("closure_uid") < 0) {
-                    continue ;
+
+            var lsControl = this.getLibMapControl("layerSwitcher");
+            var layerOrder = lsControl._layersOrder.map(function (layer) {
+                return layer.id;
+            });
+
+            gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
+
+            if ( !this._colorGrayscaleLayerSwitch(gpLayer,!colorToGray) ) {
+                // au cas ou le navigateur ne supporte pas la conversion
+                return;
+            };
+
+            // update layer switcher display
+            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
+
+            // update layer order
+            var maxZIndex = layerOrder.length;
+            for (var i = 0; i < layerOrder.length; i++) {
+                var id = layerOrder[i];
+                var layer = lsControl._layers[id].layer;
+                if (layer.setZIndex) {
+                    layer.setZIndex(maxZIndex);
+                    maxZIndex--;
                 }
-                // on a trouvé :
-                return ol3Obj[key] ;
             }
-            return null ;
+        };
+
+        /**
+         * Function to convert a gp colored layer to grayscale
+         *
+         * @param {Object} gpLayer - gp layer object
+         * @param {String} gpLayer.id - layer identifier
+         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
+         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
+         * @param {Boolean} mapUpdate - set to false if the layer has not already been added to the map.
+         *
+         * @returns {Boolean} isConverted indicates if the conversion has occured
+         */
+        OL3.prototype._convertLayerToGrayScale = function (gpLayer, mapUpdate) {
+            if ( typeof mapUpdate === "undefined" ) {
+                mapUpdate = true;
+            }
+            var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
+
+            /**
+             *  Function to convert colored pixels to grayscale
+             */
+            var colorToGrayConvertor = function (pixels, data) {
+                var pixel = pixels[0];
+                var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
+                return [lightness, lightness, lightness, pixel[3]];
+            };
+
+            // patch pour les navigateurs ne supportant pas cette fonction
+            try {
+                constructorOpts.source = new ol.source.Raster({
+                    sources : [gpLayer.obj.getSource()],
+                    operation : colorToGrayConvertor
+                });
+            } catch (e) {
+                return false;
+            }
+
+            gpLayer.objOrigin = gpLayer.obj;
+            if ( mapUpdate ) {
+                this.libMap.removeLayer(gpLayer.obj);
+            }
+            gpLayer.obj = new ol.layer.Image(constructorOpts);
+            if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
+                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
+            }
+            return true;
+        };
+
+        /**
+         * Function to switch layer display mode between color and grayscale.
+         *
+         * @param {Object} gpLayer - gp layer object
+         * @param {String} gpLayer.id - layer identifier
+         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
+         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
+         * @param {Boolean} toGrayScale - indicates conversion direction.
+         *
+         * @returns {Boolean} isConverted indicates if the conversion has occured
+         */
+        OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
+            var opacity = gpLayer.obj.getOpacity();
+            var visible = gpLayer.obj.getVisible();
+
+            if (toGrayScale) {
+                if ( !this._convertLayerToGrayScale(gpLayer) ) {
+                    return false;
+                }
+            } else {
+                // (suite) patch pour les navigateurs ne supportant pas cette fonction
+                if ( !gpLayer.objOrigin ) {
+                    return ;
+                }
+
+                // dans le cas ou la couche a ete initialisee en n/b
+                if ( !gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
+                    gpLayer.objOrigin.gpLayerId = gpLayer.obj.gpLayerId;
+                }
+                this.libMap.removeLayer(gpLayer.obj);
+                gpLayer.obj = gpLayer.objOrigin;
+                gpLayer.objOrigin = null;
+            }
+            gpLayer.options.grayScaled = toGrayScale;
+
+            this._layers.push(gpLayer);
+            this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
+            this._resetLayerChangedEvent();
+
+            // update layer properties
+            gpLayer.obj.setOpacity(opacity);
+            gpLayer.obj.setVisible(visible);
+
+            return true;
         };
 
         return OL3;

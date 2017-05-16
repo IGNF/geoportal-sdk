@@ -29,14 +29,15 @@
         <script type="text/javascript">
 
         var map = Gp.Map.load("geoportalMap1",{
-            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            apiKey : "an7nvfzojv5wa96dsga5nk8w",
             library : "vg",
             layersOptions : {
-                GeologicalLayer : {
-                    layers : "GEOSERVICES_GEOLOGIE",
+                "avalanches" : {
+                    layers : ["IRSTEA_CLPA.INTER"],
                     format : "wms",
-                    url : "http://geoservices.brgm.fr/geologie",
-                    outputFormat : "image/png"
+                    url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/proxy/",
+                    outputFormat : "image/png",
+                    projection : "EPSG:3857"
                 }
             },
             controlsOptions : {
