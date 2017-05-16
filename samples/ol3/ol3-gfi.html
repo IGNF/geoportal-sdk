@@ -16,9 +16,9 @@
         <script src="../../dist/ol3/GpOl3-src.js"></script>
     </head>
     <body>
-        <h1>WMS Géoportail "externe" et GetFeatureInfo</h1>
-        <p>couche WMS SHOM chargée avec l'option tiled : true => logos parfois tronqués</p>
-        <p>couche WMS Ecoles chargée sans l'option tiled => logos non tronqués</p>
+        <h1>Get Feature Info</h1>
+        <p>Exemple de mise en oeuvre du widget getFeatureInfo avec différents types de couches (wmts, wms, vecteur).</p>
+        <p>Ici l'évènement par défault est le simple click. Seule la couche "enseignement primaire" est initialisée avec un évènement spécifique (ici click droit).</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
 
@@ -38,6 +38,7 @@
                         options : {
                             auto : true,
                             active : false,
+                            hidden: false,
                             defaultEvent : "singleclick",
                             cursorStyle : "pointer"
                         },

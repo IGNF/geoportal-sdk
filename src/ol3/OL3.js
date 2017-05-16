@@ -1196,6 +1196,9 @@ define([
             if (controlOpts.options.hasOwnProperty("active")) {
                 gfiOpts.options.active = controlOpts.options.active ;
             }
+            if (controlOpts.options.hasOwnProperty("hidden")) {
+                gfiOpts.options.hidden = controlOpts.options.hidden ;
+            }
             if (controlOpts.options.hasOwnProperty("defaultEvent")) {
                 gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
             }
