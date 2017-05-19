@@ -1569,6 +1569,10 @@ define([
                 this.logger.trace("[OL3] : _applyCommonLayerParams - maxRes : " + maxRes) ;
                 commonOpts.maxResolution = maxRes ;
             }
+            if (layerOpts.hasOwnProperty("grayScaled")) {
+                this.logger.trace("[OL3] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled) ;
+                commonOpts.grayScaled = layerOpts.grayScaled ;
+            }
 
             return commonOpts ;
         } ;
@@ -1634,10 +1638,6 @@ define([
                     var sourceOpts = {
                         url : layerOpts.url,
                         params : params
-                        // ,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
                         sourceOpts.projection = layerOpts.projection ;
@@ -1664,9 +1664,6 @@ define([
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
                                 layerOpts.topLeftCorner.x,
@@ -1691,10 +1688,6 @@ define([
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
                         url : layerOpts.url
-                        // ,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous"
                     });
                     break;
                 default:
@@ -1722,7 +1715,7 @@ define([
                 };
 
                 if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
-                    this._convertLayerToGrayScale( gpLayer, false );
+                    this._colorGrayscaleLayerSwitch(gpLayer,true);
                 }
 
                 this._layers.push(gpLayer) ;
@@ -2022,10 +2015,6 @@ define([
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
 
-            // ajout pour pouvoir utiliser la fonction changeLayerColor
-            // /!\ désactivation temporaire pour bon affichage de couches externes
-            // olLayer.getSource().crossOrigin = "anonymous";
-
             this._layers.push({
                 id : layerId,
                 obj : olLayer,
@@ -2090,6 +2079,10 @@ define([
                 if (commonOpts.hasOwnProperty("maxResolution")) {
                     this.logger.trace("[IMap] modifyLayers : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution) ;
                     _layerObj.obj.setMaxResolution(commonOpts.maxResolution) ;
+                }
+                if (commonOpts.hasOwnProperty("grayScaled")) {
+                    this.logger.trace("[IMap] modifyLayers : setting grayScaled of : [" + _layerObj.id + "] to : " + commonOpts.grayScaled) ;
+                    this._changeLayerColor(_layerObj.id,commonOpts.grayScaled);
                 }
             },
             this) ;
@@ -2570,10 +2563,12 @@ define([
 
         /**
          *
-         * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
          * @param {String} layerId - layer identifier
+         * @param {Boolean} toGrayScale - indicate transformation direction (from or to grayscale)
+         *
+         * @private
          */
-        OL3.prototype.changeLayerColor = function (colorToGray,layerId) {
+        OL3.prototype._changeLayerColor = function (layerId,toGrayScale) {
             var layerIndex = this._getLayerIndexByLayerId(layerId);
             var gpLayer = this._layers[layerIndex];
 
@@ -2582,82 +2577,11 @@ define([
                 case "GPX":
                 case "WFS":
                 case "drawing":
-                    console.log("[OL3.prototype.changeLayerColor] warning : changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
+                    console.log("[OL3.prototype._changeLayerColor] warning : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
                     return;
             }
 
-            var lsControl = this.getLibMapControl("layerSwitcher");
-            var layerOrder = lsControl._layersOrder.map(function (layer) {
-                return layer.id;
-            });
-
-            gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
-
-            if ( !this._colorGrayscaleLayerSwitch(gpLayer,!colorToGray) ) {
-                // au cas ou le navigateur ne supporte pas la conversion
-                return;
-            };
-
-            // update layer switcher display
-            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
-
-            // update layer order
-            var maxZIndex = layerOrder.length;
-            for (var i = 0; i < layerOrder.length; i++) {
-                var id = layerOrder[i];
-                var layer = lsControl._layers[id].layer;
-                if (layer.setZIndex) {
-                    layer.setZIndex(maxZIndex);
-                    maxZIndex--;
-                }
-            }
-        };
-
-        /**
-         * Function to convert a gp colored layer to grayscale
-         *
-         * @param {Object} gpLayer - gp layer object
-         * @param {String} gpLayer.id - layer identifier
-         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
-         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
-         * @param {Boolean} mapUpdate - set to false if the layer has not already been added to the map.
-         *
-         * @returns {Boolean} isConverted indicates if the conversion has occured
-         */
-        OL3.prototype._convertLayerToGrayScale = function (gpLayer, mapUpdate) {
-            if ( typeof mapUpdate === "undefined" ) {
-                mapUpdate = true;
-            }
-            var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
-
-            /**
-             *  Function to convert colored pixels to grayscale
-             */
-            var colorToGrayConvertor = function (pixels, data) {
-                var pixel = pixels[0];
-                var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
-                return [lightness, lightness, lightness, pixel[3]];
-            };
-
-            // patch pour les navigateurs ne supportant pas cette fonction
-            try {
-                constructorOpts.source = new ol.source.Raster({
-                    sources : [gpLayer.obj.getSource()],
-                    operation : colorToGrayConvertor
-                });
-            } catch (e) {
-                return false;
-            }
-
-            gpLayer.objOrigin = gpLayer.obj;
-            if ( mapUpdate ) {
-                this.libMap.removeLayer(gpLayer.obj);
-            }
-            gpLayer.obj = new ol.layer.Image(constructorOpts);
-            if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
-                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
-            }
-            return true;
+            this._colorGrayscaleLayerSwitch(gpLayer,toGrayScale);
         };
 
         /**
@@ -2669,41 +2593,78 @@ define([
          * @param {Object} gpLayer.options - layer properties (of type layerOptions)
          * @param {Boolean} toGrayScale - indicates conversion direction.
          *
-         * @returns {Boolean} isConverted indicates if the conversion has occured
+         * @private
          */
         OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
-            var opacity = gpLayer.obj.getOpacity();
-            var visible = gpLayer.obj.getVisible();
 
+            // fonction de conversion de d'une image en n/b
+            function gray (img) {
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage( img, 0, 0 );
+
+                var imageData = ctx.getImageData(0, 0, img.width, img.height);
+                var data = imageData.data;
+
+                for (var i = 0; i < data.length; i += 4) {
+                    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    data[i]     = avg; // red
+                    data[i + 1] = avg; // green
+                    data[i + 2] = avg; // blue
+                }
+
+                ctx.putImageData( imageData, 0, 0 );
+                img.src = canvas.toDataURL();
+            };
+
+            // event handlers
+            function imageloadstartHandler (evt) {
+                evt.image.getImage().crossOrigin = "Anonymous";
+            };
+
+            function tileloadstartHandler (evt) {
+                evt.tile.getImage().crossOrigin = "Anonymous";
+            };
+
+            function imageloadendHandler (evt) {
+
+                /// patch pour safari
+                evt.image.getImage().crossOrigin = null;
+
+                gray( evt.image.getImage() );
+            };
+
+            function tileloadendHandler (evt) {
+
+                /// patch pour safari
+                evt.tile.getImage().crossOrigin = null;
+                
+                gray( evt.tile.getImage() );
+            };
+
+            // abonnement/desabonnement aux evenements permettant la conversion en n/b
+            var source = gpLayer.obj.getSource();
             if (toGrayScale) {
-                if ( !this._convertLayerToGrayScale(gpLayer) ) {
-                    return false;
+                if ( source instanceof ol.source.ImageWMS ) {
+                    source.loadstartListenerKey = source.on("imageloadstart", imageloadstartHandler );
+                    source.loadendListenerKey = source.on("imageloadend", imageloadendHandler );
+                } else {
+                    source.loadstartListenerKey = source.on("tileloadstart", tileloadstartHandler );
+                    source.loadendListenerKey = source.on("tileloadend", tileloadendHandler );
                 }
             } else {
-                // (suite) patch pour les navigateurs ne supportant pas cette fonction
-                if ( !gpLayer.objOrigin ) {
-                    return ;
-                }
-
-                // dans le cas ou la couche a ete initialisee en n/b
-                if ( !gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
-                    gpLayer.objOrigin.gpLayerId = gpLayer.obj.gpLayerId;
-                }
-                this.libMap.removeLayer(gpLayer.obj);
-                gpLayer.obj = gpLayer.objOrigin;
-                gpLayer.objOrigin = null;
+                ol.Observable.unByKey( source.loadstartListenerKey );
+                ol.Observable.unByKey( source.loadendListenerKey );
+                source.loadstartListenerKey = null;
+                source.loadendListenerKey = null;
             }
             gpLayer.options.grayScaled = toGrayScale;
 
-            this._layers.push(gpLayer);
-            this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
-            this._resetLayerChangedEvent();
-
-            // update layer properties
-            gpLayer.obj.setOpacity(opacity);
-            gpLayer.obj.setVisible(visible);
-
-            return true;
+            // maj du cache
+            source.refresh();
         };
 
         return OL3;
