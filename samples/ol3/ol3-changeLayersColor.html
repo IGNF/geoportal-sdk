@@ -23,6 +23,8 @@
             <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS');" value="changeLayerColor(maCoucheGP)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheWFS');" value="changeLayerColor(maCoucheWFS)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS');" value="changeLayerColor(maCoucheWMS)"/><br/>
+            <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS2');" value="changeLayerColor(maCoucheWMS2)"/><br/>
+            <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS3');" value="changeLayerColor(maCoucheWMS3)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheOSM');" value="changeLayerColor(maCoucheOSM)"/><br/>
         </div>
@@ -49,9 +51,27 @@
                         title: "maCoucheWMS",
                         format:'wms',
                         queryable : true,
+                        tiled : false, //pour test
+                        url:"http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/v/wms",
+                        layers:["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
+                        outputFormat:'image/png'
+                    },
+                    maCoucheWMS2 : {
+                        title: "maCoucheWMS2",
+                        format:'wms',
+                        queryable : true,
                         tiled : true,
-                        url:'http://gpp3-wxs-v-ign-fr.aw.atosorigin.com/geoportail/v/wms',
-                        layers:['SHOM-MAREE_BDD-POI_WLD_WM_2016'],
+                        url:'https://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/proxy',
+                        layers:['IRSTEA_CLPA.TEMOIGNAGE'],
+                        outputFormat:'image/png'
+                    },
+                    maCoucheWMS3 : {
+                        title: "maCoucheWMS3",
+                        format:'wms',
+                        queryable : true,
+                        tiled : true,
+                        url:'http://services.data.shom.fr/INSPIRE/wms/r',
+                        layers:['BATHY-DALLE_PYR-PNG_3857_WMSR'],
                         outputFormat:'image/png'
                     },
                     "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : {
@@ -89,13 +109,20 @@
               'GEOGRAPHICALGRIDSYSTEMS.MAPS': false,
               'maCoucheWFS': false,
               'maCoucheWMS': false,
+              'maCoucheWMS2': false,
+              'maCoucheWMS3': false,
               'GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS': false,
               'maCoucheOSM': false,
             }
 
             function changeLayerColor(layerId) {
-                map.changeLayerColor(layerColored[layerId],layerId) ;
+                // map.changeLayerColor(layerColored[layerId],layerId) ;
+                var layersOptions = new Object();
                 layerColored[layerId] = !layerColored[layerId];
+                layersOptions[layerId] = {
+                    grayScaled: layerColored[layerId]
+                };
+                map.modifyLayers(layersOptions);
             }
 
         </script>
