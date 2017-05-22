@@ -1868,8 +1868,36 @@ define([
                     obj : layer,
                     options : layerOpts
                 }) ;
+
                 this.libMap.addLayer(layer) ;
                 this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+
+                // action du type fit() sur les couches KML
+                if (layerOpts.format.toUpperCase() === "KML") {
+                    var _map = this.libMap;
+                    var _vectorSource = constructorOpts.source;
+                    if ( _map.getView() && _map.getSize() && _vectorSource.getExtent ) {
+
+                        var _fit  = layerOpts.zoomToExtent || false;
+                        if (_fit) {
+
+                            var key = _vectorSource.on("change", function () {
+                                var _sourceExtent = _vectorSource.getExtent();
+                                var _stateExtent  = _vectorSource.getState();
+                                if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
+                                    ol.Observable.unByKey(key);
+                                    _map.getView().fit(_sourceExtent, {
+                                        size : _map.getSize()
+                                    });
+                                }
+                            });
+
+                            setTimeout(function () {
+                                _vectorSource.dispatchEvent("change");
+                            },100);
+                        }
+                    }
+                }
             }
         } ;
 
