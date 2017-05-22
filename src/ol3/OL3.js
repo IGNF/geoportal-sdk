@@ -1887,7 +1887,8 @@ define([
                                 if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
                                     ol.Observable.unByKey(key);
                                     _map.getView().fit(_sourceExtent, {
-                                        size : _map.getSize()
+                                        // size : _map.getSize(),
+                                        maxZoom : 18
                                     });
                                 }
                             });
