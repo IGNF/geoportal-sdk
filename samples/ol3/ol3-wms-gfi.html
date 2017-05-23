@@ -24,8 +24,8 @@
 
             var map = Gp.Map.load('geoportalMap',{
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
-                proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
-                noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+                // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
                 center : {
                     x : 22700,
                     y : 6395900
@@ -33,7 +33,22 @@
                 zoom : 15,
                 controlsOptions : {
                     "layerSwitcher" : {},
-                    "mousePosition" : {}
+                    "mousePosition" : {},
+                    "getFeatureInfo" : {
+                        layers : {
+                            'WMS1' : {
+                                event: "contextmenu",
+                            }
+                        },
+                        options : {
+                            active: false,
+                            // defaultInfoFormat: "text/html",
+                            // defaultEvent: "singleclick",
+                            // cursorStyle: "pointer",
+                            // noProxyDomains: [],
+                            // proxyUrl: ""
+                        }
+                    }
                 },
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {},

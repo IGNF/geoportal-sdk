@@ -120,9 +120,6 @@ define([
                 // controls : controls
             });
 
-            // ecoute gfi potentiels.
-            this.libMap.on("singleclick", this._onMapClick, this) ;
-
             this._afterInitMap() ;
         } ;
 
@@ -1218,6 +1215,73 @@ define([
         } ;
 
         /**
+         * Ajoute l'outil getFeatureInfo
+         *
+         * @param {Object} controlOpts - options du controle
+         */
+        OL3.prototype.addGetFeatureInfoControl = function (controlOpts) {
+            var gfiOpts = {} ;
+            gfiOpts.options = {};
+
+            if (controlOpts.options.hasOwnProperty("auto")) {
+                gfiOpts.options.auto = controlOpts.options.auto ;
+            }
+            if (controlOpts.options.hasOwnProperty("active")) {
+                gfiOpts.options.active = controlOpts.options.active ;
+            }
+            if (controlOpts.options.hasOwnProperty("hidden")) {
+                gfiOpts.options.hidden = controlOpts.options.hidden ;
+            }
+            if (controlOpts.options.hasOwnProperty("defaultEvent")) {
+                gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
+            }
+            if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
+                gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
+            }
+            if (controlOpts.options.hasOwnProperty("cursorStyle")) {
+                gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+            }
+            if (this.mapOptions && this.mapOptions.proxyUrl) {
+                gfiOpts.options.proxyUrl = this.mapOptions.proxyUrl ;
+            }
+            if (this.mapOptions && this.mapOptions.noProxyDomains) {
+                gfiOpts.options.noProxyDomains = this.mapOptions.noProxyDomains ;
+            }
+
+            gfiOpts.layers = [];
+            for (gfiLayerId in controlOpts.layers) {
+                var gfiLayer = controlOpts.layers[gfiLayerId];
+
+                for ( var i = 0 ; i < this._layers.length ; ++i ) {
+                    var mapLayer = this._layers[i];
+
+                    if ( gfiLayerId === mapLayer.id ) {
+                        if ( !mapLayer.options.queryable ) {
+                            console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
+                        } else {
+                            var layerConf = {
+                                obj : mapLayer.obj
+                            };
+                            if (gfiLayer.event) {
+                                layerConf.event = gfiLayer.event ;
+                            }
+                            if ( mapLayer.options.gfiFormat ) {
+                                layerConf.infoFormat = mapLayer.options.gfiFormat;
+                            }
+                            gfiOpts.layers.push(layerConf) ;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var control = new ol.control.GetFeatureInfo(gfiOpts) ;
+            this.libMap.addControl(control) ;
+            return control ;
+
+        } ;
+
+        /**
          * Remove the controls listed to the map.
          *
          * @param {Array.<String>} controlIds - A list of control's id or null.
@@ -1340,8 +1404,8 @@ define([
             var fopenPopup = function (evt) {
                 var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
-                context._displayInfo(
-                    "mrk-" + ii,
+                Gp.GfiUtils.displayInfo(
+                    "mrk-" + i,
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]
@@ -1621,7 +1685,7 @@ define([
                     } else {
                         sourceOpts.requestEncoding = "KVP" ;
                     }
-                    constructorOpts.source = new ol.source.WMTS(sourceOpts);
+                    constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
                     break;
                 case "OSM":
                     this.logger.trace("ajout d'une couche OSM");
@@ -2475,361 +2539,6 @@ define([
         } ;
 
         /**
-         * Info Popup creation and display
-         *
-         * @param {String} id - layerName
-         * @param {ol.Coordinate} coords - coordinates wher to anchor popup.
-         * @param {HTMLElement} content - content to display
-         * @param {String} contentType - content mime-type
-         */
-        OL3.prototype._displayInfo = function (id, coords, content, contentType) {
-            this.logger.trace("[OL3] : _displayInfo...") ;
-
-            if ( content === null) {
-                return;
-            }
-
-            var _htmlDoc = null;
-            var _parser  = null;
-
-            var _content = content;
-            _content = _content.replace(/\n/g, "");
-            _content = _content.replace(/(>)\s*(<)/g, "$1$2");
-
-            var scope  = typeof window !== "undefined" ? window : null;
-
-            if ( typeof exports === "object" && window === null) {
-                // code for nodejs
-                var DOMParser = require("xmldom").DOMParser;
-                _parser = new DOMParser();
-                _htmlDoc = _parser.parseFromString(_content, "text/html");
-            } else if (scope.DOMParser) {
-                // code for modern browsers
-                _parser = new scope.DOMParser();
-                _htmlDoc = _parser.parseFromString(_content, "text/html");
-            } else if (scope.ActiveXObject) {
-                // code for old IE browsers
-                _htmlDoc = new scope.ActiveXObject("Microsoft.XMLDOM");
-                _htmlDoc.async = false;
-                _htmlDoc.loadXML(_content);
-            } else {
-                console.log("Incompatible environment for DOM Parser !");
-                return;
-            }
-
-            var body = _htmlDoc.getElementsByTagName("body");
-            if (body && body.length === 1) {
-                if (!body[0].hasChildNodes()) {
-                    return;
-                }
-            }
-
-            // Affichage des features.
-            var element = document.createElement("div");
-            element.className = "gp-feature-info-div";
-
-            var closer = document.createElement("input");
-            closer.type = "button" ;
-            closer.className = "gp-styling-button closer";
-            var olMap = this.libMap ;
-            /**
-             * fait disparaître la popup au clic sur x
-             */
-            closer.onclick = function () {
-                if (olMap.featuresOverlay) {
-                    olMap.removeOverlay(olMap.featuresOverlay) ;
-                    olMap.featuresOverlay = null ;
-                }
-                return false;
-            };
-
-            var contentDiv = document.createElement("div");
-            contentDiv.className = "gp-features-content-div" ;
-            contentDiv.innerHTML = content ;
-            /*
-            if (content instanceof HTMLElement) {
-                this.logger.trace("[OL3] : _displayInfo : pure HTMLElement") ;
-                contentDiv.appendChild(content) ;
-            } else {
-                var parser = new DOMParser() ;
-                var doc = null ;
-                try {
-                    doc = parser.parseFromString(content,contentType) ;
-                    this.logger.trace("[OL3] : _displayInfo : HTMLElement from parser") ;
-                    // FIXME : avec cette methode, on a une balise html + body qui s'insère...
-                    contentDiv.appendChild(doc.documentElement) ;
-                } catch (e) {
-                    console.log(e) ;
-                    this.logger.trace("[OL3] : _displayInfo : parsing content failed (not HTML)") ;
-                    // en cas d'erreur : on se contente de recopier le contenu.
-                    contentDiv.innerHTML = content ;
-                }
-            }
-            */
-            element.appendChild(contentDiv);
-            element.appendChild(closer);
-
-            if (this.libMap.featuresOverlay) {
-                // fermeture d'une éventuelle popup déjà ouverte.
-                this.libMap.removeOverlay(this.libMap.featuresOverlay) ;
-                this.libMap.featuresOverlay = null ;
-            }
-            this.libMap.featuresOverlay = new ol.Overlay({
-                id : id,
-                element : element,
-                insertFirst : false, // popup appears on top of other overlays if any
-                stopEvent : true
-            });
-            this.libMap.addOverlay(this.libMap.featuresOverlay);
-            this.libMap.featuresOverlay.setPosition(coords) ;
-            this.libMap.featuresOverlay.setPositioning("bottom-center") ;
-
-        } ;
-
-        /**
-         * Gets HTML content from features array
-         *
-         * @param {Array.<ol.Features>} features - ol3 features Array
-         * @returns {HTMLElement} HTML content.
-         */
-        OL3.prototype._features2html = function (features) {
-            this.logger.trace("[OL3] : _features2html...") ;
-
-            var content = document.createElement("div") ;
-            features.forEach(function (f) {
-                var props = f.getProperties() ;
-                if (props.hasOwnProperty("name")) {
-                    var nameDiv = document.createElement("div") ;
-                    nameDiv.className =  "gp-att-name-div" ;
-                    // nameDiv.appendChild(document.createTextNode(props["name"])) ;
-                    nameDiv.insertAdjacentHTML("afterbegin", props["name"]);
-                    content.appendChild(nameDiv) ;
-                }
-                if (props.hasOwnProperty("description")) {
-                    var descDiv = document.createElement("div") ;
-                    descDiv.className = "gp-att-description-div" ;
-                    // descDiv.appendChild(document.createTextNode(props["description"])) ;
-                    descDiv.insertAdjacentHTML("afterbegin", props["description"]);
-                    content.appendChild(descDiv) ;
-                }
-                var p = null ;
-                var others = false ;
-                var oDiv = null ;
-                var ul = null ;
-                var li = null ;
-                for (p in props) {
-                    if (p == "geometry" || p == "value" || p == "name" || p == "description" || p == "styleUrl") {
-                        continue ;
-                    }
-                    // FIXME La lecture des extensions GPX n'est pas gérée !
-                    if (p == "extensionsNode_" && props[p] === undefined) {
-                        continue ;
-                    }
-                    if (!others) {
-                        oDiv = document.createElement("div") ;
-                        oDiv.className = "gp-att-others-div" ;
-                        ul = document.createElement("ul") ;
-                        others = true ;
-                    }
-                    li = document.createElement("li") ;
-                    var span = document.createElement("span") ;
-                    span.className = "gp-attname-others-span" ;
-                    span.appendChild(document.createTextNode(p + " : ")) ;
-                    li.appendChild(span) ;
-                    li.appendChild(document.createTextNode(props[p])) ;
-                    ul.appendChild(li) ;
-                }
-                if (ul) {
-                    oDiv.appendChild(ul) ;
-                    content.appendChild(oDiv) ;
-                }
-            },this) ;
-
-            // pas de contenu !
-            if (!content.hasChildNodes()) {
-                content = null;
-            }
-
-            return content ;
-        } ;
-
-        /**
-         * Action triggered when map is clicked
-         */
-        OL3.prototype._onMapClick = function (evt) {
-            this.logger.trace("[OL3] : _onMapClick...") ;
-            var interactions = this.libMap.getInteractions().getArray() ;
-            for (var i = 0 ; i < interactions.length ; i++ ) {
-                if (interactions[i].getActive() &&
-                    ( interactions[i] instanceof ol.interaction.Select ||
-                      interactions[i] instanceof ol.interaction.Modify ||
-                      interactions[i] instanceof ol.interaction.Draw     )
-                    )  {
-                    // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
-                    return ;
-                }
-            }
-
-            // Layers orders
-            var layers = {};
-            for (var j = 0; j < this._layers.length; j++) {
-                var layer = this._layers[j];
-                var position = this._layers[j].options.position;
-                layers[position] = layer;
-            }
-
-            // FIXME doit on afficher toutes les popup d'informations ?
-            // ou uniquement la première en partant du dessus...
-            var requests = [];
-            var positions = Object.keys(layers); // FIXME reverse !?
-            positions.sort( function (a,b) {
-                return b - a;
-            });
-            for (var k = 0 ; k < positions.length ; k++) {
-                var p = positions[k];
-                var l = layers[p];
-                this.logger.trace("[OL3] : _onMapClick : analyzing wms") ;
-                var minMaxZoomOk = true ;
-                if (l.options.minZoom  && l.options.minZoom > this.getZoom()) {
-                    minMaxZoomOk = false ;
-                }
-                if (minMaxZoomOk &&
-                    l.options.maxZoom &&
-                    l.options.maxZoom < this.getZoom()) {
-                    minMaxZoomOk = false ;
-                }
-                if (l.options.format &&
-                    (l.options.format.toLowerCase() == "wms" || l.options.format.toLowerCase() == "wmts" ) &&
-                    l.options.queryable &&
-                    l.obj.getVisible() &&
-                    minMaxZoomOk
-                ) {
-
-                    var _id     = l.id;
-                    var _format = l.options.gfiFormat || "text/html";
-                    var _coord  = evt.coordinate;
-                    var _res    = this.libMap.getView().getResolution();
-                    var _url    = null;
-                    if (l.options.format.toLowerCase() == "wmts") {
-                        _url = Gp.olUtils.getGetFeatureInfoUrl(
-                            l.obj.getSource(),
-                            _coord,
-                            _res,
-                            this.getLibMap().getView().getProjection(),
-                            {
-                                INFOFORMAT : _format
-                            }
-                        );
-                    } else {
-                        _url = l.obj.getSource().getGetFeatureInfoUrl(
-                            _coord,
-                            _res,
-                            this.getLibMap().getView().getProjection(),
-                            {
-                                INFO_FORMAT : _format
-                            }
-                        );
-                    }
-
-                    requests.push({
-                        id : _id,
-                        format : _format,
-                        url : this.setProxy(_url),
-                        scope : this,
-                        coordinate : _coord
-                    });
-                }
-            }
-
-            /** call request sync */
-            function requestsSync (list, iterator, callback) {
-                if (list.length === 0) {
-                    return;
-                }
-
-                var nextItemIndex = 0;
-
-                /** function report next request */
-                function report (displayed) {
-
-                    nextItemIndex++;
-
-                    if (displayed || nextItemIndex === list.length) {
-                        callback();
-                    } else {
-                        iterator(list[nextItemIndex], report);
-                    }
-                }
-
-                // instead of starting all the iterations, we only start the 1st one
-                iterator(list[0], report);
-            }
-
-            requestsSync(requests,
-                function (data, report) {
-                    var self = data.scope;
-                    Gp.Protocols.XHR.call({
-                        url : data.url,
-                        method : "GET",
-                        scope : data.scope,
-                        /** Handles GFI response */
-                        onResponse : function (resp) {
-                            var exception = false;
-
-                            // a t on une exception ?
-                            if (resp.trim().length === 0 ||
-                                resp.indexOf("java.lang.NullPointerException") !== -1 ||
-                                resp.indexOf("not queryable") !== -1) {
-                                // rien à afficher
-                                exception = true;
-                            }
-
-                            // on affiche la popup GFI !
-                            if (!exception) {
-                                self._displayInfo(data.id, data.coordinate, resp, data.format);
-                            }
-
-                            // on reporte sur la prochaine requête...
-                            report(!exception);
-                        },
-                        /** Handles GFI response error */
-                        onFailure : function (error) {
-                            console.log(error);
-                            report(false);
-                        }
-                    }) ;
-                },
-                function () {
-                    console.log("Finish sync to GFI !");
-                }
-            );
-
-            // FIXME doit on prendre en compte les features dans le processus synchrone
-            // d'affichage des popup d'information ?
-
-            // couches vecteur : on remplit un tableau avec les features à proximité.
-            var features = [] ;
-            this.libMap.forEachFeatureAtPixel(evt.pixel, function (feature) {
-                features.push(feature);
-            });
-            if (features.length == 0) {
-                // no features
-                return ;
-            }
-            var content = this._features2html(features) ;
-            // pas de contenu !
-            if ( content === null) {
-                return;
-            }
-            // Affichage des features.
-            var id = "features";
-            this._displayInfo(id, evt.coordinate, content.innerHTML) ;
-            // this._displayInfo(evt.coordinate,content,"text/html") ;
-
-        } ;
-
-        /**
-         * Function to disable/enable layer color (grayscale or color mode).
          *
          * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
          * @param {String} layerId - layer identifier

@@ -661,24 +661,7 @@ define([
              * @private
              */
             setProxy : function (url) {
-                if (!this.mapOptions.hasOwnProperty("proxyUrl") ||
-                    this.mapOptions.proxyUrl.trim().length == 0 ) {
-                    return url ;
-                }
-                // on regarde si l'url nest pas dans les domaines sans proxy
-                if (this.mapOptions.noProxyDomains &&
-                    Array.isArray(this.mapOptions.noProxyDomains) &&
-                    this.mapOptions.noProxyDomains.length > 0 ) {
-                    for (var i in this.mapOptions.noProxyDomains) {
-                        this.logger.trace("[IMap] _setProxy : analyzing " + this.mapOptions.noProxyDomains[i]) ;
-                        if (url.indexOf(this.mapOptions.noProxyDomains[i]) !== -1 ) {
-                            this.logger.info("[IMap] _setProxy : " + url + " found in noProxyDomains list (" + this.mapOptions.noProxyDomains[i] + ").") ;
-
-                            return url ;
-                        }
-                    }
-                }
-                return this.mapOptions.proxyUrl + encodeURIComponent(url) ;
+                return Gp.ProxyUtils.proxifyUrl(url,this.mapOptions);
             },
 
             /**
@@ -1351,6 +1334,7 @@ define([
              * | 'overview' | Adds mini overview map to the map. See [options availables](./Gp.ControlOptions.html#overview) |
              * | 'graticule' | Adds graticule control to the map. See [options availables](./Gp.ControlOptions.html#graticule) |
              * | 'attributions' | Adds layers originators display to the map. See [options availables](./Gp.ControlOptions.html#attributions) |
+             * | 'getfeatureinfo' | Adds capability to retrieve and display information about layer features. See [options availables](./Gp.ControlOptions.html#getfeatureinfo) |
              */
             addControls : function (controlsOptions) {
                 this.logger.trace("[IMap] addControls") ;
@@ -1447,6 +1431,9 @@ define([
                             break ;
                         case "camera":
                             controlObj = this.addCameraControl(controlOpts) ;
+                            break ;
+                        case "getfeatureinfo":
+                            controlObj = this.addGetFeatureInfoControl(controlOpts) ;
                             break ;
                         default :
                             console.log("Controle " + controlId + "inconnu.") ;
@@ -1738,6 +1725,14 @@ define([
              * @private
              */
             addCameraControl : function (controlOpts) {},
+
+            /**
+             * Adds getFeatureInfo control to the map.
+             *
+             * @param {Object} controlOpts - control options
+             * @private
+             */
+            addGetfeatureInfoControl : function (controlOpts) {},
 
             /**
              * Removes given controls from the map.

@@ -533,6 +533,22 @@
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
          * | maximised | Boolean | if the control has to be opened or not. |
          *
+         * <a id="getfeatureinfo"></a>
+         *
+         * ### Options for "getfeatureinfo" control
+         *
+         * | Property | Type | Argument | Default | Description |
+         * | - | - | - | - | - |
+         * | div | String / DOMElement | | | Target HTML element container or its id. Default is chosen by map implementation. |
+         * | options | Object | | | Defines control options. |
+         * | options.hidden | Boolean | optional | false | Specifies if the widget should be hidden. |
+         * | options.auto | Boolean | optional | false | Specifies if the control run in automatic mode. In automatic mode all vector layers added on run time or added at map initialization can be requested through the control. The triggering event of those layers is the default event. |
+         * | options.active | Boolean | optional | true | Specifies if the control is active or inactive. When inactive no request is fired and no information displayed. |
+         * | options.defaultEvent | String | optional | 'singleclick' | Specifies the default triggering event chosen in the list ['singleclick', 'dblclick', 'contextmenu']. This is the triggering event of all layers added to the control without configured triggering event. |
+         * | options.defaultInfoFormat | String | optional | 'text/html' | Indicates the default format mime-type of the response of GetFeatureInfo requests. |
+         * | options.cursorStyle | String | optional | 'pointer' | Specifies the type of cursor to be displayed when pointing on vector feature of a layer previously added to the control. The value must be choosen in the possible values of the css cursor property. |
+         * | layers | Object | | | List of layers requested by the control and their options (those layers have to be queryable). Associative array mapping ids of layers and their properties : </br><ul><li>event (String, optional) : name of the mouse event triggering the "getfeatureinfo" request.</li><li>infoFormat (String, optional) : indicates the format mime-type of the response of GetFeatureInfo requests.</li></ul> |
+         *
          * <a id="layerimport"></a>
          *
          * ### Options for "layerimport" control
