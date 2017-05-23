@@ -2847,11 +2847,11 @@ define([
 
             // event handlers
             function imageloadstartHandler (evt) {
-                evt.image.getImage().crossOrigin = "anonymous";
+                evt.image.getImage().crossOrigin = "";
             };
 
             function tileloadstartHandler (evt) {
-                evt.tile.getImage().crossOrigin = "anonymous";
+                evt.tile.getImage().crossOrigin = "";
             };
 
             function imageloadendHandler (evt) {
