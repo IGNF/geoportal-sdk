@@ -2631,7 +2631,7 @@ define([
 
             function imageloadendHandler (evt) {
 
-                /// patch pour safari
+                // patch pour safari
                 evt.image.getImage().crossOrigin = null;
 
                 gray( evt.image.getImage() );
@@ -2639,9 +2639,9 @@ define([
 
             function tileloadendHandler (evt) {
 
-                /// patch pour safari
+                // patch pour safari
                 evt.tile.getImage().crossOrigin = null;
-                
+
                 gray( evt.tile.getImage() );
             };
 
