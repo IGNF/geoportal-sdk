@@ -1249,7 +1249,7 @@ define([
             }
 
             gfiOpts.layers = [];
-            for (gfiLayerId in controlOpts.layers) {
+            for (var gfiLayerId in controlOpts.layers) {
                 var gfiLayer = controlOpts.layers[gfiLayerId];
 
                 for ( var i = 0 ; i < this._layers.length ; ++i ) {
@@ -2597,7 +2597,9 @@ define([
          */
         OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
 
-            // fonction de conversion de d'une image en n/b
+            /**
+             * fonction de conversion de d'une image en n/b
+             */
             function gray (img) {
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
@@ -2620,15 +2622,23 @@ define([
                 img.src = canvas.toDataURL();
             };
 
-            // event handlers
+            /**
+             * handler for event 'imageloadstart'
+             */
             function imageloadstartHandler (evt) {
                 evt.image.getImage().crossOrigin = "Anonymous";
             };
 
+            /**
+             * handler for event 'tileloadstart'
+             */
             function tileloadstartHandler (evt) {
                 evt.tile.getImage().crossOrigin = "Anonymous";
             };
 
+            /**
+             * handler for event 'imageloadend'
+             */
             function imageloadendHandler (evt) {
 
                 // patch pour safari
@@ -2637,6 +2647,9 @@ define([
                 gray( evt.image.getImage() );
             };
 
+            /**
+             * handler for event 'tileloadend'
+             */
             function tileloadendHandler (evt) {
 
                 // patch pour safari
