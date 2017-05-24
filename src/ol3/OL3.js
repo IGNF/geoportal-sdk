@@ -2847,18 +2847,26 @@ define([
 
             // event handlers
             function imageloadstartHandler (evt) {
-                evt.image.getImage().crossOrigin = "";
+                evt.image.getImage().crossOrigin = "Anonymous";
             };
 
             function tileloadstartHandler (evt) {
-                evt.tile.getImage().crossOrigin = "";
+                evt.tile.getImage().crossOrigin = "Anonymous";
             };
 
             function imageloadendHandler (evt) {
+
+                /// patch pour safari
+                evt.image.getImage().crossOrigin = null;
+
                 gray( evt.image.getImage() );
             };
 
             function tileloadendHandler (evt) {
+
+                /// patch pour safari
+                evt.tile.getImage().crossOrigin = null;
+                
                 gray( evt.tile.getImage() );
             };
 
