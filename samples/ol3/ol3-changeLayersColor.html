@@ -6,39 +6,48 @@
         <link rel="stylesheet" href="../../dist/ol3/GpOl3.css" type="text/css">
         <style>
         #geoportalMap {
-            height: 400px;
-            width: 600px;
-        }
-        #geoportalMap2 {
-            height: 400px;
-            width: 600px;
+            height: 500px;
+            width: 100%;
         }
         </style>
         <script src="../../dist/ol3/GpOl3-src.js"></script>
     </head>
     <body>
         <h1>changeLayerColor</h1>
+
+        <p>Mise en oeuvre de la fonctionnalité permettant le passage d'une couche WMS ou WMTS couleur en niveaux de gris.</p>
+        <p>Parmis les couches testées nous avons :</p>
+        <ul>
+          <li>une couche WFS (les couches vecteurs ne peuvent être passées en niveaux de gris)</li>
+          <li>une couche image Open Street Map</li>
+          <li>une couche WMS géoportail</li>
+          <li>une couche WMS dont les images ne sont pas approuvées par le CORS</li>
+          <li>une couche WMTS géoportail</li>
+          <li>un fond de carte géoportail</li>
+        </ul>
+
         <div id="geoportalMap"></div>
         <div id="BoutonDiv">
             <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS');" value="changeLayerColor(maCoucheGP)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheWFS');" value="changeLayerColor(maCoucheWFS)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS');" value="changeLayerColor(maCoucheWMS)"/><br/>
+            <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS_CORS');" value="changeLayerColor(maCoucheWMS_CORS)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
             <input type="button" name="export" onclick="changeLayerColor('maCoucheOSM');" value="changeLayerColor(maCoucheOSM)"/><br/>
         </div>
         <script type="text/javascript">
 
-            var map = Gp.Map.load('geoportalMap',{
+            var map = Gp.Map.load("geoportalMap",{
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
                 layersOptions : {
-                    'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {
-                      title: "maCoucheGP"
+                    "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                        title : "maCoucheGP"
                     },
                     maCoucheWFS : {
-                        title: "maCoucheWFS",
-                        format :"wfs",
-                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wfs",
-                        typeNames : "BDTOPOMILLESIMEE-RESEAU-ROUTIER-2012_SYMBO_BDD_WLD_WGS84G_WFS1:limites_adm",
+                        title : "maCoucheWFS",
+                        format : "wfs",
+                        url : "http://wxs.ign.fr/vlu3opaliuh4wnj4aja1r9se/geoportail/wfs",
+                        typeNames : "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:arrondissement_departemental",
                         version : "2.0.0",
                         outputFormat : "application/json",
                         maxFeatures : 200,
@@ -46,30 +55,39 @@
                         visibility : true
                     },
                     maCoucheWMS : {
-                        title: "maCoucheWMS",
-                        format:'wms',
+                        title : "maCoucheWMS",
+                        format : "wms",
+                        queryable : true,
+                        tiled : false, // pour test
+                        url : "http://wxs.ign.fr/vlu3opaliuh4wnj4aja1r9se/geoportail/v/wms",
+                        layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
+                        outputFormat : "image/png"
+                    },
+                    maCoucheWMS_CORS : {
+                        title : "maCoucheWMS_CORS",
+                        format : "wms",
                         queryable : true,
                         tiled : true,
-                        url:'http://gpp3-wxs-v-ign-fr.aw.atosorigin.com/geoportail/v/wms',
-                        layers:['SHOM-MAREE_BDD-POI_WLD_WM_2016'],
-                        outputFormat:'image/png'
+                        url : "http://services.data.shom.fr/INSPIRE/wms/r",
+                        layers : ["BATHY-DALLE_PYR-PNG_3857_WMSR"],
+                        outputFormat : "image/png"
                     },
                     "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : {
-                        title: "maCoucheWMTS",
+                        title : "maCoucheWMTS",
                         format : "wmts",
                         minZoom : 0,
                         maxZoom : 16,
                         visibility : true,
                         opacity : 1 ,
-                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
+                        url : "http://wxs.ign.fr/vlu3opaliuh4wnj4aja1r9se/geoportail/wmts",
                         layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
                         tileMatrixSet : "PM",
                         styleName : "normal",
-                        outputFormat : "image/jpeg",
+                        outputFormat : "image/jpeg"
                     },
                     maCoucheOSM : {
-                        title: "maCoucheOSM",
-                        format :"osm",
+                        title : "maCoucheOSM",
+                        format : "osm",
                         opacity : 0.7,
                         minZoom : 8,
                         maxZoom : 13,
@@ -78,7 +96,7 @@
                     }
                 },
                 controlsOptions : {
-                    'layerSwitcher' : {
+                    "layerSwitcher" : {
                         maximised : true
                     }
                 },
@@ -86,16 +104,25 @@
             });
 
             var layerColored = {
-              'GEOGRAPHICALGRIDSYSTEMS.MAPS': false,
-              'maCoucheWFS': false,
-              'maCoucheWMS': false,
-              'GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS': false,
-              'maCoucheOSM': false,
+              "GEOGRAPHICALGRIDSYSTEMS.MAPS" : false,
+              "maCoucheWFS" : false,
+              "maCoucheWMS" : false,
+              "maCoucheWMS_CORS" : false,
+              "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : false,
+              "maCoucheOSM" : false,
             }
 
-            function changeLayerColor(layerId) {
-                map.changeLayerColor(layerColored[layerId],layerId) ;
+            /**
+             * Change layer color
+             */
+            function changeLayerColor (layerId) {
+                // map.changeLayerColor(layerColored[layerId],layerId) ;
+                var layersOptions = new Object();
                 layerColored[layerId] = !layerColored[layerId];
+                layersOptions[layerId] = {
+                    grayScaled : layerColored[layerId]
+                };
+                map.modifyLayers(layersOptions);
             }
 
         </script>

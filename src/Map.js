@@ -343,7 +343,7 @@
          * | title | String | The layer's name displayed in the LayerSwitcher control. |
          * | description | String | The layer's description. |
          * | opacity | Float | The layer's opacity (between 0 and 1). Default value is 1. |
-         *  | visibility | Boolean |  If true, the layer is visible. Default value is true. |
+         * | visibility | Boolean |  If true, the layer is visible. Default value is true. |
          * | minZoom | Integer | If the current zoom level is lower than the minZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the minZoom of the map. |
          * | maxZoom | Integer | If the current zoom level is upper than the maxZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the maxZoom of the map. |
          * | position | Number | The layer's position in map, compared to other layers positions. Allows to organize layers order explicitely. By default the layer will be displayed above other layers. |
@@ -355,6 +355,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layer | String | The layer's Identifier to add (found in GetCapabilities response). |
          * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. Not yet implemented for WMTS. |
          * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html". Not yet implemented for WMTS. |
@@ -371,7 +372,7 @@
          * | - | - | - |
          * | showPointNames | Boolean | If true, show names as labels for placemarks which contain points. |
          * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
-         * | zoomToExtent | Boolean | If true, zoom into the extent of features. | 
+         * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
          * | projection | String | coordinate reference system id used for Layer (default is map projection) |
          *
          * ### KML, GPX and GeoJSON specific properties
@@ -384,6 +385,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layers | Array[String] layers | List of layer's identifiers to add (found in GetCapabilities response). |
          * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. |
          * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html" |
@@ -402,7 +404,7 @@
          * | version | String | The version of the Web Service providing the layer. Default : "2.0.0" |
          * | typeNames | String | List of the features's name to add (see in GetCapabilities response). |
          * | outputFormat | String | The output format (Mime-type) to use for WFS requests (outputFormat parameter) |
-         *  | maxFeatures | Integer | Maximal number of features in the layer. |
+         * | maxFeatures | Integer | Maximal number of features in the layer. |
          * | projection | String | Coordinate reference system id used for Layer (default is map projection) |
          *
          * @namespace

@@ -2097,10 +2097,12 @@ define([
             /**
              *  Function to disable/enable layer color (grayscale or color mode).
              *
-             * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
              * @param {String} layerId - layer identifier
+             * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
+             *
+             * @private
              */
-            changeLayerColor : function (colorToGray,layerId) {
+            _changeLayerColor : function (layerId,colorToGray) {
                 return;
             }
         };
