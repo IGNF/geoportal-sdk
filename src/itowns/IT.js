@@ -6,7 +6,7 @@ define([
 ],
 function (
     Logger,
-    itowns,
+    it,
     plugins, // Gp globale !?
     IMap
 ) {
@@ -75,20 +75,15 @@ function (
         };
 
         // iTowns namespace defined here
-        var viewerDiv = document.getElementById("viewerDiv");
-        // this.libMap = itowns;
+        var viewerDiv = this.div;
         // creation de la map vide
-        this.libMap = window.itowns;
-        this.libMap.viewer.createSceneGlobe(positionOnGlobe, viewerDiv);
+        this.libMap = new itowns.GlobeView(viewerDiv, positionOnGlobe);
+        var self = this;
+        // when globe is loaded, we move forward
+        this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+            self._afterInitMap();
+        });
 
-        var wgs84TileLayer = {
-            protocol : "tile",
-            id : "wgs84"
-        };
-
-        this.libMap.viewer.addGeometryLayer(wgs84TileLayer);
-
-        this._afterInitMap() ;
     } ;
 
     /**
@@ -160,6 +155,7 @@ function (
                     var minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 var layer = {
+                    type : layerOpts.type || "color",
                     url : layerOpts.url,
                     protocol : layerOpts.format,
                     id : layerId,
@@ -190,6 +186,7 @@ function (
                 }
                 layerOpts = lOpts ;
                 layer = {
+                    type : layerOpts.type || "color",
                     url : layerOpts.url,
                     protocol : layerOpts.format.toLowerCase(),
                     id : layerId,
@@ -246,8 +243,8 @@ function (
                     layer.noDataValueTolerance = layerOpts.noDataValueTolerance.toString();
                 }
                 // this will launch the addedLayer callback (dans "VG._onLayerChanged")
-                this.libMap.addElevationLayer(layer) ;
-                this.libMap.viewer.init();
+                this.libMap.addLayer(layer) ;
+                // this.libMap.viewer.init();
             } else {
                 var LSControl = this.getLibMapControl("layerswitcher");
                 // if the LS already exists, we have to save the conf of the layer to add it to the LS
@@ -257,8 +254,8 @@ function (
                 var layerConf = JSON.parse(JSON.stringify(layerOpts));
 
                 // we add the layer and refresh the itowns viewer
-                this.libMap.viewer.addImageryLayer(layer) ;
-                this.libMap.viewer.init();
+                this.libMap.addLayer(layer) ;
+                // this.libMap.viewer.init();
             }
 
         }
@@ -278,25 +275,122 @@ function (
              console.log("no valid coordinates for map center") ;
              return ;
          }
-         // we keep the current range
-         var mapRange = this.libMap.viewer.getRange();
 
          var coordinates = {
              longitude : point.x,
-             latitude : point.y,
-             range : mapRange
+             latitude : point.y
          };
-
-         this.libMap.viewer.setCenter(coordinates, false);
-         this.libMap.viewer.init();
+         // var coordinates = new itowns.Coordinates("EPSG:4326", point.x, point.y, mapRange);
+         this.libMap.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
+         // this.libMap.viewer.init();
          this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
      };
 
     /**
-      * Remove the layers listed to the map.
-      *
-      * @param {Array.<String>} layerIds - A list of layer's id or null.
-      */
+     * retourne les coordonnées courantes du centre de la carte
+     */
+    IT.prototype.getCenter = function () {
+        var cameraCenter = this.libMap.controls.getCameraTargetGeoPosition();
+        var center = {
+            lon : cameraCenter.longitude(),
+            lat : cameraCenter.latitude(),
+            alt : cameraCenter.altitude()
+        };
+        return center;
+    };
+
+    /**
+     * retourne le zoom Géoportail de la carte à partir de l'echelle courante de la carte
+     */
+    IT.prototype.getZoom = function () {
+        // -1 pour se baser sur les zooms Gp
+        var zoom = this.libMap.controls.getZoom() - 1;
+        return zoom;
+    };
+
+    /**
+     * Définit le niveau de zoom de la carte
+     */
+    IT.prototype.setZoom = function (zoom) {
+        if ((parseFloat(zoom) !== parseInt(zoom, 10)) || isNaN(zoom)) {
+            console.log("no valid zoomLevel") ;
+            return ;
+        }
+        // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
+        this.libMap.controls.setZoom(zoom + 1, false);
+        this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
+    };
+
+    /**
+     * Incrémente le niveau de zoom de la carte de 1.
+     */
+    IT.prototype.zoomIn = function () {
+        var zoom = this.getZoom();
+        // On ne zoom pas si le zoom est à 21 (max)
+        if (zoom === 20) {
+            return;
+        }
+        this.setZoom(zoom + 1);
+    };
+
+    /**
+     * Décrémente le niveau de zoom de la carte de 1.
+     */
+    IT.prototype.zoomOut = function () {
+        var zoom = this.getZoom();
+        // On ne dézoome pas si le zoom est à 0 (min)
+        if (zoom === -1) {
+            return;
+        }
+        this.setZoom(zoom - 1);
+    };
+
+    /**
+     * retourne l'azimut courant de la carte
+     */
+    IT.prototype.getAzimuth = function () {
+        return this.libMap.controls.getCameraOrientation()[1];
+    };
+
+    /**
+     * définit le niveau de zoom de la carte
+     */
+    IT.prototype.setAzimuth = function (azimuth) {
+        if (isNaN(azimuth)) {
+            console.log("Not a valid azimuth : must be a float") ;
+            return ;
+        }
+        // VG method to set the camera orientation
+        this.libMap.controls.setHeading(azimuth, true);
+        this.logger.trace("[VG] - setAzimuth(" + azimuth + ")") ;
+    };
+
+    /**
+     * retourne l'inclinaison courante de la carte
+     */
+    IT.prototype.getTilt = function () {
+        return this.libMap.controls.getCameraOrientation()[0];
+    };
+
+    /**
+     * définit l'inclinaison de la caméra
+     */
+    IT.prototype.setTilt = function (tilt) {
+        if (isNaN(tilt) || tilt < 0 || tilt > 90) {
+            console.log("no valid tilt angle") ;
+            return ;
+        }
+        // On utilise la méthode setCenterAdvanced pour
+        // pouvoir désactiver l'animation d'inclinaison
+        this.libMap.controls.setTilt(tilt, false);
+        this.logger.trace("[VG] - setTilt(" + tilt + ")") ;
+    };
+
+    /**
+     * Remove the layers listed to the map.
+     *
+     * @param {Array.<String>} layerIds - A list of layer's id or null.
+     */
     IT.prototype.removeLayers = function (layerIds) {
          if (!IMap.prototype.removeLayers.apply(this,arguments)) {
              return false ;
@@ -306,11 +400,18 @@ function (
          }
          // ici on sait que layerIds est un tableau
          layerIds.forEach(function (_layerId) {
-             this.libMap.viewer.removeImageryLayer(_layerId) ;
+             this.libMap.removeLayer(_layerId) ;
          },
          this) ;
 
      } ;
+
+    /**
+     * retourne l'objet Itowns.GlobeView
+     */
+    IT.prototype.getLibMap = function () {
+        return this.libMap;
+    };
 
     return IT;
 });
