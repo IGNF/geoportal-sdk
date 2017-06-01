@@ -83,6 +83,7 @@ define([
             reversesearch : ol.control.ReverseGeocode,
             drawing : ol.control.Drawing,
             attributions : ol.control.GeoportalAttribution,
+            getfeatureinfo : ol.control.GetFeatureInfo,
             camera : null
         } ;
 
@@ -1404,8 +1405,8 @@ define([
             var fopenPopup = function (evt) {
                 var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
-                Gp.GfiUtils.displayInfo(
-                    "mrk-" + i,
+                ol.gp.GfiUtils.displayInfo(
+                    context.getLibMap(),
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]

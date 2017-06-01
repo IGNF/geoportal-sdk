@@ -1732,7 +1732,7 @@ define([
              * @param {Object} controlOpts - control options
              * @private
              */
-            addGetfeatureInfoControl : function (controlOpts) {},
+            addGetFeatureInfoControl : function (controlOpts) {},
 
             /**
              * Removes given controls from the map.
