@@ -6,8 +6,8 @@
         <link rel="stylesheet" href="../../dist/mixIt/GpOL3Itowns-src.css" type="text/css">
         <style>
           #viewerDiv {
-            height: 400px;
-            width: 600px;
+            height: 600px;
+            width: 1200px;
             position : "relative";
           }
         </style>
@@ -20,11 +20,11 @@
         <div id="viewerDiv"></div>
 
         <script type="text/javascript">
-        var map = Gp.Map.load('viewerDiv',{
+        var map = Gp.Map.load("viewerDiv",{
             apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
             library : "itowns",
             layersOptions : {
-                'ELEVATION.ELEVATIONGRIDCOVERAGE': {
+                "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
                     type : "elevation",
                     title : "MNT IGN",
                     description : "MNT DE l'IGN",
@@ -35,8 +35,8 @@
                     layer : "ELEVATION.ELEVATIONGRIDCOVERAGE",
                     styleName : "normal",
                     tileMatrixSet : "WGS84G",
-                    tileMatrixSetLimits: {
-                     "2": {
+                    tileMatrixSetLimits : {
+                      "2": {
                         "minTileRow": "0",
                         "maxTileRow": "2",
                         "minTileCol": "2",
