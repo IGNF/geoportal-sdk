@@ -446,7 +446,10 @@ function (
                 // handled in IMap
                 break ;
             case "centerChanged" :
-                this.libMap.controls.addEventListener("camera-target-changed", function (itEvent) {
+                /**
+                * centerChanged callback
+                */
+                var callBackCenterChanged = function (itEvent) {
                     var centerChangedEvt = {} ;
                     if (!itEvent) {
                         return;
@@ -467,13 +470,17 @@ function (
                         } ;
                     }
                     action.call(context,centerChangedEvt) ;
-                },
-                this) ;
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callBackCenterChanged,eventId,action,context) ;
+                this.libMap.controls.addEventListener("camera-target-changed", callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged" :
                 var oldZoom = this.libMap.controls.getZoom();
-                // on écoute le range (et non le zoom, non implémenté côté itowns)
-                this.libMap.controls.addEventListener("range-changed", function (itEvent) {
+                /**
+                * zoomChanged callback
+                */
+                var callbackZoomchange = function (itEvent) {
                     // on récupère le zoom
                     var newZoom = context.libMap.controls.getZoom();
                     // si le zoom n'a pas changé, on sort
@@ -486,11 +493,18 @@ function (
                     }) ;
                     // update the oldZoom vale
                     oldZoom = newZoom;
-                },
-                this);
+                };
+
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackZoomchange,eventId,action,context) ;
+                // on écoute le range (et non le zoom, non implémenté côté itowns)
+                this.libMap.controls.addEventListener("range-changed", callbackZoomchange, this);
                 break ;
             case "azimuthChanged" :
-                this.libMap.controls.addEventListener("orientation-changed", function (itEvent) {
+                /**
+                * azimuthChanged callback
+                */
+                var callbackAzimuthchange = function (itEvent) {
                     if (itEvent.new.heading === itEvent.previous.heading) {
                         return;
                     }
@@ -498,11 +512,16 @@ function (
                         oldAzimuth : itEvent.previous.heading,
                         newAzimuth : itEvent.new.heading
                     }) ;
-                },
-                this);
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
+                this.libMap.controls.addEventListener("orientation-changed", callbackAzimuthchange, this);
                 break ;
             case "tiltChanged" :
-                this.libMap.controls.addEventListener("orientation-changed", function (itEvent) {
+                /**
+                * tiltChanged callback
+                */
+                var callbackTiltchange = function (itEvent) {
                     if (itEvent.new.tilt === itEvent.previous.tilt) {
                         return;
                     }
@@ -510,8 +529,10 @@ function (
                         oldTilt : itEvent.previous.tilt,
                         newTilt : itEvent.new.tilt
                     }) ;
-                },
-                this);
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackTiltchange,eventId,action,context) ;
+                this.libMap.controls.addEventListener("orientation-changed", callbackTiltchange, this);
                 break ;
             case "projectionChanged" :
                 // TODO : interet ?
@@ -552,35 +573,59 @@ function (
       *
       * @param {Function} action - The function associated to the event.
       */
+    IT.prototype.forget = function (eventId, action) {
+        // interface entre les Ids de l'AHN et ceux de VG
+        var eventsMapping = {
+            tiltChanged : {
+                id : "orientation-changed",
+                parent : this.libMap.controls
+            },
+            azimuthChanged : {
+                id : "orientation-changed",
+                parent : this.libMap.controls
+            },
+            zoomChanged : {
+                id : "range-changed",
+                parent : this.libMap.controls
+            },
+            centerChanged : {
+                id : "camera-target-changed",
+                parent : this.libMap.controls
+            }
+        };
+        this.logger.trace("[IT] : forget...") ;
+        // verifications de base de la classe mère
+        if (!IMap.prototype.forget.apply(this,arguments)) {
+            return false ;
+        }
+        // on cherche l'enregistrement de l'evenement
+        var rEvents = this._events[eventId] ;
+        if (!rEvents) {
+            console.log("nothing to forget for : " + eventId) ;
+            return false ;
+        }
+        var itCallback = null;
+        for (var i = 0 ; i < rEvents.length ; i ++) {
+            if (rEvents[i].action == action) {
+                itCallback = rEvents[i].key ;
+                if (!itCallback) {
+                    console.log("action to forget not found for : " + eventId) ;
+                    return false ;
+                }
+                rEvents.splice(i,1) ;
+                this.logger.trace("[IT] : forgetting : " + eventId + " (" + itCallback + ")") ;
+                var eventOrigin = eventsMapping[eventId].parent;
+                eventOrigin.removeEventListener(eventsMapping[eventId].id, itCallback);
+                // on decale i d'un cran en arriere pour ne pas sauter d'elements
+                i -= 1 ;
+            }
+        }
+        if (!rEvents) {
+            console.log("action to forget not found for : " + eventId) ;
+            return false ;
+        }
 
-    /* OL3.prototype.forget = function (eventId, action) {
-         this.logger.trace("[OL3] : forget...") ;
-         // verifications de base de la classe mère
-         if (!IMap.prototype.forget.apply(this,arguments)) {
-             return false ;
-         }
-         // on cherche l'enregistrement de l'evenement
-         var rEvents = this._events[eventId] ;
-         if (!rEvents) {
-             console.log("nothing to forget for : " + eventId) ;
-             return false ;
-         }
-         var evKey = null ;
-         for (var i = 0 ; i < rEvents.length ; i ++) {
-             if (rEvents[i].action == action) {
-                 evKey = rEvents[i].key ;
-                 rEvents.splice(i,1) ;
-                 this.logger.trace("[OL3] : forgetting : " + eventId + " (" + evKey + ")") ;
-                 ol.Observable.unByKey(evKey) ;
-                 // on decale i d'un cran en arriere pour ne pas sauter d'elements
-                 i -= 1 ;
-             }
-         }
-         if (!rEvents) {
-             console.log("action to forget not found for : " + eventId) ;
-             return false ;
-         }
-     } ;*/
+    } ;
 
     /**
      * retourne l'objet Itowns.GlobeView
