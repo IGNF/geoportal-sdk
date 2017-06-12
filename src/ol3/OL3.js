@@ -2958,13 +2958,39 @@ define([
 
             this._layers.push(gpLayer);
             this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
-            this._resetLayerChangedEvent();
+            this._manageLayerChangedEvent();
 
             // update layer properties
             gpLayer.obj.setOpacity(opacity);
             gpLayer.obj.setVisible(visible);
 
             return true;
+        };
+
+        /**
+         *  Remove and re-initialize layerChanged event
+         *
+         * @private
+         */
+        OL3.prototype._manageLayerChangedEvent = function () {
+            // re-abonnement à l'evenement layerChanged
+            // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
+            if (this._events.hasOwnProperty("layerChanged")) {
+                var layerChangedArray = [] ;
+                // on recopie le tableau
+                this._events["layerChanged"].forEach(function (eventObj) {
+                    layerChangedArray.push(eventObj) ;
+                },
+                this) ;
+                layerChangedArray.forEach(function (eventObj) {
+                    // on oublie ...
+                    this.forget("layerChanged", eventObj.action) ;
+                    // ... pour mieux se souvenir
+                    this.listen("layerChanged", eventObj.action , eventObj.context) ;
+                },
+                this) ;
+                layerChangedArray = null ;
+            }
         };
 
         return OL3;
