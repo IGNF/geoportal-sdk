@@ -228,7 +228,8 @@ function (
             // on met à jour le tableau des couches
             this._layers.push({
                 id : layerId,
-                options : layerOpts
+                options : layerOpts,
+                obj : layer
             }) ;
             if (layerOpts.isElevation === true) {
                 // we add the noDataValue if it is given
@@ -538,6 +539,100 @@ function (
                 // TODO : interet ?
                 break ;
             case "layerChanged" :
+                /**
+                * layerAdded callback
+                */
+                var callbackLayerAdded = function (itevt) {
+                    var ladded = itevt ;
+                    var layerIndex;
+                    var layerOpts = map._getLayerOpts(ladded) ;
+                    var itColorLayer = map._getItownsColorLayerById(Object.keys(layerOpts)[0]);
+
+                    if (itColorLayer && itColorLayer.sequence >= 0) {
+                        layerIndex = itColorLayer.sequence;
+                    } else {
+                        // if itColorLayer is not defined, the layer is an MNT : we set its layerIndex to -1
+                        layerIndex = -1;
+                    }
+                    if (!layerOpts) {
+                        map.logger.trace("[IT] listen : enregistrement d'une couche 'inconnue'.") ;
+                        // layerOpts = map._registerUnknownLayer(ladded) ;
+                    }
+
+                    // if itColorLayer is undefined, it is an MNT : the sequence is set to -1
+                    action.call(context,{
+                        layerAdded : layerOpts,
+                        position : layerIndex
+                    }) ;
+                } ;
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackLayerAdded,eventId,action,context) ;
+
+                // abonnement à un ajout de couche
+                this.libMap.addEventListener("layer-added", callbackLayerAdded, this) ;
+
+                /**
+                * layerRemoved callback
+                */
+                var callbackLayerRemoved = function (itevt) {
+                    var lremoved = itevt;
+                    var layerOpts = map._getLayerOpts(lremoved) || map._getLayerOpts(lremoved, map._layersRemoved) ;
+                    action.call(context,{
+                        layerRemoved : layerOpts
+                    }) ;
+                };
+
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
+
+                // abonnement à un retrait de couche
+                this.libMap.addEventListener("layer-removed",callbackLayerRemoved, this) ;
+
+                /**
+                * layerVisibilityChanged callback
+                */
+                var callbackVisibilityChanged = function (itevt) {
+                    action.call(context,{
+                        layerVisibilityChanged : itevt
+                    }) ;
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackVisibilityChanged,eventId,action,context) ;
+
+                /**
+                * layerOpacityChanged callback
+                */
+                var callbackOpacityChanged = function (itevt) {
+                    action.call(context,{
+                        layerOpacityChanged : itevt
+                    }) ;
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackOpacityChanged,eventId,action,context) ;
+
+                /**
+                * layerIndexChanged callback
+                */
+                var callbackIndexChanged = function (itevt) {
+                    action.call(context,{
+                        layerIndexChanged : itevt
+                    }) ;
+                };
+                // ajout de l'evenement au tableau des événements
+                this._registerEvent(callbackIndexChanged,eventId,action,context) ;
+
+                itEventKey = null ;
+
+                var colorLayers = this._getItownsColorLayers();
+
+                // we add the visible and opacity property listeners to all
+                // the current layers of the map
+                for (var i = 0; i < colorLayers.length; i++) {
+                    colorLayers[i].addEventListener("visible-property-changed", callbackVisibilityChanged, context);
+                    colorLayers[i].addEventListener("opacity-property-changed", callbackOpacityChanged, context);
+                    colorLayers[i].addEventListener("sequence-property-changed", callbackIndexChanged, context);
+                }
+
                 break ;
             case "controlChanged" :
                 break ;
@@ -577,21 +672,26 @@ function (
         // interface entre les Ids de l'AHN et ceux de VG
         var eventsMapping = {
             tiltChanged : {
-                id : "orientation-changed",
+                id : ["orientation-changed"],
                 parent : this.libMap.controls
             },
             azimuthChanged : {
-                id : "orientation-changed",
+                id : ["orientation-changed"],
                 parent : this.libMap.controls
             },
             zoomChanged : {
-                id : "range-changed",
+                id : ["range-changed"],
                 parent : this.libMap.controls
             },
             centerChanged : {
-                id : "camera-target-changed",
+                id : ["camera-target-changed"],
                 parent : this.libMap.controls
+            },
+            layerChanged : {
+                id : ["layer-added", "layer-removed"],
+                parent : this.libMap
             }
+
         };
         this.logger.trace("[IT] : forget...") ;
         // verifications de base de la classe mère
@@ -615,9 +715,25 @@ function (
                 rEvents.splice(i,1) ;
                 this.logger.trace("[IT] : forgetting : " + eventId + " (" + itCallback + ")") ;
                 var eventOrigin = eventsMapping[eventId].parent;
-                eventOrigin.removeEventListener(eventsMapping[eventId].id, itCallback);
-                // on decale i d'un cran en arriere pour ne pas sauter d'elements
-                i -= 1 ;
+
+                if (eventId === "layerChanged") {
+                    var colorLayers = this._getItownsColorLayers();
+                    for (var idx = 0; idx < colorLayers.length; idx++) {
+                        // pour layerChanged, le cas est particulier : certains listeners sont rattachés aux couches
+                        // on les oublie
+                        colorLayers[idx].removeEventListener("opacity-property-changed", itCallback);
+                        colorLayers[idx].removeEventListener("visible-property-changed", itCallback);
+                        colorLayers[idx].removeEventListener("sequence-property-changed", itCallback);
+                    }
+                }
+                // pour un id de listener du SDK peut correpondre plusieurs ids itowns
+                // ... on oublie tous les callback qui y correspondent
+                for (var j = 0; j <= eventsMapping[eventId].id.length; j++) {
+                    eventOrigin.removeEventListener(eventsMapping[eventId].id, itCallback);
+                    // on decale i d'un cran en arriere pour ne pas sauter d'elements
+                    i -= 1 ;
+                }
+
             }
         }
         if (!rEvents) {
@@ -632,6 +748,119 @@ function (
      */
     IT.prototype.getLibMap = function () {
         return this.libMap;
+    };
+
+    /**
+     * Trouve l'objet layerOpts correspondant au layer IT
+     *
+     * @param {Object} layerObj - IT layer
+     */
+    IT.prototype._getLayerOpts = function ( layerObj, layersStack ) {
+        var layerOpts = null ;
+        layersStack = layersStack || this._layers ;
+        for (var i = 0; i < layersStack.length; i++ ) {
+            var l = layersStack[i] ;
+            if (l.id === layerObj.layerId) {
+                this.logger.trace("[IT] : found layer : " + l.id) ;
+                layerOpts = {} ;
+                layerOpts[l.id] = l.options ;
+                break ;
+            }
+        }
+        return layerOpts ;
+    } ;
+
+    /**
+     * Trouve la couche iTowns via son id
+     *
+     * @param {String} layerId - IT layer id
+     */
+    IT.prototype._getItownsColorLayerById = function ( layerId ) {
+        var layer = this.libMap.getLayers(function (layer) {
+            if (layer.id === layerId && layer.type === "color") {
+                return layer;
+            }
+        });
+        if ( !layer[0] ) {
+            this.logger.trace("[IT] : no colorLayer found for this id") ;
+            return;
+        }
+        return layer[0] ;
+    } ;
+
+    /**
+     * Retourne les couches iTowns de type "color"
+     */
+    IT.prototype._getItownsColorLayers = function () {
+        var colorLayers = this.libMap.getLayers(function (layer) {
+            if (layer.type === "color") {
+                return layer;
+            }
+        });
+        return colorLayers ;
+    } ;
+
+    /**
+     * Registers unknown unregistered layer
+     *
+     * @param {Object} layerObj -  IT layer
+     * @returns {Object} - new layer index in this._layers
+     */
+    IT.prototype._registerUnknownLayer = function ( layerObj ) {
+        // couches de résultat (itineraire, isochrone)
+        /*var layerId = "unknownLayer" ;
+        if (layerObj.hasOwnProperty("gpResultLayerId")) {
+            // isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
+            // itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
+            layerId = layerObj.gpResultLayerId ;
+        }
+        // on rajoute un timestamp
+        layerId += "-" + Date.now() ;
+        this._layers.push({
+            id : layerId,
+            obj : layerObj,
+            options : {}
+        }) ;
+        var layerOpts = {} ;
+        layerOpts[layerId] = {} ;*/
+
+        return {} ;
+    } ;
+
+    /**
+      * Surcharge de la fonction d'IMap (a priori inutile avec iTowns)
+      *
+      */
+    IT.prototype._manageLayerChangedEvent = function () {
+        if (this._events.hasOwnProperty("layerChanged")) {
+            var layerChangedArray = [] ;
+            // on recopie le tableau
+            this._events["layerChanged"].forEach(function (eventObj) {
+                layerChangedArray.push(eventObj) ;
+            },
+            this) ;
+            var colorLayers = this._getItownsColorLayers();
+            layerChangedArray.forEach(function (eventObj) {
+                // On récupère tous les callback associés aux listeners de propriétés des couches
+                if (eventObj.key.name !== "callbackVisibilityChanged" && eventObj.key.name !== "callbackOpacityChanged" && eventObj.key.name !== "callbackIndexChanged") {
+                    return;
+                }
+                // Pour chaque paire callback/listener
+                for (var i = 0; i < colorLayers.length; i++) {
+                    // on oublie les listeners des propriétés sur les couches de la carte
+                    colorLayers[i].removeEventListener("visible-property-changed", eventObj.key);
+                    colorLayers[i].removeEventListener("opacity-property-changed", eventObj.key);
+                    colorLayers[i].removeEventListener("sequence-property-changed", eventObj.key);
+                    // et on s'y réabonne (afin de prendre en compte les dernières couches ajoutées)
+                    colorLayers[i].addEventListener("visible-property-changed", eventObj.key);
+                    colorLayers[i].addEventListener("opacity-property-changed", eventObj.key);
+                    colorLayers[i].addEventListener("sequence-property-changed", eventObj.key);
+                }
+            },
+            this) ;
+            layerChangedArray = null ;
+        }
+        return;
     };
 
     return IT;
