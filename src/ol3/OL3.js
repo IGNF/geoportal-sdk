@@ -1708,6 +1708,10 @@ define([
                 } else {
                     layer = new ol.layer.Tile(constructorOpts) ;
                 }
+                // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                if ( constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0 ) {
+                    layer._forceNullzIndex = true;
+                }
                 var gpLayer = {
                     id : layerId,
                     obj : layer,
@@ -2014,6 +2018,10 @@ define([
             if (layerOpts.hasOwnProperty("originators")) {
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
+            // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+            if ( olParams.hasOwnProperty("zIndex") && olParams.zIndex === 0 ) {
+                olLayer._forceNullzIndex = true;
+            }
 
             this._layers.push({
                 id : layerId,
@@ -2071,6 +2079,14 @@ define([
                 if (commonOpts.hasOwnProperty("zIndex")) {
                     this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex) ;
                     _layerObj.obj.setZIndex(commonOpts.zIndex) ;
+                    // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                    if ( commonOpts.zIndex === 0 ) {
+                        _layerObj.obj._forceNullzIndex = true;
+                    }
+                    // ou inversement pour ne plus forcer le zIndex à zéro lorsque ce n'est pas le cas
+                    if ( commonOpts.zIndex !== 0  && _layerObj.obj._forceNullzIndex ) {
+                        _layerObj.obj._forceNullzIndex = false;
+                    }
                 }
                 if (commonOpts.hasOwnProperty("minResolution")) {
                     this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution) ;
