@@ -129,6 +129,8 @@ function (
         var layerId = Object.keys(layerObj)[0] ;
         var layerOpts = layerObj[layerId] ;
         var layerNames;
+        var maxScaleDenominator;
+        var minScaleDenominator;
         switch (layerOpts.format.toUpperCase()) {
             case "WMS":
                 // FIXME : ajout d'un parametre projection pour les donnees
@@ -146,10 +148,10 @@ function (
                     layerOpts.layers = [layerId];
                 }
                 if (layerOpts.minZoom) {
-                    var maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
+                    maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
                 }
                 if (layerOpts.maxZoom) {
-                    var minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
+                    minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 var layer = {
                     type : layerOpts.type || "color",
@@ -157,12 +159,15 @@ function (
                     protocol : layerOpts.format,
                     id : layerId,
                     name : layerNames,
-                    style : layerOpts.styleName || "normal",
+                    style : layerOpts.styleName || "",
                     title : layerOpts.title || layerId,
                     projection : layerOpts.projection || "EPSG:4326",
                     bbox : layerOpts.bbox || [-180, -90, 180, 90],
                     transparent : true,
                     waterMask : false,
+                    featureInfoMimeType : "",
+                    dateTime : "",
+                    heightMapWidth : 256,
                     options : {
                         mimetype : layerOpts.outputFormat
                     },
@@ -170,7 +175,7 @@ function (
                         type : 0,
                         options : {}
                     },
-                    version : layerOpts.version
+                    version : layerOpts.version || "1.3.0"
                 };
                 break;
             case "WMTS":
@@ -180,6 +185,12 @@ function (
                 // surcharge avec les options utilisateurs
                 for (var opt in layerOpts) {
                     lOpts[opt] = layerOpts[opt];
+                }
+                if (layerOpts.minZoom) {
+                    maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
+                }
+                if (layerOpts.maxZoom) {
+                    minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 layerOpts = lOpts ;
                 layer = {
@@ -669,7 +680,7 @@ function (
       * @param {Function} action - The function associated to the event.
       */
     IT.prototype.forget = function (eventId, action) {
-        // interface entre les Ids de l'AHN et ceux de VG
+        // interface entre les Ids de l'AHN et ceux d'iTowns
         var eventsMapping = {
             tiltChanged : {
                 id : ["orientation-changed"],
@@ -720,14 +731,14 @@ function (
                     var colorLayers = this._getItownsColorLayers();
                     for (var idx = 0; idx < colorLayers.length; idx++) {
                         // pour layerChanged, le cas est particulier : certains listeners sont rattachés aux couches
-                        // on les oublie
+                        // on les oublie en parcourant toutes les couches présentes sur le globe
                         colorLayers[idx].removeEventListener("opacity-property-changed", itCallback);
                         colorLayers[idx].removeEventListener("visible-property-changed", itCallback);
                         colorLayers[idx].removeEventListener("sequence-property-changed", itCallback);
                     }
                 }
                 // pour un id de listener du SDK peut correpondre plusieurs ids itowns
-                // ... on oublie tous les callback qui y correspondent
+                // ... on oublie tous les callbacks qui y correspondent
                 for (var j = 0; j <= eventsMapping[eventId].id.length; j++) {
                     eventOrigin.removeEventListener(eventsMapping[eventId].id, itCallback);
                     // on decale i d'un cran en arriere pour ne pas sauter d'elements
