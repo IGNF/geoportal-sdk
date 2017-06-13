@@ -83,7 +83,6 @@ define([
             reversesearch : ol.control.ReverseGeocode,
             drawing : ol.control.Drawing,
             attributions : ol.control.GeoportalAttribution,
-            getfeatureinfo : ol.control.GetFeatureInfo,
             camera : null
         } ;
 
@@ -1405,8 +1404,8 @@ define([
             var fopenPopup = function (evt) {
                 var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
-                ol.gp.GfiUtils.displayInfo(
-                    context.getLibMap(),
+                Gp.GfiUtils.displayInfo(
+                    "mrk-" + i,
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]
@@ -2598,10 +2597,12 @@ define([
          */
         OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
 
-            /**
-             * fonction de conversion de d'une image en n/b
-             */
-            function gray (img) {
+            /** fonction de conversion d'une image en n/b */
+            function getGrayScaledDataUrl (img) {
+
+                // patch pour safari
+                img.crossOrigin = null;
+
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
 
@@ -2620,43 +2621,48 @@ define([
                 }
 
                 ctx.putImageData( imageData, 0, 0 );
-                img.src = canvas.toDataURL();
+                return canvas.toDataURL();
             };
 
-            /**
-             * handler for event 'imageloadstart'
-             */
+            /** fonction de conversion et de chargement d'une image en n/b */
+            function convertImagetoGrayScale (image, context) {
+                // conversion en n/b
+                var dataUrl = getGrayScaledDataUrl(image);
+
+                // chargement d'une image vide intermediaire pour eviter
+                // l'affichage d'images couleurs (pour certains navigateurs
+                // le chargement de l'image n/b et plus long et l'image originale
+                // apparait de manière transitoire)
+                image.src = "";
+
+                // forcer le raffraichissement de l'affichage a l'issu
+                // du chargement de l'image n/b
+                /** onload */
+                image.onload = function () {
+                    context.changed();
+                };
+                // chargement image n/b
+                image.src = dataUrl;
+            }
+
+            /** handler for event 'imageloadstart' */
             function imageloadstartHandler (evt) {
                 evt.image.getImage().crossOrigin = "Anonymous";
             };
 
-            /**
-             * handler for event 'tileloadstart'
-             */
+            /** handler for event 'tileloadstart' */
             function tileloadstartHandler (evt) {
                 evt.tile.getImage().crossOrigin = "Anonymous";
             };
 
-            /**
-             * handler for event 'imageloadend'
-             */
+            /** handler for event 'imageloadend' */
             function imageloadendHandler (evt) {
-
-                // patch pour safari
-                evt.image.getImage().crossOrigin = null;
-
-                gray( evt.image.getImage() );
+                convertImagetoGrayScale(evt.image.getImage(), evt.target);
             };
 
-            /**
-             * handler for event 'tileloadend'
-             */
+            /** handler for event 'tileloadend' */
             function tileloadendHandler (evt) {
-
-                // patch pour safari
-                evt.tile.getImage().crossOrigin = null;
-
-                gray( evt.tile.getImage() );
+                convertImagetoGrayScale(evt.tile.getImage(), evt.target);
             };
 
             // abonnement/desabonnement aux evenements permettant la conversion en n/b
