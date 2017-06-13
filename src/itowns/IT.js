@@ -131,6 +131,7 @@ function (
         var layerNames;
         var maxScaleDenominator;
         var minScaleDenominator;
+        var boundingBox;
         switch (layerOpts.format.toUpperCase()) {
             case "WMS":
                 // FIXME : ajout d'un parametre projection pour les donnees
@@ -147,6 +148,21 @@ function (
                     layerNames = layerId;
                     layerOpts.layers = [layerId];
                 }
+                if (layerOpts.bbox) {
+                    boundingBox = {
+                        west : layerOpts.bbox[0],
+                        east : layerOpts.bbox[2],
+                        south : layerOpts.bbox[1],
+                        north : layerOpts.bbox[3]
+                    };
+                } else {
+                    boundingBox = {
+                        west : -180,
+                        east : 180,
+                        south : -90,
+                        north : 90
+                    };
+                }
                 if (layerOpts.minZoom) {
                     maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
                 }
@@ -162,7 +178,7 @@ function (
                     style : layerOpts.styleName || "",
                     title : layerOpts.title || layerId,
                     projection : layerOpts.projection || "EPSG:4326",
-                    bbox : layerOpts.bbox || [-180, -90, 180, 90],
+                    extent : boundingBox,
                     transparent : true,
                     waterMask : false,
                     featureInfoMimeType : "",
