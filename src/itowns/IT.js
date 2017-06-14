@@ -76,7 +76,7 @@ function (
 
         var viewerDiv = this.div;
         // creation de la map vide
-        this.libMap = new itowns.GlobeView(viewerDiv, positionOnGlobe);
+        this.libMap = new itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
         var self = this;
         // when globe is loaded, we set the user map parameters
         this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
@@ -406,6 +406,125 @@ function (
         // methode setTilt d'itowns pour régler l'inclinaison
         this.libMap.controls.setTilt(tilt, false);
         this.logger.trace("[VG] - setTilt(" + tilt + ")") ;
+    };
+
+    /**
+     * Adds mouse position control to the map.
+     *
+     * @param {Object} controlOpts - control options
+     * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
+     * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+     * @param {Array.<Object>} controlOpts.systems - List of coordinates systems available for display.
+     * @param {String} controlOpts.systems.crs - Coordinates system ID.
+     * @param {String} controlOpts.systems.label - label used to designate the CRS.
+     * @param {String} controlOpts.systems.type - "Geographical" or "Metric"
+     * @param {Array.<String>} controlOpts.units - units used for coordinates display ("m", "km" for Metric coordinates, "dec", "dms", "rad" or "gon" for geographical coordinates).
+     * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
+     * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
+     * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
+     */
+    IT.prototype.addMousePositionControl = function (controlOpts) {
+        var mpOpts = {} ;
+        if (controlOpts.div) {
+            mpOpts.options.div = controlOpts.div ;
+        }
+        mpOpts.collapsed = controlOpts.maximised ? false : true ;
+        if (controlOpts.systems &&
+            Array.isArray(controlOpts.systems) &&
+            controlOpts.systems.length > 0 ) {
+            for (var i = 0 ; i < controlOpts.systems.length ; i++ ) {
+                /*
+                if (!ol.proj.get(controlOpts.systems[i].crs)) {
+                    // on retire les systèmes non définis
+                    this.logger.trace("[IT] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
+                    continue ;
+                }*/
+                if (!mpOpts.systems) {
+                    mpOpts.systems = [] ;
+                }
+                mpOpts.systems.push(controlOpts.systems[i]) ;
+            }
+        }
+        if (controlOpts.units &&
+            Array.isArray(controlOpts.units) &&
+            controlOpts.units.length > 0 ) {
+            mpOpts.units = [] ;
+            for (var j = 0 ; j < controlOpts.units.length ; j++ ) {
+                if ( typeof controlOpts.units[j] == "string") {
+                    this.logger.trace("[IT] addMousePositionControl : adding unit   [" + controlOpts.units[j].toUpperCase() ) ;
+                    mpOpts.units.push(controlOpts.units[j]) ;
+                }
+            }
+        }
+        mpOpts.displayAltitude = controlOpts.displayAltitude ;
+        mpOpts.displayCoordinates = controlOpts.displayCoordinates ;
+        if (controlOpts.altitude) {
+            mpOpts.altitude = controlOpts.altitude ;
+        }
+        var control = new itowns.control.MousePosition(mpOpts) ;
+        itowns.control.WidgetAPI.addWidget( this.libMap, control );
+        return control ;
+    } ;
+
+    /**
+     * Adds LayerSwitcher control to the map.
+     *
+     * @param {Object} controlOpts - control options
+     * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
+     * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+     */
+    IT.prototype.addLayerSwitcherControl = function (controlOpts) {
+        this.logger.trace("[IT] : addLayerSwitcherControl ... ");
+        // TODO : parametrage des couches
+        var lsOpts = {
+            layers : [],
+            options : {
+                collapsed : !(controlOpts && controlOpts.maximised)
+            }
+        } ;
+        if (controlOpts.div) {
+            lsOpts.options.div = controlOpts.div ;
+        }
+        // application des configuration des couches :
+        for (var i = 0 ; i < this._layers.length ; i++) {
+            var layer = this._layers[i];
+            // Si la couche est un MNT, on ne l'ajoute pas au layerSwitcher
+            if (layer.obj.type !== "color") {
+                continue;
+            }
+            this.logger.trace("[IT] : layerSwitcher : configuring layer : " + layer.id) ;
+            // INFO : les couches Geoportail sont aussi configurées.
+            var layerConf = {
+                layer : layer.obj,
+                config : {}
+            } ;
+            if (layer.options.title) {
+                this.logger.trace("[IT] : layerSwitcher : setting title to [" + layer.options.title + "] for layer " + layer.id) ;
+                layerConf.config.title = layer.options.title ;
+            }
+            if (layer.options.description) {
+                this.logger.trace("[IT : layerSwitcher : setting description to [" + layer.options.description + "] for layer " + layer.id) ;
+                layerConf.config.description = layer.options.description ;
+            }
+            if (layer.options.quicklookUrl) {
+                this.logger.trace("[IT] : layerSwitcher : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id) ;
+                layerConf.config.quicklookUrl = layer.options.quicklookUrl ;
+            }
+            if (layer.options.legends) {
+                this.logger.trace("[IT] : layerSwitcher : setting legends to [" + layer.options.legends + "] for layer " + layer.id) ;
+                layerConf.config.legends = layer.options.legends ;
+            }
+            if (layer.options.metadata) {
+                this.logger.trace("[IT] : layerSwitcher : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id) ;
+                layerConf.config.metadata = layer.options.metadata ;
+            }
+            lsOpts.layers.push(layerConf) ;
+        }
+
+        this.logger.trace("[IT] : layerSwitcher Opts : ... ") ;
+        var control = new itowns.control.LayerSwitcher(lsOpts) ;
+        itowns.control.WidgetAPI.addWidget( this.libMap, control );
+        return control ;
     };
 
     /**
