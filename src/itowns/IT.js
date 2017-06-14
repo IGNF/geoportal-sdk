@@ -429,6 +429,93 @@ function (
     } ;
 
     /**
+     * Modify the layers'options listed to the map
+     *
+     * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}).
+     */
+    IT.prototype.modifyLayers = function (layersOptions) {
+        if (!IMap.prototype.modifyLayers.apply(this,arguments)) {
+            return false ;
+        }
+        var layerIds = Object.keys(layersOptions) ;
+        // on recupere les objets correspondants dejà sur la carte
+        var _layerObjs = this._getLayersObj(layerIds) ;
+        _layerObjs.forEach(function (_layerObj) {
+            this.logger.trace("[IMap] modifyLayers : modifying : [" + _layerObj.id + "]") ;
+            // traduction options ahn => options VG
+            var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]) ;
+            // application des options VG aux couches VG
+            // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
+            if (commonOpts.hasOwnProperty("opacity")) {
+                this.logger.trace("[IMap] modifyLayers : setting opacity of : [" + _layerObj.id + "] to : " + commonOpts.opacity) ;
+                this._getItownsColorLayerById(_layerObj.id).opacity = commonOpts.opacity;
+            }
+            if (commonOpts.hasOwnProperty("visible")) {
+                this.logger.trace("[IMap] modifyLayers : setting visible of : [" + _layerObj.id + "] to : " + commonOpts.visible) ;
+                this._getItownsColorLayerById(_layerObj.id).visible = commonOpts.visible;
+            }
+            if (commonOpts.hasOwnProperty("zIndex")) {
+                this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex) ;
+                itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
+            }
+            /* TODO A compléter
+            if (commonOpts.hasOwnProperty("minResolution")) {
+                this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution) ;
+                _layerObj.obj.setMinResolution(commonOpts.minResolution) ;
+            }
+            if (commonOpts.hasOwnProperty("maxResolution")) {
+                this.logger.trace("[IMap] modifyLayers : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution) ;
+                _layerObj.obj.setMaxResolution(commonOpts.maxResolution) ;
+            }
+            */
+        },
+        this) ;
+    } ;
+
+    /**
+     * Apply params common to all kind of layers :
+     * opacity, visibility, minZoom, maxZoom
+     *
+     * @param {Gp.LayerOptions} layerOpts - options of the layer
+     * @returns {Object} a itowns Layer constructor options object
+     *
+     * @private
+     */
+    IT.prototype._applyCommonLayerParams = function (layerOpts) {
+        var commonOpts = {} ;
+        this.logger.trace("[IT] : _applyCommonLayerParams ");
+        if (layerOpts.hasOwnProperty("opacity")) {
+            this.logger.trace("[IT] : _applyCommonLayerParams - opacity : " + layerOpts.opacity) ;
+            commonOpts.opacity = layerOpts.opacity ;
+        }
+        if (layerOpts.hasOwnProperty("visibility")) {
+            this.logger.trace("[IT] : _applyCommonLayerParams - visibility : " + layerOpts.visibility) ;
+            commonOpts.visible = layerOpts.visibility ;
+        }
+        if (layerOpts.hasOwnProperty("position")) {
+            this.logger.trace("[IT] : _applyCommonLayerParams - position : " + layerOpts.position) ;
+            commonOpts.zIndex = layerOpts.position ;
+        }
+        /* TODO à compléter
+        if (layerOpts.hasOwnProperty("maxZoom") &&
+            layerOpts.maxZoom >= 0 &&
+            layerOpts.maxZoom <= 20 ) {
+            var minRes = this._getResolutionFromZoomLevel(layerOpts.maxZoom) ;
+            this.logger.trace("[OL3] : _applyCommonLayerParams - minRes : " + minRes) ;
+            commonOpts.minResolution = minRes ;
+        }
+        if (layerOpts.hasOwnProperty("minZoom") &&
+            layerOpts.minZoom >= 0 &&
+            layerOpts.minZoom <= 20 ) {
+            var maxRes = this._getResolutionFromZoomLevel(layerOpts.minZoom) ;
+            this.logger.trace("[OL3] : _applyCommonLayerParams - maxRes : " + maxRes) ;
+            commonOpts.maxResolution = maxRes ;
+        }*/
+
+        return commonOpts ;
+    } ;
+
+    /**
       * Associate a function to trigger when an event is received.
       *
       * @param {String} eventId - The map's event listened. Possible values are : 'loaded', 'failure', 'geolocated', 'located', 'zoomchanged', 'azimuthchanged', 'tiltchanged', 'dragstart', 'drag', 'dragend', 'projectionchanged', 'layerchanged', 'controlchanged'.
