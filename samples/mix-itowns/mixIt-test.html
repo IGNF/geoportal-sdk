@@ -14,9 +14,14 @@
         <script src="../../dist/mixIt/GpOL3Itowns-debug.js"></script>
     </head>
     <body>
-        <h1>Test du paramètre zoom</h1>
-        <h2>CAS 1 : Carte 3D.</h2>
-        <p>La carte est zoomée au niveau 5 (étendue correspondant à l'Ile de France).</p>
+        <h1>Test itowns</h1>
+        <h2>Carte 3D.</h2>
+        <div id="BoutonSwitchToItowns" hidden>
+            <input type="button" name="switch" onclick="switchToIT();" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3">
+            <input type="button" name="switch" onclick="switchToOL3();" value="Switch from 3D to 2D"/><br/>
+        </div>
         <div id="viewerDiv"></div>
 
         <script type="text/javascript">
@@ -311,6 +316,19 @@
                 y : 0.74846
             }
         });
+
+        function switchToIT() {
+            map = map.switchToLibITOL3("itowns");
+            document.getElementById("BoutonSwitchToOl3").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        function switchToOL3() {
+            map = map.switchToLibITOL3("ol3");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl3").style.display = "none";
+        };
+
 
         </script>
     </body>

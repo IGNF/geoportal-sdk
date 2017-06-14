@@ -843,9 +843,7 @@ function (
                 // pour un id de listener du SDK peut correpondre plusieurs ids itowns
                 // ... on oublie tous les callbacks qui y correspondent
                 for (var j = 0; j <= eventsMapping[eventId].id.length; j++) {
-                    eventOrigin.removeEventListener(eventsMapping[eventId].id, itCallback);
-                    // on decale i d'un cran en arriere pour ne pas sauter d'elements
-                    i -= 1 ;
+                    eventOrigin.removeEventListener(eventsMapping[eventId].id[j], itCallback);
                 }
 
             }

@@ -1042,6 +1042,99 @@ define([
             },
 
             /**
+             * Reloads the map with a new cartographic library. The current parameters will be conserved.
+             *
+             * @param {Integer} library - The cartographic library to use.
+             * @private
+             */
+            switchToLibITOL3 : function (library) {
+                var oldMap = {};
+                oldMap.projection = this.getProjection();
+                oldMap.center = this.getCenter();
+                oldMap.tilt = this.getTilt();
+                oldMap.zoom = this.getZoom();
+                oldMap.layersOptions = this.getLayersOptions();
+                oldMap.controlsOptions = this.getControlsOptions();
+                oldMap.mapDiv = this.div.id;
+                oldMap.apiKey = this.apiKey;
+                oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
+
+                // remove old controls and associated listeners
+                for (var controlId in oldMap.controlsOptions) {
+                    this.removeControls(controlId);
+                }
+                if (library === "itowns") {
+                    oldMap.center = [oldMap.center.x, oldMap.center.y];
+                    // transformation des coordonnées de planes en géographiques
+                    var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
+                    oldMap.center = {
+                        x : lonlat[0],
+                        y : lonlat[1]
+                    };
+                    oldMap.azimuth = this.getAzimuth() + 90;
+                    this.libMap.setTarget(null);
+                } else if (library === "ol3") {
+                    oldMap.center = [oldMap.center.lon, oldMap.center.lat];
+                    // transformation des coordonnées de géographiques en planes
+                    var xy = ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
+                    oldMap.center = {
+                        x : xy[0],
+                        y : xy[1]
+                    };
+                    oldMap.azimuth = this.getAzimuth() + 270;
+                    if (oldMap.azimuth >= 360) {
+                        oldMap.azimuth = oldMap.azimuth - 360;
+                    }
+                    // 1 - suppression de tous les listeners
+                    for (var listeners in this._events) {
+                        var keyIdx = 0;
+                        var eventName = Object.keys(this._events)[keyIdx] ;
+                        for (var i = 0; i < this._events[listeners].length; i++) {
+                            this.forget(eventName, this._events[listeners][i].action);
+                        }
+                        keyIdx ++;
+                    }
+                    // 2 - suppression de la div
+                    while (this.div.firstChild) {
+                        this.div.removeChild(this.div.firstChild);
+                    }
+                } else {
+                    console.log("Unknown Library");
+                    return;
+                }
+                // this.libMap = null;
+                var newMap = Gp.Map.load(
+                    // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
+                    // this.libMap.getApiKeys(),
+                    // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
+                    // this.libMap.getDiv(),
+                    oldMap.mapDiv,
+                    // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
+                    {
+                        apiKey : oldMap.apiKey,
+                        enginePath3d : oldMap.enginePath3d || null,
+                        projection : oldMap.projection,
+                        center : oldMap.center,
+                        azimuth : oldMap.azimuth,
+                        tilt : oldMap.tilt,
+                        zoom : oldMap.zoom,
+                        // maxZoom : this.
+                        // minZoom : this.
+                        // markerOptions :
+                        library : library,
+                        // proxyUrl
+                        // noProxyDomains
+                        // reloadConfig
+                        // autoconfUrl
+                        layersOptions : oldMap.layersOptions,
+                        controlsOptions : oldMap.controlsOptions
+                        // mapEventsOptions :
+                    }
+                );
+                return newMap;
+            },
+
+            /**
              * Add the markers to the map
              * FIXME : make it public ?
              *
