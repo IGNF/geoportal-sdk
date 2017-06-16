@@ -81,6 +81,9 @@ function (
         // when globe is loaded, we set the user map parameters
         this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
             self._afterInitMap();
+            // FIXME en attendant que la variable positionOnGlobe puisse prendre
+            // un zoom / une echelle (et non une altitude)
+            self.setZoom(self.mapOptions.zoom);
         });
 
     } ;
