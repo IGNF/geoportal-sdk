@@ -42,6 +42,7 @@ define([
             visible : "visibility",
             opacity : "opacity",
             zIndex  : "position",
+            grayScaled : "grayScaled",
             minResolution : "maxZoom",
             maxResolution : "minZoom"
         } ;
@@ -2487,28 +2488,53 @@ define([
                         map.logger.trace("[OL3] listen : abonnement layerProperty : " + obsProperty) ;
                         this.libMap.getLayers().forEach(function (olLayer,i,array) {
                             var layerOpts = this._getLayerOpts(olLayer) ;
-                            olEventKey = olLayer.on(
-                                "change:" + obsProperty,
-                                function (ol3evt) {
-                                    // la fonction _getCommonLayerParams permet de faire la conversion
-                                    // propriete ol3 => propriete commune
-                                    var oldOl3obj = {} ;
-                                    oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
-                                    var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
-                                    var newOl3obj = {} ;
-                                    newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
-                                    var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                            if ( obsProperty === "grayScaled" ) {
+
+                                /** layerChangeGrayScaled callback */
+                                var callBack = function (evt) {
                                     action.call(context,{
-                                        property : OL3.LAYERPROPERTIES[ol3evt.key],
-                                        oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
-                                        newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                        property : "grayScaled",
+                                        oldValue : evt.detail.oldValue,
+                                        newValue : evt.detail.newValue,
                                         layerChanged : layerOpts
                                     }) ;
-                                },
-                                olLayer
-                            ) ;
-                            this._registerEvent(olEventKey,eventId,action,context) ;
-                            olEventKey = null ;
+                                };
+
+                                var gpEventKey = {
+                                    type : "change:grayScaled",
+                                    handler : callBack,
+                                    target : olLayer
+                                };
+
+                                gpEventKey.target.addEventListener(gpEventKey.type, gpEventKey.handler);
+
+                                this._registerEvent(gpEventKey, eventId, action, context) ;
+
+                            } else {
+                                olEventKey = olLayer.on(
+                                    "change:" + obsProperty,
+                                    function (ol3evt) {
+                                        // la fonction _getCommonLayerParams permet de faire la conversion
+                                        // propriete ol3 => propriete commune
+                                        var oldOl3obj = {} ;
+                                        oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
+                                        var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
+                                        var newOl3obj = {} ;
+                                        newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
+                                        var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                                        action.call(context,{
+                                            property : OL3.LAYERPROPERTIES[ol3evt.key],
+                                            oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            layerChanged : layerOpts
+                                        }) ;
+                                    },
+                                    olLayer
+                                ) ;
+
+                                this._registerEvent(olEventKey,eventId,action,context) ;
+                                olEventKey = null ;
+                            }
                         },
                         map) ;
                     }
@@ -2563,10 +2589,16 @@ define([
             var evKey = null ;
             for (var i = 0 ; i < rEvents.length ; i ++) {
                 if (rEvents[i].action == action) {
-                    evKey = rEvents[i].key ;
+                    evKey = rEvents[i].key;
                     rEvents.splice(i,1) ;
                     this.logger.trace("[OL3] : forgetting : " + eventId + " (" + evKey + ")") ;
-                    ol.Observable.unByKey(evKey) ;
+
+                    if ( evKey.type === "change:grayScaled" ) {
+                        evKey.target.removeEventListener(evKey.type, evKey.handler);
+                    } else {
+                        ol.Observable.unByKey(evKey) ;
+                    }
+
                     // on decale i d'un cran en arriere pour ne pas sauter d'elements
                     i -= 1 ;
                 }
@@ -2598,6 +2630,17 @@ define([
             }
 
             this._colorGrayscaleLayerSwitch(gpLayer,toGrayScale);
+
+            var event = new CustomEvent(
+                "change:grayScaled",
+                {
+                    detail : {
+                        oldValue : !toGrayScale,
+                        newValue : toGrayScale
+                    }
+                }
+            );
+            gpLayer.obj.dispatchEvent(event);
         };
 
         /**
@@ -2697,7 +2740,6 @@ define([
                 source.loadstartListenerKey = null;
                 source.loadendListenerKey = null;
             }
-            gpLayer.options.grayScaled = toGrayScale;
 
             // maj du cache
             source.refresh();
