@@ -2619,8 +2619,8 @@ define([
                 "change:grayScaled",
                 {
                     detail : {
-                        oldValue : toGrayScale,
-                        newValue : !toGrayScale
+                        oldValue : !toGrayScale,
+                        newValue : toGrayScale
                     }
                 }
             );
