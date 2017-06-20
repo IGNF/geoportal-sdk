@@ -1052,6 +1052,7 @@ define([
                 oldMap.projection = this.getProjection();
                 oldMap.center = this.getCenter();
                 oldMap.tilt = this.getTilt();
+                oldMap.azimuth = this.getAzimuth();
                 oldMap.zoom = this.getZoom();
                 oldMap.layersOptions = this.getLayersOptions();
                 oldMap.controlsOptions = this.getControlsOptions();
@@ -1081,10 +1082,6 @@ define([
                         x : xy[0],
                         y : xy[1]
                     };
-                    oldMap.azimuth = this.getAzimuth() + 270;
-                    if (oldMap.azimuth >= 360) {
-                        oldMap.azimuth = oldMap.azimuth - 360;
-                    }
                     // 1 - suppression de tous les listeners
                     for (var listeners in this._events) {
                         var keyIdx = 0;
@@ -1404,7 +1401,7 @@ define([
                     return regCtrl ;
                 }
                 for (var i = 0 ; i < this._controls.length ; i++ ) {
-                    if (this._controls[i].id == controlId) {
+                    if (this._controls[i].id.toLowerCase() == controlId.toLowerCase()) {
                         this.logger.trace("[IMap] _findRegisteredControl : found control " + controlId + " at index : " + i) ;
                         return i ;
                     }
@@ -2114,6 +2111,7 @@ define([
                     case "projectionChanged" :
                     case "controlChanged" :
                         // Interet de ces evenements ?
+                        break ;
                     default :
                         console.log("unhandled event : " + eventId ) ;
                         return false ;
