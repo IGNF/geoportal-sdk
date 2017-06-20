@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mixIt/GpOL3Itowns-src.css" type="text/css">
+        <style>
+          #viewerDiv {
+            height: 600px;
+            width: 1200px;
+            position : "relative";
+          }
+        </style>
+        <script src="../../dist/mixIt/GpOL3Itowns-debug.js"></script>
+    </head>
+    <body>
+        <h1>Test itowns</h1>
+        <h2>Carte 3D.</h2>
+        <div id="BoutonSwitchToItowns" hidden>
+            <input type="button" name="switch" onclick="switchToIT();" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3">
+            <input type="button" name="switch" onclick="switchToOL3();" value="Switch from 3D to 2D"/><br/>
+        </div>
+        <div id="viewerDiv"></div>
+        <button onclick="addControl({mousePosition : { maximised : true }} )"> add mousePosition Control </button>
+        <button onclick="addControl({layerSwitcher : { maximised : true }})"> add layerSwitcher Control </button>
+        <button onclick="removeControl('mousePosition')"> remove mousePosition Control </button>
+        <button onclick="removeControl('layerSwitcher')"> remove layerSwitcher Control </button>
+
+        <script type="text/javascript">
+        var map = Gp.Map.load("viewerDiv",{
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            library : "itowns",
+            center : {
+                x : 2.357,
+                y : 48.83
+            },
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                },
+                mousePosition : {
+                    maximised : true
+                }
+            }
+        });
+
+/**
+  * Fonction de bascule 2D -> 3D
+  */
+function switchToIT () {
+    map = map.switchToLibITOL3("itowns");
+    document.getElementById("BoutonSwitchToOl3").style.display = "inline";
+    document.getElementById("BoutonSwitchToItowns").style.display = "none";
+};
+
+/**
+  * Fonction de bascule 3D -> 2D
+  */
+function switchToOL3 () {
+    map = map.switchToLibITOL3("ol3");
+    document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+    document.getElementById("BoutonSwitchToOl3").style.display = "none";
+};
+
+/**
+  * Fonction d'ajout de controls
+  */
+var addControl = function (control) {
+    map.addControls(control);
+};
+
+/**
+  * Fonction de retrait de controls
+  */
+var removeControl = function (controlId) {
+    map.removeControls(controlId);
+};
+
+        </script>
+    </body>
+</html>
