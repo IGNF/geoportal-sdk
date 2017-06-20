@@ -46,11 +46,10 @@ function (
     /**
      * Association controlId <-> classe VirtualGeo d'implemenation
      */
-    /*IT.CONTROLSCLASSES = {
-        mouseposition : itowns.MousePosition,
-        layerswitcher : itowns.LayerSwitcher
+    IT.CONTROLSCLASSES = {
+        mouseposition : itowns.control.MousePosition,
+        layerswitcher : itowns.control.LayerSwitcher
     } ;
-    */
 
     // heritage
     IT.prototype = Object.create(IMap.prototype, {
@@ -82,8 +81,10 @@ function (
         this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
             self._afterInitMap();
             // FIXME en attendant que la variable positionOnGlobe puisse prendre
-            // un zoom / une echelle (et non une altitude)
-            self.setZoom(self.mapOptions.zoom);
+            // un zoom / une echelle (et non une altitude) et les params necessaires.
+            self.setZoom(self.mapOptions.zoom || 10);
+            self.setAzimuth(self.mapOptions.azimuth || 0);
+            self.setTilt(self.mapOptions.tilt || 0);
         });
 
     } ;
@@ -386,9 +387,13 @@ function (
             console.log("Not a valid azimuth : must be a float") ;
             return ;
         }
+        var itownsAzimuth = azimuth + 90;
+        if (itownsAzimuth >= 360) {
+            itownsAzimuth = itownsAzimuth - 360;
+        }
         // IT method to set the camera orientation
-        this.libMap.controls.setHeading(azimuth, true);
-        this.logger.trace("[VG] - setAzimuth(" + azimuth + ")") ;
+        this.libMap.controls.setHeading(itownsAzimuth, true);
+        this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
     };
 
     /**
@@ -408,7 +413,7 @@ function (
         }
         // methode setTilt d'itowns pour régler l'inclinaison
         this.libMap.controls.setTilt(tilt, false);
-        this.logger.trace("[VG] - setTilt(" + tilt + ")") ;
+        this.logger.trace("[IT] - setTilt(" + tilt + ")") ;
     };
 
     /**
@@ -531,6 +536,79 @@ function (
     };
 
     /**
+     * Remove the controls listed to the map.
+     *
+     * @param {Array.<String>} controlIds - A list of control's id or null.
+     */
+    IT.prototype.removeControls = function (controlIds) {
+        this.logger.trace("[IT] : removeControls ... ");
+        if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
+            console.log("No control to remove.") ;
+            return ;
+        }
+        if (! Array.isArray(controlIds)) {
+            controlIds = [controlIds] ;
+        }
+        var controlId = null ;
+        for (var i = 0 ; i < controlIds.length ; i++ ) {
+            controlId = controlIds[i] ;
+
+            var idx = this._findRegisteredControl(controlId) ;
+            if (idx >= 0) {
+                this.logger.trace("[IT] : removeControls : removing [" + controlId + "] from register.");
+                this._controls.splice(idx,1) ;
+
+            }
+
+            var itownsControl = this.getLibMapControl(controlId);
+
+            if (!itownsControl) {
+                console.log("Impossible to remove control [" + controlId + "] : not found or unhandled") ;
+                continue ;
+            }
+
+            this.logger.trace("[IT] : removeControls : removing [" + controlId + "] from Map.");
+            itowns.control.WidgetAPI.removeWidget( this.libMap, itownsControl );
+        }
+    } ;
+
+    /**
+     * Returns implementation of the control
+     *
+     * @param {String} controlId - identifier of the control
+     * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
+     */
+    IT.prototype.getLibMapControl = function (controlId) {
+        var foundItControl = null ;
+        // verifications de base : controlId est bien gere.
+        if (!IT.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
+            !IT.CONTROLSCLASSES[controlId.toLowerCase()] ) {
+            this.logger.trace("[IT] getLibMapControl : control " + controlId + " non implémenté.") ;
+            return foundItControl ;
+        }
+        // on regarde du cote des controles
+        var itControls = itowns.control.WidgetAPI.getWidgets(this.libMap) ;
+        if ( !itControls || itControls.length == 0 ) {
+            this.logger.trace("[IT] getLibMapControl : no control found on map") ;
+            return foundItControl ;
+        }
+        for (var j = 0 ; j < itControls.length ; j++ ) {
+            this.logger.trace("[IT] getLibMapControl : analyzing : " + controlId);
+            // test on control Name
+            if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
+                foundItControl = itControls[j];
+                this.logger.trace("[IT] getLibMapControl : found GP Plugin Control ! ") ;
+                break;
+            }
+        }
+        if (!foundItControl) {
+            this.logger.trace("[IT] getLibMapControl : control " + controlId + " not found ! ") ;
+        }
+
+        return foundItControl ;
+    } ;
+
+    /**
      * Remove of the map the layers given as parameters
      *
      * @param {Array.<String>} layerIds - A list of layer's id or null.
@@ -544,7 +622,11 @@ function (
         }
         // ici on sait que layerIds est un tableau
         layerIds.forEach(function (_layerId) {
-            this.libMap.removeLayer(_layerId) ;
+            if (this._getLayersObj(_layerId) && Array.isArray(this._getLayersObj(_layerId)) && this._getLayersObj(_layerId).length > 0) {
+                this.libMap.removeLayer(_layerId) ;
+            } else {
+                console.log("[IT] : Impossible to remove " + _layerId + " - not Found");
+            }
         },
         this) ;
 
@@ -564,9 +646,9 @@ function (
         var _layerObjs = this._getLayersObj(layerIds) ;
         _layerObjs.forEach(function (_layerObj) {
             this.logger.trace("[IMap] modifyLayers : modifying : [" + _layerObj.id + "]") ;
-            // traduction options ahn => options VG
+            // traduction options ahn => options IT
             var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]) ;
-            // application des options VG aux couches VG
+            // application des options IT aux couches IT
             // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
             if (commonOpts.hasOwnProperty("opacity")) {
                 this.logger.trace("[IMap] modifyLayers : setting opacity of : [" + _layerObj.id + "] to : " + commonOpts.opacity) ;
