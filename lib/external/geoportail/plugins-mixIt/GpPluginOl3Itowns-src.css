@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2017-06-15
+ * @date 2017-06-20
  *
  */
 /* MOUSE POSITION */
@@ -3242,6 +3242,60 @@ display: none !important;
 }
 */
 
+/* ISOCHRON */
+
+div[id^=GPisochron-] {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+span[id^=GPshowIsochronOpen] {
+  background-image: url("img/GPisochronOpen.png");
+  z-index:1;
+}
+
+/* General panels */
+
+div[id^=GPisochronPanel-] {
+  /*left: 8px;*/
+  position: absolute;
+  z-index:2;
+}
+
+div[id^=GPisochronPanelClose] {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Calc waiting */
+
+.GPisochronCalcWaitingContainerVisible,
+.GPisochronCalcWaitingContainerHidden {
+  border-radius: 4px;
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
+
+.GPisoExclusionsOption {
+  background-image: url("img/GPisochronCheck.png");
+}
+
+/* Reset picto */
+div[id^=GPisochronReset] {
+  background-color: #366291;
+  background-image: url("img/GPisochronOptions.png");
+}
+
 /* Layer Import */
 
 div[id^="GPimport-"] {
@@ -3471,60 +3525,6 @@ div[id^="GPimportGetCapResults-"] {
 .GPimportGetCapProposal:hover {
   color: #000000;
   background-color: #CEDBEF
-}
-
-/* ISOCHRON */
-
-div[id^=GPisochron-] {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-span[id^=GPshowIsochronOpen] {
-  background-image: url("img/GPisochronOpen.png");
-  z-index:1;
-}
-
-/* General panels */
-
-div[id^=GPisochronPanel-] {
-  /*left: 8px;*/
-  position: absolute;
-  z-index:2;
-}
-
-div[id^=GPisochronPanelClose] {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Calc waiting */
-
-.GPisochronCalcWaitingContainerVisible,
-.GPisochronCalcWaitingContainerHidden {
-  border-radius: 4px;
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
-
-.GPisoExclusionsOption {
-  background-image: url("img/GPisochronCheck.png");
-}
-
-/* Reset picto */
-div[id^=GPisochronReset] {
-  background-color: #366291;
-  background-image: url("img/GPisochronOptions.png");
 }
 
 /* LAYER SWITCHER OL3 */
@@ -3961,7 +3961,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-06-15
+ * @date 2017-06-20
  *
  */
 /* MOUSE POSITION */
