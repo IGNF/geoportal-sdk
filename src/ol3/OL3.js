@@ -2717,7 +2717,6 @@ define([
                 source.loadstartListenerKey = null;
                 source.loadendListenerKey = null;
             }
-            gpLayer.options.grayScaled = toGrayScale;
 
             // maj du cache
             source.refresh();
