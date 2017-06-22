@@ -231,6 +231,7 @@ function (
                 obj  : layer
             }) ;
             if (layerOpts.isElevation === true) {
+                layer.type = "elevation";
                 // we add the noDataValue if it is given
                 if (layerOpts.noDataValue) {
                     layer.noDataValue = layerOpts.noDataValue.toString();
@@ -765,7 +766,7 @@ function (
                         return;
                     }
                     if (itEvent.previous) {
-                        var oldCoords = itEvent.previous.cameraTarget.as("EPSG :4326");
+                        var oldCoords = itEvent.previous.cameraTarget.as("EPSG:4326");
                         centerChangedEvt.oldCenter = {
                             x  : oldCoords.longitude(),
                             y  : oldCoords.latitude()
@@ -773,7 +774,7 @@ function (
                     }
 
                     if (itEvent.new) {
-                        var newCoords = itEvent.new.cameraTarget.as("EPSG :4326");
+                        var newCoords = itEvent.new.cameraTarget.as("EPSG:4326");
                         centerChangedEvt.newCenter = {
                             x  : newCoords.longitude(),
                             y  : newCoords.latitude()
