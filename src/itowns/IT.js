@@ -39,16 +39,16 @@ function (
      * Proprietes observables des couches pour l'AHN
      */
     IT.LAYERPROPERTIES = {
-        visible : "visibility",
-        opacity : "opacity"
+        visible  : "visibility",
+        opacity  : "opacity"
     };
 
     /**
      * Association controlId <-> classe VirtualGeo d'implemenation
      */
     IT.CONTROLSCLASSES = {
-        mouseposition : itowns.control.MousePosition,
-        layerswitcher : itowns.control.LayerSwitcher
+        mouseposition  : itowns.control.MousePosition,
+        layerswitcher  : itowns.control.LayerSwitcher
     } ;
 
     // heritage
@@ -65,12 +65,12 @@ function (
      * Empty Map initialization
      */
     IT.prototype._initMap = function () {
-        this.logger.trace("[IT] : _initMap") ;
+        this.logger.trace("[IT]  : _initMap") ;
         // position à l'initialisation
         var positionOnGlobe = {
-            longitude : 0,
-            latitude : 0,
-            altitude : 25000000
+            longitude  : 0,
+            latitude  : 0,
+            altitude  : 25000000
         };
 
         var viewerDiv = this.div;
@@ -90,38 +90,6 @@ function (
     } ;
 
     /**
-     * Add a geoportal Layer to the map
-     *
-     * @param {Object} layerObj - geoportalLayer to add.
-     * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
-     *
-     * @private
-     */
-    IT.prototype._addGeoportalLayer = function (layerObj, layerConf) {
-        var layerId = Object.keys(layerObj)[0] ;
-        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques Itowns
-        if (layerConf) {
-            layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
-            // Paramètres spécifiques aux couches WMS pour ajout avec itowns
-            if (layerObj[layerId].format === "WMS") {
-                layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
-                layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
-            }
-            // Paramètres spécifiques aux couches WMTS pour ajout avec itowns
-            if (layerObj[layerId].format === "WMTS") {
-                layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID() ;
-                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimits;
-                layerObj[layerId].layer = layerId || layerConf.getName() ;
-                layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name ;
-            }
-        }
-        // Ajout de la couche avec itowns
-        this._addRasterLayer(layerObj);
-
-    } ;
-
-    /**
      * Add a Raster Layer to the map
      *
      * @param {Object} layerObj - raster layer to add.
@@ -137,8 +105,8 @@ function (
         var minScaleDenominator;
         var boundingBox;
         switch (layerOpts.format.toUpperCase()) {
-            case "WMS":
-                // FIXME : ajout d'un parametre projection pour les donnees
+            case "WMS" :
+                // FIXME  : ajout d'un parametre projection pour les donnees
                 this.logger.trace("ajout d'une couche WMS");
                 if (layerOpts.layers && Array.isArray(layerOpts.layers)) {
                     // external wms layer case
@@ -154,17 +122,17 @@ function (
                 }
                 if (layerOpts.bbox) {
                     boundingBox = {
-                        west : layerOpts.bbox[0],
-                        east : layerOpts.bbox[2],
-                        south : layerOpts.bbox[1],
-                        north : layerOpts.bbox[3]
+                        west  : layerOpts.bbox[0],
+                        east  : layerOpts.bbox[2],
+                        south  : layerOpts.bbox[1],
+                        north  : layerOpts.bbox[3]
                     };
                 } else {
                     boundingBox = {
-                        west : -180,
-                        east : 180,
-                        south : -90,
-                        north : 90
+                        west  : -180,
+                        east  : 180,
+                        south  : -90,
+                        north  : 90
                     };
                 }
                 if (layerOpts.minZoom) {
@@ -174,31 +142,31 @@ function (
                     minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 var layer = {
-                    type : layerOpts.type || "color",
-                    url : layerOpts.url,
-                    protocol : layerOpts.format,
-                    id : layerId,
-                    name : layerNames,
-                    style : layerOpts.styleName || "",
-                    title : layerOpts.title || layerId,
-                    projection : layerOpts.projection || "EPSG:4326",
-                    extent : boundingBox,
-                    transparent : true,
-                    waterMask : false,
-                    featureInfoMimeType : "",
-                    dateTime : "",
-                    heightMapWidth : 256,
-                    options : {
-                        mimetype : layerOpts.outputFormat
+                    type  : layerOpts.type || "color",
+                    url  : layerOpts.url,
+                    protocol  : layerOpts.format,
+                    id  : layerId,
+                    name  : layerNames,
+                    style  : layerOpts.styleName || "",
+                    title  : layerOpts.title || layerId,
+                    projection  : layerOpts.projection || "EPSG:4326",
+                    extent  : boundingBox,
+                    transparent  : true,
+                    waterMask  : false,
+                    featureInfoMimeType  : "",
+                    dateTime  : "",
+                    heightMapWidth  : 256,
+                    options  : {
+                        mimetype  : layerOpts.outputFormat
                     },
-                    updateStrategy : {
-                        type : 0,
-                        options : {}
+                    updateStrategy  : {
+                        type  : 0,
+                        options  : {}
                     },
-                    version : layerOpts.version || "1.3.0"
+                    version  : layerOpts.version || "1.3.0"
                 };
                 break;
-            case "WMTS":
+            case "WMTS" :
                 this.logger.trace("ajout d'une couche WMTS");
                 // chargement des options par defaut
                 var lOpts = this._getWMTSDefaultOpts() ;
@@ -214,29 +182,29 @@ function (
                 }
                 layerOpts = lOpts ;
                 layer = {
-                    type : layerOpts.type || "color",
-                    url : layerOpts.url,
-                    protocol : layerOpts.format.toLowerCase(),
-                    id : layerId,
-                    title : layerOpts.title || layerId,
-                    updateStrategy : {
-                        type : "0",
-                        options : {}
+                    type  : layerOpts.type || "color",
+                    url  : layerOpts.url,
+                    protocol  : layerOpts.format.toLowerCase(),
+                    id  : layerId,
+                    title  : layerOpts.title || layerId,
+                    updateStrategy  : {
+                        type  : "0",
+                        options  : {}
                     },
-                    options : {
-                        tileMatrixSet : layerOpts.tileMatrixSet,
-                        tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
-                        mimetype : layerOpts.outputFormat,
-                        name : layerOpts.layer,
-                        style : layerOpts.styleName
+                    options  : {
+                        tileMatrixSet  : layerOpts.tileMatrixSet,
+                        tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
+                        mimetype  : layerOpts.outputFormat,
+                        name  : layerOpts.layer,
+                        style  : layerOpts.styleName
                     },
-                    version : layerOpts.version,
-                    minScaleDenominator : minScaleDenominator || null,
-                    maxScaleDenominator : maxScaleDenominator || null,
-                    processingOptions : layerOpts.processingOptions
+                    version  : layerOpts.version,
+                    minScaleDenominator  : minScaleDenominator || null,
+                    maxScaleDenominator  : maxScaleDenominator || null,
+                    processingOptions  : layerOpts.processingOptions
                 };
                 break;
-            default:
+            default :
         }
         if (layer) {
             // le controle geoportalAttribution exploite la propriete _originators
@@ -258,9 +226,9 @@ function (
 
             // on met à jour le tableau des couches
             this._layers.push({
-                id : layerId,
-                options : layerOpts,
-                obj : layer
+                id  : layerId,
+                options  : layerOpts,
+                obj  : layer
             }) ;
             if (layerOpts.isElevation === true) {
                 // we add the noDataValue if it is given
@@ -271,22 +239,45 @@ function (
                 if (layerOpts.noDataValueTolerance && layerOpts.noDataValue) {
                     layer.noDataValueTolerance = layerOpts.noDataValueTolerance.toString();
                 }
-                // this will launch the addedLayer callback (dans "IT._onLayerChanged")
-                this.libMap.addLayer(layer) ;
-                // this.libMap.viewer.init();
-            } else {
-                var LSControl = this.getLibMapControl("layerswitcher");
-                // if the LS already exists, we have to save the conf of the layer to add it to the LS
-                if (LSControl) {
-                    LSControl._addedLayerConf[layerId] = layerOpts;
-                }
-                var layerConf = JSON.parse(JSON.stringify(layerOpts));
+            }
+            // we add the layer and refresh the itowns viewer
+            // this will launch the addedLayer callback (dans "IT._onLayerChanged")
+            this.libMap.addLayer(layer) ;
 
-                // we add the layer and refresh the itowns viewer
-                this.libMap.addLayer(layer) ;
+        }
+    } ;
+
+    /**
+     * Add a geoportal Layer to the map
+     *
+     * @param {Object} layerObj - geoportalLayer to add.
+     * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+     *
+     * @private
+     */
+    IT.prototype._addGeoportalLayer = function (layerObj, layerConf) {
+        // FIXME à faire ailleurs
+        var layerId = Object.keys(layerObj)[0] ;
+        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques VG
+        if (layerConf) {
+            layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
+            // Paramètres spécifiques aux couches WMS pour ajout avec VG
+            if (layerObj[layerId].format === "WMS") {
+                layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
+                layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
+            }
+            // Paramètres spécifiques aux couches WMTS pour ajout avec VG
+            if (layerObj[layerId].format === "WMTS") {
+                layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID() ;
+                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimit;
+                layerObj[layerId].layer = layerId || layerConf.getName() ;
+                layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name ;
             }
 
         }
+        // Ajout de la couche avec VirtualGeo
+        this._addRasterLayer(layerObj);
     } ;
 
     /**
@@ -305,8 +296,8 @@ function (
         }
 
         var coordinates = {
-            longitude : point.x,
-            latitude : point.y
+            longitude  : point.x,
+            latitude  : point.y
         };
         // set the camera aimed point on the specified coords
         this.libMap.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
@@ -319,9 +310,9 @@ function (
     IT.prototype.getCenter = function () {
         var cameraCenter = this.libMap.controls.getCameraTargetGeoPosition();
         var center = {
-            lon : cameraCenter.longitude(),
-            lat : cameraCenter.latitude(),
-            alt : cameraCenter.altitude()
+            lon  : cameraCenter.longitude(),
+            lat  : cameraCenter.latitude(),
+            alt  : cameraCenter.altitude()
         };
         return center;
     };
@@ -384,7 +375,7 @@ function (
      */
     IT.prototype.setAzimuth = function (azimuth) {
         if (isNaN(azimuth)) {
-            console.log("Not a valid azimuth : must be a float") ;
+            console.log("Not a valid azimuth  : must be a float") ;
             return ;
         }
         var itownsAzimuth = azimuth + 90;
@@ -436,7 +427,7 @@ function (
         if (controlOpts.div) {
             mpOpts.options.div = controlOpts.div ;
         }
-        mpOpts.collapsed = controlOpts.maximised ? false : true ;
+        mpOpts.collapsed = controlOpts.maximised ? false  : true ;
         if (controlOpts.systems &&
             Array.isArray(controlOpts.systems) &&
             controlOpts.systems.length > 0 ) {
@@ -444,7 +435,7 @@ function (
                 /*
                 if (!ol.proj.get(controlOpts.systems[i].crs)) {
                     // on retire les systèmes non définis
-                    this.logger.trace("[IT] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
+                    this.logger.trace("[IT] addMousePositionControl  : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
                     continue ;
                 }*/
                 if (!mpOpts.systems) {
@@ -459,7 +450,7 @@ function (
             mpOpts.units = [] ;
             for (var j = 0 ; j < controlOpts.units.length ; j++ ) {
                 if ( typeof controlOpts.units[j] == "string") {
-                    this.logger.trace("[IT] addMousePositionControl : adding unit   [" + controlOpts.units[j].toUpperCase() ) ;
+                    this.logger.trace("[IT] addMousePositionControl  : adding unit   [" + controlOpts.units[j].toUpperCase() ) ;
                     mpOpts.units.push(controlOpts.units[j]) ;
                 }
             }
@@ -482,54 +473,54 @@ function (
      * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
      */
     IT.prototype.addLayerSwitcherControl = function (controlOpts) {
-        this.logger.trace("[IT] : addLayerSwitcherControl ... ");
-        // TODO : parametrage des couches
+        this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
+        // TODO  : parametrage des couches
         var lsOpts = {
-            layers : [],
-            options : {
-                collapsed : !(controlOpts && controlOpts.maximised)
+            layers  : [],
+            options  : {
+                collapsed  : !(controlOpts && controlOpts.maximised)
             }
         } ;
         if (controlOpts.div) {
             lsOpts.options.div = controlOpts.div ;
         }
-        // application des configuration des couches :
+        // application des configuration des couches  :
         for (var i = 0 ; i < this._layers.length ; i++) {
             var layer = this._layers[i];
             // Si la couche est un MNT, on ne l'ajoute pas au layerSwitcher
             if (layer.obj.type !== "color") {
                 continue;
             }
-            this.logger.trace("[IT] : layerSwitcher : configuring layer : " + layer.id) ;
-            // INFO : les couches Geoportail sont aussi configurées.
+            this.logger.trace("[IT]  : layerSwitcher  : configuring layer  : " + layer.id) ;
+            // INFO  : les couches Geoportail sont aussi configurées.
             var layerConf = {
-                layer : layer.obj,
-                config : {}
+                layer  : layer.obj,
+                config  : {}
             } ;
             if (layer.options.title) {
-                this.logger.trace("[IT] : layerSwitcher : setting title to [" + layer.options.title + "] for layer " + layer.id) ;
+                this.logger.trace("[IT]  : layerSwitcher  : setting title to [" + layer.options.title + "] for layer " + layer.id) ;
                 layerConf.config.title = layer.options.title ;
             }
             if (layer.options.description) {
-                this.logger.trace("[IT : layerSwitcher : setting description to [" + layer.options.description + "] for layer " + layer.id) ;
+                this.logger.trace("[IT  : layerSwitcher  : setting description to [" + layer.options.description + "] for layer " + layer.id) ;
                 layerConf.config.description = layer.options.description ;
             }
             if (layer.options.quicklookUrl) {
-                this.logger.trace("[IT] : layerSwitcher : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id) ;
+                this.logger.trace("[IT]  : layerSwitcher  : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id) ;
                 layerConf.config.quicklookUrl = layer.options.quicklookUrl ;
             }
             if (layer.options.legends) {
-                this.logger.trace("[IT] : layerSwitcher : setting legends to [" + layer.options.legends + "] for layer " + layer.id) ;
+                this.logger.trace("[IT]  : layerSwitcher  : setting legends to [" + layer.options.legends + "] for layer " + layer.id) ;
                 layerConf.config.legends = layer.options.legends ;
             }
             if (layer.options.metadata) {
-                this.logger.trace("[IT] : layerSwitcher : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id) ;
+                this.logger.trace("[IT]  : layerSwitcher  : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id) ;
                 layerConf.config.metadata = layer.options.metadata ;
             }
             lsOpts.layers.push(layerConf) ;
         }
 
-        this.logger.trace("[IT] : layerSwitcher Opts : ... ") ;
+        this.logger.trace("[IT]  : layerSwitcher Opts  : ... ") ;
         var control = new itowns.control.LayerSwitcher(lsOpts) ;
         itowns.control.WidgetAPI.addWidget( this.libMap, control );
         return control ;
@@ -541,7 +532,7 @@ function (
      * @param {Array.<String>} controlIds - A list of control's id or null.
      */
     IT.prototype.removeControls = function (controlIds) {
-        this.logger.trace("[IT] : removeControls ... ");
+        this.logger.trace("[IT]  : removeControls ... ");
         if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
             console.log("No control to remove.") ;
             return ;
@@ -555,7 +546,7 @@ function (
 
             var idx = this._findRegisteredControl(controlId) ;
             if (idx >= 0) {
-                this.logger.trace("[IT] : removeControls : removing [" + controlId + "] from register.");
+                this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from register.");
                 this._controls.splice(idx,1) ;
 
             }
@@ -563,11 +554,11 @@ function (
             var itownsControl = this.getLibMapControl(controlId);
 
             if (!itownsControl) {
-                console.log("Impossible to remove control [" + controlId + "] : not found or unhandled") ;
+                console.log("Impossible to remove control [" + controlId + "]  : not found or unhandled") ;
                 continue ;
             }
 
-            this.logger.trace("[IT] : removeControls : removing [" + controlId + "] from Map.");
+            this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from Map.");
             itowns.control.WidgetAPI.removeWidget( this.libMap, itownsControl );
         }
     } ;
@@ -580,29 +571,29 @@ function (
      */
     IT.prototype.getLibMapControl = function (controlId) {
         var foundItControl = null ;
-        // verifications de base : controlId est bien gere.
+        // verifications de base  : controlId est bien gere.
         if (!IT.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
             !IT.CONTROLSCLASSES[controlId.toLowerCase()] ) {
-            this.logger.trace("[IT] getLibMapControl : control " + controlId + " non implémenté.") ;
+            this.logger.trace("[IT] getLibMapControl  : control " + controlId + " non implémenté.") ;
             return foundItControl ;
         }
         // on regarde du cote des controles
         var itControls = itowns.control.WidgetAPI.getWidgets(this.libMap) ;
         if ( !itControls || itControls.length == 0 ) {
-            this.logger.trace("[IT] getLibMapControl : no control found on map") ;
+            this.logger.trace("[IT] getLibMapControl  : no control found on map") ;
             return foundItControl ;
         }
         for (var j = 0 ; j < itControls.length ; j++ ) {
-            this.logger.trace("[IT] getLibMapControl : analyzing : " + controlId);
+            this.logger.trace("[IT] getLibMapControl  : analyzing  : " + controlId);
             // test on control Name
             if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
                 foundItControl = itControls[j];
-                this.logger.trace("[IT] getLibMapControl : found GP Plugin Control ! ") ;
+                this.logger.trace("[IT] getLibMapControl  : found GP Plugin Control ! ") ;
                 break;
             }
         }
         if (!foundItControl) {
-            this.logger.trace("[IT] getLibMapControl : control " + controlId + " not found ! ") ;
+            this.logger.trace("[IT] getLibMapControl  : control " + controlId + " not found ! ") ;
         }
 
         return foundItControl ;
@@ -625,7 +616,7 @@ function (
             if (this._getLayersObj(_layerId) && Array.isArray(this._getLayersObj(_layerId)) && this._getLayersObj(_layerId).length > 0) {
                 this.libMap.removeLayer(_layerId) ;
             } else {
-                console.log("[IT] : Impossible to remove " + _layerId + " - not Found");
+                console.log("[IT]  : Impossible to remove " + _layerId + " - not Found");
             }
         },
         this) ;
@@ -645,30 +636,30 @@ function (
         // on recupere les objets correspondants dejà sur la carte
         var _layerObjs = this._getLayersObj(layerIds) ;
         _layerObjs.forEach(function (_layerObj) {
-            this.logger.trace("[IMap] modifyLayers : modifying : [" + _layerObj.id + "]") ;
+            this.logger.trace("[IMap] modifyLayers  : modifying  : [" + _layerObj.id + "]") ;
             // traduction options ahn => options IT
             var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]) ;
             // application des options IT aux couches IT
             // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
             if (commonOpts.hasOwnProperty("opacity")) {
-                this.logger.trace("[IMap] modifyLayers : setting opacity of : [" + _layerObj.id + "] to : " + commonOpts.opacity) ;
+                this.logger.trace("[IMap] modifyLayers  : setting opacity of  : [" + _layerObj.id + "] to  : " + commonOpts.opacity) ;
                 this._getItownsColorLayerById(_layerObj.id).opacity = commonOpts.opacity;
             }
             if (commonOpts.hasOwnProperty("visible")) {
-                this.logger.trace("[IMap] modifyLayers : setting visible of : [" + _layerObj.id + "] to : " + commonOpts.visible) ;
+                this.logger.trace("[IMap] modifyLayers  : setting visible of  : [" + _layerObj.id + "] to  : " + commonOpts.visible) ;
                 this._getItownsColorLayerById(_layerObj.id).visible = commonOpts.visible;
             }
             if (commonOpts.hasOwnProperty("zIndex")) {
-                this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex) ;
+                this.logger.trace("[IMap] modifyLayers  : setting zIndex of  : [" + _layerObj.id + "] to  : " + commonOpts.zIndex) ;
                 itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
             }
             /* TODO A compléter
             if (commonOpts.hasOwnProperty("minResolution")) {
-                this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution) ;
+                this.logger.trace("[IMap] modifyLayers  : setting minResolution of  : [" + _layerObj.id + "] to  : " + commonOpts.minResolution) ;
                 _layerObj.obj.setMinResolution(commonOpts.minResolution) ;
             }
             if (commonOpts.hasOwnProperty("maxResolution")) {
-                this.logger.trace("[IMap] modifyLayers : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution) ;
+                this.logger.trace("[IMap] modifyLayers  : setting maxResolution of  : [" + _layerObj.id + "] to  : " + commonOpts.maxResolution) ;
                 _layerObj.obj.setMaxResolution(commonOpts.maxResolution) ;
             }
             */
@@ -677,7 +668,7 @@ function (
     } ;
 
     /**
-     * Apply params common to all kind of layers :
+     * Apply params common to all kind of layers  :
      * opacity, visibility, minZoom, maxZoom
      *
      * @param {Gp.LayerOptions} layerOpts - options of the layer
@@ -687,17 +678,17 @@ function (
      */
     IT.prototype._applyCommonLayerParams = function (layerOpts) {
         var commonOpts = {} ;
-        this.logger.trace("[IT] : _applyCommonLayerParams ");
+        this.logger.trace("[IT]  : _applyCommonLayerParams ");
         if (layerOpts.hasOwnProperty("opacity")) {
-            this.logger.trace("[IT] : _applyCommonLayerParams - opacity : " + layerOpts.opacity) ;
+            this.logger.trace("[IT]  : _applyCommonLayerParams - opacity  : " + layerOpts.opacity) ;
             commonOpts.opacity = layerOpts.opacity ;
         }
         if (layerOpts.hasOwnProperty("visibility")) {
-            this.logger.trace("[IT] : _applyCommonLayerParams - visibility : " + layerOpts.visibility) ;
+            this.logger.trace("[IT]  : _applyCommonLayerParams - visibility  : " + layerOpts.visibility) ;
             commonOpts.visible = layerOpts.visibility ;
         }
         if (layerOpts.hasOwnProperty("position")) {
-            this.logger.trace("[IT] : _applyCommonLayerParams - position : " + layerOpts.position) ;
+            this.logger.trace("[IT]  : _applyCommonLayerParams - position  : " + layerOpts.position) ;
             commonOpts.zIndex = layerOpts.position ;
         }
         /* TODO à compléter
@@ -705,14 +696,14 @@ function (
             layerOpts.maxZoom >= 0 &&
             layerOpts.maxZoom <= 20 ) {
             var minRes = this._getResolutionFromZoomLevel(layerOpts.maxZoom) ;
-            this.logger.trace("[OL3] : _applyCommonLayerParams - minRes : " + minRes) ;
+            this.logger.trace("[OL3]  : _applyCommonLayerParams - minRes  : " + minRes) ;
             commonOpts.minResolution = minRes ;
         }
         if (layerOpts.hasOwnProperty("minZoom") &&
             layerOpts.minZoom >= 0 &&
             layerOpts.minZoom <= 20 ) {
             var maxRes = this._getResolutionFromZoomLevel(layerOpts.minZoom) ;
-            this.logger.trace("[OL3] : _applyCommonLayerParams - maxRes : " + maxRes) ;
+            this.logger.trace("[OL3]  : _applyCommonLayerParams - maxRes  : " + maxRes) ;
             commonOpts.maxResolution = maxRes ;
         }*/
 
@@ -722,7 +713,7 @@ function (
     /**
       * Associate a function to trigger when an event is received.
       *
-      * @param {String} eventId - The map's event listened. Possible values are : 'loaded', 'failure', 'geolocated', 'located', 'zoomchanged', 'azimuthchanged', 'tiltchanged', 'dragstart', 'drag', 'dragend', 'projectionchanged', 'layerchanged', 'controlchanged'.
+      * @param {String} eventId - The map's event listened. Possible values are  : 'loaded', 'failure', 'geolocated', 'located', 'zoomchanged', 'azimuthchanged', 'tiltchanged', 'dragstart', 'drag', 'dragend', 'projectionchanged', 'layerchanged', 'controlchanged'.
       *
       * | eventId  | description |
       * |-|-|
@@ -743,7 +734,7 @@ function (
       * @param {Object} context - The object that will be used as "this" in the action function
       */
     IT.prototype.listen = function (eventId, action,context) {
-        this.logger.trace("[IT] : listen...") ;
+        this.logger.trace("[IT]  : listen...") ;
         // verifications de base de la classe mère
         if (!IMap.prototype.listen.apply(this,arguments)) {
             return false ;
@@ -752,19 +743,19 @@ function (
         var map = this ;
         var itEventKey = null ;
         switch (eventId) {
-            case "mapLoaded" :
-            case "mapFailure" :
+            case "mapLoaded"  :
+            case "mapFailure"  :
                 break ;
-            case "located" :
+            case "located"  :
                 // handled in IMap
                 break ;
-            case "geolocated" :
+            case "geolocated"  :
                 // handled in IMap
                 break ;
-            case "configured" :
+            case "configured"  :
                 // handled in IMap
                 break ;
-            case "centerChanged" :
+            case "centerChanged"  :
                 /**
                 * centerChanged callback
                 */
@@ -774,18 +765,18 @@ function (
                         return;
                     }
                     if (itEvent.previous) {
-                        var oldCoords = itEvent.previous.cameraTarget.as("EPSG:4326");
+                        var oldCoords = itEvent.previous.cameraTarget.as("EPSG :4326");
                         centerChangedEvt.oldCenter = {
-                            x : oldCoords.longitude(),
-                            y : oldCoords.latitude()
+                            x  : oldCoords.longitude(),
+                            y  : oldCoords.latitude()
                         } ;
                     }
 
                     if (itEvent.new) {
-                        var newCoords = itEvent.new.cameraTarget.as("EPSG:4326");
+                        var newCoords = itEvent.new.cameraTarget.as("EPSG :4326");
                         centerChangedEvt.newCenter = {
-                            x : newCoords.longitude(),
-                            y : newCoords.latitude()
+                            x  : newCoords.longitude(),
+                            y  : newCoords.latitude()
                         } ;
                     }
                     action.call(context,centerChangedEvt) ;
@@ -794,7 +785,7 @@ function (
                 this._registerEvent(callBackCenterChanged,eventId,action,context) ;
                 this.libMap.controls.addEventListener("camera-target-changed", callBackCenterChanged, this) ;
                 break ;
-            case "zoomChanged" :
+            case "zoomChanged"  :
                 var oldZoom = this.libMap.controls.getZoom();
                 /**
                 * zoomChanged callback
@@ -807,8 +798,8 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldZoom : oldZoom,
-                        newZoom : newZoom
+                        oldZoom  : oldZoom,
+                        newZoom  : newZoom
                     }) ;
                     // update the oldZoom vale
                     oldZoom = newZoom;
@@ -819,7 +810,7 @@ function (
                 // on écoute le range (et non le zoom, non implémenté côté itowns)
                 this.libMap.controls.addEventListener("range-changed", callbackZoomchange, this);
                 break ;
-            case "azimuthChanged" :
+            case "azimuthChanged"  :
                 /**
                 * azimuthChanged callback
                 */
@@ -828,15 +819,15 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldAzimuth : itEvent.previous.heading,
-                        newAzimuth : itEvent.new.heading
+                        oldAzimuth  : itEvent.previous.heading,
+                        newAzimuth  : itEvent.new.heading
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
                 this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
                 this.libMap.controls.addEventListener("orientation-changed", callbackAzimuthchange, this);
                 break ;
-            case "tiltChanged" :
+            case "tiltChanged"  :
                 /**
                 * tiltChanged callback
                 */
@@ -845,18 +836,18 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldTilt : itEvent.previous.tilt,
-                        newTilt : itEvent.new.tilt
+                        oldTilt  : itEvent.previous.tilt,
+                        newTilt  : itEvent.new.tilt
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
                 this._registerEvent(callbackTiltchange,eventId,action,context) ;
                 this.libMap.controls.addEventListener("orientation-changed", callbackTiltchange, this);
                 break ;
-            case "projectionChanged" :
-                // TODO : interet ?
+            case "projectionChanged"  :
+                // TODO  : interet ?
                 break ;
-            case "layerChanged" :
+            case "layerChanged"  :
                 /**
                 * layerAdded callback
                 */
@@ -869,18 +860,18 @@ function (
                     if (itColorLayer && itColorLayer.sequence >= 0) {
                         layerIndex = itColorLayer.sequence;
                     } else {
-                        // if itColorLayer is not defined, the layer is an MNT : we set its layerIndex to -1
+                        // if itColorLayer is not defined, the layer is an MNT  : we set its layerIndex to -1
                         layerIndex = -1;
                     }
                     if (!layerOpts) {
-                        map.logger.trace("[IT] listen : enregistrement d'une couche 'inconnue'.") ;
+                        map.logger.trace("[IT] listen  : enregistrement d'une couche 'inconnue'.") ;
                         // layerOpts = map._registerUnknownLayer(ladded) ;
                     }
 
-                    // if itColorLayer is undefined, it is an MNT : the sequence is set to -1
+                    // if itColorLayer is undefined, it is an MNT  : the sequence is set to -1
                     action.call(context,{
-                        layerAdded : layerOpts,
-                        position : layerIndex
+                        layerAdded  : layerOpts,
+                        position  : layerIndex
                     }) ;
                 } ;
                 // ajout de l'evenement au tableau des événements
@@ -896,7 +887,7 @@ function (
                     var lremoved = itevt;
                     var layerOpts = map._getLayerOpts(lremoved) || map._getLayerOpts(lremoved, map._layersRemoved) ;
                     action.call(context,{
-                        layerRemoved : layerOpts
+                        layerRemoved  : layerOpts
                     }) ;
                 };
 
@@ -911,7 +902,7 @@ function (
                 */
                 var callbackVisibilityChanged = function (itevt) {
                     action.call(context,{
-                        layerVisibilityChanged : itevt
+                        layerVisibilityChanged  : itevt
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
@@ -922,7 +913,7 @@ function (
                 */
                 var callbackOpacityChanged = function (itevt) {
                     action.call(context,{
-                        layerOpacityChanged : itevt
+                        layerOpacityChanged  : itevt
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
@@ -933,7 +924,7 @@ function (
                 */
                 var callbackIndexChanged = function (itevt) {
                     action.call(context,{
-                        layerIndexChanged : itevt
+                        layerIndexChanged  : itevt
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
@@ -952,10 +943,10 @@ function (
                 }
 
                 break ;
-            case "controlChanged" :
+            case "controlChanged"  :
                 break ;
-            default :
-                console.log("unhandled event : " + eventId ) ;
+            default  :
+                console.log("unhandled event  : " + eventId ) ;
         } ;
         // enregistrement de l'evenement
         if (itEventKey) {
@@ -967,7 +958,7 @@ function (
     /**
       * Cancel an event listening.
       *
-      * @param {String} eventId - The map's event to forget. Possible values are :
+      * @param {String} eventId - The map's event to forget. Possible values are  :
       *
       * | eventId  | description |
       * |-|-|
@@ -989,29 +980,29 @@ function (
     IT.prototype.forget = function (eventId, action) {
         // interface entre les Ids de l'AHN et ceux d'iTowns
         var eventsMapping = {
-            tiltChanged : {
-                id : ["orientation-changed"],
-                parent : this.libMap.controls
+            tiltChanged  : {
+                id  : ["orientation-changed"],
+                parent  : this.libMap.controls
             },
-            azimuthChanged : {
-                id : ["orientation-changed"],
-                parent : this.libMap.controls
+            azimuthChanged  : {
+                id  : ["orientation-changed"],
+                parent  : this.libMap.controls
             },
-            zoomChanged : {
-                id : ["range-changed"],
-                parent : this.libMap.controls
+            zoomChanged  : {
+                id  : ["range-changed"],
+                parent  : this.libMap.controls
             },
-            centerChanged : {
-                id : ["camera-target-changed"],
-                parent : this.libMap.controls
+            centerChanged  : {
+                id  : ["camera-target-changed"],
+                parent  : this.libMap.controls
             },
-            layerChanged : {
-                id : ["layer-added", "layer-removed"],
-                parent : this.libMap
+            layerChanged  : {
+                id  : ["layer-added", "layer-removed"],
+                parent  : this.libMap
             }
 
         };
-        this.logger.trace("[IT] : forget...") ;
+        this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
         if (!IMap.prototype.forget.apply(this,arguments)) {
             return false ;
@@ -1019,7 +1010,7 @@ function (
         // on cherche l'enregistrement de l'evenement
         var rEvents = this._events[eventId] ;
         if (!rEvents) {
-            console.log("nothing to forget for : " + eventId) ;
+            console.log("nothing to forget for  : " + eventId) ;
             return false ;
         }
         var itCallback = null;
@@ -1027,17 +1018,17 @@ function (
             if (rEvents[i].action == action) {
                 itCallback = rEvents[i].key ;
                 if (!itCallback) {
-                    console.log("action to forget not found for : " + eventId) ;
+                    console.log("action to forget not found for  : " + eventId) ;
                     return false ;
                 }
                 rEvents.splice(i,1) ;
-                this.logger.trace("[IT] : forgetting : " + eventId + " (" + itCallback + ")") ;
+                this.logger.trace("[IT]  : forgetting  : " + eventId + " (" + itCallback + ")") ;
                 var eventOrigin = eventsMapping[eventId].parent;
 
                 if (eventId === "layerChanged") {
                     var colorLayers = this._getItownsColorLayers();
                     for (var idx = 0; idx < colorLayers.length; idx++) {
-                        // pour layerChanged, le cas est particulier : certains listeners sont rattachés aux couches
+                        // pour layerChanged, le cas est particulier  : certains listeners sont rattachés aux couches
                         // on les oublie en parcourant toutes les couches présentes sur le globe
                         colorLayers[idx].removeEventListener("opacity-property-changed", itCallback);
                         colorLayers[idx].removeEventListener("visible-property-changed", itCallback);
@@ -1053,7 +1044,7 @@ function (
             }
         }
         if (!rEvents) {
-            console.log("action to forget not found for : " + eventId) ;
+            console.log("action to forget not found for  : " + eventId) ;
             return false ;
         }
 
@@ -1077,7 +1068,7 @@ function (
         for (var i = 0; i < layersStack.length; i++ ) {
             var l = layersStack[i] ;
             if (l.id === layerObj.layerId) {
-                this.logger.trace("[IT] : found layer : " + l.id) ;
+                this.logger.trace("[IT]  : found layer  : " + l.id) ;
                 layerOpts = {} ;
                 layerOpts[l.id] = l.options ;
                 break ;
@@ -1098,7 +1089,7 @@ function (
             }
         });
         if ( !layer[0] ) {
-            this.logger.trace("[IT] : no colorLayer found for this id") ;
+            this.logger.trace("[IT]  : no colorLayer found for this id") ;
             return;
         }
         return layer[0] ;
@@ -1126,22 +1117,169 @@ function (
         // couches de résultat (itineraire, isochrone)
         /*var layerId = "unknownLayer" ;
         if (layerObj.hasOwnProperty("gpResultLayerId")) {
-            // isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
-            // itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
+            // isochrones  : [GraphName]$GEOPORTAIL :GPP :Isocurve
+            // itineraire  : [GraphName]$GEOPORTAIL :GPP :Itineraire
             layerId = layerObj.gpResultLayerId ;
         }
         // on rajoute un timestamp
         layerId += "-" + Date.now() ;
         this._layers.push({
-            id : layerId,
-            obj : layerObj,
-            options : {}
+            id  : layerId,
+            obj  : layerObj,
+            options  : {}
         }) ;
         var layerOpts = {} ;
         layerOpts[layerId] = {} ;*/
 
         return {} ;
     } ;
+
+    /**
+      * retrieve max TMSLimits
+      *
+      */
+    IT.prototype._getTMSLimits = function (TMSID) {
+        if (TMSID === "PM") {
+            var TMSlimits = {
+                0  : {
+                    minTileRow  : "0",
+                    maxTileRow  : "1",
+                    minTileCol  : "0",
+                    maxTileCol  : "1"
+                },
+                1  : {
+                    minTileRow  : "0",
+                    maxTileRow  : "2",
+                    minTileCol  : "0",
+                    maxTileCol  : "2"
+                },
+                2 : {
+                    minTileRow  : "0",
+                    maxTileRow  : "4",
+                    minTileCol  : "0",
+                    maxTileCol  : "4"
+                },
+                3  : {
+                    minTileRow  : "0",
+                    maxTileRow  : "8",
+                    minTileCol  : "0",
+                    maxTileCol : "8"
+                },
+                4 : {
+                    minTileRow : "0",
+                    maxTileRow : "16",
+                    minTileCol : "0",
+                    maxTileCol : "16"
+                },
+                5 : {
+                    minTileRow : "0",
+                    maxTileRow : "32",
+                    minTileCol : "0",
+                    maxTileCol : "32"
+                },
+                6 : {
+                    minTileRow : "0",
+                    maxTileRow : "64",
+                    minTileCol : "0",
+                    maxTileCol : "64"
+                },
+                7 : {
+                    minTileRow : "0",
+                    maxTileRow : "128",
+                    minTileCol : "0",
+                    maxTileCol : "128"
+                },
+                8 : {
+                    minTileRow : "0",
+                    maxTileRow : "256",
+                    minTileCol : "0",
+                    maxTileCol : "256"
+                },
+                9 : {
+                    minTileRow : "0",
+                    maxTileRow : "512",
+                    minTileCol : "0",
+                    maxTileCol : "512"
+                },
+                10 : {
+                    minTileRow : "0",
+                    maxTileRow : "1024",
+                    minTileCol : "0",
+                    maxTileCol : "1024"
+                },
+                11 : {
+                    minTileRow : "0",
+                    maxTileRow : "2048",
+                    minTileCol : "0",
+                    maxTileCol : "2048"
+                },
+                12 : {
+                    minTileRow : "0",
+                    maxTileRow : "4096",
+                    minTileCol : "0",
+                    maxTileCol : "4096"
+                },
+                13 : {
+                    minTileRow : "0",
+                    maxTileRow : "8192",
+                    minTileCol : "0",
+                    maxTileCol : "8192"
+                },
+                14 : {
+                    minTileRow : "0",
+                    maxTileRow : "16384",
+                    minTileCol : "0",
+                    maxTileCol : "16384"
+                },
+                15 : {
+                    minTileRow : "0",
+                    maxTileRow : "32768",
+                    minTileCol : "0",
+                    maxTileCol : "32768"
+                },
+                16 : {
+                    minTileRow : "0",
+                    maxTileRow : "65536",
+                    minTileCol : "0",
+                    maxTileCol : "65536"
+                },
+                17 : {
+                    minTileRow : "0",
+                    maxTileRow : "131072",
+                    minTileCol : "0",
+                    maxTileCol : "131072"
+                },
+                18 : {
+                    minTileRow : "0",
+                    maxTileRow : "262144",
+                    minTileCol : "0",
+                    maxTileCol : "262144"
+                },
+                19 : {
+                    minTileRow : "0",
+                    maxTileRow : "524288",
+                    minTileCol : "0",
+                    maxTileCol : "524288"
+                },
+                20 : {
+                    minTileRow : "0",
+                    maxTileRow : "1048576",
+                    minTileCol : "0",
+                    maxTileCol : "1048576"
+                },
+                21 : {
+                    minTileRow : "0",
+                    maxTileRow : "2097152",
+                    minTileCol : "0",
+                    maxTileCol : "2097152"
+                }
+            };
+            return TMSlimits;
+        }
+
+        this.logger.trace("[IT]  : no TMS Limits found for this TMS id") ;
+        return;
+    };
 
     /**
       * Surcharge de la fonction d'IMap (a priori inutile avec iTowns)
