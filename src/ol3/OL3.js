@@ -42,6 +42,7 @@ define([
             visible : "visibility",
             opacity : "opacity",
             zIndex  : "position",
+            grayScaled : "grayScaled",
             minResolution : "maxZoom",
             maxResolution : "minZoom"
         } ;
@@ -1708,6 +1709,10 @@ define([
                 } else {
                     layer = new ol.layer.Tile(constructorOpts) ;
                 }
+                // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                if ( constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0 ) {
+                    layer._forceNullzIndex = true;
+                }
                 var gpLayer = {
                     id : layerId,
                     obj : layer,
@@ -2014,6 +2019,10 @@ define([
             if (layerOpts.hasOwnProperty("originators")) {
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
+            // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+            if ( olParams.hasOwnProperty("zIndex") && olParams.zIndex === 0 ) {
+                olLayer._forceNullzIndex = true;
+            }
 
             this._layers.push({
                 id : layerId,
@@ -2071,6 +2080,14 @@ define([
                 if (commonOpts.hasOwnProperty("zIndex")) {
                     this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex) ;
                     _layerObj.obj.setZIndex(commonOpts.zIndex) ;
+                    // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                    if ( commonOpts.zIndex === 0 ) {
+                        _layerObj.obj._forceNullzIndex = true;
+                    }
+                    // ou inversement pour ne plus forcer le zIndex à zéro lorsque ce n'est pas le cas
+                    if ( commonOpts.zIndex !== 0  && _layerObj.obj._forceNullzIndex ) {
+                        _layerObj.obj._forceNullzIndex = false;
+                    }
                 }
                 if (commonOpts.hasOwnProperty("minResolution")) {
                     this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution) ;
@@ -2471,28 +2488,53 @@ define([
                         map.logger.trace("[OL3] listen : abonnement layerProperty : " + obsProperty) ;
                         this.libMap.getLayers().forEach(function (olLayer,i,array) {
                             var layerOpts = this._getLayerOpts(olLayer) ;
-                            olEventKey = olLayer.on(
-                                "change:" + obsProperty,
-                                function (ol3evt) {
-                                    // la fonction _getCommonLayerParams permet de faire la conversion
-                                    // propriete ol3 => propriete commune
-                                    var oldOl3obj = {} ;
-                                    oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
-                                    var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
-                                    var newOl3obj = {} ;
-                                    newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
-                                    var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                            if ( obsProperty === "grayScaled" ) {
+
+                                /** layerChangeGrayScaled callback */
+                                var callBack = function (evt) {
                                     action.call(context,{
-                                        property : OL3.LAYERPROPERTIES[ol3evt.key],
-                                        oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
-                                        newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                        property : "grayScaled",
+                                        oldValue : evt.detail.oldValue,
+                                        newValue : evt.detail.newValue,
                                         layerChanged : layerOpts
                                     }) ;
-                                },
-                                olLayer
-                            ) ;
-                            this._registerEvent(olEventKey,eventId,action,context) ;
-                            olEventKey = null ;
+                                };
+
+                                var gpEventKey = {
+                                    type : "change:grayScaled",
+                                    handler : callBack,
+                                    target : olLayer
+                                };
+
+                                gpEventKey.target.addEventListener(gpEventKey.type, gpEventKey.handler);
+
+                                this._registerEvent(gpEventKey, eventId, action, context) ;
+
+                            } else {
+                                olEventKey = olLayer.on(
+                                    "change:" + obsProperty,
+                                    function (ol3evt) {
+                                        // la fonction _getCommonLayerParams permet de faire la conversion
+                                        // propriete ol3 => propriete commune
+                                        var oldOl3obj = {} ;
+                                        oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
+                                        var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
+                                        var newOl3obj = {} ;
+                                        newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
+                                        var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                                        action.call(context,{
+                                            property : OL3.LAYERPROPERTIES[ol3evt.key],
+                                            oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            layerChanged : layerOpts
+                                        }) ;
+                                    },
+                                    olLayer
+                                ) ;
+
+                                this._registerEvent(olEventKey,eventId,action,context) ;
+                                olEventKey = null ;
+                            }
                         },
                         map) ;
                     }
@@ -2547,10 +2589,16 @@ define([
             var evKey = null ;
             for (var i = 0 ; i < rEvents.length ; i ++) {
                 if (rEvents[i].action == action) {
-                    evKey = rEvents[i].key ;
+                    evKey = rEvents[i].key;
                     rEvents.splice(i,1) ;
                     this.logger.trace("[OL3] : forgetting : " + eventId + " (" + evKey + ")") ;
-                    ol.Observable.unByKey(evKey) ;
+
+                    if ( evKey.type === "change:grayScaled" ) {
+                        evKey.target.removeEventListener(evKey.type, evKey.handler);
+                    } else {
+                        ol.Observable.unByKey(evKey) ;
+                    }
+
                     // on decale i d'un cran en arriere pour ne pas sauter d'elements
                     i -= 1 ;
                 }
@@ -2582,6 +2630,17 @@ define([
             }
 
             this._colorGrayscaleLayerSwitch(gpLayer,toGrayScale);
+
+            var event = new CustomEvent(
+                "change:grayScaled",
+                {
+                    detail : {
+                        oldValue : !toGrayScale,
+                        newValue : toGrayScale
+                    }
+                }
+            );
+            gpLayer.obj.dispatchEvent(event);
         };
 
         /**
@@ -2597,10 +2656,12 @@ define([
          */
         OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
 
-            /**
-             * fonction de conversion de d'une image en n/b
-             */
-            function gray (img) {
+            /** fonction de conversion d'une image en n/b */
+            function getGrayScaledDataUrl (img) {
+
+                // patch pour safari
+                img.crossOrigin = null;
+
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
 
@@ -2619,43 +2680,48 @@ define([
                 }
 
                 ctx.putImageData( imageData, 0, 0 );
-                img.src = canvas.toDataURL();
+                return canvas.toDataURL();
             };
 
-            /**
-             * handler for event 'imageloadstart'
-             */
+            /** fonction de conversion et de chargement d'une image en n/b */
+            function convertImagetoGrayScale (image, context) {
+                // conversion en n/b
+                var dataUrl = getGrayScaledDataUrl(image);
+
+                // chargement d'une image vide intermediaire pour eviter
+                // l'affichage d'images couleurs (pour certains navigateurs
+                // le chargement de l'image n/b et plus long et l'image originale
+                // apparait de manière transitoire)
+                image.src = "";
+
+                // forcer le raffraichissement de l'affichage a l'issu
+                // du chargement de l'image n/b
+                /** onload */
+                image.onload = function () {
+                    context.changed();
+                };
+                // chargement image n/b
+                image.src = dataUrl;
+            }
+
+            /** handler for event 'imageloadstart' */
             function imageloadstartHandler (evt) {
                 evt.image.getImage().crossOrigin = "Anonymous";
             };
 
-            /**
-             * handler for event 'tileloadstart'
-             */
+            /** handler for event 'tileloadstart' */
             function tileloadstartHandler (evt) {
                 evt.tile.getImage().crossOrigin = "Anonymous";
             };
 
-            /**
-             * handler for event 'imageloadend'
-             */
+            /** handler for event 'imageloadend' */
             function imageloadendHandler (evt) {
-
-                // patch pour safari
-                evt.image.getImage().crossOrigin = null;
-
-                gray( evt.image.getImage() );
+                convertImagetoGrayScale(evt.image.getImage(), evt.target);
             };
 
-            /**
-             * handler for event 'tileloadend'
-             */
+            /** handler for event 'tileloadend' */
             function tileloadendHandler (evt) {
-
-                // patch pour safari
-                evt.tile.getImage().crossOrigin = null;
-
-                gray( evt.tile.getImage() );
+                convertImagetoGrayScale(evt.tile.getImage(), evt.target);
             };
 
             // abonnement/desabonnement aux evenements permettant la conversion en n/b
@@ -2674,7 +2740,6 @@ define([
                 source.loadstartListenerKey = null;
                 source.loadendListenerKey = null;
             }
-            gpLayer.options.grayScaled = toGrayScale;
 
             // maj du cache
             source.refresh();
