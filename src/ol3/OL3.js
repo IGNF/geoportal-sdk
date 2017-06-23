@@ -2631,7 +2631,7 @@ define([
 
             this._colorGrayscaleLayerSwitch(gpLayer,toGrayScale);
 
-            var event = new CustomEvent(
+            var event = IMap.CustomEvent(
                 "change:grayScaled",
                 {
                     detail : {
