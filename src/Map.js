@@ -203,7 +203,7 @@
          * LayerChanged Event. Triggered when one of the map's layers has changed in some way : <br/>
          * * If a layer has be removed from the map, property **layerRemoved** will host the removed layer definition.
          * * If a layer has be added to the map, property **layerAdded** will host the added layer definition.
-         * * If properties (among *visibility*, *opacity* and *position*) of a layer has changed, property **layerChanged** will host the modified layer definition and **property**, **oldValue** and **newValues** will host the modified property with its old and new value.
+         * * If properties (among *visibility*, *opacity*, *position* and *grayScaled*) of a layer has changed, property **layerChanged** will host the modified layer definition and **property**, **oldValue** and **newValues** will host the modified property with its old and new value.
          * <br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
