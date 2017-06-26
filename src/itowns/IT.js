@@ -426,7 +426,7 @@ function (
     IT.prototype.addMousePositionControl = function (controlOpts) {
         var mpOpts = {} ;
         if (controlOpts.div) {
-            mpOpts.options.div = controlOpts.div ;
+            mpOpts.div = controlOpts.div ;
         }
         mpOpts.collapsed = controlOpts.maximised ? false  : true ;
         if (controlOpts.systems &&
