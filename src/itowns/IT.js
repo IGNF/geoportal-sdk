@@ -495,6 +495,7 @@ function (
             this.logger.trace("[IT]  : layerSwitcher  : configuring layer  : " + layer.id) ;
             // INFO  : les couches Geoportail sont aussi configurées.
             var layerConf = {
+                id : layer.id,
                 layer  : layer.obj,
                 config  : {}
             } ;
