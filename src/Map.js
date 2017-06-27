@@ -282,6 +282,7 @@
          * @property {String | Array.<String>} apiKey - access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats)
          * @property {Gp.Center} [center] - Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization.
          * @property {Float} [azimuth=0] - Map orientation in decimal degrees clockwise to the north.
+         * @property {Boolean} [enableRotation=true] - Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used.
          * @property {Integer | Float} [zoom=10] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
          * @property {Array.<Gp.MarkerOptions>} [markersOptions] - Options for displaying markers on the map.
          * @property {Gp.StyleOptions} [defaultFeaturesStyle] - Default style options for vector layers features (KML, GPX, GeoJSON).

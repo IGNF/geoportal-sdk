@@ -106,6 +106,7 @@ define([
             // creation de la view
             var view = new ol.View({
                 // center : [center.x,center.y],
+                enableRotation : this.mapOptions.enableRotation,
                 zoom : this.mapOptions.zoom,
                 minZoom : this.mapOptions.minZoom,
                 maxZoom : this.mapOptions.maxZoom,

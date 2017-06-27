@@ -112,6 +112,7 @@ define([
                 locationType : ["StreetAddress","PositionOfInterest"]
             },
             azimuth : 0,
+            enableRotation : true,
             tilt : 0,
             zoom : 10,
             minZoom : 0,
