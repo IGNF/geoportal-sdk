@@ -1,0 +1,6 @@
+script:
+  - npm install
+script: gulp build-ol3
+cache:
+  directories:
+    - node_modules
