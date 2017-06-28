@@ -1110,6 +1110,37 @@ function (
     } ;
 
     /**
+     * Gets Layer Container div ID for a given layerId.
+     *
+     * @param {String} layerId - layer identifier
+     * @returns {String} - Layer Container div Id in the LayerSwitcher
+     */
+    IT.prototype.getLSLayerContainerDivId = function ( layerId ) {
+        var id = null ;
+        var idxLS = this._findRegisteredControl("layerswitcher") ;
+        if (idxLS < 0) {
+            this.logger.trace("[IT] : getLSLayerContainerDivId : no layerswitcher on map !") ;
+            return id ;
+        }
+        var itlayers = this._getLayersObj([layerId]) ;
+        if (itlayers.length > 0) {
+            var itLayerList = this._controls[idxLS].obj._layerListContainer ;
+            var divId = itLayerList.id;
+            var uid = divId.substring(divId.indexOf("-"));
+            if (itLayerList && itLayerList.childNodes) {
+                for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
+                    if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
+                        var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
+                        return foundId;
+                    }
+                }
+            }
+        }
+        this.logger.trace("[IT] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !") ;
+        return id ;
+    } ;
+
+    /**
      * Registers unknown unregistered layer
      *
      * @param {Object} layerObj -  IT layer
