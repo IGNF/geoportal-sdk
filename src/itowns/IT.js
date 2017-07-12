@@ -462,7 +462,7 @@ function (
             mpOpts.altitude = controlOpts.altitude ;
         }
         var control = new itowns.control.MousePosition(mpOpts) ;
-        itowns.control.WidgetAPI.addWidget( this.libMap, control );
+        this.libMap.addWidget( control );
         return control ;
     } ;
 
@@ -524,7 +524,7 @@ function (
 
         this.logger.trace("[IT]  : layerSwitcher Opts  : ... ") ;
         var control = new itowns.control.LayerSwitcher(lsOpts) ;
-        itowns.control.WidgetAPI.addWidget( this.libMap, control );
+        this.libMap.addWidget( control );
         return control ;
     };
 
@@ -561,7 +561,7 @@ function (
             }
 
             this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from Map.");
-            itowns.control.WidgetAPI.removeWidget( this.libMap, itownsControl );
+            this.libMap.removeWidget( itownsControl );
         }
     } ;
 
@@ -580,7 +580,7 @@ function (
             return foundItControl ;
         }
         // on regarde du cote des controles
-        var itControls = itowns.control.WidgetAPI.getWidgets(this.libMap) ;
+        var itControls = this.libMap.getWidgets() ;
         if ( !itControls || itControls.length == 0 ) {
             this.logger.trace("[IT] getLibMapControl  : no control found on map") ;
             return foundItControl ;
