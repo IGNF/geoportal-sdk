@@ -159,6 +159,9 @@ function (
                     options  : {
                         mimetype  : layerOpts.outputFormat
                     },
+                    networkOptions : {
+                        crossOrigin : "omit"
+                    },
                     updateStrategy  : {
                         type  : 0,
                         options  : {}
@@ -190,6 +193,9 @@ function (
                     updateStrategy  : {
                         type  : "0",
                         options  : {}
+                    },
+                    networkOptions : {
+                        crossOrigin : "omit"
                     },
                     options  : {
                         tileMatrixSet  : layerOpts.tileMatrixSet,
