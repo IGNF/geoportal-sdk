@@ -432,7 +432,7 @@ function (
     IT.prototype.addMousePositionControl = function (controlOpts) {
         var mpOpts = {} ;
         if (controlOpts.div) {
-            mpOpts.div = controlOpts.div ;
+            mpOpts.target = controlOpts.div ;
         }
         mpOpts.collapsed = controlOpts.maximised ? false  : true ;
         if (controlOpts.systems &&
@@ -489,7 +489,7 @@ function (
             }
         } ;
         if (controlOpts.div) {
-            lsOpts.options.div = controlOpts.div ;
+            lsOpts.options.target = controlOpts.div ;
         }
         // application des configuration des couches  :
         for (var i = 0 ; i < this._layers.length ; i++) {
