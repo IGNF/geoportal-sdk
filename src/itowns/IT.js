@@ -483,7 +483,7 @@ function (
         this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
         // TODO  : parametrage des couches
         var lsOpts = {
-            layers  : [],
+            layers  : controlOpts.layers || [],
             options  : {
                 collapsed  : !(controlOpts && controlOpts.maximised)
             }
