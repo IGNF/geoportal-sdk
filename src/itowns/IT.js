@@ -48,7 +48,8 @@ function (
      */
     IT.CONTROLSCLASSES = {
         mouseposition  : itowns.control.MousePosition,
-        layerswitcher  : itowns.control.LayerSwitcher
+        layerswitcher  : itowns.control.LayerSwitcher,
+        attributions : itowns.control.Attribution
     } ;
 
     // heritage
@@ -533,6 +534,23 @@ function (
         this.libMap.addWidget( control );
         return control ;
     };
+
+    /**
+     * Ajoute l'outil d'attributions
+     *
+     * @param {Object} controlOpts - options du controle
+     */
+    IT.prototype.addAttributionsControl = function (controlOpts) {
+        var attOpts = {} ;
+        attOpts.options = {};
+        if (controlOpts.div) {
+            attOpts.options.target = controlOpts.div ;
+        }
+        attOpts.options.collapsed = controlOpts.maximised ? false : true ;
+        var control = new itowns.control.Attribution(attOpts);
+        this.libMap.addWidget(control) ;
+        return control ;
+    } ;
 
     /**
      * Remove the controls listed to the map.
