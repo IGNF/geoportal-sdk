@@ -1858,7 +1858,7 @@ define([
                     // si le controle est enregistre, on recupere ses options initiales.
                     var idx = this._findRegisteredControl(controlId) ;
                     if (idx >= 0) {
-                        // si le controle n'est plus sur la carte mais qu'il est enregistre, on se contente de le seupprimmer
+                        // si le controle n'est plus sur la carte mais qu'il est enregistre, on se contente de le supprimmer
                         if (!controlObj) {
                             this.logger.trace("[IMap] : modifyControls : removing control : " + controlId);
                             this.removeControls([controlId]) ;
