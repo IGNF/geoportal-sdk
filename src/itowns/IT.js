@@ -214,9 +214,9 @@ function (
             default :
         }
         if (layer) {
-            // le controle geoportalAttribution exploite la propriete _originators
+            // le controle geoportalAttribution exploite la propriete options.originators
             if (layerOpts.hasOwnProperty("originators")) {
-                layer._originators = layerOpts.originators ;
+                layer.options.originators = layerOpts.originators ;
             }
 
             // Dans le cas où aucune opacité n'est spécifiée
