@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.12.0-dev
- * @date 2017-06-16
+ * @date 2017-07-21
  *
  */
 /* MOUSE POSITION */
@@ -1659,7 +1659,7 @@ input[id^=GPshowMousePosition-]:checked + label + div {
 /* General panels */
 
 div[id^=GPmousePositionPanel-] {
-  width: 240px;
+  width: 300px;
   overflow: hidden;
 }
 
@@ -1667,6 +1667,7 @@ div[id^=GPmousePositionPanel-] {
 
 div[id^=GPmousePositionBasicPanel] {
   padding: 10px 15px;
+  position: relative;
 }
 
 .GPmousePositionLabel,
@@ -1727,6 +1728,107 @@ div[id^=GPmousePositionSettings-] {
 .GPmousePositionSettingsSelect {
   width: 180px;
   margin-top: 5px;
+}
+
+/* General panels */
+
+div[id^=GPmousePositionCoordinate-] input.error {
+    border: 1px solid rgb(255, 0, 0);
+}
+div[id^=GPmousePositionCoordinate-] input[readonly] {
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: right;
+}
+
+input[id^=GPmousePositionLat-], input[id^=GPmousePositionLon-] {
+    width: 120px;
+}
+
+span[id^=GPmousePositionAlt-] {
+    display: inline-block;
+    padding: 2px;
+    width: 120px;
+    line-height: 20px;
+    text-align: right;
+}
+
+/* sexagesimal coordinates */
+
+.GPSexagesimal, .GPSexagesimalsec {
+    margin:0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+input:read-only.GPSexagesimal, input:read-only.GPSexagesimalsec {
+    text-align: right;
+}
+
+.GPSexagesimal {
+    width: 25px;
+}
+
+.GPSexagesimalsec {
+    width: 38px;
+}
+.GPmousePositionSexagesimalLabel {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0;
+}
+
+/* direction N/S ou E/O */
+select.GPmousePositionDirection {
+    border: 1px solid #999;
+    margin-left: 2px;
+}
+
+select.GPmousePositionDirection:disabled{
+    border: none;
+    background: transparent;
+    color: black;
+    /*For FireFox*/
+   -webkit-appearance: none;
+   /*For Chrome*/
+   -moz-appearance: none;
+}
+
+/*For IE10+*/
+select.GPmousePositionDirection:disabled::-ms-expand {
+    display: none;
+}
+select.GPmousePositionDirection:disabled::-ms-value {
+    color: black;
+}
+
+.GPmousePositionUnits,
+.GPmousePositionAltitudeUnits {
+    margin-left: 5px;
+}
+
+/* EDIT COORDINATES TOOLS */
+.GPmousePositionPanelEditTools {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+}
+
+.GPmousePositionEditTool {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span[id^=GPmousePositionCloseEdit] {
+    background-position: -18px 0;
+    margin-left: 5px;
+}
+
+img[id^=GPmousePositionMarker]:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 /* Map center localisation */
@@ -3178,36 +3280,6 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
-/* GET FEATURE INFO */
-
-div[id^=GPgetFeatureInfo-] {
-  top: 260px;
-  left: 10px;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  width: 26px;
-  height: 26px;
-  background-image: url("img/GPactivateGfi.png");
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  background-position: -26px 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
-  opacity: 0.7;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.4);
-}
-
 div[id^=GPelevationPath-] {
   bottom: 48px;
   left: 10px;
@@ -3303,58 +3375,34 @@ display: none !important;
 }
 */
 
-/* ISOCHRON */
+/* GET FEATURE INFO */
 
-div[id^=GPisochron-] {
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
   left: 10px;
 }
 
-/* Showing/hiding isochron panel */
-
-span[id^=GPshowIsochronOpen] {
-  background-image: url("img/GPisochronOpen.png");
-  z-index:1;
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
 }
 
-/* General panels */
-
-div[id^=GPisochronPanel-] {
-  /*left: 8px;*/
-  position: absolute;
-  z-index:2;
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
 }
 
-div[id^=GPisochronPanelClose] {
-  background-image: url("img/GPisochronOpen.png");
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
 }
 
-/* Calc waiting */
-
-.GPisochronCalcWaitingContainerVisible,
-.GPisochronCalcWaitingContainerHidden {
-  border-radius: 4px;
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
 }
 
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
-
-.GPisoExclusionsOption {
-  background-image: url("img/GPisochronCheck.png");
-}
-
-/* Reset picto */
-div[id^=GPisochronReset] {
-  background-color: #366291;
-  background-image: url("img/GPisochronOptions.png");
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
 }
 
 /* Layer Import */
@@ -3758,6 +3806,10 @@ div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmousePositionOpen.png");
 }
 
+.GPmousePositionEditTool {
+    background-image: url("img/GPmousePositionEditCoordinates.png");
+}
+
 /* Map center localisation */
 
 #GPmapCenter {
@@ -3942,6 +3994,60 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
 [id^="GPgeocodeResultsList"] {
   top: 40px;
   border-radius: 4px;
+}
+
+/* ISOCHRON */
+
+div[id^=GPisochron-] {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+span[id^=GPshowIsochronOpen] {
+  background-image: url("img/GPisochronOpen.png");
+  z-index:1;
+}
+
+/* General panels */
+
+div[id^=GPisochronPanel-] {
+  /*left: 8px;*/
+  position: absolute;
+  z-index:2;
+}
+
+div[id^=GPisochronPanelClose] {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Calc waiting */
+
+.GPisochronCalcWaitingContainerVisible,
+.GPisochronCalcWaitingContainerHidden {
+  border-radius: 4px;
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
+
+.GPisoExclusionsOption {
+  background-image: url("img/GPisochronCheck.png");
+}
+
+/* Reset picto */
+div[id^=GPisochronReset] {
+  background-color: #366291;
+  background-image: url("img/GPisochronOptions.png");
 }
 
 /* TODO coller un peu plus à la charte

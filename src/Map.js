@@ -477,6 +477,11 @@
          * | displayAltitude | Boolean | (de)activate altitude display |
          * | displayCoordinates | Boolean | (de)activate planimetric coordinates display. |
          * | altitude | Object | altitude interaction specific configuration. Implementation specific. |
+         * | editCoordinates | Boolean | Allows users to change map center by giving their coordinates. False by default. |
+         * | positionMarker | Object | options for a position marker to use when editingCoordinates. |
+         * | positionMarker.url | String | Marker url |
+         * | positionMarker.offset | Array(Number) | Offsets in pixels used when positioning the marker towards targeted point. The *first element* in the array is the horizontal offset. A positive value shifts the marker right. The *second element* in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point. Default is offset associated to default marker image. |
+         * | positionMarker.hide | Boolean | If true, marker is not displayed, otherwise displayed (False by default.) |
          *
          * <a id="route"></a>
          *

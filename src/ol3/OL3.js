@@ -350,6 +350,14 @@ define([
          * @param {Array.<String>} controlOpts.units - units used for coordinates display ("m", "km" for Metric coordinates, "dec", "dms", "rad" or "gon" for geographical coordinates).
          * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
          * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
+         * @param {Boolean} [controlOpts.editCoordinates = false] - add edit coordinates options. False by default.
+         * @param {Object} [controlOpts.positionMarker] - options for position marker to use while editingCoordinates.
+         * @param {String} controlOpts.positionMarker.url - Marker url
+         * @param {Array} controlOpts.positionMarker.offset - Offsets in pixels used when positioning the marker towards targeted point.
+         *      The first element in the array is the horizontal offset. A positive value shifts the marker right.
+         *      The second element in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point.
+         *      Default is offset associated to default marker image.
+         * @param {Boolean} controlOpts.positionMarker.hide - if true, marker is not displayed, otherwise displayed (False by default.)
          * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
          */
         OL3.prototype.addMousePositionControl = function (controlOpts) {
@@ -389,6 +397,8 @@ define([
             if (controlOpts.altitude) {
                 mpOpts.altitude = controlOpts.altitude ;
             }
+            mpOpts.editCoordinates = controlOpts.editCoordinates ;
+            mpOpts.positionMarker = controlOpts.positionMarker ;
             var control = new ol.control.GeoportalMousePosition(mpOpts) ;
             this.libMap.addControl(control) ;
             return control ;
