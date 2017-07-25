@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 5.0.0
- * @date 2017-07-21
+ * @date 2017-07-25
  *
  */
 /* MOUSE POSITION */
@@ -2831,27 +2831,6 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
-/* REVERSE GEOCODING */
-
-#GPreverseGeocoding {
-  left: 10px;
-}
-
-/* Showing/hiding reverse geocoding panel */
-
-#GPshowReverseGeocodingOpen {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-/* General panels */
-
-#GPreverseGeocodingPanel {
-  left: 8px;
-}
-
-#GPreverseGeocodingPanelClose {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -2877,6 +2856,27 @@ div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmapCenter.png");
 }
 
+/* REVERSE GEOCODING */
+
+#GPreverseGeocoding {
+  left: 10px;
+}
+
+/* Showing/hiding reverse geocoding panel */
+
+#GPshowReverseGeocodingOpen {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+/* General panels */
+
+#GPreverseGeocodingPanel {
+  left: 8px;
+}
+
+#GPreverseGeocodingPanelClose {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
 /* ROUTE */
 
 #GProute {
