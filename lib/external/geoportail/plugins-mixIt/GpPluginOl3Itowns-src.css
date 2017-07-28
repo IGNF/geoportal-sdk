@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 0.12.0-dev
- * @date 2017-07-27
+ * @version 0.12.0
+ * @date 2017-07-28
  *
  */
 /* MOUSE POSITION */
@@ -718,6 +718,36 @@ input.GPinputSubmit:hover {
 input[type="checkbox"]:checked + .GPshowMoreOptions {
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
+}
+
+/* GET FEATURE INFO */
+
+label[id^=GPgetFeatureInfoPicto] {
+  display: inline-block;
+}
+
+div[id^=GPgetFeatureInfo-] + label {
+  display: block;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  position: absolute;
+  display: block;
+  transition: border-radius 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
+}
+
+span[id^=GPgetFeatureInfoActivate] {
+  background-position: 0 0;
+  opacity: 1;
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 1;
 }
 
 /* ISOCHRON */
@@ -2571,7 +2601,8 @@ input.GPinputSubmit {
 /* Feature info popup */
 
 .gp-feature-info-div {
-  bottom: 17px;
+  bottom: 17px ;
+  position: relative;
   max-width: calc(100vw - 80px);
   padding: 10px;
   border-radius: 10px;
@@ -3242,6 +3273,36 @@ display: none !important;
 }
 */
 
+/* GET FEATURE INFO */
+
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
+  left: 10px;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
+}
+
 /* ISOCHRON */
 
 div[id^=GPisochron-] {
@@ -3678,31 +3739,6 @@ span[id^=GPshowMeasureLengthOpen-] {
   background-position: -26px;
 }
 
-/* MOUSE POSITION */
-
-div[id^=GPmousePosition-] {
-  bottom: 8px;
-  left: 10px;
-}
-
-/* Showing/hiding mouse position panel */
-
-span[id^=GPshowMousePositionOpen] {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* General panels */
-
-div[id^=GPmousePositionPanelClose]  {
-  background-image: url("img/GPmousePositionOpen.png");
-}
-
-/* Map center localisation */
-
-#GPmapCenter {
-  background-image: url("img/GPmapCenter.png");
-}
-
 /* REVERSE GEOCODING */
 
 [id^="GPreverseGeocoding-"] {
@@ -3961,7 +3997,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-07-27
+ * @date 2017-07-28
  *
  */
 /* MOUSE POSITION */
@@ -4669,6 +4705,36 @@ input.GPinputSubmit:hover {
 input[type="checkbox"]:checked + .GPshowMoreOptions {
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
+}
+
+/* GET FEATURE INFO */
+
+label[id^=GPgetFeatureInfoPicto] {
+  display: inline-block;
+}
+
+div[id^=GPgetFeatureInfo-] + label {
+  display: block;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  position: absolute;
+  display: block;
+  transition: border-radius 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
+}
+
+span[id^=GPgetFeatureInfoActivate] {
+  background-position: 0 0;
+  opacity: 1;
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 1;
 }
 
 /* ISOCHRON */
