@@ -1,6 +1,6 @@
 before_script:
   - npm install
-script: gulp build-ol3
+script: ./node_modules/.bin/gulp build-ol3
 cache:
   directories:
     - node_modules
