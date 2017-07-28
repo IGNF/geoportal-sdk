@@ -69,6 +69,7 @@
   max-width: 420px;
   min-width: 260px;
   max-height: 340px;
+  margin-right: 20px;
   overflow: auto;
 }
 
@@ -143,7 +144,7 @@
 
 /* Positionnement spécifique à droite des outils de mesures */
 
-div[id^="GPtoolbox-measure-main-"] { 
+div[id^="GPtoolbox-measure-main-"] {
     float: right;
     right: 8px;
     left :auto;
@@ -196,5 +197,3 @@ div[id^="GPreverseGeocoding-"] {
 div[id^="GPimport-"] {
   z-index: 2;
 }
-
-

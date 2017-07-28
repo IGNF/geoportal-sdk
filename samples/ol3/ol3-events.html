@@ -20,6 +20,7 @@
             <input type="checkbox" name="zoomChanged" onclick="listen(this);"/>zoomChanged<br/>
             <input type="checkbox" name="centerChanged" checked="true" onclick="listen(this);"/>centerChanged<br/>
             <input type="checkbox" name="layerChanged" onclick="listen(this);"/>layerChanged<br/>
+            <input type="button" name="grayScale" onclick="toggleGS();" value="Toggle Orthos Grayscale / Color"/>
         </div>
         <div id="outputDiv"></div>
         <script type="text/javascript">
@@ -68,6 +69,16 @@
                 } else {
                     map.forget(elem.name,action) ;
                 }
+            }
+
+            function toggleGS(elem) {
+               lo = map.getLayersOptions(["ORTHOIMAGERY.ORTHOPHOTOS"]) ;
+               if (!lo || !lo["ORTHOIMAGERY.ORTHOPHOTOS"]) {
+                   console.log(lo) ;
+                   return ;
+               }
+               lo["ORTHOIMAGERY.ORTHOPHOTOS"].grayScaled = (lo["ORTHOIMAGERY.ORTHOPHOTOS"].grayScaled ? false : true) ;
+               map.modifyLayers(lo) ;
             }
 
         </script>

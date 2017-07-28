@@ -16,16 +16,16 @@
         <script src="../../dist/ol3/GpOl3-src.js"></script>
     </head>
     <body>
-        <h1>WMS Géoportail "externe" et GetFeatureInfo</h1>
-        <p>couche WMS SHOM chargée avec l'option tiled : true => logos parfois tronqués</p>
-        <p>couche WMS Ecoles chargée sans l'option tiled => logos non tronqués</p>
+        <h1>Get Feature Info</h1>
+        <p>Exemple de mise en oeuvre du widget getFeatureInfo avec différents types de couches (wmts, wms, vecteur).</p>
+        <p>Ici l'évènement par défault est le simple click. Seule la couche "enseignement primaire" est initialisée avec un évènement spécifique (ici click droit).</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
 
             var map = Gp.Map.load('geoportalMap',{
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
-                proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
-                noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+                // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
                 center : {
                     x : 22700,
                     y : 6395900
@@ -33,10 +33,35 @@
                 zoom : 15,
                 controlsOptions : {
                     "layerSwitcher" : {},
-                    "mousePosition" : {}
+                    "mousePosition" : {},
+                    "getfeatureInfo" : {
+                        options : {
+                            auto : true,
+                            active : false,
+                            hidden: false,
+                            defaultEvent : "singleclick",
+                            cursorStyle : "pointer"
+                        },
+                        layers : {
+                            myVectorLayer : {},
+                            'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
+                                event : "contextmenu"
+                            },
+                            'ADMINISTRATIVEUNITS.BOUNDARIES' : {},
+                            'RPG.2012' : {},
+                            'RAILWAYS' : {},
+                            'DGAC-PEB-POI_BDD_WLD_WM::GEOPORTAIL:OGC:WMS' : {}
+                        }
+                    }
                 },
                 layersOptions : {
-                    "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+                    'ORTHOIMAGERY.ORTHOPHOTOS' : {},
+                    myVectorLayer : {
+                        title : "myVectorLayer",
+                        format : "kml",
+                        url : "../resources/KML/S_TOP100.kml",
+                        queryable : true
+                    },
                     'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
                         minZoom : 14,
                         maxZoom : 21,
@@ -47,6 +72,7 @@
                         layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                         outputFormat : "image/png",
                         queryable : true,
+                        gfiFormat : "text/html",
                         originators: [{
                                 "name":"IGN",
                                 "attribution":"Institut national de l'information géographique et forestière",
@@ -86,18 +112,34 @@
                         metadata : [],
                         legends : []
                     },
-                    'SCAN25' : {
+                    'RPG.2012' : {
                         minZoom : 6,
                         maxZoom : 16,
                         format : "wmts",
-                        title : "SCAN25",
+                        title : "RPG 2012",
+                        description : "blah blah",
                         url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
-                        layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
-                        gfiFormat : "text/html",
+                        layer : "LANDUSE.AGRICULTURE2012",
                         tileMatrixSet : "PM",
                         styleName : "normal",
-                        outputFormat : "image/jpeg",
+                        outputFormat : "image/png",
                         queryable : true,
+                        originators : [],
+                        metadata : [],
+                        legends : []
+                    },
+                    'RAILWAYS' : {
+                        minZoom : 6,
+                        maxZoom : 16,
+                        format : "wmts",
+                        title : "Réseau ferroviaire",
+                        description : "blah blah",
+                        url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
+                        layer : "TRANSPORTNETWORKS.RAILWAYS",
+                        tileMatrixSet : "PM",
+                        styleName : "normal",
+                        outputFormat : "image/png",
+                        queryable : true, // pour test (devrait etre a false)
                         originators : [],
                         metadata : [],
                         legends : []

@@ -222,7 +222,7 @@
          * LayerChanged Event. Triggered when one of the map's layers has changed in some way : <br/>
          * * If a layer has be removed from the map, property **layerRemoved** will host the removed layer definition.
          * * If a layer has be added to the map, property **layerAdded** will host the added layer definition.
-         * * If properties (among *visibility*, *opacity* and *position*) of a layer has changed, property **layerChanged** will host the modified layer definition and **property**, **oldValue** and **newValues** will host the modified property with its old and new value.
+         * * If properties (among *visibility*, *opacity*, *position* and *grayScaled*) of a layer has changed, property **layerChanged** will host the modified layer definition and **property**, **oldValue** and **newValues** will host the modified property with its old and new value.
          * <br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
@@ -301,6 +301,7 @@
          * @property {String | Array.<String>} apiKey - access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats)
          * @property {Gp.Center} [center] - Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization.
          * @property {Float} [azimuth=0] - Map orientation in decimal degrees clockwise to the north.
+         * @property {Boolean} [enableRotation=true] - Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used.
          * @property {Integer | Float} [zoom=10] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
          * @property {Array.<Gp.MarkerOptions>} [markersOptions] - Options for displaying markers on the map.
          * @property {Gp.StyleOptions} [defaultFeaturesStyle] - Default style options for vector layers features (KML, GPX, GeoJSON).
@@ -362,7 +363,7 @@
          * | title | String | The layer's name displayed in the LayerSwitcher control. |
          * | description | String | The layer's description. |
          * | opacity | Float | The layer's opacity (between 0 and 1). Default value is 1. |
-         *  | visibility | Boolean |  If true, the layer is visible. Default value is true. |
+         * | visibility | Boolean |  If true, the layer is visible. Default value is true. |
          * | minZoom | Integer | If the current zoom level is lower than the minZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the minZoom of the map. |
          * | maxZoom | Integer | If the current zoom level is upper than the maxZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the maxZoom of the map. |
          * | position | Number | The layer's position in map, compared to other layers positions. Allows to organize layers order explicitely. By default the layer will be displayed above other layers. |
@@ -374,6 +375,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layer | String | The layer's Identifier to add (found in GetCapabilities response). |
          * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. Not yet implemented for WMTS. |
          * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html". Not yet implemented for WMTS. |
@@ -390,6 +392,7 @@
          * | - | - | - |
          * | showPointNames | Boolean | If true, show names as labels for placemarks which contain points. |
          * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
+         * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
          * | projection | String | coordinate reference system id used for Layer (default is map projection) |
          *
          * ### KML, GPX and GeoJSON specific properties
@@ -402,6 +405,7 @@
          *
          * | property | Type | Description |
          * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layers | Array[String] layers | List of layer's identifiers to add (found in GetCapabilities response). |
          * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. |
          * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html" |
@@ -420,7 +424,7 @@
          * | version | String | The version of the Web Service providing the layer. Default : "2.0.0" |
          * | typeNames | String | List of the features's name to add (see in GetCapabilities response). |
          * | outputFormat | String | The output format (Mime-type) to use for WFS requests (outputFormat parameter) |
-         *  | maxFeatures | Integer | Maximal number of features in the layer. |
+         * | maxFeatures | Integer | Maximal number of features in the layer. |
          * | projection | String | Coordinate reference system id used for Layer (default is map projection) |
          *
          * @namespace
@@ -492,6 +496,11 @@
          * | displayAltitude | Boolean | (de)activate altitude display |
          * | displayCoordinates | Boolean | (de)activate planimetric coordinates display. |
          * | altitude | Object | altitude interaction specific configuration. Implementation specific. |
+         * | editCoordinates | Boolean | Allows users to change map center by giving their coordinates. False by default. |
+         * | positionMarker | Object | options for a position marker to use when editingCoordinates. |
+         * | positionMarker.url | String | Marker url |
+         * | positionMarker.offset | Array(Number) | Offsets in pixels used when positioning the marker towards targeted point. The *first element* in the array is the horizontal offset. A positive value shifts the marker right. The *second element* in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point. Default is offset associated to default marker image. |
+         * | positionMarker.hide | Boolean | If true, marker is not displayed, otherwise displayed (False by default.) |
          *
          * <a id="route"></a>
          *
@@ -551,6 +560,22 @@
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
          * | maximised | Boolean | if the control has to be opened or not. |
+         *
+         * <a id="getfeatureinfo"></a>
+         *
+         * ### Options for "getfeatureinfo" control
+         *
+         * | Property | Type | Argument | Default | Description |
+         * | - | - | - | - | - |
+         * | div | String / DOMElement | | | Target HTML element container or its id. Default is chosen by map implementation. |
+         * | options | Object | | | Defines control options. |
+         * | options.hidden | Boolean | optional | false | Specifies if the widget should be hidden. |
+         * | options.auto | Boolean | optional | false | Specifies if the control run in automatic mode. In automatic mode all vector layers added on run time or added at map initialization can be requested through the control. The triggering event of those layers is the default event. |
+         * | options.active | Boolean | optional | true | Specifies if the control is active or inactive. When inactive no request is fired and no information displayed. |
+         * | options.defaultEvent | String | optional | 'singleclick' | Specifies the default triggering event chosen in the list ['singleclick', 'dblclick', 'contextmenu']. This is the triggering event of all layers added to the control without configured triggering event. |
+         * | options.defaultInfoFormat | String | optional | 'text/html' | Indicates the default format mime-type of the response of GetFeatureInfo requests. |
+         * | options.cursorStyle | String | optional | 'pointer' | Specifies the type of cursor to be displayed when pointing on vector feature of a layer previously added to the control. The value must be choosen in the possible values of the css cursor property. |
+         * | layers | Object | | | List of layers requested by the control and their options (those layers have to be queryable). Associative array mapping ids of layers and their properties : </br><ul><li>event (String, optional) : name of the mouse event triggering the "getfeatureinfo" request.</li><li>infoFormat (String, optional) : indicates the format mime-type of the response of GetFeatureInfo requests.</li></ul> |
          *
          * <a id="layerimport"></a>
          *

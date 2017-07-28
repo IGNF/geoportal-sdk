@@ -9,7 +9,7 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 0.12.0-dev
+ * @version 0.12.0
  * @date 2017-07-27
  *
  */
@@ -718,6 +718,36 @@ input.GPinputSubmit:hover {
 input[type="checkbox"]:checked + .GPshowMoreOptions {
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
+}
+
+/* GET FEATURE INFO */
+
+label[id^=GPgetFeatureInfoPicto] {
+  display: inline-block;
+}
+
+div[id^=GPgetFeatureInfo-] + label {
+  display: block;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  position: absolute;
+  display: block;
+  transition: border-radius 0.5s ease-out 0s, opacity 0.5s ease-out 0s;
+}
+
+span[id^=GPgetFeatureInfoActivate] {
+  background-position: 0 0;
+  opacity: 1;
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  opacity: 1;
 }
 
 /* ISOCHRON */
@@ -1629,7 +1659,7 @@ input[id^=GPshowMousePosition-]:checked + label + div {
 /* General panels */
 
 div[id^=GPmousePositionPanel-] {
-  width: 240px;
+  width: 300px;
   overflow: hidden;
 }
 
@@ -1637,6 +1667,7 @@ div[id^=GPmousePositionPanel-] {
 
 div[id^=GPmousePositionBasicPanel] {
   padding: 10px 15px;
+  position: relative;
 }
 
 .GPmousePositionLabel,
@@ -1697,6 +1728,107 @@ div[id^=GPmousePositionSettings-] {
 .GPmousePositionSettingsSelect {
   width: 180px;
   margin-top: 5px;
+}
+
+/* General panels */
+
+div[id^=GPmousePositionCoordinate-] input.error {
+    border: 1px solid rgb(255, 0, 0);
+}
+div[id^=GPmousePositionCoordinate-] input[readonly] {
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: right;
+}
+
+input[id^=GPmousePositionLat-], input[id^=GPmousePositionLon-] {
+    width: 120px;
+}
+
+span[id^=GPmousePositionAlt-] {
+    display: inline-block;
+    padding: 2px;
+    width: 120px;
+    line-height: 20px;
+    text-align: right;
+}
+
+/* sexagesimal coordinates */
+
+.GPSexagesimal, .GPSexagesimalsec {
+    margin:0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+input:read-only.GPSexagesimal, input:read-only.GPSexagesimalsec {
+    text-align: right;
+}
+
+.GPSexagesimal {
+    width: 25px;
+}
+
+.GPSexagesimalsec {
+    width: 38px;
+}
+.GPmousePositionSexagesimalLabel {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0;
+}
+
+/* direction N/S ou E/O */
+select.GPmousePositionDirection {
+    border: 1px solid #999;
+    margin-left: 2px;
+}
+
+select.GPmousePositionDirection:disabled{
+    border: none;
+    background: transparent;
+    color: black;
+    /*For FireFox*/
+   -webkit-appearance: none;
+   /*For Chrome*/
+   -moz-appearance: none;
+}
+
+/*For IE10+*/
+select.GPmousePositionDirection:disabled::-ms-expand {
+    display: none;
+}
+select.GPmousePositionDirection:disabled::-ms-value {
+    color: black;
+}
+
+.GPmousePositionUnits,
+.GPmousePositionAltitudeUnits {
+    margin-left: 5px;
+}
+
+/* EDIT COORDINATES TOOLS */
+.GPmousePositionPanelEditTools {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+}
+
+.GPmousePositionEditTool {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span[id^=GPmousePositionCloseEdit] {
+    background-position: -18px 0;
+    margin-left: 5px;
+}
+
+img[id^=GPmousePositionMarker]:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 /* Map center localisation */
@@ -2571,7 +2703,8 @@ input.GPinputSubmit {
 /* Feature info popup */
 
 .gp-feature-info-div {
-  bottom: 17px;
+  bottom: 17px ;
+  position: relative;
   max-width: calc(100vw - 80px);
   padding: 10px;
   border-radius: 10px;
@@ -2691,6 +2824,101 @@ input.GPinputSubmit {
   max-width: inherit;
   vertical-align: middle;
 }
+div[id^=GPelevationPath-] {
+  bottom: 48px;
+  left: 10px;
+}
+
+/* Showing/hiding elevationPath panel */
+
+label[id^=GPshowElevationPathPicto] {
+  display: inline-block;
+}
+
+input[id^=GPshowElevationPath-] + label {
+  display: block;
+  /*visibility: visible;*/
+}
+
+input[id^=GPshowElevationPath-]:checked + label {
+  background-color: rgba(0,60,136,0.5);
+  /* on garde le picto toujours visible... */
+  /* display: none; */
+}
+
+input[id^=GPshowElevationPath-] + label + div {
+  display: none;
+  /*visibility: hidden;*/
+}
+
+input[id^=GPshowElevationPath-]:checked + label + div {
+  display: block;
+  /*visibility: visible;*/
+}
+
+span[id^=GPshowElevationPathOpen] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+/* Panel */
+
+[id^=GPelevationPathPanelClose] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+div[id^=GPelevationPathPanelReduce] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+[id^=GPelevationPathPanel-] {
+  position : relative;
+  top : 6px;
+  left: 32px;
+  width: 280px;
+}
+
+/* ELEVATION PATH DISPLAY */
+
+[id^=GPelevationPathProfil] {
+  height: 150px;
+  width: inherit;
+}
+
+.GPpanelHeader {
+  padding: unset;
+}
+
+/*
+@media (min-width:720px) and (min-height:720px) {
+
+[id^=GPelevationPathPanel] {
+top: 15px;
+left: 15px;
+}
+
+}
+
+@media (min-width:720px) and (min-height:520px) {
+
+[id^=GPelevationPathPanel] {
+width: 460px;
+}
+
+[id^=GPelevationPathProfil] {
+height: 220px;
+}
+
+}
+
+@media (max-width:560px), (max-height:340px) {
+
+[id^=GPelevationPathPanel] {
+display: none !important;
+}
+
+}
+*/
+
 /* MOUSE POSITION */
 
 div[id^=GPdrawing-] {
@@ -3147,100 +3375,35 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
-div[id^=GPelevationPath-] {
-  bottom: 48px;
+/* GET FEATURE INFO */
+
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
   left: 10px;
 }
 
-/* Showing/hiding elevationPath panel */
-
-label[id^=GPshowElevationPathPicto] {
-  display: inline-block;
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
 }
 
-input[id^=GPshowElevationPath-] + label {
-  display: block;
-  /*visibility: visible;*/
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
 }
 
-input[id^=GPshowElevationPath-]:checked + label {
-  background-color: rgba(0,60,136,0.5);
-  /* on garde le picto toujours visible... */
-  /* display: none; */
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
 }
 
-input[id^=GPshowElevationPath-] + label + div {
-  display: none;
-  /*visibility: hidden;*/
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
 }
 
-input[id^=GPshowElevationPath-]:checked + label + div {
-  display: block;
-  /*visibility: visible;*/
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
 }
-
-span[id^=GPshowElevationPathOpen] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-/* Panel */
-
-[id^=GPelevationPathPanelClose] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-div[id^=GPelevationPathPanelReduce] {
-  background-image: url("img/GPshowElevationPath.png");
-}
-
-[id^=GPelevationPathPanel-] {
-  position : relative;
-  top : 6px;
-  left: 32px;
-  width: 280px;
-}
-
-/* ELEVATION PATH DISPLAY */
-
-[id^=GPelevationPathProfil] {
-  height: 150px;
-  width: inherit;
-}
-
-.GPpanelHeader {
-  padding: unset;
-}
-
-/*
-@media (min-width:720px) and (min-height:720px) {
-
-[id^=GPelevationPathPanel] {
-top: 15px;
-left: 15px;
-}
-
-}
-
-@media (min-width:720px) and (min-height:520px) {
-
-[id^=GPelevationPathPanel] {
-width: 460px;
-}
-
-[id^=GPelevationPathProfil] {
-height: 220px;
-}
-
-}
-
-@media (max-width:560px), (max-height:340px) {
-
-[id^=GPelevationPathPanel] {
-display: none !important;
-}
-
-}
-*/
 
 /* ISOCHRON */
 
@@ -3695,6 +3858,10 @@ span[id^=GPshowMousePositionOpen] {
 
 div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmousePositionOpen.png");
+}
+
+.GPmousePositionEditTool {
+    background-image: url("img/GPmousePositionEditCoordinates.png");
 }
 
 /* Map center localisation */

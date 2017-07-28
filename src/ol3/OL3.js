@@ -42,6 +42,7 @@ define([
             visible : "visibility",
             opacity : "opacity",
             zIndex  : "position",
+            grayScaled : "grayScaled",
             minResolution : "maxZoom",
             maxResolution : "minZoom"
         } ;
@@ -105,6 +106,7 @@ define([
             // creation de la view
             var view = new ol.View({
                 // center : [center.x,center.y],
+                enableRotation : this.mapOptions.enableRotation,
                 zoom : this.mapOptions.zoom,
                 minZoom : this.mapOptions.minZoom,
                 maxZoom : this.mapOptions.maxZoom,
@@ -119,9 +121,6 @@ define([
                 view : view
                 // controls : controls
             });
-
-            // ecoute gfi potentiels.
-            this.libMap.on("singleclick", this._onMapClick, this) ;
 
             this._afterInitMap() ;
         } ;
@@ -351,6 +350,14 @@ define([
          * @param {Array.<String>} controlOpts.units - units used for coordinates display ("m", "km" for Metric coordinates, "dec", "dms", "rad" or "gon" for geographical coordinates).
          * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
          * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
+         * @param {Boolean} [controlOpts.editCoordinates = false] - add edit coordinates options. False by default.
+         * @param {Object} [controlOpts.positionMarker] - options for position marker to use while editingCoordinates.
+         * @param {String} controlOpts.positionMarker.url - Marker url
+         * @param {Array} controlOpts.positionMarker.offset - Offsets in pixels used when positioning the marker towards targeted point.
+         *      The first element in the array is the horizontal offset. A positive value shifts the marker right.
+         *      The second element in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point.
+         *      Default is offset associated to default marker image.
+         * @param {Boolean} controlOpts.positionMarker.hide - if true, marker is not displayed, otherwise displayed (False by default.)
          * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
          */
         OL3.prototype.addMousePositionControl = function (controlOpts) {
@@ -390,6 +397,8 @@ define([
             if (controlOpts.altitude) {
                 mpOpts.altitude = controlOpts.altitude ;
             }
+            mpOpts.editCoordinates = controlOpts.editCoordinates ;
+            mpOpts.positionMarker = controlOpts.positionMarker ;
             var control = new ol.control.GeoportalMousePosition(mpOpts) ;
             this.libMap.addControl(control) ;
             return control ;
@@ -1218,6 +1227,73 @@ define([
         } ;
 
         /**
+         * Ajoute l'outil getFeatureInfo
+         *
+         * @param {Object} controlOpts - options du controle
+         */
+        OL3.prototype.addGetFeatureInfoControl = function (controlOpts) {
+            var gfiOpts = {} ;
+            gfiOpts.options = {};
+
+            if (controlOpts.options.hasOwnProperty("auto")) {
+                gfiOpts.options.auto = controlOpts.options.auto ;
+            }
+            if (controlOpts.options.hasOwnProperty("active")) {
+                gfiOpts.options.active = controlOpts.options.active ;
+            }
+            if (controlOpts.options.hasOwnProperty("hidden")) {
+                gfiOpts.options.hidden = controlOpts.options.hidden ;
+            }
+            if (controlOpts.options.hasOwnProperty("defaultEvent")) {
+                gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
+            }
+            if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
+                gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
+            }
+            if (controlOpts.options.hasOwnProperty("cursorStyle")) {
+                gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+            }
+            if (this.mapOptions && this.mapOptions.proxyUrl) {
+                gfiOpts.options.proxyUrl = this.mapOptions.proxyUrl ;
+            }
+            if (this.mapOptions && this.mapOptions.noProxyDomains) {
+                gfiOpts.options.noProxyDomains = this.mapOptions.noProxyDomains ;
+            }
+
+            gfiOpts.layers = [];
+            for (var gfiLayerId in controlOpts.layers) {
+                var gfiLayer = controlOpts.layers[gfiLayerId];
+
+                for ( var i = 0 ; i < this._layers.length ; ++i ) {
+                    var mapLayer = this._layers[i];
+
+                    if ( gfiLayerId === mapLayer.id ) {
+                        if ( !mapLayer.options.queryable ) {
+                            console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
+                        } else {
+                            var layerConf = {
+                                obj : mapLayer.obj
+                            };
+                            if (gfiLayer.event) {
+                                layerConf.event = gfiLayer.event ;
+                            }
+                            if ( mapLayer.options.gfiFormat ) {
+                                layerConf.infoFormat = mapLayer.options.gfiFormat;
+                            }
+                            gfiOpts.layers.push(layerConf) ;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var control = new ol.control.GetFeatureInfo(gfiOpts) ;
+            this.libMap.addControl(control) ;
+            return control ;
+
+        } ;
+
+        /**
          * Remove the controls listed to the map.
          *
          * @param {Array.<String>} controlIds - A list of control's id or null.
@@ -1340,8 +1416,8 @@ define([
             var fopenPopup = function (evt) {
                 var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
-                context._displayInfo(
-                    "mrk-" + ii,
+                Gp.GfiUtils.displayInfo(
+                    "mrk-" + i,
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]
@@ -1505,6 +1581,10 @@ define([
                 this.logger.trace("[OL3] : _applyCommonLayerParams - maxRes : " + maxRes) ;
                 commonOpts.maxResolution = maxRes ;
             }
+            if (layerOpts.hasOwnProperty("grayScaled")) {
+                this.logger.trace("[OL3] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled) ;
+                commonOpts.grayScaled = layerOpts.grayScaled ;
+            }
 
             return commonOpts ;
         } ;
@@ -1570,10 +1650,6 @@ define([
                     var sourceOpts = {
                         url : layerOpts.url,
                         params : params
-                        // ,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous"
                     } ;
                     if (layerOpts.hasOwnProperty("projection")) {
                         sourceOpts.projection = layerOpts.projection ;
@@ -1600,9 +1676,6 @@ define([
                         format : layerOpts.outputFormat,
                         version : layerOpts.version,
                         style : layerOpts.styleName,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous",
                         tileGrid : new ol.tilegrid.WMTS({
                             origin : [
                                 layerOpts.topLeftCorner.x,
@@ -1621,16 +1694,12 @@ define([
                     } else {
                         sourceOpts.requestEncoding = "KVP" ;
                     }
-                    constructorOpts.source = new ol.source.WMTS(sourceOpts);
+                    constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
                     break;
                 case "OSM":
                     this.logger.trace("ajout d'une couche OSM");
                     constructorOpts.source = new ol.source.OSM({
                         url : layerOpts.url
-                        // ,
-                        // ajout pour pouvoir utiliser la fonction changeLayerColor
-                        // /!\ désactivation temporaire pour bon affichage de couches externes
-                        // crossOrigin : "anonymous"
                     });
                     break;
                 default:
@@ -1651,6 +1720,10 @@ define([
                 } else {
                     layer = new ol.layer.Tile(constructorOpts) ;
                 }
+                // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                if ( constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0 ) {
+                    layer._forceNullzIndex = true;
+                }
                 var gpLayer = {
                     id : layerId,
                     obj : layer,
@@ -1658,7 +1731,7 @@ define([
                 };
 
                 if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
-                    this._convertLayerToGrayScale( gpLayer, false );
+                    this._colorGrayscaleLayerSwitch(gpLayer,true);
                 }
 
                 this._layers.push(gpLayer) ;
@@ -1856,20 +1929,50 @@ define([
                 default:
 
             }
+
             if (constructorOpts.hasOwnProperty("source")) {
 
                 // le controle geoportalAttribution exploite la propriete _originators
                 if (layerOpts.hasOwnProperty("originators")) {
                     constructorOpts.source._originators = layerOpts.originators ;
                 }
+
                 var layer = new ol.layer.Vector(constructorOpts) ;
                 this._layers.push({
                     id : layerId,
                     obj : layer,
                     options : layerOpts
                 }) ;
+
                 this.libMap.addLayer(layer) ;
                 this._addLayerConfToLayerSwitcher(layer,layerOpts) ;
+
+                var _map = this.libMap;
+                var _vectorSource = constructorOpts.source;
+                // "getExtent" pour les vecteurs
+                if ( _map.getView() && _map.getSize() && _vectorSource.getExtent ) {
+
+                    var _fit  = layerOpts.zoomToExtent || false;
+                    if (_fit) {
+
+                        var key = _vectorSource.on("change", function () {
+                            var _sourceExtent = _vectorSource.getExtent();
+                            var _stateExtent  = _vectorSource.getState();
+                            if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
+                                ol.Observable.unByKey(key);
+                                _map.getView().fit(_sourceExtent, {
+                                    // size : _map.getSize(),
+                                    maxZoom : 18
+                                });
+                            }
+                        });
+
+                        setTimeout(function () {
+                            _vectorSource.dispatchEvent("change");
+                        },100);
+                    }
+                }
+
             }
         } ;
 
@@ -1927,10 +2030,10 @@ define([
             if (layerOpts.hasOwnProperty("originators")) {
                 olLayer.getSource()._originators = layerOpts.originators ;
             }
-
-            // ajout pour pouvoir utiliser la fonction changeLayerColor
-            // /!\ désactivation temporaire pour bon affichage de couches externes
-            // olLayer.getSource().crossOrigin = "anonymous";
+            // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+            if ( olParams.hasOwnProperty("zIndex") && olParams.zIndex === 0 ) {
+                olLayer._forceNullzIndex = true;
+            }
 
             this._layers.push({
                 id : layerId,
@@ -1988,6 +2091,14 @@ define([
                 if (commonOpts.hasOwnProperty("zIndex")) {
                     this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex) ;
                     _layerObj.obj.setZIndex(commonOpts.zIndex) ;
+                    // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                    if ( commonOpts.zIndex === 0 ) {
+                        _layerObj.obj._forceNullzIndex = true;
+                    }
+                    // ou inversement pour ne plus forcer le zIndex à zéro lorsque ce n'est pas le cas
+                    if ( commonOpts.zIndex !== 0  && _layerObj.obj._forceNullzIndex ) {
+                        _layerObj.obj._forceNullzIndex = false;
+                    }
                 }
                 if (commonOpts.hasOwnProperty("minResolution")) {
                     this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution) ;
@@ -1996,6 +2107,10 @@ define([
                 if (commonOpts.hasOwnProperty("maxResolution")) {
                     this.logger.trace("[IMap] modifyLayers : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution) ;
                     _layerObj.obj.setMaxResolution(commonOpts.maxResolution) ;
+                }
+                if (commonOpts.hasOwnProperty("grayScaled")) {
+                    this.logger.trace("[IMap] modifyLayers : setting grayScaled of : [" + _layerObj.id + "] to : " + commonOpts.grayScaled) ;
+                    this._changeLayerColor(_layerObj.id,commonOpts.grayScaled);
                 }
             },
             this) ;
@@ -2384,28 +2499,53 @@ define([
                         map.logger.trace("[OL3] listen : abonnement layerProperty : " + obsProperty) ;
                         this.libMap.getLayers().forEach(function (olLayer,i,array) {
                             var layerOpts = this._getLayerOpts(olLayer) ;
-                            olEventKey = olLayer.on(
-                                "change:" + obsProperty,
-                                function (ol3evt) {
-                                    // la fonction _getCommonLayerParams permet de faire la conversion
-                                    // propriete ol3 => propriete commune
-                                    var oldOl3obj = {} ;
-                                    oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
-                                    var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
-                                    var newOl3obj = {} ;
-                                    newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
-                                    var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                            if ( obsProperty === "grayScaled" ) {
+
+                                /** layerChangeGrayScaled callback */
+                                var callBack = function (evt) {
                                     action.call(context,{
-                                        property : OL3.LAYERPROPERTIES[ol3evt.key],
-                                        oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
-                                        newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                        property : "grayScaled",
+                                        oldValue : evt.detail.oldValue,
+                                        newValue : evt.detail.newValue,
                                         layerChanged : layerOpts
                                     }) ;
-                                },
-                                olLayer
-                            ) ;
-                            this._registerEvent(olEventKey,eventId,action,context) ;
-                            olEventKey = null ;
+                                };
+
+                                var gpEventKey = {
+                                    type : "change:grayScaled",
+                                    handler : callBack,
+                                    target : olLayer
+                                };
+
+                                gpEventKey.target.addEventListener(gpEventKey.type, gpEventKey.handler);
+
+                                this._registerEvent(gpEventKey, eventId, action, context) ;
+
+                            } else {
+                                olEventKey = olLayer.on(
+                                    "change:" + obsProperty,
+                                    function (ol3evt) {
+                                        // la fonction _getCommonLayerParams permet de faire la conversion
+                                        // propriete ol3 => propriete commune
+                                        var oldOl3obj = {} ;
+                                        oldOl3obj[ol3evt.key] = ol3evt.oldValue ;
+                                        var oldCommonProp = map._getCommonLayerParams(oldOl3obj) ;
+                                        var newOl3obj = {} ;
+                                        newOl3obj[ol3evt.key] = this.get(ol3evt.key) ;
+                                        var newCommonProp = map._getCommonLayerParams(newOl3obj) ;
+                                        action.call(context,{
+                                            property : OL3.LAYERPROPERTIES[ol3evt.key],
+                                            oldValue : oldCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            newValue : newCommonProp[OL3.LAYERPROPERTIES[ol3evt.key]],
+                                            layerChanged : layerOpts
+                                        }) ;
+                                    },
+                                    olLayer
+                                ) ;
+
+                                this._registerEvent(olEventKey,eventId,action,context) ;
+                                olEventKey = null ;
+                            }
                         },
                         map) ;
                     }
@@ -2460,10 +2600,16 @@ define([
             var evKey = null ;
             for (var i = 0 ; i < rEvents.length ; i ++) {
                 if (rEvents[i].action == action) {
-                    evKey = rEvents[i].key ;
+                    evKey = rEvents[i].key;
                     rEvents.splice(i,1) ;
                     this.logger.trace("[OL3] : forgetting : " + eventId + " (" + evKey + ")") ;
-                    ol.Observable.unByKey(evKey) ;
+
+                    if ( evKey.type === "change:grayScaled" ) {
+                        evKey.target.removeEventListener(evKey.type, evKey.handler);
+                    } else {
+                        ol.Observable.unByKey(evKey) ;
+                    }
+
                     // on decale i d'un cran en arriere pour ne pas sauter d'elements
                     i -= 1 ;
                 }
@@ -2475,366 +2621,13 @@ define([
         } ;
 
         /**
-         * Info Popup creation and display
          *
-         * @param {String} id - layerName
-         * @param {ol.Coordinate} coords - coordinates wher to anchor popup.
-         * @param {HTMLElement} content - content to display
-         * @param {String} contentType - content mime-type
-         */
-        OL3.prototype._displayInfo = function (id, coords, content, contentType) {
-            this.logger.trace("[OL3] : _displayInfo...") ;
-
-            if ( content === null) {
-                return;
-            }
-
-            var _htmlDoc = null;
-            var _parser  = null;
-
-            var _content = content;
-            _content = _content.replace(/\n/g, "");
-            _content = _content.replace(/(>)\s*(<)/g, "$1$2");
-
-            var scope  = typeof window !== "undefined" ? window : null;
-
-            if ( typeof exports === "object" && window === null) {
-                // code for nodejs
-                var DOMParser = require("xmldom").DOMParser;
-                _parser = new DOMParser();
-                _htmlDoc = _parser.parseFromString(_content, "text/html");
-            } else if (scope.DOMParser) {
-                // code for modern browsers
-                _parser = new scope.DOMParser();
-                _htmlDoc = _parser.parseFromString(_content, "text/html");
-            } else if (scope.ActiveXObject) {
-                // code for old IE browsers
-                _htmlDoc = new scope.ActiveXObject("Microsoft.XMLDOM");
-                _htmlDoc.async = false;
-                _htmlDoc.loadXML(_content);
-            } else {
-                console.log("Incompatible environment for DOM Parser !");
-                return;
-            }
-
-            var body = _htmlDoc.getElementsByTagName("body");
-            if (body && body.length === 1) {
-                if (!body[0].hasChildNodes()) {
-                    return;
-                }
-            }
-
-            // Affichage des features.
-            var element = document.createElement("div");
-            element.className = "gp-feature-info-div";
-
-            var closer = document.createElement("input");
-            closer.type = "button" ;
-            closer.className = "gp-styling-button closer";
-            var olMap = this.libMap ;
-            /**
-             * fait disparaître la popup au clic sur x
-             */
-            closer.onclick = function () {
-                if (olMap.featuresOverlay) {
-                    olMap.removeOverlay(olMap.featuresOverlay) ;
-                    olMap.featuresOverlay = null ;
-                }
-                return false;
-            };
-
-            var contentDiv = document.createElement("div");
-            contentDiv.className = "gp-features-content-div" ;
-            contentDiv.innerHTML = content ;
-            /*
-            if (content instanceof HTMLElement) {
-                this.logger.trace("[OL3] : _displayInfo : pure HTMLElement") ;
-                contentDiv.appendChild(content) ;
-            } else {
-                var parser = new DOMParser() ;
-                var doc = null ;
-                try {
-                    doc = parser.parseFromString(content,contentType) ;
-                    this.logger.trace("[OL3] : _displayInfo : HTMLElement from parser") ;
-                    // FIXME : avec cette methode, on a une balise html + body qui s'insère...
-                    contentDiv.appendChild(doc.documentElement) ;
-                } catch (e) {
-                    console.log(e) ;
-                    this.logger.trace("[OL3] : _displayInfo : parsing content failed (not HTML)") ;
-                    // en cas d'erreur : on se contente de recopier le contenu.
-                    contentDiv.innerHTML = content ;
-                }
-            }
-            */
-            element.appendChild(contentDiv);
-            element.appendChild(closer);
-
-            if (this.libMap.featuresOverlay) {
-                // fermeture d'une éventuelle popup déjà ouverte.
-                this.libMap.removeOverlay(this.libMap.featuresOverlay) ;
-                this.libMap.featuresOverlay = null ;
-            }
-            this.libMap.featuresOverlay = new ol.Overlay({
-                id : id,
-                element : element,
-                insertFirst : false, // popup appears on top of other overlays if any
-                stopEvent : true
-            });
-            this.libMap.addOverlay(this.libMap.featuresOverlay);
-            this.libMap.featuresOverlay.setPosition(coords) ;
-            this.libMap.featuresOverlay.setPositioning("bottom-center") ;
-
-        } ;
-
-        /**
-         * Gets HTML content from features array
-         *
-         * @param {Array.<ol.Features>} features - ol3 features Array
-         * @returns {HTMLElement} HTML content.
-         */
-        OL3.prototype._features2html = function (features) {
-            this.logger.trace("[OL3] : _features2html...") ;
-
-            var content = document.createElement("div") ;
-            features.forEach(function (f) {
-                var props = f.getProperties() ;
-                if (props.hasOwnProperty("name")) {
-                    var nameDiv = document.createElement("div") ;
-                    nameDiv.className =  "gp-att-name-div" ;
-                    // nameDiv.appendChild(document.createTextNode(props["name"])) ;
-                    nameDiv.insertAdjacentHTML("afterbegin", props["name"]);
-                    content.appendChild(nameDiv) ;
-                }
-                if (props.hasOwnProperty("description")) {
-                    var descDiv = document.createElement("div") ;
-                    descDiv.className = "gp-att-description-div" ;
-                    // descDiv.appendChild(document.createTextNode(props["description"])) ;
-                    descDiv.insertAdjacentHTML("afterbegin", props["description"]);
-                    content.appendChild(descDiv) ;
-                }
-                var p = null ;
-                var others = false ;
-                var oDiv = null ;
-                var ul = null ;
-                var li = null ;
-                for (p in props) {
-                    if (p == "geometry" || p == "value" || p == "name" || p == "description" || p == "styleUrl") {
-                        continue ;
-                    }
-                    // FIXME La lecture des extensions GPX n'est pas gérée !
-                    if (p == "extensionsNode_" && props[p] === undefined) {
-                        continue ;
-                    }
-                    if (!others) {
-                        oDiv = document.createElement("div") ;
-                        oDiv.className = "gp-att-others-div" ;
-                        ul = document.createElement("ul") ;
-                        others = true ;
-                    }
-                    li = document.createElement("li") ;
-                    var span = document.createElement("span") ;
-                    span.className = "gp-attname-others-span" ;
-                    span.appendChild(document.createTextNode(p + " : ")) ;
-                    li.appendChild(span) ;
-                    li.appendChild(document.createTextNode(props[p])) ;
-                    ul.appendChild(li) ;
-                }
-                if (ul) {
-                    oDiv.appendChild(ul) ;
-                    content.appendChild(oDiv) ;
-                }
-            },this) ;
-
-            // pas de contenu !
-            if (!content.hasChildNodes()) {
-                content = null;
-            }
-
-            return content ;
-        } ;
-
-        /**
-         * Action triggered when map is clicked
-         */
-        OL3.prototype._onMapClick = function (evt) {
-            this.logger.trace("[OL3] : _onMapClick...") ;
-            var interactions = this.libMap.getInteractions().getArray() ;
-            for (var i = 0 ; i < interactions.length ; i++ ) {
-                if (interactions[i].getActive() &&
-                    ( interactions[i] instanceof ol.interaction.Select ||
-                      interactions[i] instanceof ol.interaction.Modify ||
-                      interactions[i] instanceof ol.interaction.Draw     )
-                    )  {
-                    // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
-                    return ;
-                }
-            }
-
-            // Layers orders
-            var layers = {};
-            for (var j = 0; j < this._layers.length; j++) {
-                var layer = this._layers[j];
-                var position = this._layers[j].options.position;
-                layers[position] = layer;
-            }
-
-            // FIXME doit on afficher toutes les popup d'informations ?
-            // ou uniquement la première en partant du dessus...
-            var requests = [];
-            var positions = Object.keys(layers); // FIXME reverse !?
-            positions.sort( function (a,b) {
-                return b - a;
-            });
-            for (var k = 0 ; k < positions.length ; k++) {
-                var p = positions[k];
-                var l = layers[p];
-                this.logger.trace("[OL3] : _onMapClick : analyzing wms") ;
-                var minMaxZoomOk = true ;
-                if (l.options.minZoom  && l.options.minZoom > this.getZoom()) {
-                    minMaxZoomOk = false ;
-                }
-                if (minMaxZoomOk &&
-                    l.options.maxZoom &&
-                    l.options.maxZoom < this.getZoom()) {
-                    minMaxZoomOk = false ;
-                }
-                if (l.options.format &&
-                    (l.options.format.toLowerCase() == "wms" || l.options.format.toLowerCase() == "wmts" ) &&
-                    l.options.queryable &&
-                    l.obj.getVisible() &&
-                    minMaxZoomOk
-                ) {
-
-                    var _id     = l.id;
-                    var _format = l.options.gfiFormat || "text/html";
-                    var _coord  = evt.coordinate;
-                    var _res    = this.libMap.getView().getResolution();
-                    var _url    = null;
-                    if (l.options.format.toLowerCase() == "wmts") {
-                        _url = Gp.olUtils.getGetFeatureInfoUrl(
-                            l.obj.getSource(),
-                            _coord,
-                            _res,
-                            this.getLibMap().getView().getProjection(),
-                            {
-                                INFOFORMAT : _format
-                            }
-                        );
-                    } else {
-                        _url = l.obj.getSource().getGetFeatureInfoUrl(
-                            _coord,
-                            _res,
-                            this.getLibMap().getView().getProjection(),
-                            {
-                                INFO_FORMAT : _format
-                            }
-                        );
-                    }
-
-                    requests.push({
-                        id : _id,
-                        format : _format,
-                        url : this.setProxy(_url),
-                        scope : this,
-                        coordinate : _coord
-                    });
-                }
-            }
-
-            /** call request sync */
-            function requestsSync (list, iterator, callback) {
-                if (list.length === 0) {
-                    return;
-                }
-
-                var nextItemIndex = 0;
-
-                /** function report next request */
-                function report (displayed) {
-
-                    nextItemIndex++;
-
-                    if (displayed || nextItemIndex === list.length) {
-                        callback();
-                    } else {
-                        iterator(list[nextItemIndex], report);
-                    }
-                }
-
-                // instead of starting all the iterations, we only start the 1st one
-                iterator(list[0], report);
-            }
-
-            requestsSync(requests,
-                function (data, report) {
-                    var self = data.scope;
-                    Gp.Protocols.XHR.call({
-                        url : data.url,
-                        method : "GET",
-                        scope : data.scope,
-                        /** Handles GFI response */
-                        onResponse : function (resp) {
-                            var exception = false;
-
-                            // a t on une exception ?
-                            if (resp.trim().length === 0 ||
-                                resp.indexOf("java.lang.NullPointerException") !== -1 ||
-                                resp.indexOf("not queryable") !== -1) {
-                                // rien à afficher
-                                exception = true;
-                            }
-
-                            // on affiche la popup GFI !
-                            if (!exception) {
-                                self._displayInfo(data.id, data.coordinate, resp, data.format);
-                            }
-
-                            // on reporte sur la prochaine requête...
-                            report(!exception);
-                        },
-                        /** Handles GFI response error */
-                        onFailure : function (error) {
-                            console.log(error);
-                            report(false);
-                        }
-                    }) ;
-                },
-                function () {
-                    console.log("Finish sync to GFI !");
-                }
-            );
-
-            // FIXME doit on prendre en compte les features dans le processus synchrone
-            // d'affichage des popup d'information ?
-
-            // couches vecteur : on remplit un tableau avec les features à proximité.
-            var features = [] ;
-            this.libMap.forEachFeatureAtPixel(evt.pixel, function (feature) {
-                features.push(feature);
-            });
-            if (features.length == 0) {
-                // no features
-                return ;
-            }
-            var content = this._features2html(features) ;
-            // pas de contenu !
-            if ( content === null) {
-                return;
-            }
-            // Affichage des features.
-            var id = "features";
-            this._displayInfo(id, evt.coordinate, content.innerHTML) ;
-            // this._displayInfo(evt.coordinate,content,"text/html") ;
-
-        } ;
-
-        /**
-         * Function to disable/enable layer color (grayscale or color mode).
-         *
-         * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
          * @param {String} layerId - layer identifier
+         * @param {Boolean} toGrayScale - indicate transformation direction (from or to grayscale)
+         *
+         * @private
          */
-        OL3.prototype.changeLayerColor = function (colorToGray,layerId) {
+        OL3.prototype._changeLayerColor = function (layerId,toGrayScale) {
             var layerIndex = this._getLayerIndexByLayerId(layerId);
             var gpLayer = this._layers[layerIndex];
 
@@ -2843,82 +2636,22 @@ define([
                 case "GPX":
                 case "WFS":
                 case "drawing":
-                    console.log("[OL3.prototype.changeLayerColor] warning : changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
+                    console.log("[OL3.prototype._changeLayerColor] warning : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
                     return;
             }
 
-            var lsControl = this.getLibMapControl("layerSwitcher");
-            var layerOrder = lsControl._layersOrder.map(function (layer) {
-                return layer.id;
-            });
+            this._colorGrayscaleLayerSwitch(gpLayer,toGrayScale);
 
-            gpLayer.options.showAdvancedTools = document.getElementById(lsControl._addUID("GPshowAdvancedTools_ID_" + gpLayer.obj.gpLayerId)).checked;
-
-            if ( !this._colorGrayscaleLayerSwitch(gpLayer,!colorToGray) ) {
-                // au cas ou le navigateur ne supporte pas la conversion
-                return;
-            };
-
-            // update layer switcher display
-            this._addLayerConfToLayerSwitcher(gpLayer.obj, gpLayer.options);
-
-            // update layer order
-            var maxZIndex = layerOrder.length;
-            for (var i = 0; i < layerOrder.length; i++) {
-                var id = layerOrder[i];
-                var layer = lsControl._layers[id].layer;
-                if (layer.setZIndex) {
-                    layer.setZIndex(maxZIndex);
-                    maxZIndex--;
+            var event = IMap.CustomEvent(
+                "change:grayScaled",
+                {
+                    detail : {
+                        oldValue : !toGrayScale,
+                        newValue : toGrayScale
+                    }
                 }
-            }
-        };
-
-        /**
-         * Function to convert a gp colored layer to grayscale
-         *
-         * @param {Object} gpLayer - gp layer object
-         * @param {String} gpLayer.id - layer identifier
-         * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
-         * @param {Object} gpLayer.options - layer properties (of type layerOptions)
-         * @param {Boolean} mapUpdate - set to false if the layer has not already been added to the map.
-         *
-         * @returns {Boolean} isConverted indicates if the conversion has occured
-         */
-        OL3.prototype._convertLayerToGrayScale = function (gpLayer, mapUpdate) {
-            if ( typeof mapUpdate === "undefined" ) {
-                mapUpdate = true;
-            }
-            var constructorOpts = this._applyCommonLayerParams(gpLayer.options);
-
-            /**
-             *  Function to convert colored pixels to grayscale
-             */
-            var colorToGrayConvertor = function (pixels, data) {
-                var pixel = pixels[0];
-                var lightness = (pixel[0] * 0.3 + pixel[1] * 0.59 + pixel[2] * 0.11);
-                return [lightness, lightness, lightness, pixel[3]];
-            };
-
-            // patch pour les navigateurs ne supportant pas cette fonction
-            try {
-                constructorOpts.source = new ol.source.Raster({
-                    sources : [gpLayer.obj.getSource()],
-                    operation : colorToGrayConvertor
-                });
-            } catch (e) {
-                return false;
-            }
-
-            gpLayer.objOrigin = gpLayer.obj;
-            if ( mapUpdate ) {
-                this.libMap.removeLayer(gpLayer.obj);
-            }
-            gpLayer.obj = new ol.layer.Image(constructorOpts);
-            if ( gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
-                gpLayer.obj.gpLayerId = gpLayer.objOrigin.gpLayerId;
-            }
-            return true;
+            );
+            gpLayer.obj.dispatchEvent(event);
         };
 
         /**
@@ -2930,67 +2663,97 @@ define([
          * @param {Object} gpLayer.options - layer properties (of type layerOptions)
          * @param {Boolean} toGrayScale - indicates conversion direction.
          *
-         * @returns {Boolean} isConverted indicates if the conversion has occured
-         */
-        OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
-            var opacity = gpLayer.obj.getOpacity();
-            var visible = gpLayer.obj.getVisible();
-
-            if (toGrayScale) {
-                if ( !this._convertLayerToGrayScale(gpLayer) ) {
-                    return false;
-                }
-            } else {
-                // (suite) patch pour les navigateurs ne supportant pas cette fonction
-                if ( !gpLayer.objOrigin ) {
-                    return ;
-                }
-
-                // dans le cas ou la couche a ete initialisee en n/b
-                if ( !gpLayer.objOrigin.hasOwnProperty("gpLayerId") ) {
-                    gpLayer.objOrigin.gpLayerId = gpLayer.obj.gpLayerId;
-                }
-                this.libMap.removeLayer(gpLayer.obj);
-                gpLayer.obj = gpLayer.objOrigin;
-                gpLayer.objOrigin = null;
-            }
-            gpLayer.options.grayScaled = toGrayScale;
-
-            this._layers.push(gpLayer);
-            this.libMap.addLayer(gpLayer.obj);// event layerchanged -> callbackAddLayer
-            this._manageLayerChangedEvent();
-
-            // update layer properties
-            gpLayer.obj.setOpacity(opacity);
-            gpLayer.obj.setVisible(visible);
-
-            return true;
-        };
-
-        /**
-         *  Remove and re-initialize layerChanged event
-         *
          * @private
          */
-        OL3.prototype._manageLayerChangedEvent = function () {
-            // re-abonnement à l'evenement layerChanged
-            // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
-            if (this._events.hasOwnProperty("layerChanged")) {
-                var layerChangedArray = [] ;
-                // on recopie le tableau
-                this._events["layerChanged"].forEach(function (eventObj) {
-                    layerChangedArray.push(eventObj) ;
-                },
-                this) ;
-                layerChangedArray.forEach(function (eventObj) {
-                    // on oublie ...
-                    this.forget("layerChanged", eventObj.action) ;
-                    // ... pour mieux se souvenir
-                    this.listen("layerChanged", eventObj.action , eventObj.context) ;
-                },
-                this) ;
-                layerChangedArray = null ;
+        OL3.prototype._colorGrayscaleLayerSwitch = function (gpLayer,toGrayScale) {
+
+            /** fonction de conversion d'une image en n/b */
+            function getGrayScaledDataUrl (img) {
+
+                // patch pour safari
+                img.crossOrigin = null;
+
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage( img, 0, 0 );
+
+                var imageData = ctx.getImageData(0, 0, img.width, img.height);
+                var data = imageData.data;
+
+                for (var i = 0; i < data.length; i += 4) {
+                    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    data[i]     = avg; // red
+                    data[i + 1] = avg; // green
+                    data[i + 2] = avg; // blue
+                }
+
+                ctx.putImageData( imageData, 0, 0 );
+                return canvas.toDataURL();
+            };
+
+            /** fonction de conversion et de chargement d'une image en n/b */
+            function convertImagetoGrayScale (image, context) {
+                // conversion en n/b
+                var dataUrl = getGrayScaledDataUrl(image);
+
+                // chargement d'une image vide intermediaire pour eviter
+                // l'affichage d'images couleurs (pour certains navigateurs
+                // le chargement de l'image n/b et plus long et l'image originale
+                // apparait de manière transitoire)
+                image.src = "";
+
+                // forcer le raffraichissement de l'affichage a l'issu
+                // du chargement de l'image n/b
+                /** onload */
+                image.onload = function () {
+                    context.changed();
+                };
+                // chargement image n/b
+                image.src = dataUrl;
             }
+
+            /** handler for event 'imageloadstart' */
+            function imageloadstartHandler (evt) {
+                evt.image.getImage().crossOrigin = "Anonymous";
+            };
+
+            /** handler for event 'tileloadstart' */
+            function tileloadstartHandler (evt) {
+                evt.tile.getImage().crossOrigin = "Anonymous";
+            };
+
+            /** handler for event 'imageloadend' */
+            function imageloadendHandler (evt) {
+                convertImagetoGrayScale(evt.image.getImage(), evt.target);
+            };
+
+            /** handler for event 'tileloadend' */
+            function tileloadendHandler (evt) {
+                convertImagetoGrayScale(evt.tile.getImage(), evt.target);
+            };
+
+            // abonnement/desabonnement aux evenements permettant la conversion en n/b
+            var source = gpLayer.obj.getSource();
+            if (toGrayScale) {
+                if ( source instanceof ol.source.ImageWMS ) {
+                    source.loadstartListenerKey = source.on("imageloadstart", imageloadstartHandler );
+                    source.loadendListenerKey = source.on("imageloadend", imageloadendHandler );
+                } else {
+                    source.loadstartListenerKey = source.on("tileloadstart", tileloadstartHandler );
+                    source.loadendListenerKey = source.on("tileloadend", tileloadendHandler );
+                }
+            } else {
+                ol.Observable.unByKey( source.loadstartListenerKey );
+                ol.Observable.unByKey( source.loadendListenerKey );
+                source.loadstartListenerKey = null;
+                source.loadendListenerKey = null;
+            }
+
+            // maj du cache
+            source.refresh();
         };
 
         return OL3;

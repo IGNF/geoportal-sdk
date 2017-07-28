@@ -24,8 +24,8 @@
 
             var map = Gp.Map.load('geoportalMap',{
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
-                proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
-                noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+                // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
                 center : {
                     x : 22700,
                     y : 6395900
@@ -33,7 +33,22 @@
                 zoom : 15,
                 controlsOptions : {
                     "layerSwitcher" : {},
-                    "mousePosition" : {}
+                    "mousePosition" : {},
+                    "getFeatureInfo" : {
+                        layers : {
+                            'WMS1' : {
+                                event: "contextmenu",
+                            }
+                        },
+                        options : {
+                            active: false,
+                            // defaultInfoFormat: "text/html",
+                            // defaultEvent: "singleclick",
+                            // cursorStyle: "pointer",
+                            // noProxyDomains: [],
+                            // proxyUrl: ""
+                        }
+                    }
                 },
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {},
@@ -57,7 +72,7 @@
                         version : "1.3.0",
                         title : "Ecoles maternelles et élémentaires",
                         description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
-                        url : "http://wxs.ign.fr/j5tcdln4ya4xggpdu4j0f0cn/geoportail/v/wms",
+                        url : "http://wxs.ign.fr/jhyvi0fgmnuxvfv0zjzorvdn/geoportail/v/wms",
                         layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                         outputFormat : "image/png",
                         queryable : true,
@@ -71,7 +86,7 @@
                         queryable : true,
                         tiled : true,
                         url:'http://gpp3-wxs-v-ign-fr.aw.atosorigin.com/geoportail/v/wms',
-                        layers:['SHOM-MAREE_BDD-POI_WLD_WM_2016'],
+                        layers:['SHOM-MAREE_BDD-POI_WLD_WM_20170411'],
                         outputFormat:'image/png'
                     }
 
