@@ -247,6 +247,12 @@ function (
                 if (layerOpts.noDataValueTolerance && layerOpts.noDataValue) {
                     layer.noDataValueTolerance = layerOpts.noDataValueTolerance.toString();
                 }
+            } else {
+                var LSControl = this.getLibMapControl("layerswitcher");
+                // if the LS already exists, we have to save the conf of the layer to add it to the LS
+                if (LSControl) {
+                    LSControl._addedLayerConf[layerId] = layerOpts;
+                }
             }
             // we add the layer and refresh the itowns viewer
             // this will launch the addedLayer callback (dans "IT._onLayerChanged")
