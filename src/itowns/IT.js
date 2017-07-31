@@ -40,7 +40,8 @@ function (
      */
     IT.LAYERPROPERTIES = {
         visible  : "visibility",
-        opacity  : "opacity"
+        opacity  : "opacity",
+        sequence : "position"
     };
 
     /**
@@ -700,6 +701,34 @@ function (
     } ;
 
     /**
+     * get layer params from IT layer params
+     * opacity, visibility, sequence
+     *
+     * @param {Object} itlayerOpts - options of the layer
+     * @returns {Gp.LayerOptions} - object with common options
+     *
+     * @private
+     */
+    IT.prototype._getCommonLayerParams = function (itlayerOpts) {
+        var commonOpts = {} ;
+        this.logger.trace("[IT] : _getCommonLayerParams ");
+        if (itlayerOpts.hasOwnProperty("opacity")) {
+            this.logger.trace("[IT] : _getCommonLayerParams - opacity : " + itlayerOpts.opacity) ;
+            commonOpts.opacity = itlayerOpts.opacity ;
+        }
+        if (itlayerOpts.hasOwnProperty("visible")) {
+            this.logger.trace("[IT] : _getCommonLayerParams - visibility : " + itlayerOpts.visible) ;
+            commonOpts.visibility = itlayerOpts.visible ;
+        }
+        if (itlayerOpts.hasOwnProperty("sequence")) {
+            this.logger.trace("[IT] : _getCommonLayerParams - position : " + itlayerOpts.sequence) ;
+            commonOpts.position = itlayerOpts.sequence ;
+        }
+
+        return commonOpts ;
+    } ;
+
+    /**
      * Apply params common to all kind of layers  :
      * opacity, visibility, minZoom, maxZoom
      *
@@ -886,7 +915,7 @@ function (
                 var callbackLayerAdded = function (itevt) {
                     var ladded = itevt ;
                     var layerIndex;
-                    var layerOpts = map._getLayerOpts(ladded) ;
+                    var layerOpts = map._getLayerOpts(ladded.layerId) ;
                     var itColorLayer = map._getItownsColorLayerById(Object.keys(layerOpts)[0]);
 
                     if (itColorLayer && itColorLayer.sequence >= 0) {
@@ -917,7 +946,7 @@ function (
                 */
                 var callbackLayerRemoved = function (itevt) {
                     var lremoved = itevt;
-                    var layerOpts = map._getLayerOpts(lremoved) || map._getLayerOpts(lremoved, map._layersRemoved) ;
+                    var layerOpts = map._getLayerOpts(lremoved.layerId) || map._getLayerOpts(lremoved.layerId, map._layersRemoved) ;
                     action.call(context,{
                         layerRemoved  : layerOpts
                     }) ;
@@ -929,50 +958,36 @@ function (
                 // abonnement à un retrait de couche
                 this.libMap.addEventListener("layer-removed",callbackLayerRemoved, this) ;
 
-                /**
-                * layerVisibilityChanged callback
-                */
-                var callbackVisibilityChanged = function (itevt) {
-                    action.call(context,{
-                        layerVisibilityChanged  : itevt
-                    }) ;
+                // abonnement à un changement de propriete sur chaque couche
+                for (var obsProperty in IT.LAYERPROPERTIES) {
+                    this.libMap.getColorLayers().forEach(function (itLayer) {
+                        var layerOpts = map._getLayerOpts(itLayer.id) ;
+
+                        /** callbackLayerChanged */
+                        var callbackLayerChanged = function (itevt) {
+
+                            var key = itevt.type.replace("-property-changed","");
+                            var oldItObj = {} ;
+                            oldItObj[key] = itevt.previous ;
+                            var oldCommonProp = map._getCommonLayerParams(oldItObj) ;
+                            var newItObj = {} ;
+                            newItObj[key] = itevt.new ;
+                            var newCommonProp = map._getCommonLayerParams(newItObj) ;
+
+                            action.call(context,{
+                                property : IT.LAYERPROPERTIES[key],
+                                oldValue : oldCommonProp[IT.LAYERPROPERTIES[key]],
+                                newValue : newCommonProp[IT.LAYERPROPERTIES[key]],
+                                layerChanged : layerOpts
+                            }) ;
+                        };
+
+                        itLayer.addEventListener(obsProperty + "-property-changed", callbackLayerChanged, context);
+
+                        // ajout de l'evenement au tableau des événements
+                        map._registerEvent(callbackLayerChanged,eventId,action,context) ;
+                    });
                 };
-                // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackVisibilityChanged,eventId,action,context) ;
-
-                /**
-                * layerOpacityChanged callback
-                */
-                var callbackOpacityChanged = function (itevt) {
-                    action.call(context,{
-                        layerOpacityChanged  : itevt
-                    }) ;
-                };
-                // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackOpacityChanged,eventId,action,context) ;
-
-                /**
-                * layerIndexChanged callback
-                */
-                var callbackIndexChanged = function (itevt) {
-                    action.call(context,{
-                        layerIndexChanged  : itevt
-                    }) ;
-                };
-                // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackIndexChanged,eventId,action,context) ;
-
-                itEventKey = null ;
-
-                var colorLayers = this._getItownsColorLayers();
-
-                // we add the visible and opacity property listeners to all
-                // the current layers of the map
-                for (var i = 0; i < colorLayers.length; i++) {
-                    colorLayers[i].addEventListener("visible-property-changed", callbackVisibilityChanged, context);
-                    colorLayers[i].addEventListener("opacity-property-changed", callbackOpacityChanged, context);
-                    colorLayers[i].addEventListener("sequence-property-changed", callbackIndexChanged, context);
-                }
 
                 break ;
             case "controlChanged"  :
@@ -1058,7 +1073,7 @@ function (
                 var eventOrigin = eventsMapping[eventId].parent;
 
                 if (eventId === "layerChanged") {
-                    var colorLayers = this._getItownsColorLayers();
+                    var colorLayers = this.libMap.getColorLayers();
                     for (var idx = 0; idx < colorLayers.length; idx++) {
                         // pour layerChanged, le cas est particulier  : certains listeners sont rattachés aux couches
                         // on les oublie en parcourant toutes les couches présentes sur le globe
@@ -1092,14 +1107,14 @@ function (
     /**
      * Trouve l'objet layerOpts correspondant au layer IT
      *
-     * @param {Object} layerObj - IT layer
+     * @param {String} layerId - layer id
      */
-    IT.prototype._getLayerOpts = function ( layerObj, layersStack ) {
+    IT.prototype._getLayerOpts = function ( layerId, layersStack ) {
         var layerOpts = null ;
         layersStack = layersStack || this._layers ;
         for (var i = 0; i < layersStack.length; i++ ) {
             var l = layersStack[i] ;
-            if (l.id === layerObj.layerId) {
+            if (l.id === layerId) {
                 this.logger.trace("[IT]  : found layer  : " + l.id) ;
                 layerOpts = {} ;
                 layerOpts[l.id] = l.options ;
@@ -1125,18 +1140,6 @@ function (
             return;
         }
         return layer[0] ;
-    } ;
-
-    /**
-     * Retourne les couches iTowns de type "color"
-     */
-    IT.prototype._getItownsColorLayers = function () {
-        var colorLayers = this.libMap.getLayers(function (layer) {
-            if (layer.type === "color") {
-                return layer;
-            }
-        });
-        return colorLayers ;
     } ;
 
     /**
@@ -1356,10 +1359,10 @@ function (
                 layerChangedArray.push(eventObj) ;
             },
             this) ;
-            var colorLayers = this._getItownsColorLayers();
+            var colorLayers = this.libMap.getColorLayers();
             layerChangedArray.forEach(function (eventObj) {
                 // On récupère tous les callback associés aux listeners de propriétés des couches
-                if (eventObj.key.name !== "callbackVisibilityChanged" && eventObj.key.name !== "callbackOpacityChanged" && eventObj.key.name !== "callbackIndexChanged") {
+                if (eventObj.key.name !== "callbackLayerChanged") {
                     return;
                 }
                 // Pour chaque paire callback/listener
