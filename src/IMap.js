@@ -415,9 +415,6 @@ define([
                 // Centrage de la carte avec les options demandées
                 this.setCenter(this.mapOptions.center) ;
 
-                // ajout des couches
-                this.addLayers(this.mapOptions.layersOptions) ;
-
                 // ajout des markers : TODO
                 if (this.mapOptions.hasOwnProperty("markersOptions")) {
                     this._addMarkers(this.mapOptions.markersOptions) ;
@@ -428,6 +425,9 @@ define([
                 this.addControls(this._getDefaultControls()) ;
                 // ceux demandés par l'utilisateur
                 this.addControls(this.mapOptions.controlsOptions) ;
+
+                // ajout des couches
+                this.addLayers(this.mapOptions.layersOptions) ;
 
                 // declenchement de l'evenement "configured"
                 var e = IMap.CustomEvent("mapLoaded", {
