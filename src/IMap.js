@@ -1242,7 +1242,7 @@ define([
 
                 // re-abonnement à l'evenement layerChanged
                 // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
-                this._manageLayerChangedEvent();
+                this._resetLayerChangedEvent();
             },
 
             /**
@@ -2055,6 +2055,8 @@ define([
                         context : context
                     }) ;
                 }
+
+                return this._events[eventId][this._events[eventId].length - 1];
             },
 
             /**
@@ -2165,8 +2167,25 @@ define([
              *
              * @private
              */
-            _manageLayerChangedEvent : function () {
-                return;
+            _resetLayerChangedEvent : function () {
+                // re-abonnement à l'evenement layerChanged
+                // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
+                if (this._events.hasOwnProperty("layerChanged")) {
+                    var layerChangedArray = [] ;
+                    // on recopie le tableau
+                    this._events["layerChanged"].forEach(function (eventObj) {
+                        layerChangedArray.push(eventObj) ;
+                    },
+                    this) ;
+                    layerChangedArray.forEach(function (eventObj) {
+                        // on oublie ...
+                        this.forget("layerChanged", eventObj.action) ;
+                        // ... pour mieux se souvenir
+                        this.listen("layerChanged", eventObj.action , eventObj.context) ;
+                    },
+                    this) ;
+                    layerChangedArray = null ;
+                }
             },
 
             /**
