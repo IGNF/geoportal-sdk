@@ -843,8 +843,10 @@ function (
                     action.call(context,centerChangedEvt) ;
                 };
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                this.libMap.controls.addEventListener("camera-target-changed", callBackCenterChanged, this) ;
+                var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventType = "camera-target-changed";
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged"  :
                 var oldZoom = this.libMap.controls.getZoom();
@@ -867,9 +869,11 @@ function (
                 };
 
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackZoomchange,eventId,action,context) ;
+                var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventType = "range-changed";
                 // on écoute le range (et non le zoom, non implémenté côté itowns)
-                this.libMap.controls.addEventListener("range-changed", callbackZoomchange, this);
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
                 break ;
             case "azimuthChanged"  :
                 /**
@@ -885,8 +889,10 @@ function (
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                this.libMap.controls.addEventListener("orientation-changed", callbackAzimuthchange, this);
+                var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventType = "orientation-changed";
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
                 break ;
             case "tiltChanged"  :
                 /**
@@ -902,8 +908,10 @@ function (
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                this.libMap.controls.addEventListener("orientation-changed", callbackTiltchange, this);
+                var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventType = "orientation-changed";
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
                 break ;
             case "projectionChanged"  :
                 // TODO  : interet ?
@@ -936,10 +944,11 @@ function (
                     }) ;
                 } ;
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-
+                var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap;
+                registredEvent.eventType = "layer-added";
                 // abonnement à un ajout de couche
-                this.libMap.addEventListener("layer-added", callbackLayerAdded, this) ;
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
 
                 /**
                 * layerRemoved callback
@@ -953,10 +962,11 @@ function (
                 };
 
                 // ajout de l'evenement au tableau des événements
-                this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-
+                var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
+                registredEvent.eventOrigin = this.libMap;
+                registredEvent.eventType = "layer-removed";
                 // abonnement à un retrait de couche
-                this.libMap.addEventListener("layer-removed",callbackLayerRemoved, this) ;
+                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
 
                 // abonnement à un changement de propriete sur chaque couche
                 for (var obsProperty in IT.LAYERPROPERTIES) {
@@ -965,13 +975,12 @@ function (
 
                         /** callbackLayerChanged */
                         var callbackLayerChanged = function (itevt) {
-
                             var key = itevt.type.replace("-property-changed","");
                             var oldItObj = {} ;
-                            oldItObj[key] = itevt.previous ;
+                            oldItObj[key] = itevt.previous[key] ;
                             var oldCommonProp = map._getCommonLayerParams(oldItObj) ;
                             var newItObj = {} ;
-                            newItObj[key] = itevt.new ;
+                            newItObj[key] = itevt.new[key] ;
                             var newCommonProp = map._getCommonLayerParams(newItObj) ;
 
                             action.call(context,{
@@ -982,10 +991,11 @@ function (
                             }) ;
                         };
 
-                        itLayer.addEventListener(obsProperty + "-property-changed", callbackLayerChanged, context);
-
                         // ajout de l'evenement au tableau des événements
-                        map._registerEvent(callbackLayerChanged,eventId,action,context) ;
+                        var registredEvent = map._registerEvent(callbackLayerChanged,eventId,action,context) ;
+                        registredEvent.eventOrigin = itLayer;
+                        registredEvent.eventType = obsProperty + "-property-changed";
+                        registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerChanged, this) ;
                     });
                 };
 
@@ -1025,30 +1035,7 @@ function (
       * @param {Function} action - The function associated to the event.
       */
     IT.prototype.forget = function (eventId, action) {
-        // interface entre les Ids de l'AHN et ceux d'iTowns
-        var eventsMapping = {
-            tiltChanged  : {
-                id  : ["orientation-changed"],
-                parent  : this.libMap.controls
-            },
-            azimuthChanged  : {
-                id  : ["orientation-changed"],
-                parent  : this.libMap.controls
-            },
-            zoomChanged  : {
-                id  : ["range-changed"],
-                parent  : this.libMap.controls
-            },
-            centerChanged  : {
-                id  : ["camera-target-changed"],
-                parent  : this.libMap.controls
-            },
-            layerChanged  : {
-                id  : ["layer-added", "layer-removed"],
-                parent  : this.libMap
-            }
 
-        };
         this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
         if (!IMap.prototype.forget.apply(this,arguments)) {
@@ -1061,33 +1048,19 @@ function (
             return false ;
         }
         var itCallback = null;
-        for (var i = 0 ; i < rEvents.length ; i ++) {
+        for (var i = rEvents.length - 1 ; i >= 0 ; i--) {
             if (rEvents[i].action == action) {
                 itCallback = rEvents[i].key ;
+                eventOrigin = rEvents[i].eventOrigin;
+                eventType = rEvents[i].eventType;
                 if (!itCallback) {
                     console.log("action to forget not found for  : " + eventId) ;
                     return false ;
                 }
                 rEvents.splice(i,1) ;
                 this.logger.trace("[IT]  : forgetting  : " + eventId + " (" + itCallback + ")") ;
-                var eventOrigin = eventsMapping[eventId].parent;
 
-                if (eventId === "layerChanged") {
-                    var colorLayers = this.libMap.getColorLayers();
-                    for (var idx = 0; idx < colorLayers.length; idx++) {
-                        // pour layerChanged, le cas est particulier  : certains listeners sont rattachés aux couches
-                        // on les oublie en parcourant toutes les couches présentes sur le globe
-                        colorLayers[idx].removeEventListener("opacity-property-changed", itCallback);
-                        colorLayers[idx].removeEventListener("visible-property-changed", itCallback);
-                        colorLayers[idx].removeEventListener("sequence-property-changed", itCallback);
-                    }
-                }
-                // pour un id de listener du SDK peut correpondre plusieurs ids itowns
-                // ... on oublie tous les callbacks qui y correspondent
-                for (var j = 0; j <= eventsMapping[eventId].id.length; j++) {
-                    eventOrigin.removeEventListener(eventsMapping[eventId].id[j], itCallback);
-                }
-
+                eventOrigin.removeEventListener(eventType, itCallback);
             }
         }
         if (!rEvents) {
@@ -1344,42 +1317,6 @@ function (
         }
 
         this.logger.trace("[IT]  : no TMS Limits found for this TMS id") ;
-        return;
-    };
-
-    /**
-      * Surcharge de la fonction d'IMap (a priori inutile avec iTowns)
-      *
-      */
-    IT.prototype._manageLayerChangedEvent = function () {
-        if (this._events.hasOwnProperty("layerChanged")) {
-            var layerChangedArray = [] ;
-            // on recopie le tableau
-            this._events["layerChanged"].forEach(function (eventObj) {
-                layerChangedArray.push(eventObj) ;
-            },
-            this) ;
-            var colorLayers = this.libMap.getColorLayers();
-            layerChangedArray.forEach(function (eventObj) {
-                // On récupère tous les callback associés aux listeners de propriétés des couches
-                if (eventObj.key.name !== "callbackLayerChanged") {
-                    return;
-                }
-                // Pour chaque paire callback/listener
-                for (var i = 0; i < colorLayers.length; i++) {
-                    // on oublie les listeners des propriétés sur les couches de la carte
-                    colorLayers[i].removeEventListener("visible-property-changed", eventObj.key);
-                    colorLayers[i].removeEventListener("opacity-property-changed", eventObj.key);
-                    colorLayers[i].removeEventListener("sequence-property-changed", eventObj.key);
-                    // et on s'y réabonne (afin de prendre en compte les dernières couches ajoutées)
-                    colorLayers[i].addEventListener("visible-property-changed", eventObj.key);
-                    colorLayers[i].addEventListener("opacity-property-changed", eventObj.key);
-                    colorLayers[i].addEventListener("sequence-property-changed", eventObj.key);
-                }
-            },
-            this) ;
-            layerChangedArray = null ;
-        }
         return;
     };
 
