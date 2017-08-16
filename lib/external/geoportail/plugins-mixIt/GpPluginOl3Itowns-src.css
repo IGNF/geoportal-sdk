@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 0.12.0
- * @date 2017-08-08
+ * @version 0.13.0-dev
+ * @date 2017-08-16
  *
  */
 /* MOUSE POSITION */
@@ -3997,7 +3997,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-08-08
+ * @date 2017-08-16
  *
  */
 /* MOUSE POSITION */
@@ -6651,6 +6651,17 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 0;
+    color: white;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6766,4 +6777,22 @@ div[id^=GPmousePositionPanelClose]  {
 
 #GPmapCenter {
   background-image: url("img/GPmapCenter.png");
+}
+
+div[id^=GPscaleContainer-] {
+    border: 2px solid white;
+    border-top: none;
+    text-align: center;
+    display: block;
+    background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3));
+    margin-bottom: 20px;
+    margin-right: 20px;
+    height:18px;
+    width:200px;
+    color: white;
+    font-family: 'Open Sans',
+    sans-serif;
+    font-size: 16px;
+    right: 8px;
+    bottom: 0px;
 }
