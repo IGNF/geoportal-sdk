@@ -550,10 +550,10 @@ function (
      * @param {Object} controlOpts - control options
      * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
      * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
-     * @param {Number} controlOpts.width - The width of the minimap
-     * @param {Number} controlOpts.height - The height of the minimap
-     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div
-     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div
+     * @param {Number} controlOpts.width - The width of the minimap (100px by default)
+     * @param {Number} controlOpts.height - The height of the minimap (100px by default)
+     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
+     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
      */
     IT.prototype.addOverviewControl = function (controlOpts) {
         this.logger.trace("[VG] addOverviewControl : ... ") ;
@@ -576,20 +576,21 @@ function (
                 control.getElement().style.display = "inline";
             }
             // modify the size of the miniglobe if width or height is given as option
-            if (controlOpts.width && !isNaN(controlOpts.width)) {
+            if (!isNaN(controlOpts.width)) {
                 control.getElement().style.width = controlOpts.width + "px";
                 control.getElement().getElementsByTagName("canvas")[0].style.width = controlOpts.width + "px";
             }
-            if (controlOpts.height && !isNaN(controlOpts.height)) {
+            if (!isNaN(controlOpts.height)) {
                 control.getElement().style.height = controlOpts.height + "px";
                 control.getElement().getElementsByTagName("canvas")[0].style.height = controlOpts.height + "px";
             }
             // modify the position of the miniglobe if x or y is given as option
-            if (controlOpts.x && !isNaN(controlOpts.x)) {
-                control.getElement().style.left = controlOpts.x + "px";
+
+            if (!isNaN(controlOpts.x)) {
+                control.getElement().style.left = Number(controlOpts.x) + "px";
             }
-            if (controlOpts.y && !isNaN(controlOpts.y)) {
-                control.getElement().style.bottom = controlOpts.y + "px";
+            if (!isNaN(controlOpts.y)) {
+                control.getElement().style.bottom = Number(controlOpts.y) + "px";
             }
         }
 

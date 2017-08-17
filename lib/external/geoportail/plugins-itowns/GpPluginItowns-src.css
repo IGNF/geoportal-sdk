@@ -2664,6 +2664,15 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -2754,17 +2763,6 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 0;
-    color: white;
 }
 
 /* MOUSE POSITION */
