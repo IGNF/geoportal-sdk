@@ -548,10 +548,12 @@ function (
      * Adds overview map to the map.
      *
      * @param {Object} controlOpts - control options
-     * @param {Number} controlOpts.x - The x position of the minimap in the page from the left border of the map window
-     * @param {Number} controlOpts.y - The y position of the minimap in the page from the bottom border of the map window
+     * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
+     * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
      * @param {Number} controlOpts.width - The width of the minimap
      * @param {Number} controlOpts.height - The height of the minimap
+     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div
+     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div
      */
     IT.prototype.addOverviewControl = function (controlOpts) {
         this.logger.trace("[VG] addOverviewControl : ... ") ;
@@ -566,12 +568,28 @@ function (
         }
         var control = new itowns.control.MiniGlobe(ovControlOptions);
         this.libMap.addWidget(control) ;
-        // hide the div if maximised option = false
         if (control.getElement()) {
+            // hide the div if maximised option = false
             if (controlOpts.maximised == false) {
                 control.getElement().style.display = "none";
             } else {
                 control.getElement().style.display = "inline";
+            }
+            // modify the size of the miniglobe if width or height is given as option
+            if (controlOpts.width && !isNaN(controlOpts.width)) {
+                control.getElement().style.width = controlOpts.width + "px";
+                control.getElement().getElementsByTagName("canvas")[0].style.width = controlOpts.width + "px";
+            }
+            if (controlOpts.height && !isNaN(controlOpts.height)) {
+                control.getElement().style.height = controlOpts.height + "px";
+                control.getElement().getElementsByTagName("canvas")[0].style.height = controlOpts.height + "px";
+            }
+            // modify the position of the miniglobe if x or y is given as option
+            if (controlOpts.x && !isNaN(controlOpts.x)) {
+                control.getElement().style.left = controlOpts.x + "px";
+            }
+            if (controlOpts.y && !isNaN(controlOpts.y)) {
+                control.getElement().style.bottom = controlOpts.y + "px";
             }
         }
 
