@@ -50,7 +50,9 @@ function (
     IT.CONTROLSCLASSES = {
         mouseposition  : itowns.control.MousePosition,
         layerswitcher  : itowns.control.LayerSwitcher,
-        attributions : itowns.control.Attribution
+        attributions : itowns.control.Attribution,
+        miniglobe : itowns.control.MiniGlobe
+
     } ;
 
     // heritage
@@ -542,6 +544,64 @@ function (
         return control ;
     };
 
+    /**
+     * Adds overview map to the map.
+     *
+     * @param {Object} controlOpts - control options
+     * @param {Number} controlOpts.x - The x position of the minimap in the page from the left border of the map window
+     * @param {Number} controlOpts.y - The y position of the minimap in the page from the bottom border of the map window
+     * @param {Number} controlOpts.width - The width of the minimap
+     * @param {Number} controlOpts.height - The height of the minimap
+     */
+    IT.prototype.addOverviewControl = function (controlOpts) {
+        this.logger.trace("[VG] addOverviewControl : ... ") ;
+        var ovControlOptions = {};
+        if (controlOpts.position) {
+            ovControlOptions.position = controlOpts.position;
+        } else {
+            ovControlOptions.position = "absolute";
+        }
+        if (controlOpts.div) {
+            ovControlOptions.target = controlOpts.div;
+        }
+        var control = new itowns.control.MiniGlobe(ovControlOptions);
+        this.libMap.addWidget(control) ;
+        // hide the div if maximised option = false
+        if (control.getElement()) {
+            if (controlOpts.maximised == false) {
+                control.getElement().style.display = "none";
+            } else {
+                control.getElement().style.display = "inline";
+            }
+        }
+
+        return control ;
+    } ;
+
+    /**
+     * Ajoute l'echelle graphique sur la carte
+     *
+     * @param {Object} controlOpts - options du controle
+     */
+    /*
+    VG.prototype.addGraphicScaleControl = function (controlOpts) {
+        this.logger.trace("[VG] addGraphicScaleControl...") ;
+        var control = new VirtualGeo.ScaleBarControl();
+        this.libMap.addControl(control) ;
+        // hide the div if maximised option = false
+        if (document.getElementById("VirtualGeo_ScaleBar")) {
+            if (controlOpts.maximised == false) {
+                document.getElementById("VirtualGeo_ScaleBar").style.display = "none";
+            } else {
+                document.getElementById("VirtualGeo_ScaleBar").style.display = "inline";
+            }
+        }
+        if (controlOpts && controlOpts.div && document.getElementById("VirtualGeo_ScaleBar")) {
+            document.getElementById(controlOpts.div).appendChild(document.getElementById("VirtualGeo_ScaleBar"));
+        }
+        return control ;
+    } ;
+*/
     /**
      * Ajoute l'outil d'attributions
      *
