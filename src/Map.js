@@ -7,8 +7,8 @@
  * @alias Gp.Map.load()
  */
 
- /* globals Gp: true */
- define([
+/* globals Gp: true */
+define([
         "Utils/LoggerByDefault",
         "require",
         "itowns/IT"
@@ -316,7 +316,7 @@
          * @property {Array.<String>} [noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing.
          */
         var mapOptions = {
-        /*
+            /*
          * undocumented options - for the moment
          * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
          * @property {Float} [tilt=0] - (3d only) Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view.
