@@ -549,6 +549,7 @@ function (
      *
      * @param {Object} controlOpts - control options
      * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
+     * @param {Boolean} controlOpts.maximised - Display or not the control
      * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
      * @param {Number} controlOpts.width - The width of the minimap (100px by default)
      * @param {Number} controlOpts.height - The height of the minimap (100px by default)
@@ -556,7 +557,7 @@ function (
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
      */
     IT.prototype.addOverviewControl = function (controlOpts) {
-        this.logger.trace("[VG] addOverviewControl : ... ") ;
+        this.logger.trace("[IT] addOverviewControl : ... ") ;
         var ovControlOptions = {};
         if (controlOpts.position) {
             ovControlOptions.position = controlOpts.position;
@@ -601,26 +602,42 @@ function (
      * Ajoute l'echelle graphique sur la carte
      *
      * @param {Object} controlOpts - options du controle
+     * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+     * @param {Boolean} controlOpts.maximised - Display or not the control
+     * @param {Number} controlOpts.x - The position of the minimap from the right of the container div (20px by default)
+     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
      */
-    /*
-    VG.prototype.addGraphicScaleControl = function (controlOpts) {
-        this.logger.trace("[VG] addGraphicScaleControl...") ;
-        var control = new VirtualGeo.ScaleBarControl();
-        this.libMap.addControl(control) ;
-        // hide the div if maximised option = false
-        if (document.getElementById("VirtualGeo_ScaleBar")) {
-            if (controlOpts.maximised == false) {
-                document.getElementById("VirtualGeo_ScaleBar").style.display = "none";
-            } else {
-                document.getElementById("VirtualGeo_ScaleBar").style.display = "inline";
-            }
+    IT.prototype.addGraphicScaleControl = function (controlOpts) {
+        this.logger.trace("[IT] addGraphicScaleControl...") ;
+        var scaleControlOptions = {};
+        if (controlOpts.position) {
+            scaleControlOptions.position = controlOpts.position;
+        } else {
+            scaleControlOptions.position = "absolute";
         }
-        if (controlOpts && controlOpts.div && document.getElementById("VirtualGeo_ScaleBar")) {
-            document.getElementById(controlOpts.div).appendChild(document.getElementById("VirtualGeo_ScaleBar"));
+        if (controlOpts.div) {
+            scaleControlOptions.target = controlOpts.div;
+        }
+        var control =  new itowns.control.Scale(scaleControlOptions);
+        this.libMap.addWidget(control) ;
+        if (control.getElement()) {
+            // hide the div if maximised option = false
+            if (controlOpts.maximised == false) {
+                control.getElement().style.display = "none";
+            } else {
+                control.getElement().style.display = "inline";
+            }
+            // modify the position of the scaleBar if x or y is given as option
+            if (!isNaN(controlOpts.x)) {
+                control.getElement().style.right = Number(controlOpts.x) + "px";
+            }
+            if (!isNaN(controlOpts.y)) {
+                control.getElement().style.bottom = Number(controlOpts.y) + "px";
+            }
         }
         return control ;
     } ;
-*/
+
     /**
      * Ajoute l'outil d'attributions
      *
