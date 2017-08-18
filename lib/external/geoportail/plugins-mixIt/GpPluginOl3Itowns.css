@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-08-17
+ * @date 2017-08-18
  *
  */
 label[id^=GPshowDrawingPicto-]{display:inline-block}input[id^=GPshowDrawing-]+label,input[id^=GPshowDrawing-]:checked+label+div{display:block}input[id^=GPshowDrawing-]+label+div,input[id^=GPshowDrawing-]:checked+label{display:none}div[^=GPdrawingPanel-]{width:240px;overflow:hidden}div[^=GPdrawingBasicPanel-]{padding:10px 15px}.GPdrawingCoords,.GPdrawingLabel{display:inline-block;line-height:20px}.GPdrawingLabel{width:80px;font-weight:700}.GPdrawingCoords{width:110px}.marker-input-radio{display:none}input.marker-input-radio:checked+label{border:1px solid red}
@@ -56,7 +56,7 @@ div[id^=GPtoolbox-measure-main]{float:left;left:78px;top:8px;position:absolute;d
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-08-17
+ * @date 2017-08-18
  *
  */
 label[id^=GPshowDrawingPicto-]{display:inline-block}input[id^=GPshowDrawing-]+label,input[id^=GPshowDrawing-]:checked+label+div{display:block}input[id^=GPshowDrawing-]+label+div,input[id^=GPshowDrawing-]:checked+label{display:none}div[^=GPdrawingPanel-]{width:240px;overflow:hidden}div[^=GPdrawingBasicPanel-]{padding:10px 15px}.GPdrawingCoords,.GPdrawingLabel{display:inline-block;line-height:20px}.GPdrawingLabel{width:80px;font-weight:700}.GPdrawingCoords{width:110px}.marker-input-radio{display:none}input.marker-input-radio:checked+label{border:1px solid red}
@@ -79,4 +79,4 @@ div[id^=GPAttribution-]{display:flex;bottom:8px;right:8px;width:calc(90% - 1.3em
 div[id^=GPlayerSwitcher-]{top:8px;right:8px}label[id^=GPshowLayersListPicto]{width:38px;height:38px}span[id^=GPshowLayersListClose],span[id^=GPshowLayersListOpen]{top:3px;left:3px;width:32px;height:32px;background-image:url(img/GPshowLayersList.png)}span[id^=GPshowLayersListClose]{background-position:-32px 0}div[id^=GPlayerSwitcher-] input[type=checkbox]:checked+div+label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListOpen]{opacity:.7}div[id^=GPlayerSwitcher-] input[type=checkbox]:checked+div+label[id^=GPshowLayersListPicto] span[id^=GPshowLayersListClose]{background-color:rgba(0,60,136,.3)}div[id^=GPlayerSwitcher-] input[type=checkbox]:checked+div+label[id^=GPshowLayersListPicto] :hover span[id^=GPshowLayersListClose]{background-color:rgba(0,60,136,.4)}.GPlayerInfo,.GPlayerInfoOpened,.GPlayerRemove,.GPlayerVisibility,.GPshowLayerAdvancedTools{background-image:url(img/GPlayerTools.png)}.GPlayerOpacity input[type=range]::-webkit-slider-runnable-track{background:url(img/GPopacitySlider.png)}.GPlayerOpacity input[type=range]::-moz-range-track{background:url(img/GPopacitySlider.png)}.GPlayerOpacity input[type=range]::-ms-track{background:url(img/GPopacitySlider.png)}div[id^=GPlayerInfoPanel]{right:190px}div[id^=GPlayerInfoTitle]{color:#366291;border-bottom:1px solid #366291}.GPlayerInfoLink,.GPlayerInfoPopup,div[id^=GPlayerInfoQuicklook]{background-image:url(img/GPlayerInfo.png)}div[id^=GPlayerInfoClose]{background-image:url(img/GPlayerInfoClose.png)}
 div[id^=GPminiglobeContainer-]{display:block;width:100px;height:100px;left:20px;bottom:20px;color:#fff}
 div[id^=GPmousePosition-]{bottom:8px;left:10px}div[id^=GPmousePositionPanelClose],span[id^=GPshowMousePositionOpen]{background-image:url(img/GPmousePositionOpen.png)}#GPmapCenter{background-image:url(img/GPmapCenter.png)}
-div[id^=GPscaleContainer-]{border:2px solid #fff;border-top:none;text-align:center;display:block;background-image:linear-gradient(rgba(200,200,200,.3),rgba(200,200,200,.3));margin-bottom:20px;margin-right:20px;height:18px;width:200px;color:#fff;font-family:'Open Sans',sans-serif;font-size:16px;right:8px;bottom:0}
+div[id^=GPscaleContainer-]{border:2px solid #fff;border-top:none;text-align:center;display:block;background-image:linear-gradient(rgba(200,200,200,.3),rgba(200,200,200,.3));height:18px;width:200px;color:#fff;font-family:'Open Sans',sans-serif;font-size:16px;right:20px;bottom:20px}
