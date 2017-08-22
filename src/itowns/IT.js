@@ -604,7 +604,7 @@ function (
      * @param {Object} controlOpts - options du controle
      * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
      * @param {Boolean} controlOpts.maximised - Display or not the control
-     * @param {Number} controlOpts.x - The position of the minimap from the right of the container div (20px by default)
+     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
      */
     IT.prototype.addGraphicScaleControl = function (controlOpts) {
@@ -629,7 +629,7 @@ function (
             }
             // modify the position of the scaleBar if x or y is given as option
             if (!isNaN(controlOpts.x)) {
-                control.getElement().style.right = Number(controlOpts.x) + "px";
+                control.getElement().style.left = Number(controlOpts.x) + "px";
             }
             if (!isNaN(controlOpts.y)) {
                 control.getElement().style.bottom = Number(controlOpts.y) + "px";
