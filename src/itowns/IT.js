@@ -594,6 +594,12 @@ function (
             if (!isNaN(controlOpts.y)) {
                 control.getElement().style.bottom = Number(controlOpts.y) + "px";
             }
+
+            // update the canvas to fit with the overview element size
+            var elementSize = {};
+            elementSize.width = parseFloat(control.getElement().style.width) || 100;
+            elementSize.height = parseFloat(control.getElement().style.height) || 100;
+            control._globeObj.mainLoop.gfxEngine.onWindowResize(elementSize.width, elementSize.height);
         }
 
         return control ;
