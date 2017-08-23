@@ -51,7 +51,8 @@ function (
         mouseposition  : itowns.control.MousePosition,
         layerswitcher  : itowns.control.LayerSwitcher,
         attributions : itowns.control.Attribution,
-        overview : itowns.control.MiniGlobe
+        overview : itowns.control.MiniGlobe,
+        graphicscale : itowns.control.Scale
 
     } ;
 

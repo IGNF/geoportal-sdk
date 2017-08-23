@@ -3303,60 +3303,6 @@ div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPge
   background-color: rgba(0,60,136,0.4);
 }
 
-/* ISOCHRON */
-
-div[id^=GPisochron-] {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-span[id^=GPshowIsochronOpen] {
-  background-image: url("img/GPisochronOpen.png");
-  z-index:1;
-}
-
-/* General panels */
-
-div[id^=GPisochronPanel-] {
-  /*left: 8px;*/
-  position: absolute;
-  z-index:2;
-}
-
-div[id^=GPisochronPanelClose] {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Calc waiting */
-
-.GPisochronCalcWaitingContainerVisible,
-.GPisochronCalcWaitingContainerHidden {
-  border-radius: 4px;
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
-
-.GPisoExclusionsOption {
-  background-image: url("img/GPisochronCheck.png");
-}
-
-/* Reset picto */
-div[id^=GPisochronReset] {
-  background-color: #366291;
-  background-image: url("img/GPisochronOptions.png");
-}
-
 /* Layer Import */
 
 div[id^="GPimport-"] {
@@ -3983,6 +3929,60 @@ div[id^=GPtoolbox-measure-main]:hover:not(.active) {
 
 div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
     background-color: rgba(0,60,136,0.7);
+}
+
+/* ISOCHRON */
+
+div[id^=GPisochron-] {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+span[id^=GPshowIsochronOpen] {
+  background-image: url("img/GPisochronOpen.png");
+  z-index:1;
+}
+
+/* General panels */
+
+div[id^=GPisochronPanel-] {
+  /*left: 8px;*/
+  position: absolute;
+  z-index:2;
+}
+
+div[id^=GPisochronPanelClose] {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Calc waiting */
+
+.GPisochronCalcWaitingContainerVisible,
+.GPisochronCalcWaitingContainerHidden {
+  border-radius: 4px;
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
+
+.GPisoExclusionsOption {
+  background-image: url("img/GPisochronCheck.png");
+}
+
+/* Reset picto */
+div[id^=GPisochronReset] {
+  background-color: #366291;
+  background-image: url("img/GPisochronOptions.png");
 }
 
 /*!
@@ -6584,6 +6584,73 @@ input.GPinputSubmit {
 .GPshowMoreOptions {
   background-image: url("img/GPshowMoreOptions.png");
 }
+div[id^=GPAttribution-] {
+    display: flex;
+    bottom: 8px;
+    right: 8px;
+    width: calc(90% - 1.3em);
+}
+
+div[id^=GPAttributionsListContainer-] {
+    display: none;
+    width: 80%;
+    height: 80%;
+    background: white;
+    opacity: 0.5;
+    border-radius: 4px;
+    z-index: 0;
+    position: absolute;
+}
+
+div[id^=GPAttributionsListContainer-] ul {
+    display: flex;
+    margin: auto;
+    list-style: none;
+}
+
+label[id^=GPshowAttributionsListPicto-] {
+    display: flex;
+    z-index: 1;
+    position: relative;
+    margin-left: auto;
+}
+
+input[id^=GPshowAttributionsList-]:checked + div[id^=GPAttributionsListContainer-] {
+    display: flex;
+}
+
+input[id^=GPshowAttributionsList-]:checked + div[id^=GPAttributionsListContainer-] + label[id^=GPshowAttributionsListPicto-] {
+    background-color: transparent;
+}
+
+span[id^=GPshowAttributionsListOpenClose-] {
+    color: #fff;
+    font-size: 1.6em;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2em;
+}
+
+div[id^=GPAttributionsListContainer-] li:before {
+    content: "  |  ";
+}
+
+div[id^=GPAttributionsListContainer-] ul li:nth-child(1):before {
+      content: "";
+}
+
+div[id^=GPAttributionsListContainer-] ul li:first-child:before {
+      content: "";
+}
+
+div[id^=GPAttributionsListContainer-] a:link {
+    text-decoration: none;
+}
+
+div[id^=GPAttributionsListContainer-] a:visited {
+    text-decoration: none;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6674,73 +6741,6 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPAttribution-] {
-    display: flex;
-    bottom: 8px;
-    right: 8px;
-    width: calc(90% - 1.3em);
-}
-
-div[id^=GPAttributionsListContainer-] {
-    display: none;
-    width: 80%;
-    height: 80%;
-    background: white;
-    opacity: 0.5;
-    border-radius: 4px;
-    z-index: 0;
-    position: absolute;
-}
-
-div[id^=GPAttributionsListContainer-] ul {
-    display: flex;
-    margin: auto;
-    list-style: none;
-}
-
-label[id^=GPshowAttributionsListPicto-] {
-    display: flex;
-    z-index: 1;
-    position: relative;
-    margin-left: auto;
-}
-
-input[id^=GPshowAttributionsList-]:checked + div[id^=GPAttributionsListContainer-] {
-    display: flex;
-}
-
-input[id^=GPshowAttributionsList-]:checked + div[id^=GPAttributionsListContainer-] + label[id^=GPshowAttributionsListPicto-] {
-    background-color: transparent;
-}
-
-span[id^=GPshowAttributionsListOpenClose-] {
-    color: #fff;
-    font-size: 1.6em;
-    font-weight: 700;
-    text-align: center;
-    line-height: 1.2em;
-}
-
-div[id^=GPAttributionsListContainer-] li:before {
-    content: "  |  ";
-}
-
-div[id^=GPAttributionsListContainer-] ul li:nth-child(1):before {
-      content: "";
-}
-
-div[id^=GPAttributionsListContainer-] ul li:first-child:before {
-      content: "";
-}
-
-div[id^=GPAttributionsListContainer-] a:link {
-    text-decoration: none;
-}
-
-div[id^=GPAttributionsListContainer-] a:visited {
-    text-decoration: none;
 }
 
 div[id^=GPminiglobeContainer-] {
