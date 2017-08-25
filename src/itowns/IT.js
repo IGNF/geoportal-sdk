@@ -109,6 +109,7 @@ function (
         var maxScaleDenominator;
         var minScaleDenominator;
         var boundingBox;
+        layerOpts.format = layerOpts.format.toLowerCase();
         switch (layerOpts.format.toUpperCase()) {
             case "WMS" :
                 // FIXME  : ajout d'un parametre projection pour les donnees
