@@ -386,7 +386,16 @@ function (
      * retourne l'azimut courant de la carte
      */
     IT.prototype.getAzimuth = function () {
-        return this.libMap.controls.getCameraOrientation()[1];
+        // itowns north orientation is equal to 90
+        // itowns orientation is anticlockwise
+        var itownsAzimuth = 90 - this.libMap.controls.getCameraOrientation()[1];
+        while (itownsAzimuth >= 360) {
+            itownsAzimuth = itownsAzimuth - 360;
+        }
+        while (itownsAzimuth < 0) {
+            itownsAzimuth = itownsAzimuth + 360;
+        }
+        return itownsAzimuth;
     };
 
     /**
@@ -397,9 +406,14 @@ function (
             console.log("Not a valid azimuth  : must be a float") ;
             return ;
         }
-        var itownsAzimuth = azimuth + 90;
-        if (itownsAzimuth >= 360) {
+        // itowns north orientation is equal to 90
+        // itowns orientation is anticlockwise
+        var itownsAzimuth = 90 - azimuth;
+        while (itownsAzimuth >= 360) {
             itownsAzimuth = itownsAzimuth - 360;
+        }
+        while (itownsAzimuth < 0) {
+            itownsAzimuth = itownsAzimuth + 360;
         }
         // IT method to set the camera orientation
         this.libMap.controls.setHeading(itownsAzimuth, true);
