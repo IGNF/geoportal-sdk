@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 0.12.0
- * @date 2017-07-27
+ * @version 0.13.0-dev
+ * @date 2017-08-30
  *
  */
 /* MOUSE POSITION */
@@ -3405,6 +3405,60 @@ div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPge
   background-color: rgba(0,60,136,0.4);
 }
 
+/* ISOCHRON */
+
+div[id^=GPisochron-] {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+span[id^=GPshowIsochronOpen] {
+  background-image: url("img/GPisochronOpen.png");
+  z-index:1;
+}
+
+/* General panels */
+
+div[id^=GPisochronPanel-] {
+  /*left: 8px;*/
+  position: absolute;
+  z-index:2;
+}
+
+div[id^=GPisochronPanelClose] {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Calc waiting */
+
+.GPisochronCalcWaitingContainerVisible,
+.GPisochronCalcWaitingContainerHidden {
+  border-radius: 4px;
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
+
+.GPisoExclusionsOption {
+  background-image: url("img/GPisochronCheck.png");
+}
+
+/* Reset picto */
+div[id^=GPisochronReset] {
+  background-color: #366291;
+  background-image: url("img/GPisochronOptions.png");
+}
+
 /* Layer Import */
 
 div[id^="GPimport-"] {
@@ -3634,60 +3688,6 @@ div[id^="GPimportGetCapResults-"] {
 .GPimportGetCapProposal:hover {
   color: #000000;
   background-color: #CEDBEF
-}
-
-/* ISOCHRON */
-
-div[id^=GPisochron-] {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-span[id^=GPshowIsochronOpen] {
-  background-image: url("img/GPisochronOpen.png");
-  z-index:1;
-}
-
-/* General panels */
-
-div[id^=GPisochronPanel-] {
-  /*left: 8px;*/
-  position: absolute;
-  z-index:2;
-}
-
-div[id^=GPisochronPanelClose] {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Calc waiting */
-
-.GPisochronCalcWaitingContainerVisible,
-.GPisochronCalcWaitingContainerHidden {
-  border-radius: 4px;
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
-
-.GPisoExclusionsOption {
-  background-image: url("img/GPisochronCheck.png");
-}
-
-/* Reset picto */
-div[id^=GPisochronReset] {
-  background-color: #366291;
-  background-image: url("img/GPisochronOptions.png");
 }
 
 /* LAYER SWITCHER OL3 */
@@ -4128,7 +4128,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 5.0.0
- * @date 2017-07-27
+ * @date 2017-08-30
  *
  */
 /* MOUSE POSITION */
@@ -6824,39 +6824,6 @@ input.GPinputSubmit {
   max-width: inherit;
   vertical-align: middle;
 }
-/* ISOCHRON */
-
-#GPisochron {
-  left: 10px;
-}
-
-/* Showing/hiding isochron panel */
-
-#GPshowIsochronOpen {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* General panels */
-
-#GPisochronPanel {
-  left: 8px;
-}
-
-#GPisochronPanelClose {
-  background-image: url("img/GPisochronOpen.png");
-}
-
-/* Isochron form */
-
-.GPisochronChoiceAlt input:checked + label + span {
-  color: #366291;
-}
-
-.GPisochronOriginPointerImg,
-.GPisochronChoiceAltImg,
-.GPisochronTransportImg {
-  background-image: url("img/GPisochronOptions.png");
-}
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6949,6 +6916,39 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
+/* ISOCHRON */
+
+#GPisochron {
+  left: 10px;
+}
+
+/* Showing/hiding isochron panel */
+
+#GPshowIsochronOpen {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* General panels */
+
+#GPisochronPanel {
+  left: 8px;
+}
+
+#GPisochronPanelClose {
+  background-image: url("img/GPisochronOpen.png");
+}
+
+/* Isochron form */
+
+.GPisochronChoiceAlt input:checked + label + span {
+  color: #366291;
+}
+
+.GPisochronOriginPointerImg,
+.GPisochronChoiceAltImg,
+.GPisochronTransportImg {
+  background-image: url("img/GPisochronOptions.png");
+}
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
