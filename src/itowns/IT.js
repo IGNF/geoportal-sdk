@@ -84,7 +84,7 @@ function (
         var self = this;
         // when globe is loaded, we set the user map parameters
         this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
-            // we show the div when globe is loaded 
+            // we show the div when globe is loaded
             window.setTimeout(function () {
                 self.div.style.visibility = "";
             }, 1);
@@ -393,14 +393,7 @@ function (
     IT.prototype.getAzimuth = function () {
         // itowns north orientation is equal to 90
         // itowns orientation is anticlockwise
-        var itownsAzimuth = 90 - this.libMap.controls.getCameraOrientation()[1];
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
-        return itownsAzimuth;
+        return this._convertAzimuth(this.libMap.controls.getCameraOrientation()[1]);
     };
 
     /**
@@ -413,13 +406,7 @@ function (
         }
         // itowns north orientation is equal to 90
         // itowns orientation is anticlockwise
-        var itownsAzimuth = 90 - azimuth;
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
+        var itownsAzimuth = this._convertAzimuth(azimuth);
         // IT method to set the camera orientation
         this.libMap.controls.setHeading(itownsAzimuth, true);
         this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
@@ -972,13 +959,13 @@ function (
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged"  :
-                var oldZoom = this.libMap.controls.getZoom();
+                var oldZoom = context.getZoom();
                 /**
                 * zoomChanged callback
                 */
                 var callbackZoomchange = function (itEvent) {
                     // on récupère le zoom
-                    var newZoom = context.libMap.controls.getZoom();
+                    var newZoom = context.getZoom();
                     // si le zoom n'a pas changé, on sort
                     if (newZoom === oldZoom) {
                         return;
@@ -1007,8 +994,8 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldAzimuth  : itEvent.previous.heading,
-                        newAzimuth  : itEvent.new.heading
+                        oldAzimuth  : context._convertAzimuth(itEvent.previous.heading),
+                        newAzimuth  : context._convertAzimuth(itEvent.new.heading)
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
@@ -1237,6 +1224,24 @@ function (
         }
         return layer[0] ;
     } ;
+
+    /**
+     * converti l'azimuth dans la lib spécifié
+     *
+     * @param {Number} azimuth - azimuth à convertir
+     *
+     * @return {Number} convertedAzimuth - azimith converti dans systeme le geoportail ou itowns
+     */
+    IT.prototype._convertAzimuth = function (azimuth) {
+        var convertedAzimuth = 90 - azimuth;
+        while (convertedAzimuth >= 360) {
+            convertedAzimuth = convertedAzimuth - 360;
+        }
+        while (convertedAzimuth < 0) {
+            convertedAzimuth = convertedAzimuth + 360;
+        }
+        return convertedAzimuth;
+    };
 
     /**
      * Gets Layer Container div ID for a given layerId.
