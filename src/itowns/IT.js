@@ -92,9 +92,9 @@ function (
             self._afterInitMap();
             // FIXME en attendant que la variable positionOnGlobe puisse prendre
             // un zoom / une echelle (et non une altitude) et les params necessaires.
-            self.setZoom(self.mapOptions.zoom || 10);
-            self.setAzimuth(self.mapOptions.azimuth || 0);
-            self.setTilt(self.mapOptions.tilt || 0);
+            self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
+            self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
+            self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
         });
 
     } ;
@@ -358,6 +358,7 @@ function (
             console.log("no valid zoomLevel") ;
             return ;
         }
+        zoom = parseInt(zoom, 10);
         // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
         this.libMap.controls.setZoom(zoom + 1, false);
         this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
@@ -408,7 +409,7 @@ function (
         // itowns orientation is anticlockwise
         var itownsAzimuth = this._convertAzimuth(azimuth);
         // IT method to set the camera orientation
-        this.libMap.controls.setHeading(itownsAzimuth, true);
+        this.libMap.controls.setHeading(itownsAzimuth, false);
         this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
     };
 
@@ -423,6 +424,7 @@ function (
      * définit l'inclinaison de la caméra
      */
     IT.prototype.setTilt = function (tilt) {
+        tilt = parseFloat(tilt);
         if (isNaN(tilt) || tilt < 0 || tilt > 90) {
             console.log("no valid tilt angle") ;
             return ;
