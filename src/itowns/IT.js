@@ -168,7 +168,11 @@ function (
                     dateTime  : "",
                     heightMapWidth  : 256,
                     options  : {
-                        mimetype  : layerOpts.outputFormat
+                        mimetype  : layerOpts.outputFormat,
+                        zoom : {
+                            min : layerOpts.minZoom || 1,
+                            max : layerOpts.maxZoom || 21
+                        }
                     },
                     networkOptions : {
                         crossOrigin : "omit"
@@ -213,7 +217,11 @@ function (
                         tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
                         mimetype  : layerOpts.outputFormat,
                         name  : layerOpts.layer,
-                        style  : layerOpts.styleName
+                        style  : layerOpts.styleName,
+                        zoom : {
+                            min : layerOpts.minZoom || 1,
+                            max : layerOpts.maxZoom || 21
+                        }
                     },
                     version  : layerOpts.version,
                     minScaleDenominator  : minScaleDenominator || null,
