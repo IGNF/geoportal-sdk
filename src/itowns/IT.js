@@ -241,12 +241,14 @@ function (
             if (!layerOpts.hasOwnProperty("opacity") || typeof(layerOpts.opacity) === "undefined") {
                 // on la règle à 1 par défaut
                 layerOpts.opacity = 1;
+                layer.opacity = 1;
             }
 
             // Dans le cas où aucune visibilité n'est spécifiée
             if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
                 // on la règle à "true" par défaut
                 layerOpts.visibility = 1;
+                layer.visible = 1;
             }
 
             // on met à jour le tableau des couches
