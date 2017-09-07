@@ -160,6 +160,8 @@ function (
                     name  : layerNames,
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
+                    visible : layerOpts.visibility || 1,
+                    opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
@@ -170,7 +172,7 @@ function (
                     options  : {
                         mimetype  : layerOpts.outputFormat,
                         zoom : {
-                            min : layerOpts.minZoom || 1,
+                            min : layerOpts.minZoom || 1,
                             max : layerOpts.maxZoom || 21
                         }
                     },
@@ -205,6 +207,8 @@ function (
                     protocol  : layerOpts.format.toLowerCase(),
                     id  : layerId,
                     title  : layerOpts.title || layerId,
+                    visible : layerOpts.visibility || 1,
+                    opacity : layerOpts.opacity || 1,
                     updateStrategy  : {
                         type  : "0",
                         options  : {}
@@ -241,14 +245,12 @@ function (
             if (!layerOpts.hasOwnProperty("opacity") || typeof(layerOpts.opacity) === "undefined") {
                 // on la règle à 1 par défaut
                 layerOpts.opacity = 1;
-                layer.opacity = 1;
             }
 
             // Dans le cas où aucune visibilité n'est spécifiée
             if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
                 // on la règle à "true" par défaut
                 layerOpts.visibility = 1;
-                layer.visible = 1;
             }
 
             // on met à jour le tableau des couches
