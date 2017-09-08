@@ -219,8 +219,7 @@
 
         // param bundle itowns
         else if (isItowns) {
-             // _deps.itowns = "empty:";
-             _deps.itowns = "../lib/external/itowns/js/itowns";
+            _deps.itowns = "../lib/external/itowns/js/init-itowns";
              pluginsDir = "../lib/external/geoportail/plugins-itowns/";
              _deps["gp"] = pluginsDir + "GpPluginItowns-src";
              _includes.push("it2/IT");
@@ -747,7 +746,7 @@
         isVG = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns 3D...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', /*'copy-itowns-engine',*/ cb);
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', 'copy-itowns-engine', cb);
     });
 
     gulp.task("build-mix", function(cb) {
@@ -767,7 +766,7 @@
         isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns with OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', /* 'copy-itowns-engine',*/ cb);
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-itowns-engine', cb);
     });
 
     gulp.task('build-dist', function(callback) {

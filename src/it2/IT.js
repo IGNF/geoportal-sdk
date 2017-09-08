@@ -118,9 +118,9 @@ function (
                     self._afterInitMap();
                     // FIXME en attendant que la variable positionOnGlobe puisse prendre
                     // un zoom / une echelle (et non une altitude) et les params necessaires.
-                    self.setZoom(self.mapOptions.zoom || 10);
-                    self.setAzimuth(self.mapOptions.azimuth || 0);
-                    self.setTilt(self.mapOptions.tilt || 0);
+                    self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
+                    self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
+                    self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
                 });
             },
             function () {
@@ -191,6 +191,8 @@ function (
                     name  : layerNames,
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
+                    visible : layerOpts.visibility || 1,
+                    opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
@@ -199,7 +201,11 @@ function (
                     dateTime  : "",
                     heightMapWidth  : 256,
                     options  : {
-                        mimetype  : layerOpts.outputFormat
+                        mimetype  : layerOpts.outputFormat,
+                        zoom : {
+                            min : layerOpts.minZoom || 1,
+                            max : layerOpts.maxZoom || 21
+                        }
                     },
                     networkOptions : {
                         crossOrigin : "omit"
@@ -232,6 +238,8 @@ function (
                     protocol  : layerOpts.format.toLowerCase(),
                     id  : layerId,
                     title  : layerOpts.title || layerId,
+                    visible : layerOpts.visibility || 1,
+                    opacity : layerOpts.opacity || 1,
                     updateStrategy  : {
                         type  : "0",
                         options  : {}
@@ -244,7 +252,11 @@ function (
                         tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
                         mimetype  : layerOpts.outputFormat,
                         name  : layerOpts.layer,
-                        style  : layerOpts.styleName
+                        style  : layerOpts.styleName,
+                        zoom : {
+                            min : layerOpts.minZoom || 1,
+                            max : layerOpts.maxZoom || 21
+                        }
                     },
                     version  : layerOpts.version,
                     minScaleDenominator  : minScaleDenominator || null,
@@ -355,7 +367,7 @@ function (
             latitude  : point.y
         };
         // set the camera aimed point on the specified coords
-        this.libMap._globeView.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
+        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
@@ -363,7 +375,7 @@ function (
      * retourne les coordonnées courantes du centre de la carte
      */
     IT.prototype.getCenter = function () {
-        var cameraCenter = this.libMap._globeView.controls.getCameraTargetGeoPosition();
+        var cameraCenter = this.libMap.getGlobeView().controls.getCameraTargetGeoPosition();
         var center = {
             lon  : cameraCenter.longitude(),
             lat  : cameraCenter.latitude(),
@@ -377,7 +389,7 @@ function (
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
-        var zoom = this.libMap._globeView.controls.getZoom() - 1;
+        var zoom = this.libMap.getGlobeView().controls.getZoom() - 1;
         return zoom;
     };
 
@@ -389,8 +401,9 @@ function (
             console.log("no valid zoomLevel") ;
             return ;
         }
+        zoom = parseInt(zoom, 10);
         // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
-        this.libMap._globeView.controls.setZoom(zoom + 1, false);
+        this.libMap.getGlobeView().controls.setZoom(zoom + 1, false);
         this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
     };
 
@@ -424,14 +437,7 @@ function (
     IT.prototype.getAzimuth = function () {
         // itowns north orientation is equal to 90
         // itowns orientation is anticlockwise
-        var itownsAzimuth = 90 - this.libMap._globeView.controls.getCameraOrientation()[1];
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
-        return itownsAzimuth;
+        return this._convertAzimuth(this.libMap.getGlobeView().controls.getCameraOrientation()[1]);
     };
 
     /**
@@ -444,15 +450,9 @@ function (
         }
         // itowns north orientation is equal to 90
         // itowns orientation is anticlockwise
-        var itownsAzimuth = 90 - azimuth;
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
+        var itownsAzimuth = this._convertAzimuth(azimuth);
         // IT method to set the camera orientation
-        this.libMap._globeView.controls.setHeading(itownsAzimuth, true);
+        this.libMap.getGlobeView().controls.setHeading(itownsAzimuth, false);
         this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
     };
 
@@ -460,19 +460,20 @@ function (
      * retourne l'inclinaison courante de la carte
      */
     IT.prototype.getTilt = function () {
-        return this.libMap._globeView.controls.getCameraOrientation()[0];
+        return this.libMap.getGlobeView().controls.getCameraOrientation()[0];
     };
 
     /**
      * définit l'inclinaison de la caméra
      */
     IT.prototype.setTilt = function (tilt) {
+        tilt = parseFloat(tilt);
         if (isNaN(tilt) || tilt < 0 || tilt > 90) {
             console.log("no valid tilt angle") ;
             return ;
         }
         // methode setTilt d'itowns pour régler l'inclinaison
-        this.libMap._globeView.controls.setTilt(tilt, false);
+        this.libMap.getGlobeView().controls.setTilt(tilt, false);
         this.logger.trace("[IT] - setTilt(" + tilt + ")") ;
     };
 
@@ -998,18 +999,18 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView.controls;
+                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
                 registredEvent.eventType = "camera-target-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged"  :
-                var oldZoom = this.libMap._globeView.controls.getZoom();
+                var oldZoom = context.getZoom();
                 /**
                 * zoomChanged callback
                 */
                 var callbackZoomchange = function (itEvent) {
                     // on récupère le zoom
-                    var newZoom = context.libMap.controls.getZoom();
+                    var newZoom = context.getZoom();
                     // si le zoom n'a pas changé, on sort
                     if (newZoom === oldZoom) {
                         return;
@@ -1024,7 +1025,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView.controls;
+                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
                 registredEvent.eventType = "range-changed";
                 // on écoute le range (et non le zoom, non implémenté côté itowns)
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
@@ -1038,13 +1039,13 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldAzimuth  : itEvent.previous.heading,
-                        newAzimuth  : itEvent.new.heading
+                        oldAzimuth  : context._convertAzimuth(itEvent.previous.heading),
+                        newAzimuth  : context._convertAzimuth(itEvent.new.heading)
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView.controls;
+                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
                 break ;
@@ -1063,7 +1064,7 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView.controls;
+                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
                 break ;
@@ -1099,7 +1100,7 @@ function (
                 } ;
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView;
+                registredEvent.eventOrigin = this.libMap.getGlobeView();
                 registredEvent.eventType = "layer-added";
                 // abonnement à un ajout de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
@@ -1117,7 +1118,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap._globeView;
+                registredEvent.eventOrigin = this.libMap.getGlobeView();
                 registredEvent.eventType = "layer-removed";
                 // abonnement à un retrait de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
@@ -1257,7 +1258,7 @@ function (
      * @param {String} layerId - IT layer id
      */
     IT.prototype._getItownsColorLayerById = function ( layerId ) {
-        var layer = this.libMap._globeView.getLayers(function (layer) {
+        var layer = this.libMap.getGlobeView().getLayers(function (layer) {
             if (layer.id === layerId && layer.type === "color") {
                 return layer;
             }
@@ -1268,6 +1269,24 @@ function (
         }
         return layer[0] ;
     } ;
+
+    /**
+     * converti l'azimuth dans la lib spécifié
+     *
+     * @param {Number} azimuth - azimuth à convertir
+     *
+     * @return {Number} convertedAzimuth - azimith converti dans systeme le geoportail ou itowns
+     */
+    IT.prototype._convertAzimuth = function (azimuth) {
+        var convertedAzimuth = 90 - azimuth;
+        while (convertedAzimuth >= 360) {
+            convertedAzimuth = convertedAzimuth - 360;
+        }
+        while (convertedAzimuth < 0) {
+            convertedAzimuth = convertedAzimuth + 360;
+        }
+        return convertedAzimuth;
+    };
 
     /**
      * Gets Layer Container div ID for a given layerId.

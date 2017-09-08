@@ -1416,8 +1416,8 @@ define([
             var fopenPopup = function (evt) {
                 var evtPx = context.getLibMap().getEventPixel(evt) ;
                 context.logger.trace("[OL3] : _addMarkers : display content : " + mo.content) ;
-                Gp.GfiUtils.displayInfo(
-                    "mrk-" + i,
+                ol.gp.GfiUtils.displayInfo(
+                    context.getLibMap(),
                     context.getLibMap().getCoordinateFromPixel([
                         evtPx[0] + this.mo.ppoffset[0],
                         evtPx[1] + this.mo.ppoffset[1]
@@ -2754,6 +2754,32 @@ define([
 
             // maj du cache
             source.refresh();
+        };
+
+        /**
+         *  Remove and re-initialize layerChanged event
+         *
+         * @private
+         */
+        OL3.prototype._manageLayerChangedEvent = function () {
+            // re-abonnement à l'evenement layerChanged
+            // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
+            if (this._events.hasOwnProperty("layerChanged")) {
+                var layerChangedArray = [] ;
+                // on recopie le tableau
+                this._events["layerChanged"].forEach(function (eventObj) {
+                    layerChangedArray.push(eventObj) ;
+                },
+                this) ;
+                layerChangedArray.forEach(function (eventObj) {
+                    // on oublie ...
+                    this.forget("layerChanged", eventObj.action) ;
+                    // ... pour mieux se souvenir
+                    this.listen("layerChanged", eventObj.action , eventObj.context) ;
+                },
+                this) ;
+                layerChangedArray = null ;
+            }
         };
 
         return OL3;

@@ -56474,7 +56474,7 @@ itowns = { control: {} };
     }(ol, {}, Ol3Utils, Ol3ControlsMeasureToolBox, Ol3ControlsMeasuresMeasures, CommonControlsMeasureAzimuthDOM, CommonUtilsSelectorID);
     Ol3GpPluginOl3 = function (ol, Gp, LayerUtils, Register, ProxyUtils, GfiUtils, Utils, KML, WMTS, CRS, SourceWMTS, SourceWMS, LayerWMTS, LayerWMS, LayerSwitcher, GetFeatureInfo, SearchEngine, MousePosition, Drawing, Route, Isocurve, ReverseGeocode, LayerImport, GeoportalAttribution, Markers, ElevationPath, MeasureLength, MeasureArea, MeasureAzimuth) {
         Gp.ol3extVersion = '0.13.0-dev';
-        Gp.ol3extDate = '2017-09-07';
+        Gp.ol3extDate = '2017-09-08';
         Gp.olUtils = Utils;
         Gp.LayerUtils = LayerUtils;
         Gp.ProxyUtils = ProxyUtils;
@@ -57441,6 +57441,8 @@ itowns = { control: {} };
                 for (var ii = 0; ii < layers.length; ++ii) {
                     layers[ii].addEventListener('opacity-property-changed', this._callbacks.onOpacityLayerCallBack);
                     layers[ii].addEventListener('visible-property-changed', this._callbacks.onVisibilityLayerCallBack);
+                    self._updateLayerVisibility(layers[ii].id, layers[ii].visible);
+                    self._updateLayerOpacity(layers[ii].id, layers[ii].opacity);
                 }
                 this._globe = globe;
             } else {
@@ -59822,9 +59824,9 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     self.div.style.visibility = '';
                 }, 1);
                 self._afterInitMap();
-                self.setZoom(self.mapOptions.zoom || 10);
-                self.setAzimuth(self.mapOptions.azimuth || 0);
-                self.setTilt(self.mapOptions.tilt || 0);
+                self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
+                self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
+                self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
             });
         }, function () {
             console.warn('Itowns engine, failed !');
@@ -59879,6 +59881,8 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 name: layerNames,
                 style: layerOpts.styleName || '',
                 title: layerOpts.title || layerId,
+                visible: layerOpts.visibility || 1,
+                opacity: layerOpts.opacity || 1,
                 projection: layerOpts.projection || 'EPSG:4326',
                 extent: boundingBox,
                 transparent: true,
@@ -59886,7 +59890,13 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 featureInfoMimeType: '',
                 dateTime: '',
                 heightMapWidth: 256,
-                options: { mimetype: layerOpts.outputFormat },
+                options: {
+                    mimetype: layerOpts.outputFormat,
+                    zoom: {
+                        min: layerOpts.minZoom || 1,
+                        max: layerOpts.maxZoom || 21
+                    }
+                },
                 networkOptions: { crossOrigin: 'omit' },
                 updateStrategy: {
                     type: 0,
@@ -59914,6 +59924,8 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 protocol: layerOpts.format.toLowerCase(),
                 id: layerId,
                 title: layerOpts.title || layerId,
+                visible: layerOpts.visibility || 1,
+                opacity: layerOpts.opacity || 1,
                 updateStrategy: {
                     type: '0',
                     options: {}
@@ -59924,7 +59936,11 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     tileMatrixSetLimits: layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
                     mimetype: layerOpts.outputFormat,
                     name: layerOpts.layer,
-                    style: layerOpts.styleName
+                    style: layerOpts.styleName,
+                    zoom: {
+                        min: layerOpts.minZoom || 1,
+                        max: layerOpts.maxZoom || 21
+                    }
                 },
                 version: layerOpts.version,
                 minScaleDenominator: minScaleDenominator || null,
@@ -60015,6 +60031,7 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
             console.log('no valid zoomLevel');
             return;
         }
+        zoom = parseInt(zoom, 10);
         this.libMap._globeView.controls.setZoom(zoom + 1, false);
         this.logger.trace('[IT] - setZoom(' + zoom + ')');
     };
@@ -60033,34 +60050,22 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         this.setZoom(zoom - 1);
     };
     IT.prototype.getAzimuth = function () {
-        var itownsAzimuth = 90 - this.libMap._globeView.controls.getCameraOrientation()[1];
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
-        return itownsAzimuth;
+        return this._convertAzimuth(this.libMap._globeView.controls.getCameraOrientation()[1]);
     };
     IT.prototype.setAzimuth = function (azimuth) {
         if (isNaN(azimuth)) {
             console.log('Not a valid azimuth  : must be a float');
             return;
         }
-        var itownsAzimuth = 90 - azimuth;
-        while (itownsAzimuth >= 360) {
-            itownsAzimuth = itownsAzimuth - 360;
-        }
-        while (itownsAzimuth < 0) {
-            itownsAzimuth = itownsAzimuth + 360;
-        }
-        this.libMap._globeView.controls.setHeading(itownsAzimuth, true);
+        var itownsAzimuth = this._convertAzimuth(azimuth);
+        this.libMap._globeView.controls.setHeading(itownsAzimuth, false);
         this.logger.trace('[IT] - setAzimuth(' + itownsAzimuth + ')');
     };
     IT.prototype.getTilt = function () {
         return this.libMap._globeView.controls.getCameraOrientation()[0];
     };
     IT.prototype.setTilt = function (tilt) {
+        tilt = parseFloat(tilt);
         if (isNaN(tilt) || tilt < 0 || tilt > 90) {
             console.log('no valid tilt angle');
             return;
@@ -60417,8 +60422,8 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     return;
                 }
                 action.call(context, {
-                    oldAzimuth: itEvent.previous.heading,
-                    newAzimuth: itEvent.new.heading
+                    oldAzimuth: context._convertAzimuth(itEvent.previous.heading),
+                    newAzimuth: context._convertAzimuth(itEvent.new.heading)
                 });
             };
             var registredEvent = this._registerEvent(callbackAzimuthchange, eventId, action, context);
@@ -60569,6 +60574,16 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
             return;
         }
         return layer[0];
+    };
+    IT.prototype._convertAzimuth = function (azimuth) {
+        var convertedAzimuth = 90 - azimuth;
+        while (convertedAzimuth >= 360) {
+            convertedAzimuth = convertedAzimuth - 360;
+        }
+        while (convertedAzimuth < 0) {
+            convertedAzimuth = convertedAzimuth + 360;
+        }
+        return convertedAzimuth;
     };
     IT.prototype.getLSLayerContainerDivId = function (layerId) {
         var id = null;
@@ -61619,7 +61634,7 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
         var fopenPopup = function (evt) {
             var evtPx = context.getLibMap().getEventPixel(evt);
             context.logger.trace('[OL3] : _addMarkers : display content : ' + mo.content);
-            Gp.GfiUtils.displayInfo('mrk-' + i, context.getLibMap().getCoordinateFromPixel([
+            ol.gp.GfiUtils.displayInfo(context.getLibMap(), context.getLibMap().getCoordinateFromPixel([
                 evtPx[0] + this.mo.ppoffset[0],
                 evtPx[1] + this.mo.ppoffset[1]
             ]), this.mo.content, this.mo.contentType);
@@ -62511,6 +62526,19 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
         }
         source.refresh();
     };
+    OL3.prototype._manageLayerChangedEvent = function () {
+        if (this._events.hasOwnProperty('layerChanged')) {
+            var layerChangedArray = [];
+            this._events['layerChanged'].forEach(function (eventObj) {
+                layerChangedArray.push(eventObj);
+            }, this);
+            layerChangedArray.forEach(function (eventObj) {
+                this.forget('layerChanged', eventObj.action);
+                this.listen('layerChanged', eventObj.action, eventObj.context);
+            }, this);
+            layerChangedArray = null;
+        }
+    };
     return OL3;
 }(UtilsLoggerByDefault, ol, gp, IMap);
 Map = function (Logger, require) {
@@ -62546,7 +62574,8 @@ Map = function (Logger, require) {
             }
             var objMap = null;
             var library = mapOptions.library;
-            if (library === 'ol3') {
+            switch (library) {
+            case 'ol3':
                 logger.trace('construction de la carte OpenLayers3');
                 if (OL3 === null || typeof OL3 !== 'function') {
                     throw new Error('library ol is not loaded !');
@@ -62555,7 +62584,8 @@ Map = function (Logger, require) {
                     div: div,
                     mapOptions: mapOptions
                 });
-            } else if (library === 'vg') {
+                break;
+            case 'vg':
                 logger.trace('construction du globe virtualGeo 3D');
                 if (VG === null || typeof VG !== 'function') {
                     throw new Error('library vg is not loaded !');
@@ -62564,7 +62594,8 @@ Map = function (Logger, require) {
                     div: div,
                     mapOptions: mapOptions
                 });
-            } else if (library === 'itowns') {
+                break;
+            case 'itowns':
                 logger.trace('construction du globe iTowns 3D');
                 if (IT === null || typeof IT !== 'function') {
                     throw new Error('library itowns is not loaded !');
@@ -62573,7 +62604,8 @@ Map = function (Logger, require) {
                     div: div,
                     mapOptions: mapOptions
                 });
-            } else {
+                break;
+            default:
                 throw new Error('not supported library');
             }
             this._prototype = Object.getPrototypeOf(objMap);
