@@ -34,7 +34,7 @@
 }(this, function() {
 
 /* BEGIN CODE */
-var log4js, loggerCfg, UtilsLoggerByDefault, ol, itowns, gp, IMap, it2IT, ol3OL3, Map, AHN;
+var log4js, loggerCfg, UtilsLoggerByDefault, UtilsLoader, ol, itowns, gp, IMap, it2IT, ol3OL3, Map, AHN;
 (function (rootRequire) {
     log4js = function () {
         var requirejs, require, define;
@@ -2661,6 +2661,72 @@ UtilsLoggerByDefault = function (Log4js, Config) {
     };
     return LoggerByDefault;
 }(log4js, loggerCfg);
+UtilsLoader = function () {
+    var Loader = {
+        loadEngine: function (src, callbackSuccess, callbackError, scope) {
+            if (!scope) {
+                scope = this;
+            }
+            if (document.getElementById('engine-itowns')) {
+                callbackSuccess.call(scope);
+                return;
+            }
+            var scriptEngine = document.createElement('script');
+            scriptEngine.id = 'engine-itowns';
+            scriptEngine.src = src;
+            scriptEngine.async = 'async';
+            if (callbackSuccess !== null) {
+                if (scriptEngine.readyState) {
+                    scriptEngine.onreadystatechange = function () {
+                        if (scriptEngine.readyState == 'loaded' || scriptEngine.readyState == 'complete') {
+                            scriptEngine.onreadystatechange = null;
+                            callbackSuccess.call(scope, arguments);
+                        }
+                    };
+                } else {
+                    scriptEngine.onload = function () {
+                        callbackSuccess.call(scope, arguments);
+                    };
+                    if (callbackError !== null) {
+                        scriptEngine.onerror = function () {
+                            callbackError.call(scope, arguments);
+                        };
+                    }
+                }
+            }
+            var script = document.getElementsByTagName('script')[0];
+            script.parentNode.insertBefore(scriptEngine, script);
+        },
+        getCurrentPath: function () {
+            var path = document.currentScript ? document.currentScript.src : function () {
+                var e = document.getElementsByTagName('script');
+                return e[e.length - 1].src;
+            }();
+            path = path.substr(0, path.lastIndexOf('/') + 1);
+            return path;
+        },
+        getPath: function (scriptName) {
+            var path = '';
+            var scripts = document.getElementsByTagName('script');
+            for (var i = 0; i < scripts.length; ++i) {
+                var src = scripts[i].getAttribute('src');
+                if (src.indexOf(scriptName) !== -1) {
+                    var url = document.createElement('a');
+                    url.href = src;
+                    path = url.origin + url.pathname.substring(0, url.pathname.lastIndexOf('/') + 1);
+                    break;
+                }
+            }
+            return path;
+        },
+        getEnginePath: function () {
+            var path = '';
+            path = this.getPath('Itowns') + 'itowns.js';
+            return path;
+        }
+    };
+    return Loader;
+}();
 (function (root, factory) {
     if (typeof exports === 'object') {
         module.exports = factory();
@@ -59703,14 +59769,17 @@ IMap = function (Logger) {
     };
     return IMap;
 }(UtilsLoggerByDefault);
-it2IT = function (Logger, Plugins, Itowns, IMap) {
+it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
     function IT(opts) {
         if (!(this instanceof IT)) {
             throw new TypeError('IT constructor cannot be called as a function.');
         }
         this.CLASSNAME = 'IT';
-        var scope = typeof window !== 'undefined' ? window : {};
-        Plugins.olUtils.assign(Itowns, scope.itowns);
+        for (var prop in Itowns) {
+            if (Itowns.hasOwnProperty(prop)) {
+                itowns[prop] = Itowns[prop];
+            }
+        }
         IMap.apply(this, arguments);
         this.logger = Logger.getLogger('IT');
         this.logger.trace('[Constructeur IT (options)]');
@@ -59731,23 +59800,35 @@ it2IT = function (Logger, Plugins, Itowns, IMap) {
     IT.prototype.constructor = IT;
     IT.prototype._initMap = function () {
         this.logger.trace('[IT]  : _initMap');
-        var positionOnGlobe = {
-            longitude: 0,
-            latitude: 0,
-            altitude: 25000000
-        };
-        var viewerDiv = this.div;
-        this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
-        var self = this;
-        this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
-            window.setTimeout(function () {
-                self.div.style.visibility = '';
-            }, 1);
-            self._afterInitMap();
-            self.setZoom(self.mapOptions.zoom || 10);
-            self.setAzimuth(self.mapOptions.azimuth || 0);
-            self.setTilt(self.mapOptions.tilt || 0);
-        });
+        var _enginePath3d = this.mapOptions.enginePath3d || Loader.getEnginePath();
+        Loader.loadEngine(_enginePath3d, function () {
+            console.warn('Itowns engine, loaded...');
+            var scope = typeof window !== 'undefined' ? window : { itowns: {} };
+            for (var prop in scope.itowns) {
+                if (scope.itowns.hasOwnProperty(prop)) {
+                    Itowns[prop] = scope.itowns[prop];
+                }
+            }
+            var positionOnGlobe = {
+                longitude: 0,
+                latitude: 0,
+                altitude: 25000000
+            };
+            var viewerDiv = this.div;
+            this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+            var self = this;
+            this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+                window.setTimeout(function () {
+                    self.div.style.visibility = '';
+                }, 1);
+                self._afterInitMap();
+                self.setZoom(self.mapOptions.zoom || 10);
+                self.setAzimuth(self.mapOptions.azimuth || 0);
+                self.setTilt(self.mapOptions.tilt || 0);
+            });
+        }, function () {
+            console.warn('Itowns engine, failed !');
+        }, this);
     };
     IT.prototype._addRasterLayer = function (layerObj) {
         var layerId = Object.keys(layerObj)[0];
@@ -60658,7 +60739,7 @@ it2IT = function (Logger, Plugins, Itowns, IMap) {
         return;
     };
     return IT;
-}(UtilsLoggerByDefault, gp, itowns, IMap);
+}(UtilsLoggerByDefault, UtilsLoader, gp, itowns, IMap);
 ol3OL3 = function (Logger, ol, plugins, IMap) {
     function OL3(opts) {
         if (!(this instanceof OL3)) {
@@ -62488,51 +62569,10 @@ Map = function (Logger, require) {
                 if (IT === null || typeof IT !== 'function') {
                     throw new Error('library itowns is not loaded !');
                 }
-                var _loadScript = function (src, callbackSuccess, callbackError, scope) {
-                    if (!scope) {
-                        scope = this;
-                    }
-                    if (document.getElementById('engine-itowns')) {
-                        callbackSuccess.call(scope);
-                        return;
-                    }
-                    var scriptEngine = document.createElement('script');
-                    scriptEngine.id = 'engine-itowns';
-                    scriptEngine.src = src;
-                    scriptEngine.async = 'async';
-                    if (callbackSuccess !== null) {
-                        if (scriptEngine.readyState) {
-                            scriptEngine.onreadystatechange = function () {
-                                if (scriptEngine.readyState == 'loaded' || scriptEngine.readyState == 'complete') {
-                                    scriptEngine.onreadystatechange = null;
-                                    callbackSuccess.call(scope, arguments);
-                                }
-                            };
-                        } else {
-                            scriptEngine.onload = function () {
-                                callbackSuccess.call(scope, arguments);
-                            };
-                            if (callbackError !== null) {
-                                scriptEngine.onerror = function () {
-                                    callbackError.call(scope, arguments);
-                                };
-                            }
-                        }
-                    }
-                    var script = document.getElementsByTagName('script')[0];
-                    script.parentNode.insertBefore(scriptEngine, script);
-                };
-                _loadScript('./lib/itowns.js', function () {
-                    console.warn('Itowns engine, loaded...');
-                    objMap = new IT({
-                        div: div,
-                        mapOptions: mapOptions
-                    });
-                    this._prototype = Object.getPrototypeOf(objMap);
-                    return objMap;
-                }, function () {
-                    console.warn('Itowns engine, failed !');
-                }, this);
+                objMap = new IT({
+                    div: div,
+                    mapOptions: mapOptions
+                });
             } else {
                 throw new Error('not supported library');
             }

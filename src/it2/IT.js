@@ -1,11 +1,14 @@
+/* global itowns */
 define([
     "Utils/LoggerByDefault",
+    "Utils/Loader",
     "gp",
     "itowns",
     "IMap"
 ],
 function (
     Logger,
+    Loader,
     Plugins,
     Itowns,
     IMap
@@ -27,8 +30,11 @@ function (
         */
         this.CLASSNAME = "IT";
 
-        var scope = typeof window !== "undefined" ? window : {};
-        Plugins.olUtils.assign(Itowns, scope.itowns);
+        for ( var prop in Itowns ) {
+            if ( Itowns.hasOwnProperty(prop) ) {
+                itowns[prop] = Itowns[prop];
+            }
+        }
 
         // appel du constructeur par heritage,
         IMap.apply(this, arguments);
@@ -74,32 +80,53 @@ function (
      */
     IT.prototype._initMap = function () {
         this.logger.trace("[IT]  : _initMap") ;
-        // position à l'initialisation
-        var positionOnGlobe = {
-            longitude  : 0,
-            latitude  : 0,
-            altitude  : 25000000
-        };
 
-        var viewerDiv = this.div;
-        // creation de la map vide
-        this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+        var _enginePath3d = this.mapOptions.enginePath3d || Loader.getEnginePath();
 
-        var self = this;
-        // when globe is loaded, we set the user map parameters
-        this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
-            // we show the div when globe is loaded
-            window.setTimeout(function () {
-                self.div.style.visibility = "";
-            }, 1);
+        Loader.loadEngine(_enginePath3d,
+            function () {
+                console.warn("Itowns engine, loaded...");
+                var scope = typeof window !== "undefined" ? window : {
+                    itowns : {}
+                };
+                for ( var prop in scope.itowns ) {
+                    if ( scope.itowns.hasOwnProperty(prop) ) {
+                        Itowns[prop] =  scope.itowns[prop];
+                    }
+                }
 
-            self._afterInitMap();
-            // FIXME en attendant que la variable positionOnGlobe puisse prendre
-            // un zoom / une echelle (et non une altitude) et les params necessaires.
-            self.setZoom(self.mapOptions.zoom || 10);
-            self.setAzimuth(self.mapOptions.azimuth || 0);
-            self.setTilt(self.mapOptions.tilt || 0);
-        });
+                // position à l'initialisation
+                var positionOnGlobe = {
+                    longitude  : 0,
+                    latitude  : 0,
+                    altitude  : 25000000
+                };
+
+                var viewerDiv = this.div;
+
+                // creation de la map vide
+                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+
+                var self = this;
+                // when globe is loaded, we set the user map parameters
+                this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+                    // we show the div when globe is loaded
+                    window.setTimeout(function () {
+                        self.div.style.visibility = "";
+                    }, 1);
+
+                    self._afterInitMap();
+                    // FIXME en attendant que la variable positionOnGlobe puisse prendre
+                    // un zoom / une echelle (et non une altitude) et les params necessaires.
+                    self.setZoom(self.mapOptions.zoom || 10);
+                    self.setAzimuth(self.mapOptions.azimuth || 0);
+                    self.setTilt(self.mapOptions.tilt || 0);
+                });
+            },
+            function () {
+                console.warn("Itowns engine, failed !");
+            },
+            this);
 
     } ;
 
