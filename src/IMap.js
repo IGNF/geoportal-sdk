@@ -1083,6 +1083,7 @@ define([
                     console.log("Unknown Library");
                     return;
                 }
+                
                 // this.libMap = null;
                 var newMap = Gp.Map.load(
                     // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()

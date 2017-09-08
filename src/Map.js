@@ -11,7 +11,7 @@
 define([
         "Utils/LoggerByDefault",
         "require"
-        // "itowns/IT"
+        // "it2/IT"
         // "ol3/OL3",
         // "virtual/VG"
     ],
@@ -99,51 +99,47 @@ define([
                 var objMap = null;
 
                 var library = mapOptions.library;
-                switch (library) {
-                    case "ol3":
-                        logger.trace("construction de la carte OpenLayers3");
-                        if (OL3 === null || typeof OL3 !== "function") {
-                            throw new Error("library ol is not loaded !");
-                        }
+                if (library === "ol3") {
+                    logger.trace("construction de la carte OpenLayers3");
+                    if (OL3 === null || typeof OL3 !== "function") {
+                        throw new Error("library ol is not loaded !");
+                    }
 
-                        objMap = new OL3({
-                            div : div,
-                            mapOptions : mapOptions
-                        });
+                    objMap = new OL3({
+                        div : div,
+                        mapOptions : mapOptions
+                    });
 
-                        break;
-                    case "vg":
-                        logger.trace("construction du globe virtualGeo 3D");
-                        if (VG === null || typeof VG !== "function") {
-                            throw new Error("library vg is not loaded !");
-                        }
+                } else if (library === "vg") {
+                    logger.trace("construction du globe virtualGeo 3D");
+                    if (VG === null || typeof VG !== "function") {
+                        throw new Error("library vg is not loaded !");
+                    }
 
-                        objMap = new VG({
-                            div : div,
-                            mapOptions : mapOptions
-                        });
+                    objMap = new VG({
+                        div : div,
+                        mapOptions : mapOptions
+                    });
 
-                        break;
-                    case "itowns":
-                        logger.trace("construction du globe iTowns 3D");
-                        if (IT === null || typeof IT !== "function") {
-                            throw new Error("library itowns is not loaded !");
-                        }
+                } else if (library === "itowns") {
 
-                        objMap = new IT({
-                            div : div,
-                            mapOptions : mapOptions
-                        });
+                    logger.trace("construction du globe iTowns 3D");
+                    if (IT === null || typeof IT !== "function") {
+                        throw new Error("library itowns is not loaded !");
+                    }
+                    
+                    objMap = new IT({
+                        div : div,
+                        mapOptions : mapOptions
+                    });
 
-                        break;
-                    default:
-                        throw new Error("not supported library");
+                } else {
+                    throw new Error("not supported library");
                 }
 
                 this._prototype = Object.getPrototypeOf(objMap); // IMap !
 
                 return objMap;
-
             }
 
         };

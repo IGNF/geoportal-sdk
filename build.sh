@@ -95,6 +95,7 @@ do
        echo "#################################"
        echo "####### Standalone + mixte itowns bundle ! ########"
        mixIt
+       itowns
        ;;
      v)
         echo "#################################"
@@ -105,11 +106,13 @@ do
         echo "#################################"
         echo "########## ALL bundle ! #########"
         ol3
+        itowns
         mix
+        mixIt
         vg
         ;;
      \?)
-        echo "$OPTARG : invalide, use option : -a(all), -o(openlayers), -m(mix), -i(mix itowns) or -v(virtualgeo) !"
+        echo "$OPTARG : invalide, use option : -a(all), -o(openlayers), -m(mix), -i(mix && itowns) or -v(virtualgeo) !"
         exit -1
         ;;
    esac
@@ -117,7 +120,7 @@ done
 
 if [ $# -eq 0 ]
 then
-  echo "use option : -a(all), -o(openlayers), -m(mix), -i(mix itowns) or -v(virtualgeo) !"
+  echo "use option : -a(all), -o(openlayers), -m(mix), -i(mix && itowns) or -v(virtualgeo) !"
 fi
 
 echo "END"

@@ -1,13 +1,13 @@
 define([
     "Utils/LoggerByDefault",
-    "it",
     "gp",
+    "itowns",
     "IMap"
 ],
 function (
     Logger,
-    it,
-    plugins, // Gp globale !?
+    Plugins,
+    Itowns,
     IMap
 ) {
 
@@ -27,7 +27,10 @@ function (
         */
         this.CLASSNAME = "IT";
 
-        // appel du constructeur par heritage
+        var scope = typeof window !== "undefined" ? window : {};
+        Plugins.olUtils.assign(Itowns, scope.itowns);
+
+        // appel du constructeur par heritage,
         IMap.apply(this, arguments);
 
         this.logger = Logger.getLogger("IT");
@@ -48,11 +51,11 @@ function (
      * Association controlId <-> classe VirtualGeo d'implemenation
      */
     IT.CONTROLSCLASSES = {
-        mouseposition  : itowns.control.MousePosition,
-        layerswitcher  : itowns.control.LayerSwitcher,
-        attributions : itowns.control.Attribution,
-        overview : itowns.control.MiniGlobe,
-        graphicscale : itowns.control.Scale
+        mouseposition  : "itowns.control.MousePosition",
+        layerswitcher  : "itowns.control.LayerSwitcher",
+        attributions : "itowns.control.Attribution",
+        overview : "itowns.control.MiniGlobe",
+        graphicscale : "itowns.control.Scale"
 
     } ;
 
@@ -80,11 +83,12 @@ function (
 
         var viewerDiv = this.div;
         // creation de la map vide
-        this.libMap = new itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+        this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+
         var self = this;
         // when globe is loaded, we set the user map parameters
-        this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
-            // we show the div when globe is loaded 
+        this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+            // we show the div when globe is loaded
             window.setTimeout(function () {
                 self.div.style.visibility = "";
             }, 1);
@@ -324,7 +328,7 @@ function (
             latitude  : point.y
         };
         // set the camera aimed point on the specified coords
-        this.libMap.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
+        this.libMap._globeView.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
@@ -332,7 +336,7 @@ function (
      * retourne les coordonnées courantes du centre de la carte
      */
     IT.prototype.getCenter = function () {
-        var cameraCenter = this.libMap.controls.getCameraTargetGeoPosition();
+        var cameraCenter = this.libMap._globeView.controls.getCameraTargetGeoPosition();
         var center = {
             lon  : cameraCenter.longitude(),
             lat  : cameraCenter.latitude(),
@@ -346,7 +350,7 @@ function (
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
-        var zoom = this.libMap.controls.getZoom() - 1;
+        var zoom = this.libMap._globeView.controls.getZoom() - 1;
         return zoom;
     };
 
@@ -359,7 +363,7 @@ function (
             return ;
         }
         // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
-        this.libMap.controls.setZoom(zoom + 1, false);
+        this.libMap._globeView.controls.setZoom(zoom + 1, false);
         this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
     };
 
@@ -393,7 +397,7 @@ function (
     IT.prototype.getAzimuth = function () {
         // itowns north orientation is equal to 90
         // itowns orientation is anticlockwise
-        var itownsAzimuth = 90 - this.libMap.controls.getCameraOrientation()[1];
+        var itownsAzimuth = 90 - this.libMap._globeView.controls.getCameraOrientation()[1];
         while (itownsAzimuth >= 360) {
             itownsAzimuth = itownsAzimuth - 360;
         }
@@ -421,7 +425,7 @@ function (
             itownsAzimuth = itownsAzimuth + 360;
         }
         // IT method to set the camera orientation
-        this.libMap.controls.setHeading(itownsAzimuth, true);
+        this.libMap._globeView.controls.setHeading(itownsAzimuth, true);
         this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
     };
 
@@ -429,7 +433,7 @@ function (
      * retourne l'inclinaison courante de la carte
      */
     IT.prototype.getTilt = function () {
-        return this.libMap.controls.getCameraOrientation()[0];
+        return this.libMap._globeView.controls.getCameraOrientation()[0];
     };
 
     /**
@@ -441,7 +445,7 @@ function (
             return ;
         }
         // methode setTilt d'itowns pour régler l'inclinaison
-        this.libMap.controls.setTilt(tilt, false);
+        this.libMap._globeView.controls.setTilt(tilt, false);
         this.logger.trace("[IT] - setTilt(" + tilt + ")") ;
     };
 
@@ -498,7 +502,7 @@ function (
         if (controlOpts.altitude) {
             mpOpts.altitude = controlOpts.altitude ;
         }
-        var control = new itowns.control.MousePosition(mpOpts) ;
+        var control = new Itowns.control.MousePosition(mpOpts) ;
         this.libMap.addWidget( control );
         return control ;
     } ;
@@ -560,7 +564,7 @@ function (
         }
 
         this.logger.trace("[IT]  : layerSwitcher Opts  : ... ") ;
-        var control = new itowns.control.LayerSwitcher(lsOpts) ;
+        var control = new Itowns.control.LayerSwitcher(lsOpts) ;
         this.libMap.addWidget( control );
         return control ;
     };
@@ -588,7 +592,7 @@ function (
         if (controlOpts.div) {
             ovControlOptions.target = controlOpts.div;
         }
-        var control = new itowns.control.MiniGlobe(ovControlOptions);
+        var control = new Itowns.control.MiniGlobe(ovControlOptions);
         this.libMap.addWidget(control) ;
         if (control.getElement()) {
             // hide the div if maximised option = false
@@ -645,7 +649,7 @@ function (
         if (controlOpts.div) {
             scaleControlOptions.target = controlOpts.div;
         }
-        var control =  new itowns.control.Scale(scaleControlOptions);
+        var control =  new Itowns.control.Scale(scaleControlOptions);
         this.libMap.addWidget(control) ;
         if (control.getElement()) {
             // hide the div if maximised option = false
@@ -677,7 +681,7 @@ function (
             attOpts.options.target = controlOpts.div ;
         }
         attOpts.options.collapsed = controlOpts.maximised ? false : true ;
-        var control = new itowns.control.Attribution(attOpts);
+        var control = new Itowns.control.Attribution(attOpts);
         this.libMap.addWidget(control) ;
         return control ;
     } ;
@@ -807,7 +811,7 @@ function (
             }
             if (commonOpts.hasOwnProperty("zIndex")) {
                 this.logger.trace("[IMap] modifyLayers  : setting zIndex of  : [" + _layerObj.id + "] to  : " + commonOpts.zIndex) ;
-                itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
+                Itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
             }
             /* TODO A compléter
             if (commonOpts.hasOwnProperty("minResolution")) {
@@ -967,12 +971,12 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventOrigin = this.libMap._globeView.controls;
                 registredEvent.eventType = "camera-target-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged"  :
-                var oldZoom = this.libMap.controls.getZoom();
+                var oldZoom = this.libMap._globeView.controls.getZoom();
                 /**
                 * zoomChanged callback
                 */
@@ -993,7 +997,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventOrigin = this.libMap._globeView.controls;
                 registredEvent.eventType = "range-changed";
                 // on écoute le range (et non le zoom, non implémenté côté itowns)
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
@@ -1013,7 +1017,7 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventOrigin = this.libMap._globeView.controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
                 break ;
@@ -1032,7 +1036,7 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.controls;
+                registredEvent.eventOrigin = this.libMap._globeView.controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
                 break ;
@@ -1068,7 +1072,7 @@ function (
                 } ;
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap;
+                registredEvent.eventOrigin = this.libMap._globeView;
                 registredEvent.eventType = "layer-added";
                 // abonnement à un ajout de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
@@ -1086,7 +1090,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap;
+                registredEvent.eventOrigin = this.libMap._globeView;
                 registredEvent.eventType = "layer-removed";
                 // abonnement à un retrait de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
@@ -1226,7 +1230,7 @@ function (
      * @param {String} layerId - IT layer id
      */
     IT.prototype._getItownsColorLayerById = function ( layerId ) {
-        var layer = this.libMap.getLayers(function (layer) {
+        var layer = this.libMap._globeView.getLayers(function (layer) {
             if (layer.id === layerId && layer.type === "color") {
                 return layer;
             }
