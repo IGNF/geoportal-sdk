@@ -131,6 +131,77 @@ function (
     } ;
 
     /**
+     * Add a vector Layer to the map
+     *
+     * @param {Object} layerObj - geoportalLayer to add.
+     * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+     *
+     * @private
+     */
+    IT.prototype._addVectorLayer = function (layerObj) {
+        // FIXME : ajout d'un parametre projection pour les donnees
+        var layerId = Object.keys(layerObj)[0] ;
+        var layerOpts = layerObj[layerId] ;
+        var layer;
+        layerOpts.format = layerOpts.format.toLowerCase();
+        switch (layerOpts.format.toUpperCase()) {
+            case "KML":
+            case "GPX":
+                this.logger.trace("ajout d'une couche GPX ou KML");
+                layer = {
+                    url : layerOpts.url,
+                    id : layerId,
+                    type : "color",
+                    protocol : "rasterizer",
+                    visible : layerOpts.visibility || true,
+                    opacity : layerOpts.opacity || 1
+                };
+                break;
+            case "GEORSS":
+                // TODO GeoRSS
+                break;
+            case "GEOJSON":
+                // TODO ???
+                break;
+            case "WFS":
+                // TODO ???
+                break;
+            case "drawing":
+                // TODO ??
+                break;
+            default:
+
+        }
+        if (layer) {
+
+            // le controle geoportalAttribution exploite la propriete _originators
+            if (layerOpts.hasOwnProperty("originators")) {
+                layer._originators = layerOpts.originators ;
+            }
+
+            // Dans le cas où aucune visibilité n'est spécifiée
+            if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
+                // on la règle à "true" par défaut
+                layerOpts.visibility = 1;
+            }
+
+            this._layers.push({
+                id : layerId,
+                obj : layer,
+                options : layerOpts
+            }) ;
+
+            var LSControl = this.getLibMapControl("layerswitcher");
+            // if the LS already exists, we have to save the conf of the layer to add it to the LS
+            if (LSControl) {
+                LSControl._addedLayerConf[layerId] = layerOpts;
+            }
+
+            this.libMap.addLayer(layer) ;
+        }
+    } ;
+
+    /**
      * Add a Raster Layer to the map
      *
      * @param {Object} layerObj - raster layer to add.
