@@ -11,7 +11,7 @@
 define([
         "Utils/LoggerByDefault",
         "require"
-        // "itowns/IT"
+        // "it2/IT"
         // "ol3/OL3",
         // "virtual/VG"
     ],

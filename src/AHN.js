@@ -27,10 +27,10 @@ function (
         Gp.Map._class = Gp.Map.__classOl.prototype; // IMap !
 
     } else if ( typeof require("ol3/OL3") !== "undefined" &&
-         typeof require("itowns/IT") !== "undefined") {
+         typeof require("it2/IT") !== "undefined") {
         console.log("Lib. ol3 et itowns détectées !");
         Gp.Map.__classOl = require("ol3/OL3");
-        Gp.Map.__classItowns = require("itowns/IT");
+        Gp.Map.__classItowns = require("it2/IT");
         Gp.Map._class = Gp.Map.__classOl.prototype; // IMap !
 
     } else if ( typeof require("ol3/OL3") !== "undefined") {
@@ -43,9 +43,9 @@ function (
         Gp.Map.__classVg = require("virtual/VG");
         Gp.Map._class = Gp.Map.__classVg.prototype; // IMap !
 
-    } else if ( typeof require("itowns/IT") !== "undefined") {
+    } else if ( typeof require("it2/IT") !== "undefined") {
         console.log("Lib. itowns détectée !");
-        Gp.Map.__classItowns = require("itowns/IT");
+        Gp.Map.__classItowns = require("it2/IT");
         Gp.Map._class = Gp.Map.__classItowns.prototype; // IMap !
 
     } else {

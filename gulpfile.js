@@ -219,10 +219,10 @@
 
         // param bundle itowns
         else if (isItowns) {
+            _deps.itowns = "../lib/external/itowns/js/init-itowns";
              pluginsDir = "../lib/external/geoportail/plugins-itowns/";
-             _deps.itowns = "../lib/external/itowns/js/itowns";
-            _deps["gp"] = pluginsDir + "GpPluginItowns-src";
-             _includes.push("itowns/IT");
+             _deps["gp"] = pluginsDir + "GpPluginItowns-src";
+             _includes.push("it2/IT");
              _globalModules.push('itowns');
         }
 
@@ -237,10 +237,10 @@
 
         } else if (isMixIt) {
             _deps.ol = "../lib/external/ol3/ol";
-            _deps.it = "../lib/external/itowns/js/itowns";
+            _deps.itowns = "../lib/external/itowns/js/init-itowns";
             pluginsDir = "../lib/external/geoportail/plugins-mixIt/";
             _deps["gp"] = pluginsDir + "GpPluginOl3Itowns-src";
-            _includes.push("itowns/IT");
+            _includes.push("it2/IT");
             _includes.push("ol3/OL3");
             _globalModules.push('ol', 'itowns');
 
@@ -500,6 +500,27 @@
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //| ✓ copy ITowns Engine - ONLY for itowns build or Mix build
+    //| > https://github.com/hparra/gulp-rename
+    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("copy-itowns-engine", function () {
+
+        var rename = require("gulp-rename");
+
+        // TODO
+        // doit on mettre la lib. dans un répertoire distinct ?
+        // ex. vendor
+        var builddir = path.join(build.dist, getDistDirName());
+        var srcdir   = path.join(_.lib, "external", "itowns", "js", "itowns.js");
+
+        return gulp.src(srcdir)
+            .pipe(rename({dirname :""}))
+            .pipe(gulp.dest(builddir))
+            .pipe($.plumber())
+            .pipe($.size());
+    });
+
+    //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ minify css with clean-css
     //| > https://www.npmjs.com/package/gulp-clean-css
     //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -725,7 +746,7 @@
         isVG = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns 3D...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', cb);
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', 'copy-itowns-engine', cb);
     });
 
     gulp.task("build-mix", function(cb) {
@@ -745,7 +766,7 @@
         isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns with OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', cb);
+        runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-itowns-engine', cb);
     });
 
     gulp.task('build-dist', function(callback) {

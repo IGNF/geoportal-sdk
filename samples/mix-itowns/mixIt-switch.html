@@ -5,51 +5,60 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="stylesheet" href="../../dist/mixIt/GpOL3Itowns-src.css" type="text/css">
         <style>
-          #viewerDiv {
-            height: 600px;
-            width: 1200px;
-            position : "relative";
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+            position:relative;
+            display:"inline";
           }
         </style>
         <script src="../../dist/mixIt/GpOL3Itowns-debug.js"></script>
     </head>
     <body>
-        <h1>Test itowns</h1>
-        <h2>Carte 3D.</h2>
-        <div id="BoutonSwitchToItowns" hidden>
+        <h1>Test de la bascule 3D / 2D</h1>
+        <div id="BoutonSwitchToIt">
             <input type="button" name="switch" onclick="switchToIT();" value="Switch from 2D to 3D"/><br/>
         </div>
-        <div id="BoutonSwitchToOl3">
+        <div id="BoutonSwitchToOl3" hidden>
             <input type="button" name="switch" onclick="switchToOL3();" value="Switch from 3D to 2D"/><br/>
         </div>
-        <div id="viewerDiv"></div>
+        <div id="geoportalMap1"></div>
 
         <script type="text/javascript">
-        var map = Gp.Map.load("viewerDiv", {
+
+        var map = Gp.Map.load("geoportalMap1",{
             apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
-            library : "itowns",
             enginePath3d : "../../dist/mixIt/",
-            center : {
-                geolocate : true,
-                location : "Biarritz"
+            /*layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                }
+            },*/
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                }/*,
+                "HY.PhysicalWaters" : {
+                },
+                "TN.RoadTransportNetwork" : {
+                }*/
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
             }
         });
 
-        /**
-          * fonction de bascule vers 3D
-          */
-        function switchToIT () {
+        function switchToIT() {
             map = map.switchToLibITOL3("itowns");
             document.getElementById("BoutonSwitchToOl3").style.display = "inline";
-            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+            document.getElementById("BoutonSwitchToIt").style.display = "none";
         };
 
-        /**
-          * fonction de bascule vers 2D
-          */
-        function switchToOL3 () {
+        function switchToOL3() {
             map = map.switchToLibITOL3("ol3");
-            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToIt").style.display = "inline";
             document.getElementById("BoutonSwitchToOl3").style.display = "none";
         };
 

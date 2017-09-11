@@ -6743,6 +6743,15 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+}
+
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -6766,15 +6775,6 @@ div[id^=GPmousePositionPanelClose]  {
 
 #GPmapCenter {
   background-image: url("img/GPmapCenter.png");
-}
-
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
 }
 
 div[id^=GPscaleContainer-] {
