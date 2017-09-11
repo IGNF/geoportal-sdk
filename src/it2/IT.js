@@ -81,7 +81,7 @@ function (
     IT.prototype._initMap = function () {
         this.logger.trace("[IT]  : _initMap") ;
 
-        var _enginePath3d = this.mapOptions.enginePath3d || Loader.getEnginePath();
+        var _enginePath3d = Loader.getEnginePath(this.mapOptions.enginePath3d);
 
         Loader.loadEngine(_enginePath3d,
             function () {
@@ -839,7 +839,7 @@ function (
             }
             if (commonOpts.hasOwnProperty("zIndex")) {
                 this.logger.trace("[IMap] modifyLayers  : setting zIndex of  : [" + _layerObj.id + "] to  : " + commonOpts.zIndex) ;
-                Itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
+                Itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap.getGlobeView(), _layerObj.id, commonOpts.zIndex);
             }
             /* TODO A compléter
             if (commonOpts.hasOwnProperty("minResolution")) {

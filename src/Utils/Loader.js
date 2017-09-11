@@ -77,10 +77,18 @@ define([], function () {
         },
 
         /** ... */
-        getEnginePath : function () {
-            var path = "";
-            path = this.getPath("Itowns") + "itowns.js";
-            return path;
+        getEnginePath : function (path) {
+            var _path = "";
+            if (path) {
+                var sep = "";
+                if (path.lastIndexOf("/") === path.length - 1) {
+                    sep = "/";
+                }
+                _path = path  + sep + "itowns.js";
+            } else {
+                _path = this.getCurrentPath() + "itowns.js";
+            }
+            return _path;
         }
     };
 
