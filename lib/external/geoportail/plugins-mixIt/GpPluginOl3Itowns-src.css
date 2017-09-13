@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-09-12
+ * @date 2017-09-13
  *
  */
 /* MOUSE POSITION */
@@ -3178,36 +3178,6 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
-/* GET FEATURE INFO */
-
-div[id^=GPgetFeatureInfo-] {
-  top: 260px;
-  left: 10px;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  width: 26px;
-  height: 26px;
-  background-image: url("img/GPactivateGfi.png");
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  background-position: -26px 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
-  opacity: 0.7;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.4);
-}
-
 div[id^=GPelevationPath-] {
   bottom: 48px;
   left: 10px;
@@ -3302,6 +3272,36 @@ display: none !important;
 
 }
 */
+
+/* GET FEATURE INFO */
+
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
+  left: 10px;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
+}
 
 /* ISOCHRON */
 
@@ -3997,7 +3997,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-09-12
+ * @date 2017-09-13
  *
  */
 /* MOUSE POSITION */
@@ -6651,15 +6651,6 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
-}
-
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6750,6 +6741,15 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
+}
+
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
 }
 
 /* MOUSE POSITION */
