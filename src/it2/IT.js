@@ -303,6 +303,15 @@ function (
                     minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 layerOpts = lOpts ;
+                if (!layerOpts.tileMatrixSetLimits) {
+                    layerOpts.tileMatrixSetLimits = this._getTMSLimits(layerOpts.tileMatrixSet);
+                }
+                if (!layerOpts.minZoom) {
+                    layerOpts.minZoom = Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
+                }
+                if (!layerOpts.maxZoom) {
+                    layerOpts.maxZoom = Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
+                }
                 layer = {
                     type  : layerOpts.type || "color",
                     url  : layerOpts.url,
@@ -320,7 +329,7 @@ function (
                     },
                     options  : {
                         tileMatrixSet  : layerOpts.tileMatrixSet,
-                        tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
+                        tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits,
                         mimetype  : layerOpts.outputFormat,
                         name  : layerOpts.layer,
                         style  : layerOpts.styleName,
@@ -334,6 +343,14 @@ function (
                     maxScaleDenominator  : maxScaleDenominator || null,
                     processingOptions  : layerOpts.processingOptions
                 };
+                if (layerOpts.levelsToLoad) {
+                    layer.updateStrategy = {
+                        type  : 1,
+                        options  : {
+                            groups : layerOpts.levelsToLoad
+                        }
+                    };
+                }
                 break;
             default :
         }
@@ -1422,8 +1439,9 @@ function (
       *
       */
     IT.prototype._getTMSLimits = function (TMSID) {
+        var TMSlimits;
         if (TMSID === "PM") {
-            var TMSlimits = {
+            TMSlimits = {
                 0  : {
                     minTileRow  : "0",
                     maxTileRow  : "1",
@@ -1555,6 +1573,119 @@ function (
                     maxTileRow : "2097152",
                     minTileCol : "0",
                     maxTileCol : "2097152"
+                }
+            };
+            return TMSlimits;
+        }
+        if (TMSID === "WGS84G") {
+            TMSlimits = {
+                0 : {
+                    minTileRow : 0,
+                    maxTileRow : 1,
+                    minTileCol : 0,
+                    maxTileCol : 2
+                },
+                1 : {
+                    minTileRow : 0,
+                    maxTileRow : 2,
+                    minTileCol : 0,
+                    maxTileCol : 4
+                },
+                2 : {
+                    minTileRow : 0,
+                    maxTileRow : 4,
+                    minTileCol : 0,
+                    maxTileCol : 8
+                },
+                3 : {
+                    minTileRow : 0,
+                    maxTileRow : 8,
+                    minTileCol : 0,
+                    maxTileCol : 16
+                },
+                4 : {
+                    minTileRow : 0,
+                    maxTileRow : 16,
+                    minTileCol : 0,
+                    maxTileCol : 32
+                },
+                5 : {
+                    minTileRow : 0,
+                    maxTileRow : 32,
+                    minTileCol : 0,
+                    maxTileCol : 64
+                },
+                6 : {
+                    minTileRow : 0,
+                    maxTileRow : 64,
+                    minTileCol : 0,
+                    maxTileCol : 128
+                },
+                7 : {
+                    minTileRow : 0,
+                    maxTileRow : 128,
+                    minTileCol : 0,
+                    maxTileCol : 256
+                },
+                8 : {
+                    minTileRow : 0,
+                    maxTileRow : 256,
+                    minTileCol : 0,
+                    maxTileCol : 512
+                },
+                9 : {
+                    minTileRow : 0,
+                    maxTileRow : 512,
+                    minTileCol : 0,
+                    maxTileCol : 1024
+                },
+                10 : {
+                    minTileRow : 0,
+                    maxTileRow : 1024,
+                    minTileCol : 0,
+                    maxTileCol : 2048
+                },
+                11 : {
+                    minTileRow : 0,
+                    maxTileRow : 2048,
+                    minTileCol : 0,
+                    maxTileCol : 4096
+                },
+                12 : {
+                    minTileRow : 0,
+                    maxTileRow : 4096,
+                    minTileCol : 0,
+                    maxTileCol : 8192
+                },
+                13 : {
+                    minTileRow : 0,
+                    maxTileRow : 8192,
+                    minTileCol : 0,
+                    maxTileCol : 16384
+                },
+                14 : {
+                    minTileRow : 0,
+                    maxTileRow : 16384,
+                    minTileCol : 0,
+                    maxTileCol : 32768
+                },
+                15 : {
+                    minTileRow : 0,
+                    maxTileRow : 32768,
+                    minTileCol : 0,
+                    maxTileCol : 65536
+                },
+                16 : {
+                    minTileRow : 0,
+                    maxTileRow : 65536,
+                    minTileCol : 0,
+                    maxTileCol : 131072
+                },
+                17 : {
+                    minTileRow : 0,
+                    maxTileRow : 131072,
+                    minTileCol : 0,
+                    maxTileCol : 262144
                 }
             };
             return TMSlimits;
