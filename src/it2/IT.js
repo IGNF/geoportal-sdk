@@ -325,8 +325,8 @@ function (
                         name  : layerOpts.layer,
                         style  : layerOpts.styleName,
                         zoom : {
-                            min : layerOpts.minZoom || 1,
-                            max : layerOpts.maxZoom || 21
+                            min : layerOpts.minZoom,
+                            max : layerOpts.maxZoom
                         }
                     },
                     version  : layerOpts.version,
