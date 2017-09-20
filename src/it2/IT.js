@@ -480,12 +480,14 @@ function (
             return ;
         }
 
-        var coordinates = {
+        var position = {
+            tilt : 45,
+            heading : 90,
             longitude  : point.x,
             latitude  : point.y
         };
         // set the camera aimed point on the specified coords
-        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
+        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
