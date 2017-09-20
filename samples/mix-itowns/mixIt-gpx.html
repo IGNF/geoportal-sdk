@@ -23,6 +23,13 @@
             apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
             library : "itowns",
             enginePath3d : "../../dist/mixIt/",
+            defaultFeaturesStyle : {
+                strokeColor : "red",
+                strokeWidth : 2,
+                strokeOpacity : 0.6,
+                polyFillColor : "green",
+                polyFillOpacity : 0.5
+            },
             layersOptions : {
                 "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
                     type : "elevation",
@@ -279,7 +286,14 @@
                     minZoom : 8,
                     maxZoom : 15,
                     visibility : true,
-                    opacity : 1
+                    opacity : 1,
+                    styleOptions : {
+                        strokeColor : "yellow",
+                        strokeWidth : 4,
+                        strokeOpacity : 1,
+                        polyFillColor : "blue",
+                        polyFillOpacity : 1
+                    }
                 }
             },
             center : {

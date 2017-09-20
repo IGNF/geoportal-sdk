@@ -143,11 +143,13 @@ function (
         var layerId = Object.keys(layerObj)[0] ;
         var layerOpts = layerObj[layerId] ;
         var layer;
+        var layerStyleOptions = layerOpts.styleOptions || {};
+        var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
+        var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
         layerOpts.format = layerOpts.format.toLowerCase();
         switch (layerOpts.format.toUpperCase()) {
             case "KML":
-            case "GPX":
-                this.logger.trace("ajout d'une couche GPX ou KML");
+                this.logger.trace("ajout d'une couche KML");
                 layer = {
                     url : layerOpts.url,
                     id : layerId,
@@ -155,6 +157,36 @@ function (
                     protocol : "rasterizer",
                     visible : layerOpts.visibility || true,
                     opacity : layerOpts.opacity || 1
+                };
+                // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
+                if (this.mapOptions.extractStyles === true) {
+                    layer.style = {};
+                } else {
+                    layer.style = {
+                        stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                        strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
+                        strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                        fill : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
+                        fillOpacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                    };
+                }
+                break;
+            case "GPX":
+                this.logger.trace("ajout d'une couche GPX");
+                layer = {
+                    url : layerOpts.url,
+                    id : layerId,
+                    type : "color",
+                    protocol : "rasterizer",
+                    visible : layerOpts.visibility || true,
+                    opacity : layerOpts.opacity || 1,
+                    style : {
+                        stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                        strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
+                        strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                        fill : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
+                        fillOpacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                    }
                 };
                 break;
             case "GEORSS":
