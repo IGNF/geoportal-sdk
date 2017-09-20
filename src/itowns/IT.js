@@ -1,16 +1,13 @@
-/* global itowns */
 define([
     "Utils/LoggerByDefault",
-    "Utils/Loader",
+    "it",
     "gp",
-    "itowns",
     "IMap"
 ],
 function (
     Logger,
-    Loader,
-    Plugins,
-    Itowns,
+    it,
+    plugins, // Gp globale !?
     IMap
 ) {
 
@@ -30,13 +27,7 @@ function (
         */
         this.CLASSNAME = "IT";
 
-        for ( var prop in Itowns ) {
-            if ( Itowns.hasOwnProperty(prop) ) {
-                itowns[prop] = Itowns[prop];
-            }
-        }
-
-        // appel du constructeur par heritage,
+        // appel du constructeur par heritage
         IMap.apply(this, arguments);
 
         this.logger = Logger.getLogger("IT");
@@ -57,12 +48,9 @@ function (
      * Association controlId <-> classe VirtualGeo d'implemenation
      */
     IT.CONTROLSCLASSES = {
-        mouseposition  : "itowns.control.MousePosition",
-        layerswitcher  : "itowns.control.LayerSwitcher",
-        attributions : "itowns.control.Attribution",
-        overview : "itowns.control.MiniGlobe",
-        graphicscale : "itowns.control.Scale"
-
+        mouseposition  : itowns.control.MousePosition,
+        layerswitcher  : itowns.control.LayerSwitcher,
+        attributions : itowns.control.Attribution
     } ;
 
     // heritage
@@ -80,157 +68,27 @@ function (
      */
     IT.prototype._initMap = function () {
         this.logger.trace("[IT]  : _initMap") ;
+        // position à l'initialisation
+        var positionOnGlobe = {
+            longitude  : 0,
+            latitude  : 0,
+            altitude  : 25000000
+        };
 
-        var _enginePath3d = Loader.getEnginePath(this.mapOptions.enginePath3d);
+        var viewerDiv = this.div;
+        // creation de la map vide
+        this.libMap = new itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+        var self = this;
+        // when globe is loaded, we set the user map parameters
+        this.libMap.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+            self._afterInitMap();
+            // FIXME en attendant que la variable positionOnGlobe puisse prendre
+            // un zoom / une echelle (et non une altitude) et les params necessaires.
+            self.setZoom(self.mapOptions.zoom || 10);
+            self.setAzimuth(self.mapOptions.azimuth || 0);
+            self.setTilt(self.mapOptions.tilt || 0);
+        });
 
-        Loader.loadEngine(_enginePath3d,
-            function () {
-                console.warn("Itowns engine, loaded...");
-                var scope = typeof window !== "undefined" ? window : {
-                    itowns : {}
-                };
-                for ( var prop in scope.itowns ) {
-                    if ( scope.itowns.hasOwnProperty(prop) ) {
-                        Itowns[prop] =  scope.itowns[prop];
-                    }
-                }
-
-                // position à l'initialisation
-                var positionOnGlobe = {
-                    longitude  : 0,
-                    latitude  : 0,
-                    altitude  : 25000000
-                };
-
-                var viewerDiv = this.div;
-
-                // creation de la map vide
-                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
-
-                var self = this;
-                // when globe is loaded, we set the user map parameters
-                this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
-                    // we show the div when globe is loaded
-                    window.setTimeout(function () {
-                        self.div.style.visibility = "";
-                    }, 1);
-
-                    self._afterInitMap();
-                    // FIXME en attendant que la variable positionOnGlobe puisse prendre
-                    // un zoom / une echelle (et non une altitude) et les params necessaires.
-                    self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
-                    self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
-                    self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
-                });
-            },
-            function () {
-                console.warn("Itowns engine, failed !");
-            },
-            this);
-
-    } ;
-
-    /**
-     * Add a vector Layer to the map
-     *
-     * @param {Object} layerObj - geoportalLayer to add.
-     * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
-     *
-     * @private
-     */
-    IT.prototype._addVectorLayer = function (layerObj) {
-        // FIXME : ajout d'un parametre projection pour les donnees
-        var layerId = Object.keys(layerObj)[0] ;
-        var layerOpts = layerObj[layerId] ;
-        var layer;
-        var layerStyleOptions = layerOpts.styleOptions || {};
-        var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
-        var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
-        layerOpts.format = layerOpts.format.toLowerCase();
-        switch (layerOpts.format.toUpperCase()) {
-            case "KML":
-                this.logger.trace("ajout d'une couche KML");
-                layer = {
-                    url : layerOpts.url,
-                    id : layerId,
-                    type : "color",
-                    protocol : "rasterizer",
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1
-                };
-                // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
-                if (this.mapOptions.extractStyles === true) {
-                    layer.style = {};
-                } else {
-                    layer.style = {
-                        stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
-                        strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
-                        strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
-                        fill : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
-                        fillOpacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
-                    };
-                }
-                break;
-            case "GPX":
-                this.logger.trace("ajout d'une couche GPX");
-                layer = {
-                    url : layerOpts.url,
-                    id : layerId,
-                    type : "color",
-                    protocol : "rasterizer",
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
-                    style : {
-                        stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
-                        strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
-                        strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
-                        fill : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
-                        fillOpacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
-                    }
-                };
-                break;
-            case "GEORSS":
-                // TODO GeoRSS
-                break;
-            case "GEOJSON":
-                // TODO ???
-                break;
-            case "WFS":
-                // TODO ???
-                break;
-            case "drawing":
-                // TODO ??
-                break;
-            default:
-
-        }
-        if (layer) {
-
-            // le controle geoportalAttribution exploite la propriete _originators
-            if (layerOpts.hasOwnProperty("originators")) {
-                layer._originators = layerOpts.originators ;
-            }
-
-            // Dans le cas où aucune visibilité n'est spécifiée
-            if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
-                // on la règle à "true" par défaut
-                layerOpts.visibility = 1;
-            }
-
-            this._layers.push({
-                id : layerId,
-                obj : layer,
-                options : layerOpts
-            }) ;
-
-            var LSControl = this.getLibMapControl("layerswitcher");
-            // if the LS already exists, we have to save the conf of the layer to add it to the LS
-            if (LSControl) {
-                LSControl._addedLayerConf[layerId] = layerOpts;
-            }
-
-            this.libMap.addLayer(layer) ;
-        }
     } ;
 
     /**
@@ -248,7 +106,6 @@ function (
         var maxScaleDenominator;
         var minScaleDenominator;
         var boundingBox;
-        layerOpts.format = layerOpts.format.toLowerCase();
         switch (layerOpts.format.toUpperCase()) {
             case "WMS" :
                 // FIXME  : ajout d'un parametre projection pour les donnees
@@ -294,8 +151,6 @@ function (
                     name  : layerNames,
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || 1,
-                    opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
@@ -304,11 +159,7 @@ function (
                     dateTime  : "",
                     heightMapWidth  : 256,
                     options  : {
-                        mimetype  : layerOpts.outputFormat,
-                        zoom : {
-                            min : layerOpts.minZoom || 1,
-                            max : layerOpts.maxZoom || 21
-                        }
+                        mimetype  : layerOpts.outputFormat
                     },
                     networkOptions : {
                         crossOrigin : "omit"
@@ -335,23 +186,12 @@ function (
                     minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
                 }
                 layerOpts = lOpts ;
-                if (!layerOpts.tileMatrixSetLimits) {
-                    layerOpts.tileMatrixSetLimits = this._getTMSLimits(layerOpts.tileMatrixSet);
-                }
-                if (!layerOpts.minZoom) {
-                    layerOpts.minZoom = Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
-                }
-                if (!layerOpts.maxZoom) {
-                    layerOpts.maxZoom = Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
-                }
                 layer = {
                     type  : layerOpts.type || "color",
                     url  : layerOpts.url,
                     protocol  : layerOpts.format.toLowerCase(),
                     id  : layerId,
                     title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || 1,
-                    opacity : layerOpts.opacity || 1,
                     updateStrategy  : {
                         type  : "0",
                         options  : {}
@@ -361,28 +201,16 @@ function (
                     },
                     options  : {
                         tileMatrixSet  : layerOpts.tileMatrixSet,
-                        tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits,
+                        tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits || this._getTMSLimits(layerOpts.tileMatrixSet),
                         mimetype  : layerOpts.outputFormat,
                         name  : layerOpts.layer,
-                        style  : layerOpts.styleName,
-                        zoom : {
-                            min : layerOpts.minZoom,
-                            max : layerOpts.maxZoom
-                        }
+                        style  : layerOpts.styleName
                     },
                     version  : layerOpts.version,
                     minScaleDenominator  : minScaleDenominator || null,
                     maxScaleDenominator  : maxScaleDenominator || null,
                     processingOptions  : layerOpts.processingOptions
                 };
-                if (layerOpts.levelsToLoad) {
-                    layer.updateStrategy = {
-                        type  : 1,
-                        options  : {
-                            groups : layerOpts.levelsToLoad
-                        }
-                    };
-                }
                 break;
             default :
         }
@@ -482,15 +310,12 @@ function (
             return ;
         }
 
-        var position = {
-            tilt : 45.,
-            heading : 90.,
+        var coordinates = {
             longitude  : point.x,
             latitude  : point.y
         };
-
         // set the camera aimed point on the specified coords
-        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
+        this.libMap.controls.setCameraTargetGeoPositionAdvanced(coordinates, false);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
@@ -498,7 +323,7 @@ function (
      * retourne les coordonnées courantes du centre de la carte
      */
     IT.prototype.getCenter = function () {
-        var cameraCenter = this.libMap.getGlobeView().controls.getCameraTargetGeoPosition();
+        var cameraCenter = this.libMap.controls.getCameraTargetGeoPosition();
         var center = {
             lon  : cameraCenter.longitude(),
             lat  : cameraCenter.latitude(),
@@ -512,7 +337,7 @@ function (
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
-        var zoom = this.libMap.getGlobeView().controls.getZoom() - 1;
+        var zoom = this.libMap.controls.getZoom() - 1;
         return zoom;
     };
 
@@ -524,9 +349,8 @@ function (
             console.log("no valid zoomLevel") ;
             return ;
         }
-        zoom = parseInt(zoom, 10);
         // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
-        this.libMap.getGlobeView().controls.setZoom(zoom + 1, false);
+        this.libMap.controls.setZoom(zoom + 1, false);
         this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
     };
 
@@ -558,9 +382,7 @@ function (
      * retourne l'azimut courant de la carte
      */
     IT.prototype.getAzimuth = function () {
-        // itowns north orientation is equal to 90
-        // itowns orientation is anticlockwise
-        return this._convertAzimuth(this.libMap.getGlobeView().controls.getCameraOrientation()[1]);
+        return this.libMap.controls.getCameraOrientation()[1];
     };
 
     /**
@@ -571,11 +393,12 @@ function (
             console.log("Not a valid azimuth  : must be a float") ;
             return ;
         }
-        // itowns north orientation is equal to 90
-        // itowns orientation is anticlockwise
-        var itownsAzimuth = this._convertAzimuth(azimuth);
+        var itownsAzimuth = azimuth + 90;
+        if (itownsAzimuth >= 360) {
+            itownsAzimuth = itownsAzimuth - 360;
+        }
         // IT method to set the camera orientation
-        this.libMap.getGlobeView().controls.setHeading(itownsAzimuth, false);
+        this.libMap.controls.setHeading(itownsAzimuth, true);
         this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
     };
 
@@ -583,20 +406,19 @@ function (
      * retourne l'inclinaison courante de la carte
      */
     IT.prototype.getTilt = function () {
-        return this.libMap.getGlobeView().controls.getCameraOrientation()[0];
+        return this.libMap.controls.getCameraOrientation()[0];
     };
 
     /**
      * définit l'inclinaison de la caméra
      */
     IT.prototype.setTilt = function (tilt) {
-        tilt = parseFloat(tilt);
         if (isNaN(tilt) || tilt < 0 || tilt > 90) {
             console.log("no valid tilt angle") ;
             return ;
         }
         // methode setTilt d'itowns pour régler l'inclinaison
-        this.libMap.getGlobeView().controls.setTilt(tilt, false);
+        this.libMap.controls.setTilt(tilt, false);
         this.logger.trace("[IT] - setTilt(" + tilt + ")") ;
     };
 
@@ -653,7 +475,7 @@ function (
         if (controlOpts.altitude) {
             mpOpts.altitude = controlOpts.altitude ;
         }
-        var control = new Itowns.control.MousePosition(mpOpts) ;
+        var control = new itowns.control.MousePosition(mpOpts) ;
         this.libMap.addWidget( control );
         return control ;
     } ;
@@ -715,110 +537,10 @@ function (
         }
 
         this.logger.trace("[IT]  : layerSwitcher Opts  : ... ") ;
-        var control = new Itowns.control.LayerSwitcher(lsOpts) ;
+        var control = new itowns.control.LayerSwitcher(lsOpts) ;
         this.libMap.addWidget( control );
         return control ;
     };
-
-    /**
-     * Adds overview map to the map.
-     *
-     * @param {Object} controlOpts - control options
-     * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
-     * @param {Boolean} controlOpts.maximised - Display or not the control
-     * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
-     * @param {Number} controlOpts.width - The width of the minimap (100px by default)
-     * @param {Number} controlOpts.height - The height of the minimap (100px by default)
-     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
-     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
-     */
-    IT.prototype.addOverviewControl = function (controlOpts) {
-        this.logger.trace("[IT] addOverviewControl : ... ") ;
-        var ovControlOptions = {};
-        if (controlOpts.position) {
-            ovControlOptions.position = controlOpts.position;
-        } else {
-            ovControlOptions.position = "absolute";
-        }
-        if (controlOpts.div) {
-            ovControlOptions.target = controlOpts.div;
-        }
-        var control = new Itowns.control.MiniGlobe(ovControlOptions);
-        this.libMap.addWidget(control) ;
-        if (control.getElement()) {
-            // hide the div if maximised option = false
-            if (controlOpts.maximised == false) {
-                control.getElement().style.display = "none";
-            } else {
-                control.getElement().style.display = "inline";
-            }
-            // modify the size of the miniglobe if width or height is given as option
-            if (!isNaN(controlOpts.width)) {
-                control.getElement().style.width = controlOpts.width + "px";
-                control.getElement().getElementsByTagName("canvas")[0].style.width = controlOpts.width + "px";
-            }
-            if (!isNaN(controlOpts.height)) {
-                control.getElement().style.height = controlOpts.height + "px";
-                control.getElement().getElementsByTagName("canvas")[0].style.height = controlOpts.height + "px";
-            }
-            // modify the position of the miniglobe if x or y is given as option
-
-            if (!isNaN(controlOpts.x)) {
-                control.getElement().style.left = Number(controlOpts.x) + "px";
-            }
-            if (!isNaN(controlOpts.y)) {
-                control.getElement().style.bottom = Number(controlOpts.y) + "px";
-            }
-
-            // update the canvas to fit with the overview element size
-            var elementSize = {};
-            elementSize.width = parseFloat(control.getElement().style.width) || 100;
-            elementSize.height = parseFloat(control.getElement().style.height) || 100;
-            control._globeObj.mainLoop.gfxEngine.onWindowResize(elementSize.width, elementSize.height);
-        }
-
-        return control ;
-    } ;
-
-    /**
-     * Ajoute l'echelle graphique sur la carte
-     *
-     * @param {Object} controlOpts - options du controle
-     * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
-     * @param {Boolean} controlOpts.maximised - Display or not the control
-     * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
-     * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
-     */
-    IT.prototype.addGraphicScaleControl = function (controlOpts) {
-        this.logger.trace("[IT] addGraphicScaleControl...") ;
-        var scaleControlOptions = {};
-        if (controlOpts.position) {
-            scaleControlOptions.position = controlOpts.position;
-        } else {
-            scaleControlOptions.position = "absolute";
-        }
-        if (controlOpts.div) {
-            scaleControlOptions.target = controlOpts.div;
-        }
-        var control =  new Itowns.control.Scale(scaleControlOptions);
-        this.libMap.addWidget(control) ;
-        if (control.getElement()) {
-            // hide the div if maximised option = false
-            if (controlOpts.maximised == false) {
-                control.getElement().style.display = "none";
-            } else {
-                control.getElement().style.display = "inline";
-            }
-            // modify the position of the scaleBar if x or y is given as option
-            if (!isNaN(controlOpts.x)) {
-                control.getElement().style.left = Number(controlOpts.x) + "px";
-            }
-            if (!isNaN(controlOpts.y)) {
-                control.getElement().style.bottom = Number(controlOpts.y) + "px";
-            }
-        }
-        return control ;
-    } ;
 
     /**
      * Ajoute l'outil d'attributions
@@ -832,7 +554,7 @@ function (
             attOpts.options.target = controlOpts.div ;
         }
         attOpts.options.collapsed = controlOpts.maximised ? false : true ;
-        var control = new Itowns.control.Attribution(attOpts);
+        var control = new itowns.control.Attribution(attOpts);
         this.libMap.addWidget(control) ;
         return control ;
     } ;
@@ -962,7 +684,7 @@ function (
             }
             if (commonOpts.hasOwnProperty("zIndex")) {
                 this.logger.trace("[IMap] modifyLayers  : setting zIndex of  : [" + _layerObj.id + "] to  : " + commonOpts.zIndex) ;
-                Itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap.getGlobeView(), _layerObj.id, commonOpts.zIndex);
+                itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap, _layerObj.id, commonOpts.zIndex);
             }
             /* TODO A compléter
             if (commonOpts.hasOwnProperty("minResolution")) {
@@ -1122,18 +844,18 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
+                registredEvent.eventOrigin = this.libMap.controls;
                 registredEvent.eventType = "camera-target-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
                 break ;
             case "zoomChanged"  :
-                var oldZoom = context.getZoom();
+                var oldZoom = this.libMap.controls.getZoom();
                 /**
                 * zoomChanged callback
                 */
                 var callbackZoomchange = function (itEvent) {
                     // on récupère le zoom
-                    var newZoom = context.getZoom();
+                    var newZoom = context.libMap.controls.getZoom();
                     // si le zoom n'a pas changé, on sort
                     if (newZoom === oldZoom) {
                         return;
@@ -1148,7 +870,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
+                registredEvent.eventOrigin = this.libMap.controls;
                 registredEvent.eventType = "range-changed";
                 // on écoute le range (et non le zoom, non implémenté côté itowns)
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
@@ -1162,13 +884,13 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldAzimuth  : context._convertAzimuth(itEvent.previous.heading),
-                        newAzimuth  : context._convertAzimuth(itEvent.new.heading)
+                        oldAzimuth  : itEvent.previous.heading,
+                        newAzimuth  : itEvent.new.heading
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
+                registredEvent.eventOrigin = this.libMap.controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
                 break ;
@@ -1187,7 +909,7 @@ function (
                 };
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
+                registredEvent.eventOrigin = this.libMap.controls;
                 registredEvent.eventType = "orientation-changed";
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
                 break ;
@@ -1223,7 +945,7 @@ function (
                 } ;
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
+                registredEvent.eventOrigin = this.libMap;
                 registredEvent.eventType = "layer-added";
                 // abonnement à un ajout de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
@@ -1241,7 +963,7 @@ function (
 
                 // ajout de l'evenement au tableau des événements
                 var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
+                registredEvent.eventOrigin = this.libMap;
                 registredEvent.eventType = "layer-removed";
                 // abonnement à un retrait de couche
                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
@@ -1381,7 +1103,7 @@ function (
      * @param {String} layerId - IT layer id
      */
     IT.prototype._getItownsColorLayerById = function ( layerId ) {
-        var layer = this.libMap.getGlobeView().getLayers(function (layer) {
+        var layer = this.libMap.getLayers(function (layer) {
             if (layer.id === layerId && layer.type === "color") {
                 return layer;
             }
@@ -1392,24 +1114,6 @@ function (
         }
         return layer[0] ;
     } ;
-
-    /**
-     * converti l'azimuth dans la lib spécifié
-     *
-     * @param {Number} azimuth - azimuth à convertir
-     *
-     * @return {Number} convertedAzimuth - azimith converti dans systeme le geoportail ou itowns
-     */
-    IT.prototype._convertAzimuth = function (azimuth) {
-        var convertedAzimuth = 90 - azimuth;
-        while (convertedAzimuth >= 360) {
-            convertedAzimuth = convertedAzimuth - 360;
-        }
-        while (convertedAzimuth < 0) {
-            convertedAzimuth = convertedAzimuth + 360;
-        }
-        return convertedAzimuth;
-    };
 
     /**
      * Gets Layer Container div ID for a given layerId.
@@ -1474,9 +1178,8 @@ function (
       *
       */
     IT.prototype._getTMSLimits = function (TMSID) {
-        var TMSlimits;
         if (TMSID === "PM") {
-            TMSlimits = {
+            var TMSlimits = {
                 0  : {
                     minTileRow  : "0",
                     maxTileRow  : "1",
@@ -1608,119 +1311,6 @@ function (
                     maxTileRow : "2097152",
                     minTileCol : "0",
                     maxTileCol : "2097152"
-                }
-            };
-            return TMSlimits;
-        }
-        if (TMSID === "WGS84G") {
-            TMSlimits = {
-                0 : {
-                    minTileRow : 0,
-                    maxTileRow : 1,
-                    minTileCol : 0,
-                    maxTileCol : 2
-                },
-                1 : {
-                    minTileRow : 0,
-                    maxTileRow : 2,
-                    minTileCol : 0,
-                    maxTileCol : 4
-                },
-                2 : {
-                    minTileRow : 0,
-                    maxTileRow : 4,
-                    minTileCol : 0,
-                    maxTileCol : 8
-                },
-                3 : {
-                    minTileRow : 0,
-                    maxTileRow : 8,
-                    minTileCol : 0,
-                    maxTileCol : 16
-                },
-                4 : {
-                    minTileRow : 0,
-                    maxTileRow : 16,
-                    minTileCol : 0,
-                    maxTileCol : 32
-                },
-                5 : {
-                    minTileRow : 0,
-                    maxTileRow : 32,
-                    minTileCol : 0,
-                    maxTileCol : 64
-                },
-                6 : {
-                    minTileRow : 0,
-                    maxTileRow : 64,
-                    minTileCol : 0,
-                    maxTileCol : 128
-                },
-                7 : {
-                    minTileRow : 0,
-                    maxTileRow : 128,
-                    minTileCol : 0,
-                    maxTileCol : 256
-                },
-                8 : {
-                    minTileRow : 0,
-                    maxTileRow : 256,
-                    minTileCol : 0,
-                    maxTileCol : 512
-                },
-                9 : {
-                    minTileRow : 0,
-                    maxTileRow : 512,
-                    minTileCol : 0,
-                    maxTileCol : 1024
-                },
-                10 : {
-                    minTileRow : 0,
-                    maxTileRow : 1024,
-                    minTileCol : 0,
-                    maxTileCol : 2048
-                },
-                11 : {
-                    minTileRow : 0,
-                    maxTileRow : 2048,
-                    minTileCol : 0,
-                    maxTileCol : 4096
-                },
-                12 : {
-                    minTileRow : 0,
-                    maxTileRow : 4096,
-                    minTileCol : 0,
-                    maxTileCol : 8192
-                },
-                13 : {
-                    minTileRow : 0,
-                    maxTileRow : 8192,
-                    minTileCol : 0,
-                    maxTileCol : 16384
-                },
-                14 : {
-                    minTileRow : 0,
-                    maxTileRow : 16384,
-                    minTileCol : 0,
-                    maxTileCol : 32768
-                },
-                15 : {
-                    minTileRow : 0,
-                    maxTileRow : 32768,
-                    minTileCol : 0,
-                    maxTileCol : 65536
-                },
-                16 : {
-                    minTileRow : 0,
-                    maxTileRow : 65536,
-                    minTileCol : 0,
-                    maxTileCol : 131072
-                },
-                17 : {
-                    minTileRow : 0,
-                    maxTileRow : 131072,
-                    minTileCol : 0,
-                    maxTileCol : 262144
                 }
             };
             return TMSlimits;
