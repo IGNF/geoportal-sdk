@@ -897,7 +897,7 @@ function (
             // Dans le cas où aucune visibilité n'est spécifiée
             if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
                 // on la règle à "true" par défaut
-                layerOpts.visibility = 1;
+                layerOpts.visibility = true;
             }
 
             // on met à jour le tableau des couches

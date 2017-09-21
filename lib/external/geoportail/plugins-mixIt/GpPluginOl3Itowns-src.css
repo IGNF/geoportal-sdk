@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-09-19
+ * @date 2017-09-21
  *
  */
 /* MOUSE POSITION */
@@ -3997,7 +3997,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-09-19
+ * @date 2017-09-21
  *
  */
 /* MOUSE POSITION */
@@ -6651,6 +6651,15 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6741,15 +6750,6 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
 }
 
 /* MOUSE POSITION */
