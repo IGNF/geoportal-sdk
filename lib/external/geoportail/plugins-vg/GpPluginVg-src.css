@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 5.0.0
- * @date 2017-07-27
+ * @date 2017-09-21
  *
  */
 /* MOUSE POSITION */
@@ -2877,6 +2877,57 @@ div[id^=GPmousePositionPanelClose]  {
 #GPreverseGeocodingPanelClose {
   background-image: url("img/GPreverseGeocodingOpen.png");
 }
+/* ROUTE */
+
+#GProute {
+  left: 10px;
+}
+
+/* Showing/hiding route panel */
+
+#GPshowRouteOpen {
+  background-image: url("img/GProuteOpen.png");
+}
+
+/* General panels */
+
+#GProutePanel {
+  left: 8px;
+}
+
+#GProutePanelClose {
+  background-image: url("img/GProuteOpen.png");
+}
+
+/* Route form */
+
+.GProuteOriginPointerImg,
+.GProuteStageRemove,
+#GProuteStageAdd,
+.GProuteTransportImg {
+  background-image: url("img/GProuteOptions.png");
+}
+
+.GProuteExclusionsOption {
+  background-image: url("img/GProuteCheck.png");
+}
+
+/* Results panel */
+
+#GProuteResultsValueDist,
+#GProuteResultsValueTime {
+  color: #366291;
+}
+
+#GProuteResultsNew {
+  background-color: #366291;
+  background-image: url("img/GProuteOptions.png");
+}
+
+#GProuteResultsShowDetails + label:hover,
+#GProuteResultsShowDetails + label + label:hover {
+  color: #366291;
+}
 /* SEARCH ENGINE */
 
 #GPsearchEngine {
@@ -2931,55 +2982,4 @@ div[id^=GPmousePositionPanelClose]  {
 #GPgeocodeResultsList {
   top: 40px;
   border-radius: 4px;
-}
-/* ROUTE */
-
-#GProute {
-  left: 10px;
-}
-
-/* Showing/hiding route panel */
-
-#GPshowRouteOpen {
-  background-image: url("img/GProuteOpen.png");
-}
-
-/* General panels */
-
-#GProutePanel {
-  left: 8px;
-}
-
-#GProutePanelClose {
-  background-image: url("img/GProuteOpen.png");
-}
-
-/* Route form */
-
-.GProuteOriginPointerImg,
-.GProuteStageRemove,
-#GProuteStageAdd,
-.GProuteTransportImg {
-  background-image: url("img/GProuteOptions.png");
-}
-
-.GProuteExclusionsOption {
-  background-image: url("img/GProuteCheck.png");
-}
-
-/* Results panel */
-
-#GProuteResultsValueDist,
-#GProuteResultsValueTime {
-  color: #366291;
-}
-
-#GProuteResultsNew {
-  background-color: #366291;
-  background-image: url("img/GProuteOptions.png");
-}
-
-#GProuteResultsShowDetails + label:hover,
-#GProuteResultsShowDetails + label + label:hover {
-  color: #366291;
 }
