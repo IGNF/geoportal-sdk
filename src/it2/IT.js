@@ -212,7 +212,7 @@ function (
             // Dans le cas où aucune visibilité n'est spécifiée
             if (!layerOpts.hasOwnProperty("visibility") || typeof(layerOpts.visibility) === "undefined") {
                 // on la règle à "true" par défaut
-                layerOpts.visibility = 1;
+                layerOpts.visibility = true;
             }
 
             this._layers.push({
@@ -292,7 +292,7 @@ function (
                     name  : layerNames,
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || 1,
+                    visible : layerOpts.visibility || true,
                     opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
@@ -348,7 +348,7 @@ function (
                     protocol  : layerOpts.format.toLowerCase(),
                     id  : layerId,
                     title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || 1,
+                    visible : layerOpts.visibility || true,
                     opacity : layerOpts.opacity || 1,
                     updateStrategy  : {
                         type  : "0",
