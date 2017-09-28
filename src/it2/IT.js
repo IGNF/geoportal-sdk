@@ -97,8 +97,8 @@ function (
 
                 // position à l'initialisation
                 var positionOnGlobe = {
-                    longitude  : 0,
-                    latitude  : 0,
+                    longitude  : this.mapOptions.center.x,
+                    latitude  : this.mapOptions.center.y,
                     altitude  : 25000000
                 };
 
@@ -114,13 +114,12 @@ function (
                     window.setTimeout(function () {
                         self.div.style.visibility = "";
                     }, 1);
-
-                    self._afterInitMap();
                     // FIXME en attendant que la variable positionOnGlobe puisse prendre
                     // un zoom / une echelle (et non une altitude) et les params necessaires.
                     self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
                     self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
                     self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
+                    self._afterInitMap();
                 });
             },
             function () {
@@ -336,12 +335,6 @@ function (
                 if (!layerOpts.tileMatrixSetLimits) {
                     layerOpts.tileMatrixSetLimits = this._getTMSLimits(layerOpts.tileMatrixSet);
                 }
-                if (!layerOpts.minZoom) {
-                    layerOpts.minZoom = Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
-                }
-                if (!layerOpts.maxZoom) {
-                    layerOpts.maxZoom = Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
-                }
                 layer = {
                     type  : layerOpts.type || "color",
                     url  : layerOpts.url,
@@ -362,17 +355,29 @@ function (
                         tileMatrixSetLimits  : layerOpts.tileMatrixSetLimits,
                         mimetype  : layerOpts.outputFormat,
                         name  : layerOpts.layer,
-                        style  : layerOpts.styleName,
-                        zoom : {
-                            min : layerOpts.minZoom,
-                            max : layerOpts.maxZoom
-                        }
+                        style  : layerOpts.styleName
                     },
                     version  : layerOpts.version,
                     minScaleDenominator  : minScaleDenominator || null,
                     maxScaleDenominator  : maxScaleDenominator || null,
                     processingOptions  : layerOpts.processingOptions
                 };
+                if (layerOpts.minZoom && layerOpts.maxZoom) {
+                    layer.options.zoom = {
+                        min : layerOpts.minZoom,
+                        max : layerOpts.maxZoom
+                    };
+                } else if (layerOpts.minZoom && !layerOpts.maxZoom) {
+                    layer.options.zoom = {
+                        min : layerOpts.minZoom,
+                        max : Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)))
+                    };
+                } else if (!layerOpts.minZoom && layerOpts.maxZoom) {
+                    layer.options.zoom = {
+                        min : Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number))),
+                        max : layerOpts.maxZoom
+                    };
+                }
                 if (layerOpts.levelsToLoad) {
                     layer.updateStrategy = {
                         type  : 1,
