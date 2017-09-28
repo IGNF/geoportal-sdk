@@ -59,7 +59,7 @@ function (
     IT.CONTROLSCLASSES = {
         mouseposition  : "itowns.control.MousePosition",
         layerswitcher  : "itowns.control.LayerSwitcher",
-        attributions : "itowns.control.Attribution",
+        attributions : "itowns.control.Attributions",
         overview : "itowns.control.MiniGlobe",
         graphicscale : "itowns.control.Scale"
 
@@ -829,7 +829,7 @@ function (
             attOpts.options.target = controlOpts.div ;
         }
         attOpts.options.collapsed = controlOpts.maximised ? false : true ;
-        var control = new Itowns.control.Attribution(attOpts);
+        var control = new Itowns.control.Attributions(attOpts);
         this.libMap.addWidget(control) ;
         return control ;
     } ;
