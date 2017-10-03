@@ -563,7 +563,7 @@
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*-src.css"));
             srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
-            srcdir.push(path.join(_.res, "itowns", "*.css"));
+            srcdir.push(path.join(_.res, "it2", "*.css"));
         }
         else {
             $.util.log("Exception !");

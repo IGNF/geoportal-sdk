@@ -273,29 +273,35 @@
                        {"name":"MPM","attribution":"Marseille Provence Métropole","logo":"http://wxs.ign.fr/static/logos/MPM/MPM.gif","url":"http://www.marseille-provence.com/","constraints":[{"crs":"EPSG:4326","bbox":{"left":5.076959,"right":5.7168245,"top":43.454994,"bottom":43.153347},"minScaleDenominator":534,"maxScaleDenominator":534,"temporalExtent":["2008-06-18","2016-04-13"]}]}
                     ],
                 },
-                "KML" : {
-                    title : "KML",
-                    description : "Photographies aériennes",
+                "KML_1" : {
+                    title : "Paris 1",
+                    description : "KML de Paris numéro 1",
                     format : "KML",
-                    url : "https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/croquis.kml",
+                    url : "../data/paris_1.kml",
                     opacity : 0.7,
                     minZoom : 8,
                     maxZoom : 15,
                     visibility : true,
-                    styleOptions : {
-                        strokeColor : "yellow",
-                        strokeWidth : 4,
-                        strokeOpacity : 1,
-                        polyFillColor : "blue",
-                        polyFillOpacity : 1
-                    }
+                    opacity : 1
+                },
+                "KML_2" : {
+                    title : "Paris 2",
+                    description : "KML de Paris numéro 2",
+                    format : "KML",
+                    url : "../data/paris_2.kml",
+                    opacity : 0.7,
+                    minZoom : 8,
+                    maxZoom : 15,
+                    visibility : true,
+                    opacity : 1
                 }
             },
             center : {
                 x : 6.873,
-                y : 45.9
+                y : 46
             },
-            zoom : 10
+            zoom : 6,
+            extractStyles : true
         });
         </script>
     </body>

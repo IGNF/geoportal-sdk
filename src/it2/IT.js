@@ -119,6 +119,7 @@ function (
                     self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
                     self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
                     self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
+                    self.div.addEventListener("click", self._onMapClick.bind(self));
                     self._afterInitMap();
                 });
             },
@@ -127,6 +128,193 @@ function (
             },
             this);
 
+    } ;
+
+    /**
+     * Action triggered when map is clicked
+     */
+    IT.prototype._onMapClick = function (evt) {
+        this.logger.trace("[IT] : _onMapClick...") ;
+        this._removeInfoDivs();
+        var position = {
+            x : evt.layerX,
+            y : evt.layerY
+        };
+        // retrieve the vector layer of the map
+        var vectorLayers = this.libMap.getGlobeView().getLayers( function (layer) {
+            if (layer.protocol === "rasterizer") {
+                return layer;
+            }
+        });
+        if (!vectorLayers) {
+            return;
+        }
+        // array of the visible features on the clicker coord
+        var visibleFeatures = [];
+
+        var geoCoord = this.libMap.getGlobeView().controls.pickGeoPosition(position.x, position.y);
+        if (geoCoord) {
+            // buffer around the click inside we retrieve the features
+            var precision = this.libMap.getGlobeView().controls.pixelsToDegrees(5);
+            for (var i = 0; i < vectorLayers.length; i++) {
+                var idx;
+                var layer = vectorLayers[i];
+                // if the layer is not visible, we ignore it
+                if (!layer.visible) {
+                    continue;
+                }
+                var result = itowns.FeaturesUtils.getFeaturesAtCoordinate(geoCoord, layer.feature, precision);
+                // we add the features to the visible features array
+                if (result.points.length) {
+                    for (idx = 0; idx < result.points.length; idx++ ) {
+                        visibleFeatures.push(result.points[idx]);
+                    }
+                }
+                if (result.lines.length) {
+                    for (idx = 0; idx < result.lines.length; idx++ ) {
+                        visibleFeatures.push(result.lines[idx]);
+                    }
+                }
+                if (result.polygons.length) {
+                    for (idx = 0; idx < result.polygons.length; idx++ ) {
+                        visibleFeatures.push(result.polygons[idx]);
+                    }
+                }
+            }
+        }
+
+        if (visibleFeatures.length == 0) {
+            // no visible features
+            return ;
+        }
+
+        var content = this._features2html(visibleFeatures) ;
+        // Affichage des features.
+        this._displayInfo(position, content.innerHTML) ;
+    } ;
+
+    /**
+    * Remove all the feature info PopUp displayed on the map.
+    *
+    */
+    IT.prototype._removeInfoDivs = function () {
+        var featureInfoDivs = document.getElementsByClassName("gp-feature-info-div-it");
+        if (featureInfoDivs.length > 0) {
+            for (var i = 0;  i < featureInfoDivs.length; i++) {
+                featureInfoDivs[i].parentNode.removeChild(featureInfoDivs[i]);
+            }
+        }
+    };
+
+    /**
+     * Gets HTML content from features array
+     *
+     * @param {Array} features - itowns features Array
+     * @returns {String} HTML content.
+     */
+    IT.prototype._features2html = function (features) {
+        this.logger.trace("[IT] : _features2html...") ;
+        var content = document.createElement("div") ;
+        features.forEach(function (f) {
+            var props = {};
+            if (f.properties) {
+                props = f.properties;
+            }
+            var nameDiv;
+            nameDiv = document.createElement("div") ;
+            nameDiv.className =  "gp-att-name-div" ;
+            if (props.hasOwnProperty("name")) {
+                nameDiv.innerHTML = props.name ;
+                content.appendChild(nameDiv) ;
+            } else if (f.properties.description) {
+                nameDiv.innerHTML = props.description;
+                content.appendChild(nameDiv) ;
+            }  else {
+                nameDiv.innerHTML = "UNKNOWN FEATURE NAME";
+                content.appendChild(nameDiv) ;
+            }
+            if (props.hasOwnProperty("description")) {
+                var descDiv = document.createElement("div") ;
+                descDiv.className = "gp-att-description-div" ;
+                descDiv.innerHTML = props["description"] ;
+                content.appendChild(descDiv) ;
+            }
+            var p = null ;
+            var others = false ;
+            var oDiv = null ;
+            var ul = null ;
+            var li = null ;
+            for (p in props) {
+                if (p == "geometry" || p == "name" || p == "description" || p == "encoding") {
+                    continue ;
+                }
+                if (!others) {
+                    oDiv = document.createElement("div") ;
+                    oDiv.className = "gp-att-others-div" ;
+                    ul = document.createElement("ul") ;
+                    others = true ;
+                }
+                li = document.createElement("li") ;
+                var span = document.createElement("span") ;
+                span.className = "gp-attname-others-span" ;
+                span.innerHTML = p + " : ";
+                li.appendChild(span) ;
+                li.appendChild(document.createTextNode(props[p])) ;
+                ul.appendChild(li) ;
+            }
+            if (ul) {
+                oDiv.appendChild(ul) ;
+                content.appendChild(oDiv) ;
+            }
+        },this) ;
+
+        return content ;
+    } ;
+
+    /**
+     * Info Popup creation and display
+     *
+     * @param {Object} position - position on the screen where to display the popUp
+     * @param {HTMLElement} content - content to display
+     */
+    IT.prototype._displayInfo = function (position, content) {
+        this.logger.trace("[IT] : _displayInfo...") ;
+
+        // Affichage des features.
+        var element = document.createElement("div");
+        element.className = "gp-feature-info-div-it";
+
+        var closer = document.createElement("input");
+        closer.type = "button" ;
+        closer.className = "gp-styling-button closer";
+        /**
+         * fait disparaître la popup au clic sur x
+         */
+        closer.onclick = function (evt) {
+            element.parentNode.removeChild(element);
+            // to not fire _onMapClick function
+            evt.stopPropagation();
+            return false;
+        };
+
+        var contentDiv = document.createElement("div");
+        var mapDiv = document.getElementById(this.div.id);
+        contentDiv.className = "gp-features-content-div-it" ;
+        contentDiv.innerHTML = content ;
+        element.appendChild(contentDiv);
+        element.appendChild(closer);
+        element.style.position = "absolute";
+        element.style.width = "280px";
+        element.style.height = "130px";
+        var posX = mapDiv.offsetWidth / 2 - parseInt(element.style.width, 10) / 2;
+        var posY = mapDiv.offsetHeight / 2 - parseInt(element.style.height, 10) / 2;
+        element.style.left = posX + "px";
+        element.style.top = posY + "px";
+        element.style.zIndex = "10";
+        element.style.overflow = "auto";
+        // You can use native DOM methods to insert the fragment:
+
+        mapDiv.appendChild(element);
     } ;
 
     /**
