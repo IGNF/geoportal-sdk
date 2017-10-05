@@ -417,11 +417,7 @@ function (
                 layer.type = "elevation";
                 // we add the noDataValue if it is given
                 if (layerOpts.noDataValue) {
-                    layer.noDataValue = layerOpts.noDataValue.toString();
-                }
-                // we add the noDataValueTolerance if it is given and if a nodata is given
-                if (layerOpts.noDataValueTolerance && layerOpts.noDataValue) {
-                    layer.noDataValueTolerance = layerOpts.noDataValueTolerance.toString();
+                    layer.noDataValue = layerOpts.noDataValue;
                 }
             } else {
                 var LSControl = this.getLibMapControl("layerswitcher");
