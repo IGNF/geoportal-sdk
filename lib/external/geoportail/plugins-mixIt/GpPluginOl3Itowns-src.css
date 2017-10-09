@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-09-28
+ * @date 2017-10-09
  *
  */
 /* MOUSE POSITION */
@@ -1681,7 +1681,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 110px;
+  width: 90px;
 }
 
 /* Showing settings */
@@ -3588,24 +3588,6 @@ div[id^="GPimportGetCapResults-"] {
   background-color: #CEDBEF
 }
 
-/* Location */
-
-.GPlocationOriginPointerImg,
-.GPlocationStageRemove,
-div[id^=GPlocationStageAdd],
-.GPlocationTransportImg {
-  background-image: url("img/GPlocationOptions.png");
-}
-
-/* All div elements whose class attribute value begins with "GPlocationPoint" */
-div[class*="GPlocationPoint"] {
-    position: relative;
-}
-
-.GPlocationStageFlexInput {
-    margin-bottom: 5px;
-}
-
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-] {
@@ -3696,6 +3678,24 @@ div[id^=GPlayerInfoClose] {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
+}
+
+/* Location */
+
+.GPlocationOriginPointerImg,
+.GPlocationStageRemove,
+div[id^=GPlocationStageAdd],
+.GPlocationTransportImg {
+  background-image: url("img/GPlocationOptions.png");
+}
+
+/* All div elements whose class attribute value begins with "GPlocationPoint" */
+div[class*="GPlocationPoint"] {
+    position: relative;
+}
+
+.GPlocationStageFlexInput {
+    margin-bottom: 5px;
 }
 
 /* MEASURELENGTH POSITION */
@@ -3997,7 +3997,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-09-28
+ * @date 2017-10-09
  *
  */
 /* MOUSE POSITION */
@@ -5668,7 +5668,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 110px;
+  width: 90px;
 }
 
 /* Showing settings */
@@ -6651,15 +6651,6 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
-}
-
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6750,6 +6741,15 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
+}
+
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
 }
 
 /* MOUSE POSITION */
