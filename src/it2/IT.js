@@ -148,7 +148,8 @@ function (
         layerOpts.format = layerOpts.format.toLowerCase();
         switch (layerOpts.format.toUpperCase()) {
             case "KML":
-                this.logger.trace("ajout d'une couche KML");
+            case "GEOJSON":
+                this.logger.trace("ajout d'une couche KML / GEOJSON");
                 layer = {
                     url : layerOpts.url,
                     id : layerId,
@@ -188,9 +189,6 @@ function (
                 break;
             case "GEORSS":
                 // TODO GeoRSS
-                break;
-            case "GEOJSON":
-                // TODO ???
                 break;
             case "WFS":
                 // TODO ???
