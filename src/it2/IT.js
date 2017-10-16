@@ -163,22 +163,10 @@ function (
                 if (!layer.visible) {
                     continue;
                 }
-                var result = itowns.FeaturesUtils.getFeaturesAtCoordinate(geoCoord, layer.feature, precision);
+                var result = itowns.FeaturesUtils.filterFeaturesUnderCoordinate(geoCoord, layer.feature, precision);
                 // we add the features to the visible features array
-                if (result.points.length) {
-                    for (idx = 0; idx < result.points.length; idx++ ) {
-                        visibleFeatures.push(result.points[idx]);
-                    }
-                }
-                if (result.lines.length) {
-                    for (idx = 0; idx < result.lines.length; idx++ ) {
-                        visibleFeatures.push(result.lines[idx]);
-                    }
-                }
-                if (result.polygons.length) {
-                    for (idx = 0; idx < result.polygons.length; idx++ ) {
-                        visibleFeatures.push(result.polygons[idx]);
-                    }
+                for (idx = 0; idx < result.length; idx++) {
+                    visibleFeatures.push(result[idx]);
                 }
             }
         }
