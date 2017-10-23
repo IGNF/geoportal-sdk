@@ -436,6 +436,8 @@ function (
                     layerNames = layerId;
                     layerOpts.layers = [layerId];
                 }
+                // itowns needs a bbox to display the layer
+                // if the layer is in PM, the bbox needs to be in planar coordinates
                 if (layerOpts.bbox) {
                     boundingBox = {
                         west  : layerOpts.bbox[0],
@@ -443,7 +445,16 @@ function (
                         south  : layerOpts.bbox[1],
                         north  : layerOpts.bbox[3]
                     };
+                } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
+                    // world bbox in PM (EPSG:3857)
+                    boundingBox = {
+                        west  : -20026376.39,
+                        east  : 20026376.39,
+                        south  : -20048966.10,
+                        north  : 20048966.10
+                    };
                 } else {
+                    // world bbox in WGS84 (EPSG:4326)
                     boundingBox = {
                         west  : -180,
                         east  : 180,
@@ -466,7 +477,7 @@ function (
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
                     visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
+                    opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
