@@ -119,7 +119,23 @@ function (
                     self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
                     self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
                     self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
-                    self.div.addEventListener("click", self._onMapClick.bind(self));
+
+                    // pour faire la distinction entre le click et le drag
+                    var isDragging = false;
+                    self.div.addEventListener("mousedown", function () {
+                        isDragging = false;
+                    }, false);
+                    self.div.addEventListener("mousemove", function () {
+                        isDragging = true;
+                    }, false);
+                    self.div.addEventListener("mouseup", function (evt) {
+                        if ( isDragging ) {
+                            self._removeInfoDivs();
+                        } else {
+                            self._onMapClick(evt);
+                        }
+                    }, false);
+
                     self._afterInitMap();
                 });
             },
@@ -233,9 +249,15 @@ function (
             var ul = null ;
             var li = null ;
             for (p in props) {
-                if (p == "geometry" || p == "name" || p == "description" || p == "encoding") {
+                if (p == "name" || p == "description" || p == "styleUrl" || p == "styleHash") {
                     continue ;
                 }
+
+                // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
+                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx") {
+                    continue ;
+                }
+
                 if (!others) {
                     oDiv = document.createElement("div") ;
                     oDiv.className = "gp-att-others-div" ;
@@ -280,10 +302,13 @@ function (
          */
         closer.onclick = function (evt) {
             element.parentNode.removeChild(element);
-            // to not fire _onMapClick function
-            evt.stopPropagation();
             return false;
         };
+
+        closer.addEventListener("mouseup", function (evt) {
+            // to not fire _onMapClick function
+            evt.stopPropagation();
+        }, false);
 
         var contentDiv = document.createElement("div");
         var mapDiv = document.getElementById(this.div.id);
@@ -291,18 +316,14 @@ function (
         contentDiv.innerHTML = content ;
         element.appendChild(contentDiv);
         element.appendChild(closer);
-        element.style.position = "absolute";
-        element.style.width = "280px";
-        element.style.height = "130px";
-        var posX = mapDiv.offsetWidth / 2 - parseInt(element.style.width, 10) / 2;
-        var posY = mapDiv.offsetHeight / 2 - parseInt(element.style.height, 10) / 2;
-        element.style.left = posX + "px";
-        element.style.top = posY + "px";
-        element.style.zIndex = "10";
-        element.style.overflow = "auto";
         // You can use native DOM methods to insert the fragment:
 
         mapDiv.appendChild(element);
+
+        var posX = mapDiv.offsetWidth / 2 - parseInt(element.offsetWidth, 10) / 2;
+        var posY = mapDiv.offsetHeight / 2 - parseInt(element.offsetHeight, 10) / 2;
+        element.style.left = posX + "px";
+        element.style.top = posY + "px";
     } ;
 
     /**

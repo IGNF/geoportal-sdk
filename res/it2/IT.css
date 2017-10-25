@@ -1,7 +1,9 @@
 /* Feature info popup */
 
 .gp-feature-info-div-it {
-  bottom: 17px;
+  position: absolute;
+  z-index: : 10;
+  overflow: auto;
   max-width: calc(100vw - 80px);
   min-height: 30px;
   padding: 10px;
@@ -12,6 +14,7 @@
   background-color: #FFF;
   box-shadow: 0 0 5px #000;
 }
+
 /*
 .gp-feature-info-div-it::before {
   content: "";
