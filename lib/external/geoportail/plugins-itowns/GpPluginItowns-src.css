@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-09-28
+ * @date 2017-10-23
  *
  */
 /* MOUSE POSITION */
@@ -1681,7 +1681,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 110px;
+  width: 90px;
 }
 
 /* Showing settings */
@@ -2765,6 +2765,22 @@ div[id^=GPminiglobeContainer-] {
     color: white;
 }
 
+div[id^=GPscaleContainer-] {
+    border: 2px solid white;
+    border-top: none;
+    text-align: center;
+    display: block;
+    background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3));
+    height: 18px;
+    width: 200px;
+    color: white;
+    font-family: 'Open Sans',
+    sans-serif;
+    font-size: 16px;
+    right: 20px;
+    bottom: 20px;
+}
+
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -2788,20 +2804,4 @@ div[id^=GPmousePositionPanelClose]  {
 
 #GPmapCenter {
   background-image: url("img/GPmapCenter.png");
-}
-
-div[id^=GPscaleContainer-] {
-    border: 2px solid white;
-    border-top: none;
-    text-align: center;
-    display: block;
-    background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3));
-    height: 18px;
-    width: 200px;
-    color: white;
-    font-family: 'Open Sans',
-    sans-serif;
-    font-size: 16px;
-    right: 20px;
-    bottom: 20px;
 }

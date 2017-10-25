@@ -457,6 +457,8 @@ function (
                     layerNames = layerId;
                     layerOpts.layers = [layerId];
                 }
+                // itowns needs a bbox to display the layer
+                // if the layer is in PM, the bbox needs to be in planar coordinates
                 if (layerOpts.bbox) {
                     boundingBox = {
                         west  : layerOpts.bbox[0],
@@ -464,7 +466,16 @@ function (
                         south  : layerOpts.bbox[1],
                         north  : layerOpts.bbox[3]
                     };
+                } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
+                    // world bbox in PM (EPSG:3857)
+                    boundingBox = {
+                        west  : -20026376.39,
+                        east  : 20026376.39,
+                        south  : -20048966.10,
+                        north  : 20048966.10
+                    };
                 } else {
+                    // world bbox in WGS84 (EPSG:4326)
                     boundingBox = {
                         west  : -180,
                         east  : 180,
@@ -487,7 +498,7 @@ function (
                     style  : layerOpts.styleName || "",
                     title  : layerOpts.title || layerId,
                     visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
+                    opacity : layerOpts.opacity || 1,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
@@ -678,7 +689,7 @@ function (
 
         var position = {
             tilt : 45,
-            heading : 90,
+            heading : 0,
             longitude  : point.x,
             latitude  : point.y
         };
@@ -751,9 +762,7 @@ function (
      * retourne l'azimut courant de la carte
      */
     IT.prototype.getAzimuth = function () {
-        // itowns north orientation is equal to 90
-        // itowns orientation is anticlockwise
-        return this._convertAzimuth(this.libMap.getGlobeView().controls.getCameraOrientation()[1]);
+        return this.libMap.getGlobeView().controls.getCameraOrientation()[1];
     };
 
     /**
@@ -764,12 +773,9 @@ function (
             console.log("Not a valid azimuth  : must be a float") ;
             return ;
         }
-        // itowns north orientation is equal to 90
-        // itowns orientation is anticlockwise
-        var itownsAzimuth = this._convertAzimuth(azimuth);
         // IT method to set the camera orientation
-        this.libMap.getGlobeView().controls.setHeading(itownsAzimuth, false);
-        this.logger.trace("[IT] - setAzimuth(" + itownsAzimuth + ")") ;
+        this.libMap.getGlobeView().controls.setHeading(azimuth, false);
+        this.logger.trace("[IT] - setAzimuth(" + azimuth + ")") ;
     };
 
     /**
@@ -1355,8 +1361,8 @@ function (
                         return;
                     }
                     action.call(context,{
-                        oldAzimuth  : context._convertAzimuth(itEvent.previous.heading),
-                        newAzimuth  : context._convertAzimuth(itEvent.new.heading)
+                        oldAzimuth  : itEvent.previous.heading,
+                        newAzimuth  : itEvent.new.heading
                     }) ;
                 };
                 // ajout de l'evenement au tableau des événements
@@ -1584,24 +1590,6 @@ function (
             return;
         }
         return layer[0] ;
-    } ;
-
-    /**
-     * converti l'azimuth dans la lib spécifié
-     *
-     * @param {Number} azimuth - azimuth à convertir
-     *
-     * @return {Number} convertedAzimuth - azimith converti dans systeme le geoportail ou itowns
-     */
-    IT.prototype._convertAzimuth = function (azimuth) {
-        var convertedAzimuth = 90 - azimuth;
-        while (convertedAzimuth >= 360) {
-            convertedAzimuth = convertedAzimuth - 360;
-        }
-        while (convertedAzimuth < 0) {
-            convertedAzimuth = convertedAzimuth + 360;
-        }
-        return convertedAzimuth;
     };
 
     /**
