@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-10-23
+ * @date 2017-10-27
  *
  */
 /* MOUSE POSITION */
@@ -39,14 +39,14 @@ input[id^=GPshowDrawing-]:checked + label + div {
 
 /* General panels */
 
-div[^=GPdrawingPanel-] {
+div[id^=GPdrawingPanel-] {
   width: 240px;
   overflow: hidden;
 }
 
 /* Basic infos */
 
-div[^=GPdrawingBasicPanel-] {
+div[id^=GPdrawingBasicPanel-] {
   padding: 10px 15px;
 }
 
@@ -1659,7 +1659,7 @@ input[id^=GPshowMousePosition-]:checked + label + div {
 /* General panels */
 
 div[id^=GPmousePositionPanel-] {
-  width: 240px;
+  width: 300px;
   overflow: hidden;
 }
 
@@ -1681,7 +1681,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 90px;
+  width: 110px;
 }
 
 /* Showing settings */
@@ -1727,6 +1727,107 @@ div[id^=GPmousePositionSettings-] {
 .GPmousePositionSettingsSelect {
   width: 180px;
   margin-top: 5px;
+}
+
+/* General panels */
+
+div[id^=GPmousePositionCoordinate-] input.error {
+    border: 1px solid rgb(255, 0, 0);
+}
+div[id^=GPmousePositionCoordinate-] input[readonly] {
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: right;
+}
+
+input[id^=GPmousePositionLat-], input[id^=GPmousePositionLon-] {
+    width: 120px;
+}
+
+span[id^=GPmousePositionAlt-] {
+    display: inline-block;
+    padding: 2px;
+    width: 120px;
+    line-height: 20px;
+    text-align: right;
+}
+
+/* sexagesimal coordinates */
+
+.GPSexagesimal, .GPSexagesimalsec {
+    margin:0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+input:read-only.GPSexagesimal, input:read-only.GPSexagesimalsec {
+    text-align: right;
+}
+
+.GPSexagesimal {
+    width: 25px;
+}
+
+.GPSexagesimalsec {
+    width: 38px;
+}
+.GPmousePositionSexagesimalLabel {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0;
+}
+
+/* direction N/S ou E/O */
+select.GPmousePositionDirection {
+    border: 1px solid #999;
+    margin-left: 2px;
+}
+
+select.GPmousePositionDirection:disabled{
+    border: none;
+    background: transparent;
+    color: black;
+    /*For FireFox*/
+   -webkit-appearance: none;
+   /*For Chrome*/
+   -moz-appearance: none;
+}
+
+/*For IE10+*/
+select.GPmousePositionDirection:disabled::-ms-expand {
+    display: none;
+}
+select.GPmousePositionDirection:disabled::-ms-value {
+    color: black;
+}
+
+.GPmousePositionUnits,
+.GPmousePositionAltitudeUnits {
+    margin-left: 5px;
+}
+
+/* EDIT COORDINATES TOOLS */
+.GPmousePositionPanelEditTools {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+}
+
+.GPmousePositionEditTool {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span[id^=GPmousePositionCloseEdit] {
+    background-position: -18px 0;
+    margin-left: 5px;
+}
+
+img[id^=GPmousePositionMarker]:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 /* Map center localisation */
@@ -2756,31 +2857,6 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
-}
-
-div[id^=GPscaleContainer-] {
-    border: 2px solid white;
-    border-top: none;
-    text-align: center;
-    display: block;
-    background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3));
-    height: 18px;
-    width: 200px;
-    color: white;
-    font-family: 'Open Sans',
-    sans-serif;
-    font-size: 16px;
-    right: 20px;
-    bottom: 20px;
-}
-
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -2804,4 +2880,29 @@ div[id^=GPmousePositionPanelClose]  {
 
 #GPmapCenter {
   background-image: url("img/GPmapCenter.png");
+}
+
+div[id^=GPscaleContainer-] {
+    border: 2px solid white;
+    border-top: none;
+    text-align: center;
+    display: block;
+    background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3));
+    height: 18px;
+    width: 200px;
+    color: white;
+    font-family: 'Open Sans',
+    sans-serif;
+    font-size: 16px;
+    right: 20px;
+    bottom: 20px;
+}
+
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
 }

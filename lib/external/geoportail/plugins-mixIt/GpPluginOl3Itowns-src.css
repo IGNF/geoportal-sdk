@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-10-23
+ * @date 2017-10-27
  *
  */
 /* MOUSE POSITION */
@@ -39,14 +39,14 @@ input[id^=GPshowDrawing-]:checked + label + div {
 
 /* General panels */
 
-div[^=GPdrawingPanel-] {
+div[id^=GPdrawingPanel-] {
   width: 240px;
   overflow: hidden;
 }
 
 /* Basic infos */
 
-div[^=GPdrawingBasicPanel-] {
+div[id^=GPdrawingBasicPanel-] {
   padding: 10px 15px;
 }
 
@@ -1659,7 +1659,7 @@ input[id^=GPshowMousePosition-]:checked + label + div {
 /* General panels */
 
 div[id^=GPmousePositionPanel-] {
-  width: 240px;
+  width: 300px;
   overflow: hidden;
 }
 
@@ -1681,7 +1681,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 90px;
+  width: 110px;
 }
 
 /* Showing settings */
@@ -1727,6 +1727,107 @@ div[id^=GPmousePositionSettings-] {
 .GPmousePositionSettingsSelect {
   width: 180px;
   margin-top: 5px;
+}
+
+/* General panels */
+
+div[id^=GPmousePositionCoordinate-] input.error {
+    border: 1px solid rgb(255, 0, 0);
+}
+div[id^=GPmousePositionCoordinate-] input[readonly] {
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: right;
+}
+
+input[id^=GPmousePositionLat-], input[id^=GPmousePositionLon-] {
+    width: 120px;
+}
+
+span[id^=GPmousePositionAlt-] {
+    display: inline-block;
+    padding: 2px;
+    width: 120px;
+    line-height: 20px;
+    text-align: right;
+}
+
+/* sexagesimal coordinates */
+
+.GPSexagesimal, .GPSexagesimalsec {
+    margin:0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+input:read-only.GPSexagesimal, input:read-only.GPSexagesimalsec {
+    text-align: right;
+}
+
+.GPSexagesimal {
+    width: 25px;
+}
+
+.GPSexagesimalsec {
+    width: 38px;
+}
+.GPmousePositionSexagesimalLabel {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0;
+}
+
+/* direction N/S ou E/O */
+select.GPmousePositionDirection {
+    border: 1px solid #999;
+    margin-left: 2px;
+}
+
+select.GPmousePositionDirection:disabled{
+    border: none;
+    background: transparent;
+    color: black;
+    /*For FireFox*/
+   -webkit-appearance: none;
+   /*For Chrome*/
+   -moz-appearance: none;
+}
+
+/*For IE10+*/
+select.GPmousePositionDirection:disabled::-ms-expand {
+    display: none;
+}
+select.GPmousePositionDirection:disabled::-ms-value {
+    color: black;
+}
+
+.GPmousePositionUnits,
+.GPmousePositionAltitudeUnits {
+    margin-left: 5px;
+}
+
+/* EDIT COORDINATES TOOLS */
+.GPmousePositionPanelEditTools {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+}
+
+.GPmousePositionEditTool {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span[id^=GPmousePositionCloseEdit] {
+    background-position: -18px 0;
+    margin-left: 5px;
+}
+
+img[id^=GPmousePositionMarker]:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 /* Map center localisation */
@@ -3410,7 +3511,7 @@ div[id^="GPimportGetCapPanel-"]
 
 div[id^="GPimportPanelClose-"],
 div[id^="GPimportGetCapPanelClose-"] {
-  background-image: url("../ol3/img/GPimportOpen.png");
+  background-image: url("img/GPimportOpen.png");
 }
 
 div[id^="GPimportGetCapPanel-"] {
@@ -3739,6 +3840,35 @@ span[id^=GPshowMeasureLengthOpen-] {
   background-position: -26px;
 }
 
+/* MOUSE POSITION */
+
+div[id^=GPmousePosition-] {
+  bottom: 8px;
+  left: 10px;
+}
+
+/* Showing/hiding mouse position panel */
+
+span[id^=GPshowMousePositionOpen] {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+/* General panels */
+
+div[id^=GPmousePositionPanelClose]  {
+  background-image: url("img/GPmousePositionOpen.png");
+}
+
+.GPmousePositionEditTool {
+    background-image: url("img/GPmousePositionEditCoordinates.png");
+}
+
+/* Map center localisation */
+
+#GPmapCenter {
+  background-image: url("img/GPmapCenter.png");
+}
+
 /* REVERSE GEOCODING */
 
 [id^="GPreverseGeocoding-"] {
@@ -3863,6 +3993,72 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   min-width: 230px;
 }
 
+/* TODO coller un peu plus à la charte
+- liseret blanc transparent 32x32 autour du pictogramme
+- pictogramme 26x26
+- ...
+*/
+div[id^=GPtoolbox-measure-main] {
+  float: left;
+  left: 78px;
+  top: 8px;
+  position: absolute;
+  display: inline-block;
+  z-index: 1;
+}
+
+button[id^=GPtoolbox-measure-button] {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.8);
+  border-style: none;
+  border-width: 1px;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  background-color: rgba(0,60,136,0.5);
+  border-radius: 4px;
+  padding: 0px;
+}
+
+button[id^=GPtoolbox-measure-button] {
+  background-repeat: no-repeat;
+  background-image: url("img/GPtoolBoxMeasureOpen.png");
+}
+
+div[id^=GPtoolbox-measure-widget] {
+  left:auto;
+  display: none;
+  /*visibility: hidden;*/
+  /*position: absolute;*/
+  /*right: 0;*/
+  border-radius: 2px;
+  /*background-color: #f9f9f9;*/
+  /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+}
+
+div[id^=GPtoolbox-measure-widget] > div {
+  display: block;
+  /*visibility: visible;*/
+  position: relative;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  right: auto;
+}
+
+div[id^=GPtoolbox-measure-main]:hover {
+    /*display: block;*/
+    /*visibility: visible;*/
+}
+
+div[id^=GPtoolbox-measure-main]:hover:not(.active) {
+    /*background-color: rgba(0,60,136,0.3);*/
+}
+
+div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
+    background-color: rgba(0,60,136,0.7);
+}
+
 /* SEARCH ENGINE */
 
 [id^="GPsearchEngine-"] {
@@ -3919,72 +4115,6 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
   border-radius: 4px;
 }
 
-/* TODO coller un peu plus à la charte
-- liseret blanc transparent 32x32 autour du pictogramme
-- pictogramme 26x26
-- ...
-*/
-div[id^=GPtoolbox-measure-main] {
-  float: left;
-  left: 78px;
-  top: 8px;
-  position: absolute;
-  display: inline-block;￼
-  z-index: 1;
-}
-
-button[id^=GPtoolbox-measure-button] {
-  color: white;
-  border-color: rgba(255, 255, 255, 0.8);
-  border-style: none;
-  border-width: 1px;
-  cursor: pointer;
-  width: 26px;
-  height: 26px;
-  background-color: rgba(0,60,136,0.5);
-  border-radius: 4px;
-  padding: 0px;
-}
-
-button[id^=GPtoolbox-measure-button] {
-  background-repeat: no-repeat;
-  background-image: url("img/GPtoolBoxMeasureOpen.png");
-}
-
-div[id^=GPtoolbox-measure-widget] {
-  left:auto;
-  display: none;
-  /*visibility: hidden;*/
-  /*position: absolute;*/
-  /*right: 0;*/
-  border-radius: 2px;
-  /*background-color: #f9f9f9;*/
-  /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
-}
-
-div[id^=GPtoolbox-measure-widget] > div {
-  display: block;
-  /*visibility: visible;*/
-  position: relative;
-  top: auto;
-  left: auto;
-  bottom: auto;
-  right: auto;
-}
-
-div[id^=GPtoolbox-measure-main]:hover {
-    /*display: block;*/
-    /*visibility: visible;*/
-}
-
-div[id^=GPtoolbox-measure-main]:hover:not(.active) {
-    /*background-color: rgba(0,60,136,0.3);*/
-}
-
-div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
-    background-color: rgba(0,60,136,0.7);
-}
-
 /*!
  * @brief 
  *
@@ -3997,7 +4127,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-10-23
+ * @date 2017-10-27
  *
  */
 /* MOUSE POSITION */
@@ -4026,14 +4156,14 @@ input[id^=GPshowDrawing-]:checked + label + div {
 
 /* General panels */
 
-div[^=GPdrawingPanel-] {
+div[id^=GPdrawingPanel-] {
   width: 240px;
   overflow: hidden;
 }
 
 /* Basic infos */
 
-div[^=GPdrawingBasicPanel-] {
+div[id^=GPdrawingBasicPanel-] {
   padding: 10px 15px;
 }
 
@@ -5646,7 +5776,7 @@ input[id^=GPshowMousePosition-]:checked + label + div {
 /* General panels */
 
 div[id^=GPmousePositionPanel-] {
-  width: 240px;
+  width: 300px;
   overflow: hidden;
 }
 
@@ -5668,7 +5798,7 @@ div[id^=GPmousePositionBasicPanel] {
 }
 
 .GPmousePositionCoords {
-  width: 90px;
+  width: 110px;
 }
 
 /* Showing settings */
@@ -5714,6 +5844,107 @@ div[id^=GPmousePositionSettings-] {
 .GPmousePositionSettingsSelect {
   width: 180px;
   margin-top: 5px;
+}
+
+/* General panels */
+
+div[id^=GPmousePositionCoordinate-] input.error {
+    border: 1px solid rgb(255, 0, 0);
+}
+div[id^=GPmousePositionCoordinate-] input[readonly] {
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: right;
+}
+
+input[id^=GPmousePositionLat-], input[id^=GPmousePositionLon-] {
+    width: 120px;
+}
+
+span[id^=GPmousePositionAlt-] {
+    display: inline-block;
+    padding: 2px;
+    width: 120px;
+    line-height: 20px;
+    text-align: right;
+}
+
+/* sexagesimal coordinates */
+
+.GPSexagesimal, .GPSexagesimalsec {
+    margin:0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+input:read-only.GPSexagesimal, input:read-only.GPSexagesimalsec {
+    text-align: right;
+}
+
+.GPSexagesimal {
+    width: 25px;
+}
+
+.GPSexagesimalsec {
+    width: 38px;
+}
+.GPmousePositionSexagesimalLabel {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0;
+}
+
+/* direction N/S ou E/O */
+select.GPmousePositionDirection {
+    border: 1px solid #999;
+    margin-left: 2px;
+}
+
+select.GPmousePositionDirection:disabled{
+    border: none;
+    background: transparent;
+    color: black;
+    /*For FireFox*/
+   -webkit-appearance: none;
+   /*For Chrome*/
+   -moz-appearance: none;
+}
+
+/*For IE10+*/
+select.GPmousePositionDirection:disabled::-ms-expand {
+    display: none;
+}
+select.GPmousePositionDirection:disabled::-ms-value {
+    color: black;
+}
+
+.GPmousePositionUnits,
+.GPmousePositionAltitudeUnits {
+    margin-left: 5px;
+}
+
+/* EDIT COORDINATES TOOLS */
+.GPmousePositionPanelEditTools {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+}
+
+.GPmousePositionEditTool {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span[id^=GPmousePositionCloseEdit] {
+    background-position: -18px 0;
+    margin-left: 5px;
+}
+
+img[id^=GPmousePositionMarker]:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 /* Map center localisation */
@@ -6651,6 +6882,15 @@ div[id^=GPAttributionsListContainer-] a:visited {
     text-decoration: none;
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+}
+
 /* LAYER SWITCHER OL3 */
 
 div[id^=GPlayerSwitcher-]  {
@@ -6741,15 +6981,6 @@ div[id^=GPlayerInfoClose]  {
 .GPlayerInfoLink,
 .GPlayerInfoPopup {
   background-image: url("img/GPlayerInfo.png");
-}
-
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
 }
 
 /* MOUSE POSITION */
