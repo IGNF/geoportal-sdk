@@ -105,7 +105,10 @@ function (
                 var viewerDiv = this.div;
 
                 // creation de la map vide
-                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe);
+                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe, { 
+                    // to display the last zoom level of Ortho layer
+                    maxSubdivisionLevel : 18
+                });
 
                 var self = this;
                 // when globe is loaded, we set the user map parameters
