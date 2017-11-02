@@ -105,7 +105,7 @@ function (
                 var viewerDiv = this.div;
 
                 // creation de la map vide
-                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe, { 
+                this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe, {
                     // to display the last zoom level of Ortho layer
                     maxSubdivisionLevel : 18
                 });
@@ -123,21 +123,44 @@ function (
                     self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
                     self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
 
-                    // pour faire la distinction entre le click et le drag
+                    // evenements pour faire la distinction entre le click et le drag
                     var isDragging = false;
-                    self.div.addEventListener("mousedown", function () {
+                    /**
+                    * mousedownHandler
+                    */
+                    var mousedownHandler = function () {
                         isDragging = false;
-                    }, false);
-                    self.div.addEventListener("mousemove", function () {
+                    };
+                    var registredEvent = self._registerEvent(mousedownHandler,"pickFeature",mousedownHandler,self) ;
+                    registredEvent.eventOrigin = self.div;
+                    registredEvent.eventType = "mousedown";
+                    registredEvent.eventOrigin.addEventListener(registredEvent.eventType, mousedownHandler, self) ;
+
+                    /**
+                    * mousemoveHandler
+                    */
+                    var mousemoveHandler = function () {
                         isDragging = true;
-                    }, false);
-                    self.div.addEventListener("mouseup", function (evt) {
+                    };
+                    var registredEvent = self._registerEvent(mousemoveHandler,"pickFeature",mousemoveHandler,self) ;
+                    registredEvent.eventOrigin = self.div;
+                    registredEvent.eventType = "mousemove";
+                    registredEvent.eventOrigin.addEventListener(registredEvent.eventType, mousemoveHandler, self) ;
+
+                    /**
+                    * mouseupHandler
+                    */
+                    var mouseupHandler = function (evt) {
                         if ( isDragging ) {
                             self._removeInfoDivs();
                         } else {
                             self._onMapClick(evt);
                         }
-                    }, false);
+                    };
+                    var registredEvent = self._registerEvent(mouseupHandler,"pickFeature",mouseupHandler,self) ;
+                    registredEvent.eventOrigin = self.div;
+                    registredEvent.eventType = "mouseup";
+                    registredEvent.eventOrigin.addEventListener(registredEvent.eventType, mouseupHandler, self) ;
 
                     self._afterInitMap();
                 });
@@ -1518,7 +1541,7 @@ function (
 
         this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
-        if (!IMap.prototype.forget.apply(this,arguments)) {
+        if (eventId !== "pickFeature" && !IMap.prototype.forget.apply(this,arguments)) {
             return false ;
         }
         // on cherche l'enregistrement de l'evenement
