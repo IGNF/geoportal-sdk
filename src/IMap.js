@@ -620,7 +620,8 @@ define([
                                 y : position.coords.latitude,
                                 projection : "EPSG:4326"
                             } ;
-                            map.setXYCenter(point) ;
+                            // paramater zoomLevel (=17 by default) used for 3D setXYCenter function only
+                            map.setXYCenter(point, 17) ;
                             // declenchement de l'evenement "geolocated"
                             var e = IMap.CustomEvent("geolocated", {
                                 detail : {

@@ -704,9 +704,10 @@ function (
      * @param {Object} point - center point
      * @param {Float} point.x - x coordinates for center
      * @param {Float} point.y - y coordinates for center
+     * @param {Number} zoom - zoom level (optional, used for geolocate)
      *
      */
-    IT.prototype.setXYCenter = function (point) {
+    IT.prototype.setXYCenter = function (point, zoom) {
         this.logger.trace("[IT] - setXYCenter") ;
         if ( !point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
             console.log("no valid coordinates for map center") ;
@@ -719,6 +720,10 @@ function (
             longitude  : point.x,
             latitude  : point.y
         };
+
+        if (zoom) {
+            position.zoom = zoom;
+        }
         // set the camera aimed point on the specified coords
         this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
