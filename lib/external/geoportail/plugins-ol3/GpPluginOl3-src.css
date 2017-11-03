@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-10-27
+ * @date 2017-11-03
  *
  */
 /* MOUSE POSITION */
@@ -1667,6 +1667,7 @@ div[id^=GPmousePositionPanel-] {
 
 div[id^=GPmousePositionBasicPanel] {
   padding: 10px 15px;
+  position: relative;
 }
 
 .GPmousePositionLabel,

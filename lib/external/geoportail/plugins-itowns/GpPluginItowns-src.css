@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-10-27
+ * @date 2017-11-03
  *
  */
 /* MOUSE POSITION */
@@ -1667,6 +1667,7 @@ div[id^=GPmousePositionPanel-] {
 
 div[id^=GPmousePositionBasicPanel] {
   padding: 10px 15px;
+  position: relative;
 }
 
 .GPmousePositionLabel,
@@ -2857,6 +2858,15 @@ div[id^=GPlayerInfoClose]  {
   background-image: url("img/GPlayerInfo.png");
 }
 
+div[id^=GPminiglobeContainer-] {
+    display: block;
+    width:100px;
+    height:100px;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+}
+
 /* MOUSE POSITION */
 
 div[id^=GPmousePosition-] {
@@ -2896,13 +2906,4 @@ div[id^=GPscaleContainer-] {
     font-size: 16px;
     right: 20px;
     bottom: 20px;
-}
-
-div[id^=GPminiglobeContainer-] {
-    display: block;
-    width:100px;
-    height:100px;
-    left: 20px;
-    bottom: 20px;
-    color: white;
 }
