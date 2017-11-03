@@ -70,6 +70,7 @@ define([
             overview : ol.control.OverviewMap,
             orientation : ol.control.Rotate,
             graphicscale : ol.control.ScaleLine,
+            getfeatureinfo : ol.control.GetFeatureInfo,
             mouseposition : ol.control.GeoportalMousePosition,
             route : ol.control.Route,
             layerswitcher : ol.control.LayerSwitcher,
