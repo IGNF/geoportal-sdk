@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 0.13.0-dev
- * @date 2017-11-03
+ * @date 2017-11-07
  *
  */
 /* MOUSE POSITION */
@@ -3375,6 +3375,36 @@ display: none !important;
 }
 */
 
+/* GET FEATURE INFO */
+
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
+  left: 10px;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
+}
+
 /* ISOCHRON */
 
 div[id^=GPisochron-] {
@@ -3427,36 +3457,6 @@ div[id^=GPisochronPanelClose] {
 div[id^=GPisochronReset] {
   background-color: #366291;
   background-image: url("img/GPisochronOptions.png");
-}
-
-/* GET FEATURE INFO */
-
-div[id^=GPgetFeatureInfo-] {
-  top: 260px;
-  left: 10px;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  width: 26px;
-  height: 26px;
-  background-image: url("img/GPactivateGfi.png");
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  background-position: -26px 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
-  opacity: 0.7;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.4);
 }
 
 /* Layer Import */
@@ -3870,6 +3870,51 @@ div[id^=GPmousePositionPanelClose]  {
   background-image: url("img/GPmapCenter.png");
 }
 
+/* REVERSE GEOCODING */
+
+[id^="GPreverseGeocoding-"] {
+  left: 10px;
+}
+
+/* Showing/hiding reverse geocoding panel */
+
+[id^="GPshowReverseGeocodingOpen-"] {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+/* General panels */
+
+[id^="GPreverseGeocodingResultsClose"] {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+[id^="GPreverseGeocodingPanel-"] {
+  left: 8px;
+}
+
+[id^="GPreverseGeocodingPanelClose-"] {
+  background-image: url("img/GPreverseGeocodingOpen.png");
+}
+
+/* Calc waiting */
+
+.GPreverseGeocodingCalcWaitingContainerVisible,
+.GPreverseGeocodingCalcWaitingContainerHidden {
+  border-radius: 4px;
+}
+
+/* Results panel */
+
+div[id^=GPreverseGeocodingReturnPicto-] {
+  background-color: #366291;
+  background-image: url("img/GPreturn.png");
+}
+
+.GPreverseGeocodedLocationHighlight {
+    background-color: rgba(255,200,0,0.25);
+    color: #222;
+}
+
 /* ROUTE */
 
 div[id^=GProute-] {
@@ -3947,51 +3992,6 @@ input[id^=GProuteResultsShowDetails] + label + label:hover {
 
 .gp-features-content-div {
   min-width: 230px;
-}
-
-/* REVERSE GEOCODING */
-
-[id^="GPreverseGeocoding-"] {
-  left: 10px;
-}
-
-/* Showing/hiding reverse geocoding panel */
-
-[id^="GPshowReverseGeocodingOpen-"] {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-/* General panels */
-
-[id^="GPreverseGeocodingResultsClose"] {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-[id^="GPreverseGeocodingPanel-"] {
-  left: 8px;
-}
-
-[id^="GPreverseGeocodingPanelClose-"] {
-  background-image: url("img/GPreverseGeocodingOpen.png");
-}
-
-/* Calc waiting */
-
-.GPreverseGeocodingCalcWaitingContainerVisible,
-.GPreverseGeocodingCalcWaitingContainerHidden {
-  border-radius: 4px;
-}
-
-/* Results panel */
-
-div[id^=GPreverseGeocodingReturnPicto-] {
-  background-color: #366291;
-  background-image: url("img/GPreturn.png");
-}
-
-.GPreverseGeocodedLocationHighlight {
-    background-color: rgba(255,200,0,0.25);
-    color: #222;
 }
 
 /* SEARCH ENGINE */
@@ -4128,7 +4128,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * copyright IGN
  * @author IGN
  * @version 
- * @date 2017-11-03
+ * @date 2017-11-07
  *
  */
 /* MOUSE POSITION */
