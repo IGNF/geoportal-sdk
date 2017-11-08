@@ -151,7 +151,8 @@ function (
                     * mouseupHandler
                     */
                     var mouseupHandler = function (evt) {
-                        if ( isDragging ) {
+                        // if clicking right or dragging
+                        if ( evt.which === 3 || isDragging ) {
                             self._removeInfoDivs();
                         } else {
                             self._onMapClick(evt);
