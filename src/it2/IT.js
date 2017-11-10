@@ -716,6 +716,35 @@ function (
         }
 
         var position = {
+            longitude  : point.x,
+            latitude  : point.y
+        };
+
+        if (zoom) {
+            position.zoom = zoom;
+        }
+        // set the camera aimed point on the specified coords
+        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
+        this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
+    };
+
+    /**
+     * center Map on a given point in case of auto centering
+     *
+     * @param {Object} point - center point
+     * @param {Float} point.x - x coordinates for center
+     * @param {Float} point.y - y coordinates for center
+     * @param {Number} zoom - zoom level (optional, used for geolocate)
+     *
+     */
+    IT.prototype.setAutoCenter = function (point, zoom) {
+        this.logger.trace("[IT] - setAutoCenter") ;
+        if ( !point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
+            console.log("no valid coordinates for map center") ;
+            return ;
+        }
+
+        var position = {
             tilt : 45,
             heading : 0,
             longitude  : point.x,
@@ -727,7 +756,7 @@ function (
         }
         // set the camera aimed point on the specified coords
         this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
-        this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
+        this.logger.trace("[IT] - setAutoCenter(" + point.x + "," + point.y + ")") ;
     };
 
     /**

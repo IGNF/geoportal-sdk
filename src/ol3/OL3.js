@@ -2236,6 +2236,20 @@ define([
         };
 
         /**
+         * center Map on a given point in case of auto centering
+         *
+         * @param {Object} point - center point
+         * @param {Float} point.x - x coordinates for center
+         * @param {Float} point.y - y coordinates for center
+         * @param {Number} zoom - zoom level (optional, used for geolocate)
+         *
+         */
+        OL3.prototype.setAutoCenter = function (point, zoom) {
+            this.logger.trace("[IT] - setAutoCenter") ;
+            this.setXYCenter(point, zoom);
+        };
+
+        /**
          * définit l'azimut de la carte.
          */
         OL3.prototype.setAzimuth = function (azimuth) {

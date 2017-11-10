@@ -583,7 +583,7 @@ define([
                             y : geocodeResponse.locations[0].position.x,
                             projection : "EPSG:4326"
                         } ;
-                        map.setXYCenter(point) ;
+                        map.setAutoCenter(point) ;
                         // declenchement de l'evenement "located"
                         var e = IMap.CustomEvent("located", {
                             detail : {
@@ -620,8 +620,8 @@ define([
                                 y : position.coords.latitude,
                                 projection : "EPSG:4326"
                             } ;
-                            // paramater zoomLevel (=17 by default) used for 3D setXYCenter function only
-                            map.setXYCenter(point, 17) ;
+                            // paramater zoomLevel (=17 by default) used for 3D setAutoCenter function only
+                            map.setAutoCenter(point, 17) ;
                             // declenchement de l'evenement "geolocated"
                             var e = IMap.CustomEvent("geolocated", {
                                 detail : {
@@ -898,6 +898,19 @@ define([
              *
              */
             setXYCenter : function (point) {
+            },
+
+            /**
+             * center Map on a given point in case of auto centering
+             *
+             * @param {Object} point - center point
+             * @param {Float} point.x - x coordinates for center
+             * @param {Float} point.y - y coordinates for center
+             * @param {String} point.projection - srs center coordinates
+             * @private
+             *
+             */
+            setAutoCenter : function (point) {
             },
 
             /**
