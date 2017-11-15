@@ -1340,7 +1340,6 @@ function (
         }
         context = context || this ;
         var map = this ;
-        var itEventKey = null ;
         switch (eventId) {
             case "mapLoaded"  :
             case "mapFailure"  :
@@ -1543,10 +1542,6 @@ function (
             default  :
                 console.log("unhandled event  : " + eventId ) ;
         } ;
-        // enregistrement de l'evenement
-        if (itEventKey) {
-            this._registerEvent(itEventKey,eventId,action,context) ;
-        }
         return true ;
     } ;
 
@@ -1573,39 +1568,11 @@ function (
       * @param {Function} action - The function associated to the event.
       */
     IT.prototype.forget = function (eventId, action) {
-
         this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
         if (eventId !== "pickFeature" && !IMap.prototype.forget.apply(this,arguments)) {
             return false ;
         }
-        // on cherche l'enregistrement de l'evenement
-        var rEvents = this._events[eventId] ;
-        if (!rEvents) {
-            console.log("nothing to forget for  : " + eventId) ;
-            return false ;
-        }
-        var itCallback = null;
-        for (var i = rEvents.length - 1 ; i >= 0 ; i--) {
-            if (rEvents[i].action == action) {
-                itCallback = rEvents[i].key ;
-                eventOrigin = rEvents[i].eventOrigin;
-                eventType = rEvents[i].eventType;
-                if (!itCallback) {
-                    console.log("action to forget not found for  : " + eventId) ;
-                    return false ;
-                }
-                rEvents.splice(i,1) ;
-                this.logger.trace("[IT]  : forgetting  : " + eventId + " (" + itCallback + ")") ;
-
-                eventOrigin.removeEventListener(eventType, itCallback);
-            }
-        }
-        if (!rEvents) {
-            console.log("action to forget not found for  : " + eventId) ;
-            return false ;
-        }
-
     } ;
 
     /**

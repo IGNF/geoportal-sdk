@@ -2418,6 +2418,7 @@ define([
             var olEventKey = null ;
             switch (eventId) {
                 case "mapLoaded" :
+                    break;
                 case "mapFailure" :
                     break ;
                 case "located" :
@@ -2517,7 +2518,7 @@ define([
                             if ( obsProperty === "grayScaled" ) {
 
                                 /** layerChangeGrayScaled callback */
-                                var callBack = function (evt) {
+                                var layerChangeGrayScaledCallBack = function (evt) {
                                     action.call(context,{
                                         property : "grayScaled",
                                         oldValue : evt.detail.oldValue,
@@ -2526,16 +2527,10 @@ define([
                                     }) ;
                                 };
 
-                                var gpEventKey = {
-                                    type : "change:grayScaled",
-                                    handler : callBack,
-                                    target : olLayer
-                                };
-
-                                gpEventKey.target.addEventListener(gpEventKey.type, gpEventKey.handler);
-
-                                this._registerEvent(gpEventKey, eventId, action, context) ;
-
+                                var registredEvent = map._registerEvent(layerChangeGrayScaledCallBack,eventId,action,context) ;
+                                registredEvent.eventOrigin = olLayer;
+                                registredEvent.eventType = "changed:" + obsProperty;
+                                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, layerChangeGrayScaledCallBack, this) ;
                             } else {
                                 olEventKey = olLayer.on(
                                     "change:" + obsProperty,
@@ -2602,10 +2597,12 @@ define([
          */
         OL3.prototype.forget = function (eventId, action) {
             this.logger.trace("[OL3] : forget...") ;
+
             // verifications de base de la classe mère
             if (!IMap.prototype.forget.apply(this,arguments)) {
                 return false ;
             }
+
             // on cherche l'enregistrement de l'evenement
             var rEvents = this._events[eventId] ;
             if (!rEvents) {
@@ -2613,25 +2610,13 @@ define([
                 return false ;
             }
             var evKey = null ;
-            for (var i = 0 ; i < rEvents.length ; i ++) {
+            for (var i = rEvents.length - 1 ; i >= 0 ; i --) {
                 if (rEvents[i].action == action) {
                     evKey = rEvents[i].key;
                     rEvents.splice(i,1) ;
                     this.logger.trace("[OL3] : forgetting : " + eventId + " (" + evKey + ")") ;
-
-                    if ( evKey.type === "change:grayScaled" ) {
-                        evKey.target.removeEventListener(evKey.type, evKey.handler);
-                    } else {
-                        ol.Observable.unByKey(evKey) ;
-                    }
-
-                    // on decale i d'un cran en arriere pour ne pas sauter d'elements
-                    i -= 1 ;
+                    ol.Observable.unByKey(evKey) ;
                 }
-            }
-            if (!rEvents) {
-                console.log("action to forget not found for : " + eventId) ;
-                return false ;
             }
         } ;
 

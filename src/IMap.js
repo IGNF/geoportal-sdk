@@ -2099,6 +2099,7 @@ define([
                     return false ;
                 }
                 context = context || this ;
+                var map = this;
                 switch (eventId) {
                     case "mapFailure" :
                         break ;
@@ -2106,12 +2107,17 @@ define([
                     case "geolocated" :
                     case "located" :
                     case "configured" :
-                        // TODO : register event pour pouvoir se desabonner.
                         this.logger.trace("[IMap] listening event : [" + eventId + "]") ;
-                        var map = this ;
-                        this.div.addEventListener(eventId, function (evt) {
+
+                        /** callback */
+                        var callBack = function (evt) {
                             action.call(context,evt.detail) ;
-                        }) ;
+                        };
+
+                        var registredEvent = map._registerEvent(callBack,eventId,action,context) ;
+                        registredEvent.eventOrigin = this.div;
+                        registredEvent.eventType = eventId;
+                        registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBack, this) ;
                         break ;
                     case "centerChanged" :
                     case "zoomChanged" :
@@ -2157,10 +2163,10 @@ define([
                 }
                 switch (eventId) {
                     case "mapLoaded" :
-                    case "mapFailure" :
-                    case "located" :
                     case "geolocated" :
+                    case "located" :
                     case "configured" :
+                    case "mapFailure" :
                     case "centerChanged" :
                     case "zoomChanged" :
                     case "azimuthChanged" :
@@ -2168,6 +2174,35 @@ define([
                     case "projectionChanged" :
                     case "layerChanged" :
                     case "controlChanged" :
+                        // on cherche l'enregistrement de l'evenement
+                        var rEvents = this._events[eventId] ;
+                        if (!rEvents) {
+                            console.log("nothing to forget for  : " + eventId) ;
+                            return false ;
+                        }
+                        var itCallback = null;
+                        for (var i = rEvents.length - 1 ; i >= 0 ; i--) {
+                            if (rEvents[i].action == action) {
+                                if ( !rEvents[i].eventOrigin ) {
+                                    continue;
+                                }
+                                itCallback = rEvents[i].key ;
+                                eventOrigin = rEvents[i].eventOrigin;
+                                eventType = rEvents[i].eventType;
+                                if (!itCallback) {
+                                    console.log("action to forget not found for  : " + eventId) ;
+                                    return false ;
+                                }
+                                rEvents.splice(i,1) ;
+                                this.logger.trace("[IT]  : forgetting  : " + eventId + " (" + itCallback + ")") ;
+
+                                eventOrigin.removeEventListener(eventType, itCallback);
+                            }
+                        }
+                        if (!rEvents) {
+                            console.log("action to forget not found for  : " + eventId) ;
+                            return false ;
+                        }
                         break ;
                     default :
                         console.log("unhandled event : " + eventId ) ;
@@ -2185,20 +2220,22 @@ define([
                 // re-abonnement à l'evenement layerChanged
                 // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
                 if (this._events.hasOwnProperty("layerChanged")) {
-                    var layerChangedArray = [] ;
-                    // on recopie le tableau
+                    var actions = [] ;
+                    var contexts = [] ;
+
                     this._events["layerChanged"].forEach(function (eventObj) {
-                        layerChangedArray.push(eventObj) ;
+                        if ( actions.indexOf(eventObj.action) < 0 ) {
+                            actions.push(eventObj.action);
+                            contexts.push(eventObj.context);
+                        }
                     },
                     this) ;
-                    layerChangedArray.forEach(function (eventObj) {
+                    for (var i = 0 ; i < actions.length ; ++i) {
                         // on oublie ...
-                        this.forget("layerChanged", eventObj.action) ;
+                        this.forget("layerChanged", actions[i]) ;
                         // ... pour mieux se souvenir
-                        this.listen("layerChanged", eventObj.action , eventObj.context) ;
-                    },
-                    this) ;
-                    layerChangedArray = null ;
+                        this.listen("layerChanged", actions[i] , contexts[i]) ;
+                    }
                 }
             },
 
