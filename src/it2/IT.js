@@ -281,7 +281,7 @@ function (
                 }
 
                 // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
-                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx") {
+                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx" || p == "coordsTime") {
                     continue ;
                 }
 
@@ -714,6 +714,16 @@ function (
             console.log("no valid coordinates for map center") ;
             return ;
         }
+        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
+            var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+            point = {
+                x : wgs84Coords[0],
+                y : wgs84Coords[1]
+            };
+        } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) == undefined) {
+            this.logger.trace("[IT] - setXYCenter(" + point.projection + " not handled ! )") ;
+            return;
+        }
 
         var position = {
             longitude  : point.x,
@@ -742,6 +752,17 @@ function (
         if ( !point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
             console.log("no valid coordinates for map center") ;
             return ;
+        }
+
+        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
+            var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+            point = {
+                x : wgs84Coords[0],
+                y : wgs84Coords[1]
+            };
+        } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) == undefined) {
+            this.logger.trace("[IT] - setAutoCenter(" + point.projection + " not handled ! )") ;
+            return;
         }
 
         var position = {
