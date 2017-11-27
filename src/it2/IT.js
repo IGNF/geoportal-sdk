@@ -1591,7 +1591,7 @@ function (
     IT.prototype.forget = function (eventId, action) {
         this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
-        if (eventId !== "pickFeature" && !IMap.prototype.forget.apply(this,arguments)) {
+        if (!IMap.prototype.forget.apply(this,arguments)) {
             return false ;
         }
     } ;

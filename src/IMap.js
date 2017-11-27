@@ -2174,6 +2174,7 @@ define([
                     case "projectionChanged" :
                     case "layerChanged" :
                     case "controlChanged" :
+                    case "pickFeature" :
                         // on cherche l'enregistrement de l'evenement
                         var rEvents = this._events[eventId] ;
                         if (!rEvents) {
