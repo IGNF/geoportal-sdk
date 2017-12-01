@@ -281,7 +281,7 @@ function (
                 }
 
                 // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
-                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx" || p == "coordsTime") {
+                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx" || p == "coordTimes") {
                     continue ;
                 }
 
