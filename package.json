@@ -1,33 +1,38 @@
 {
   "name": "geoportal-sdk",
-  "version": "1.0.0-beta2-dev",
-  "description": "French Geoportal development kit",
+  "version": "1.0.0-beta2",
+  "description": "French Geoportal SDK",
   "main": "dist/ol3/GpOl3.js",
   "scripts": {
-    "build": "gulp build",
-    "test": "gulp test",
-    "doc": "gulp doc"
+    "setup": "npm install",
+    "build": "npm run setup && gulp build",
+    "test": "npm run setup && gulp test",
+    "doc": "npm run setup && gulp doc",
+    "dist": "npm run setup && gulp dist",
+    "check": "npm run setup && gulp check"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/IGNF/geoportal-sdk.git"
   },
   "keywords": [
-    "openlayers 3",
+    "openlayers",
     "geoportail",
+    "webservice",
     "javascript"
   ],
-  "author": "geoportal-api-dev",
+  "author": "IGNF",
   "license": "CECILL-B",
   "bugs": {
     "url": "https://github.com/IGNF/geoportal-sdk/issues"
   },
-  "homepage": "https://github.com/IGNF/geoportal-sdk#readme",
-  "dependencies": {
+  "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
+  "dependencies": {},
+  "devDependencies": {
     "amdclean": "^2.7.0",
     "glob": "^7.0.3",
     "groundskeeper": "^0.1.12",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-autoprefixer": "0.0.6",
     "gulp-cache": "~0.1.3",
     "gulp-clean": "~0.2.4",
@@ -56,9 +61,7 @@
     "open": "0.0.5",
     "requirejs": "^2.1.20",
     "shelljs": "~0.2.6",
-    "wiredep": "~1.4.3"
-  },
-  "devDependencies": {
+    "wiredep": "~1.4.3",
     "bower": "^1.4.1",
     "chai": "3.0.0",
     "easy-amdtest": "0.1.0",
@@ -68,11 +71,12 @@
     "mocha": "2.2.5",
     "run-sequence": "^1.1.4",
     "should": "7.0.2",
+    "ink-docstrap": "^0.5.2",
+    "jsdoc-simple-template": "0.0.1",
+    "minami": "^1.1.1",
     "sinon": "1.15.4"
   },
   "optionalDependencies": {
-    "ink-docstrap": "^0.5.2",
-    "jsdoc-simple-template": "0.0.1",
-    "minami": "^1.1.1"
+    "geoportal-extensions-openlayers": "^1.0.0"
   }
 }

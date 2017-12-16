@@ -1,38 +1,38 @@
 /* global process */
 
 (function (gulp, gulpLoadPlugins) {
-    'use strict';
+    "use strict";
 
     // gestion des paths
     var path  = require("path");
 
     // load plugins
-    var $ = gulpLoadPlugins({pattern: '*', lazy: true});
+    var $ = gulpLoadPlugins({pattern: "*", lazy: true});
 
     // tests mocha
-    $.mochaPhantomJS = require('gulp-mocha-phantomjs');
+    $.mochaPhantomJS = require("gulp-mocha-phantomjs");
 
     var _ = {
         root:   $.shelljs.pwd(),
-        res:    './res',
-        src:    './src',
-        lib:    './lib',
-        test:   './test',
-        doc:    './doc',
-        sample: './samples',
-        dist:   './dist',
-        utils:  './utils'
+        res:    "./res",
+        src:    "./src",
+        lib:    "./lib",
+        test:   "./test",
+        doc:    "./doc",
+        sample: "./samples",
+        dist:   "./dist",
+        utils:  "./utils"
     };
 
     var build = {
-        src   : 'target/src',
-        lib   : 'target/lib',
-        test  : 'target/test',
-        doc   : 'target/doc',
-        sample: 'target/samples',
-        js    : 'target/js',
-        umd   : 'target/umd',
-        dist  : 'target/dist'
+        src   : "target/src",
+        lib   : "target/lib",
+        test  : "target/test",
+        doc   : "target/doc",
+        sample: "target/samples",
+        js    : "target/js",
+        umd   : "target/umd",
+        dist  : "target/dist"
     };
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,8 +41,8 @@
     //| > usage : gulp [task] --ol3 | --vg | --itowns | --mix (ol3+vg) | --mixIt (ol3+itowns) (ol3 by default)
     //| > usage : gulp [task] --production
     //| > usage : gulp [task] --debug
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    var opts = require('minimist')(process.argv.slice(2));
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    var opts = require("minimist")(process.argv.slice(2));
 
     // options
     var isOl3  = opts.ol3;
@@ -61,23 +61,23 @@
 
     // build dist directory
     var getDistDirName = function () {
-        var dirName = (isOl3) ? 'ol3' : (isVG) ? 'virtual' : (isItowns) ? 'itowns' : (isMix) ? 'mix' : (isMixIt) ? 'mixIt' : null;
+        var dirName = (isOl3) ? "ol3" : (isVG) ? "virtual" : (isItowns) ? "itowns" : (isMix) ? "mix" : (isMixIt) ? "mixIt" : null;
         return dirName;
     };
 
     // bundle
     var getBaseFileName = function () {
-        var baseFileName = (isOl3) ? 'GpOl3' : (isVG) ? 'GpVG' : (isItowns) ? 'GpItowns' : (isMix) ? 'GpOL3VG' : (isMixIt) ? 'GpOL3Itowns' : null;
+        var baseFileName = (isOl3) ? "GpOl3" : (isVG) ? "GpVG" : (isItowns) ? "GpItowns" : (isMix) ? "GpOL3VG" : (isMixIt) ? "GpOL3Itowns" : null;
         return baseFileName;
     };
 
     var getDistFileName = function () {
-        var distFileName = (isProduction ? getBaseFileName() + '.js' : getBaseFileName() + '-src.js') ;
+        var distFileName = (isProduction ? getBaseFileName() + ".js" : getBaseFileName() + "-src.js") ;
         return distFileName;
     };
 
     var getDistFileNameDebug = function () {
-        var distFileNameDebug = getBaseFileName() + '-debug.js';
+        var distFileNameDebug = getBaseFileName() + "-debug.js";
         return distFileNameDebug;
     };
 
@@ -89,14 +89,14 @@
     //| ✓ jsonlint
     //| > Validation JSON (fichiers de configuration)
     //| > http://jsonlint.com/
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('jsonlint', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("jsonlint", function () {
 
         return gulp.src([
-            'package.json',
-            'jsdoc.json',
-            '.jshintrc',
-            '.jscsrc'
+            "package.json",
+            "jsdoc.json",
+            ".jshintrc",
+            ".jscsrc"
         ])
             .pipe($.plumber())
             .pipe($.jsonminify())
@@ -108,20 +108,20 @@
     //| ✓ jshint
     //| > Helps to detect errors and potential problems in code.
     //| > http://jscs.info/rules.html
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('jshint', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("jshint", function () {
 
-        return gulp.src([ path.join(_.src, '**/*.js') ])
+        return gulp.src([ path.join(_.src, "**/*.js") ])
             .pipe($.plumber())
-            .pipe($.jshint('.jshintrc'))
-            .pipe($.jshint.reporter('default'));
+            .pipe($.jshint(".jshintrc"))
+            .pipe($.jshint.reporter("default"));
     });
 
     // |**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // | ✓ jscs
     // | > Coding conventions respect
     // | > http://jscs.info/rules.html
-    // '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("jscs", function () {
 
         var jscs = require("gulp-jscs");
@@ -137,15 +137,15 @@
     //| > Documenting JavaScript with JSDoc.
     //| > http://usejsdoc.org
     //| > cf. TODO
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('jsdoc', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("jsdoc", function () {
 
         // TODO
         // find a plugin to do this !
         // cf. https://www.npmjs.com/package/gulp-jsdoc
         // cf. https://www.npmjs.com/package/gulp-jsdoc3
 
-        $.shelljs.exec('./node_modules/.bin/jsdoc -c jsdoc.json');
+        $.shelljs.exec("./node_modules/.bin/jsdoc -c jsdoc.json");
 
     });
 
@@ -154,15 +154,15 @@
     //| > JavaScript test framework running on node.js and the browser
     //| > http://mochajs.org/
     //| > https://www.npmjs.com/package/gulp-mocha-phantomjs
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('mocha-phantomjs', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("mocha-phantomjs", function () {
 
         // pour information,
         // la ligne de commande est la suivante :
-        // $.shelljs.exec('./node_modules/.bin/mocha --recursive -R list ./test/spec/');
+        // $.shelljs.exec("./node_modules/.bin/mocha --recursive -R list ./test/spec/");
 
-        return gulp.src(path.join(_.test, 'index.html'))
-            .pipe($.mochaPhantomJS({reporter: 'spec'}));
+        return gulp.src(path.join(_.test, "index.html"))
+            .pipe($.mochaPhantomJS({reporter: "spec"}));
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,18 +172,18 @@
     //| > principe -> http://requirejs.org/docs/optimization.html
     //| > options  -> https://github.com/jrburke/r.js/blob/master/build/example.build.js
     //| > astuces  -> http://stackoverflow.com/questions/23978361/using-gulp-to-build-requirejs-project-gulp-requirejs
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('requirejs-amdclean', function (taskReady) {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("requirejs-amdclean", function (taskReady) {
 
-        var requirejs = require('requirejs');
+        var requirejs = require("requirejs");
 
         // Pour information,
         // les valeurs possibles sont les suivantes :
         // uglify, uglify2, closure, or closure.keepLines
-        var mode = 'none';
+        var mode = "none";
         if (isProduction) {
             $.util.log("OK, mode optimisation...");
-            mode = 'uglify2';
+            mode = "uglify2";
         }
 
         // module global en fonction du bundle
@@ -200,21 +200,24 @@
         var pluginsDir;
         // param bundle ol3
         if (isOl3) {
-            pluginsDir = "../lib/external/geoportail/plugins-ol3/";
+            pluginsDir = "../../node_modules/geoportal-extensions-openlayers/dist/",
+            // Use lib external to test dev releases of geoportal-extensions
+            // pluginsDir = "../lib/external/geoportail/plugins-ol3/";
             _deps.ol =  "../lib/external/ol3/ol";
             _deps["gp"] = pluginsDir + "GpPluginOl3-src";
             _includes.push("ol3/OL3");
-            _globalModules.push('ol');
+            _globalModules.push("ol");
         }
 
         // param bundle vg
+        // TODO : remove VG
         else if (isVG) {
              pluginsDir = "../lib/external/geoportail/plugins-vg/";
              _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
              _deps["gp"] = pluginsDir + "GpPluginVg-src";
              _includes.push("virtual/VG");
              // VirtualGeo est déjà déclaré globale :
-             //     _globalModules.push('VirtualGeo');
+             //     _globalModules.push("VirtualGeo");
         }
 
         // param bundle itowns
@@ -223,7 +226,7 @@
              pluginsDir = "../lib/external/geoportail/plugins-itowns/";
              _deps["gp"] = pluginsDir + "GpPluginItowns-src";
              _includes.push("it2/IT");
-             _globalModules.push('itowns');
+             _globalModules.push("itowns");
         }
 
         else if (isMix) {
@@ -233,7 +236,7 @@
             _deps["gp"] = pluginsDir + "GpPluginOl3Vg-src";
             _includes.push("virtual/VG");
             _includes.push("ol3/OL3");
-            _globalModules.push('ol');
+            _globalModules.push("ol");
 
         } else if (isMixIt) {
             _deps.ol = "../lib/external/ol3/ol";
@@ -242,17 +245,17 @@
             _deps["gp"] = pluginsDir + "GpPluginOl3Itowns-src";
             _includes.push("it2/IT");
             _includes.push("ol3/OL3");
-            _globalModules.push('ol', 'itowns');
+            _globalModules.push("ol", "itowns");
 
         } else {
             // TODO ...
         }
 
-        // on ajoute le point d'entrée du programme
+        // on ajoute le point d entrée du programme
         _includes.push("AHN");
 
         requirejs.optimize({
-            mainConfigFile: path.join(build.src,  'Config.js'),
+            mainConfigFile: path.join(build.src,  "Config.js"),
             paths: _deps,
             baseUrl: build.src,
             optimize: mode,
@@ -271,15 +274,15 @@
             onBuildRead: function (moduleName, path, contents) {
 
                 if (!isDebug) {
-                    var groundskeeper = require('groundskeeper');
+                    var groundskeeper = require("groundskeeper");
                     var cleaner = groundskeeper({
                         console: true,                          // Keep console logs
                         debugger: false,                        // Keep debugger; statements
-                        pragmas: ['development'],               // Keep pragmas with the following identifiers
+                        pragmas: ["development"],               // Keep pragmas with the following identifiers
                         namespace: [
-                            'this.logger',
-                            'self.logger',
-                            'logger'
+                            "this.logger",
+                            "self.logger",
+                            "logger"
                        ] // Besides console also remove function calls in the given namespace,
                     });
                     cleaner.write(contents);
@@ -289,24 +292,24 @@
             },
             onModuleBundleComplete: function (data) {
 
-                var fs = require('fs'),
-                         amdclean = require('amdclean'),
+                var fs = require("fs"),
+                         amdclean = require("amdclean"),
                          outputFile = data.path;
 
                 fs.writeFileSync(outputFile, amdclean.clean({
                     globalModules : _globalModules,
-                    'filePath': outputFile,
-                    'prefixMode': 'camelCase',
-                    'wrap': {
-                         'start': '\n/* BEGIN CODE */\n',
-                         'end'  : '\n/* END CODE   */\n'
+                    "filePath": outputFile,
+                    "prefixMode": "camelCase",
+                    "wrap": {
+                         "start": "\n/* BEGIN CODE */\n",
+                         "end"  : "\n/* END CODE   */\n"
                        },
-                       'escodegen': {
-                         'comment': false,
-                         'format': {
-                           'indent': {
-                             'style': '    ',
-                             'adjustMultilineComment': true
+                       "escodegen": {
+                         "comment": false,
+                         "format": {
+                           "indent": {
+                             "style": "    ",
+                             "adjustMultilineComment": true
                            }
                          }
                        }
@@ -315,7 +318,7 @@
         }, function () {
             taskReady();
         }, function (error) {
-            console.error('requirejs task failed', JSON.stringify(error));
+            console.error("requirejs task failed", JSON.stringify(error));
             process.exit(1);
         });
     });
@@ -325,18 +328,18 @@
     //| > Framework UMD
     //| > https://github.com/umdjs/umd
     //| > https://www.npmjs.com/package/gulp-umd
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('umd', ['requirejs-amdclean'], function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("umd", ["requirejs-amdclean"], function () {
 
-        var umd  = require('gulp-umd');
+        var umd  = require("gulp-umd");
 
         return gulp.src( path.join(build.js, (isDebug ? getDistFileNameDebug() : getDistFileName())) )
             .pipe(umd({
                 exports: function (file) {
-                    return 'Gp';
+                    return "Gp";
                 },
                 namespace: function (file) {
-                    return 'Gp';
+                    return "Gp";
                 }
             }))
             .pipe(gulp.dest( build.umd ))
@@ -346,19 +349,19 @@
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ licence
-    //| > ajout d'une licence au bundle
+    //| > ajout d"une licence au bundle
     //| > https://www.npmjs.com/package/gulp-header
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('licence', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("licence", function () {
 
         // pour information,
         // le fichier de licence peut être un template,
         // les balises en nottion ES6-style : ${date}
-        var fs = require('fs');
+        var fs = require("fs");
         var licence = path.join(_.utils, "licence-template.txt");
 
         return gulp.src([ path.join(build.umd, (isDebug? getDistFileNameDebug() : getDistFileName())) ])
-                .pipe($.header(fs.readFileSync(licence, 'utf8'), {
+                .pipe($.header(fs.readFileSync(licence, "utf8"), {
                      date : buildDate,
                      version : npmConf.version
                 }))
@@ -371,10 +374,10 @@
     //| ✓ sources
     //| > copie des sources js
     //| > https://www.npmjs.com/package/gulp-replace
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('sources', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("sources", function () {
 
-        return gulp.src([ path.join(_.src, '**/*.js') ])
+        return gulp.src([ path.join(_.src, "**/*.js") ])
                 .pipe($.replace(/__GPSDKVERSION__/g,npmConf.version))
                 .pipe($.replace(/__GPDATE__/g,buildDate))
                 .pipe(gulp.dest(build.src))
@@ -384,13 +387,13 @@
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ copy-sample
-    //| > copie des pages d'exemples
+    //| > copie des pages dexemples
     //| > TODO mettre en place une regex pour prendre en compte virtualglobe
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('copy-sample', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("copy-sample", function () {
 
-        return gulp.src([ path.join(_.sample, '**/*.html'), path.join(_.sample, '**/*.js') ])
-                .pipe($.replace('GpOl3.js', (isDebug) ? getDistFileNameDebug() : getDistFileName()))
+        return gulp.src([ path.join(_.sample, "**/*.html"), path.join(_.sample, "**/*.js") ])
+                .pipe($.replace("GpOl3.js", (isDebug) ? getDistFileNameDebug() : getDistFileName()))
                 .pipe(gulp.dest(build.sample))
                 .pipe($.plumber())
                 .pipe($.size());
@@ -401,8 +404,8 @@
     // | > construction de la page principale des exemples leaflet ou ol3
     // | > https://www.npmjs.com/package/gulp-template
     // | > FIXME la liste des exemples est déjà constituée !
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task("template-sample", ['copy-sample'], function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("template-sample", ["copy-sample"], function () {
 
         var tmpl = require("gulp-template");
         var glob = require("glob");
@@ -416,17 +419,17 @@
 
         return gulp.src(path.join(_.sample, "index-samples.html"))
             .pipe(tmpl({
-                'files' : lstSources
+                "files" : lstSources
             }))
             .pipe(gulp.dest(build.sample));
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ lib
-    //| > copie des pages d'exemples
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('lib', function () {
-        return gulp.src([ path.join(_.lib, '**') ])
+    //| > copie des pages dexemples
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("lib", function () {
+        return gulp.src([ path.join(_.lib, "**") ])
                 .pipe(gulp.dest(build.lib))
                 .pipe($.plumber())
                 .pipe($.size());
@@ -435,7 +438,7 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ copy images
     //| > https://github.com/hparra/gulp-rename
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("res-images", function () {
 
         var rename = require("gulp-rename");
@@ -481,7 +484,7 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ copy virtualGeo Engine - ONLY for VG build or Mix build
     //| > https://github.com/hparra/gulp-rename
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    //"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("copy-vg-engine", function () {
 
         var rename = require("gulp-rename");
@@ -502,7 +505,7 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ copy ITowns Engine - ONLY for itowns build or Mix build
     //| > https://github.com/hparra/gulp-rename
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("copy-itowns-engine", function () {
 
         var rename = require("gulp-rename");
@@ -523,7 +526,7 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ minify css with clean-css
     //| > https://www.npmjs.com/package/gulp-clean-css
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("res-styles", function () {
 
         // pour information,
@@ -531,7 +534,7 @@
         // les balises en nottion ES6-style : ${date}
         var licence = path.join(_.utils, "licence-template.txt");
 
-        var fs = require('fs');
+        var fs = require("fs");
         var header  = require("gulp-header");
         var minifyCss = require("gulp-clean-css");
         var concat    = require("gulp-concat");
@@ -585,9 +588,9 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ libdoc
     //| > copie du template jaguarjs-jsdoc
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('libdoc', function () {
-        return gulp.src([ path.join(_.doc, '**') ])
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("libdoc", function () {
+        return gulp.src([ path.join(_.doc, "**") ])
                 .pipe(gulp.dest(build.doc))
                 .pipe($.plumber())
                 .pipe($.size());
@@ -596,10 +599,10 @@
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ publish
     //| > copie du bundle pour distribution
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('publish', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("publish", function () {
 
-        return gulp.src([ path.join(build.dist, '**/*') ])
+        return gulp.src([ path.join(build.dist, "**/*") ])
                 .pipe(gulp.dest(_.dist))
                 .pipe($.plumber())
                 .pipe($.size()) ;
@@ -609,8 +612,8 @@
     //| ✓ connect to web server for test
     //| > https://www.npmjs.com/package/gulp-connect
     //| > http://localhost:9001
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('connect', $.connect.server({
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("connect", $.connect.server({
         root: [_.root],
         livereload: true,
         port: 9001
@@ -618,27 +621,27 @@
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ server web test
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('server-test', ['connect'], function () {
-        var open = require('open');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("server-test", ["connect"], function () {
+        var open = require("open");
         open("http://localhost:9001/test/index.html");
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ server web sample
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('server-sample', ['connect'], function () {
-        var open = require('open');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("server-sample", ["connect"], function () {
+        var open = require("open");
         open("http://localhost:9001/target/samples/index-samples.html");
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ watch test change
     //| > https://www.npmjs.com/package/gulp-watch
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('watch', ['server-test'], function () {
-        $.watch({glob: [ path.join(_.test, 'spec/**/*.js') ]}, function () {
-            gulp.start('mocha-phantomjs');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("watch", ["server-test"], function () {
+        $.watch({glob: [ path.join(_.test, "spec/**/*.js") ]}, function () {
+            gulp.start("mocha-phantomjs");
         });
     });
 
@@ -646,8 +649,8 @@
     //| ✓ clean
     //| > nettoyage
     //| > https://www.npmjs.com/package/gulp-clean
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('clean', [], function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("clean", [], function () {
 
         var stream = gulp.src([
             build.dist,
@@ -665,16 +668,16 @@
     //| ✓ clean
     //| > nettoyage brutal
     //| > https://github.com/robrich/gulp-rimraf
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('clean-rimraf', [], function (cb) {
-        var rimraf = require('rimraf');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("clean-rimraf", [], function (cb) {
+        var rimraf = require("rimraf");
         rimraf("./target", cb);
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ help
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('help', function () {
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("help", function () {
         $.util.log("Liste des 'target' principales :");
         $.util.log(" - build : construction complète du projet.");
         $.util.log(" -- dist : construction de la librairie.");
@@ -686,21 +689,21 @@
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ tâche = alias
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('test',         ['mocha-phantomjs']);
-    gulp.task('test-cloud',   ['server-test']);
-    gulp.task('check',        ['jsonlint', 'jshint', 'jscs']);
-    gulp.task('src',          ['sources', 'lib']);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("test",         ["mocha-phantomjs"]);
+    gulp.task("test-cloud",   ["server-test"]);
+    gulp.task("check",        ["jsonlint", "jshint", "jscs"]);
+    gulp.task("src",          ["sources", "lib"]);
     gulp.task("res",          ["res-styles", "res-images"]);
-    gulp.task('sample',       ['template-sample']);
-    gulp.task('sample-cloud', ['server-sample']);
-    gulp.task('dist',         ['build-dist']);  // task sync
-    gulp.task('doc',          ['build-doc']);   // task sync
+    gulp.task("sample",       ["template-sample"]);
+    gulp.task("sample-cloud", ["server-sample"]);
+    gulp.task("dist",         ["build-dist"]);  // task sync
+    gulp.task("doc",          ["build-doc"]);   // task sync
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ synchronisation des tâches
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    var runSequence = require('run-sequence');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    var runSequence = require("run-sequence");
 
     gulp.task("build", function(cb) {
 
@@ -730,7 +733,7 @@
         isItowns = false;
         isOl3 = true;
         $.util.log("# Run task for OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', cb);
+        runSequence("check", "test", "sample", "res", "dist", "doc", cb);
     });
 
     gulp.task("build-vg", function(cb) {
@@ -738,7 +741,7 @@
         isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for VirtualGeo 3D...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', 'copy-vg-engine', cb);
+        runSequence("check", "test", "sample", "res", "dist", "doc", "copy-vg-engine", cb);
     });
 
     gulp.task("build-itowns", function(cb) {
@@ -746,7 +749,7 @@
         isVG = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns 3D...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'doc', 'copy-itowns-engine', cb);
+        runSequence("check", "test", "sample", "res", "dist", "doc", "copy-itowns-engine", cb);
     });
 
     gulp.task("build-mix", function(cb) {
@@ -756,7 +759,7 @@
         isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for VirtualGeo 3D with OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-vg-engine', cb);
+        runSequence("check", "test", "sample", "res", "dist", "copy-vg-engine", cb);
     });
 
     gulp.task("build-mixIt", function(cb) {
@@ -766,22 +769,22 @@
         isItowns = false;
         isOl3 = false;
         $.util.log("# Run task for iTowns with OpenLayers3...");
-        runSequence('check', 'test', 'sample', 'res', 'dist', 'copy-itowns-engine', cb);
+        runSequence("check", "test", "sample", "res", "dist", "copy-itowns-engine", cb);
     });
 
-    gulp.task('build-dist', function(callback) {
-        runSequence('src', 'umd', 'licence', callback);
+    gulp.task("build-dist", function(callback) {
+        runSequence("src", "umd", "licence", callback);
     });
 
-    gulp.task('build-doc', function(callback) {
-        runSequence('libdoc', 'jsdoc', callback);
+    gulp.task("build-doc", function(callback) {
+        runSequence("libdoc", "jsdoc", callback);
     });
 
     //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //| ✓ tâche par default
-    //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gulp.task('default', ['clean'], function () {
-        gulp.start('build');
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    gulp.task("default", ["clean"], function () {
+        gulp.start("build");
     });
 
-}(require('gulp'), require('gulp-load-plugins')));
+}(require("gulp"), require("gulp-load-plugins")));
