@@ -29,6 +29,7 @@
   "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
   "dependencies": {},
   "devDependencies": {
+    "geoportal-extensions-openlayers": "^1.0.0",
     "amdclean": "^2.7.0",
     "glob": "^7.0.3",
     "groundskeeper": "^0.1.12",
@@ -77,6 +78,5 @@
     "sinon": "1.15.4"
   },
   "optionalDependencies": {
-    "geoportal-extensions-openlayers": "^1.0.0"
   }
 }
