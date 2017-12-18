@@ -77,6 +77,5 @@
     "minami": "^1.1.1",
     "sinon": "1.15.4"
   },
-  "optionalDependencies": {
-  }
+  "optionalDependencies": {}
 }
