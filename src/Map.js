@@ -343,8 +343,24 @@ define([
          * @property {String} [url = <default lightOrange marker>] - Icon URL used to materialize the marker.
          * @property {Array.<Number>} [offset = [-25.5, -38]] - Offsets in pixels used when positioning the marker towards targeted point. The first element in the array is the horizontal offset. A positive value shifts the marker right. The second element in the array is the vertical offset. A positive value shifts the marker down. Default is offset associated to default marker image.
          * @property {Array.<Number>} [ppoffset = [0,-15]] - Offsets in pixels used when positioning the popup towards click. The first element in the array is the horizontal offset. A positive value shifts the popup right. The second element in the array is the vertical offset. A positive value shifts the popup down. Default value ([0, -15]) fits with default popup positioning.
+         * @property {Gp.AutoPanOptions} autoPanOptions - Defines autoPan options for popups. 
          */
         var markerOptions = {
+        } ;
+
+        /**
+         * AutoPan options object.
+         *
+         * Holds options to define autopan behaviour for popups displaying when they overlap the borders of the map.
+         *
+         * @namespace
+         * @alias Gp.AutoPanOptions
+         *
+         * @property {Boolean} [autoPan = true] - If true, then autoPan is activated.
+         * @property {Number} [duration = 250] - Duration (in ms) of autoPan animation when autoPan is set to true.
+         * @property {Number} [margin = 5] - Size (in px) of the space between the border of the map and the border of the popup when autoPan is set to true and occurs.
+         */
+        var autoPanOptions = {
         } ;
 
         /**

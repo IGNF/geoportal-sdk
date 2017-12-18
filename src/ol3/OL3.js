@@ -1424,7 +1424,8 @@ define([
                         evtPx[1] + this.mo.ppoffset[1]
                     ]),
                     this.mo.content,
-                    this.mo.contentType
+                    this.mo.contentType,
+                    this.mo.autoPanOptions
                  ) ;
             } ;
             for (ii = 0 ; ii < markersOptions.length ; ii++) {
@@ -1458,6 +1459,18 @@ define([
                 }
                 if (!mo.hasOwnProperty("contentType")) {
                     mo.contentType = "text/html" ;
+                }
+                // autoPan Options
+                if (!mo.hasOwnProperty("autoPanOptions")) {
+                    // by default : autoPan true
+                    mo.autoPanOptions = {
+                        autoPan : IMap.DEFAULT_AUTOPAN_OPTIONS.autoPan,
+                        // properties of autoPanAnimation : https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions
+                        autoPanAnimation : {
+                            duration : IMap.DEFAULT_AUTOPAN_OPTIONS.duration
+                        },
+                        autoPanMargin : IMap.DEFAULT_AUTOPAN_OPTIONS.margin
+                    } ;
                 }
                 // create overlay
                 var fcoords = [mo.position.x, mo.position.y] ;

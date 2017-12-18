@@ -128,6 +128,16 @@ define([
         };
 
         /**
+         * Default autoPanOptions
+         * @private
+         */
+        IMap.DEFAULT_AUTOPAN_OPTIONS = {
+            autoPan : true,
+            duration : 250,
+            margin : 5
+        };
+
+        /**
          * Options par défaut des styles de dessin
          * @private
          */

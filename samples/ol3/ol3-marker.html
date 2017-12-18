@@ -83,17 +83,25 @@
                 },
                 markersOptions: [{
                     url : "https://www.google.fr/maps/vt/icon/name=assets/icons/spotlight/spotlight_poi-0-tiny.png&color=ffff0000?scale=2",
-                    content : "Marker Google",
+                    content : "Marker Google. Avec autoPan.",
                     position : {
                         x : 261500,
                         y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : true,
+                        duration : 1000,
+                        margin : 20
                     }
                 },{
-                    content : "Marker par defaut",
+                    content : "Marker par defaut. Avec autoPan désactivé.",
                     offset : [-25.5, -38],
                     position : {
                         x : 261300,
                         y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : false
                     }
                 }]
             });
