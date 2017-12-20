@@ -18,9 +18,9 @@ Copyright (c) 2016 IGN
 
 The Geoportal SDK includes the following third party code :
 
-### OpenLayers 3
+### OpenLayers
 
-Copyright 2005-2016 OpenLayers Contributors. All rights reserved.
+Copyright 2005-2017 OpenLayers Contributors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -33,7 +33,7 @@ THIS SOFTWARE IS PROVIDED BY OPENLAYERS CONTRIBUTORS ``AS IS'' AND ANY EXPRESS O
 The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of OpenLayers Contributors.
 
 
-### Geoportal extension for OpenLayers 3
+### Geoportal extension for OpenLayers
 
 This software is released under the licence CeCILL-B (Free BSD compatible)
 

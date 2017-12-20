@@ -281,7 +281,7 @@ function (
                 }
 
                 // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
-                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx" || p == "coordsTime") {
+                if (p == "stroke" || p == "stroke-opacity" || p == "stroke-width" || p == "fill" || p == "fill-opacity" || p == "_idx" || p == "_meshIdx" || p == "coordTimes") {
                     continue ;
                 }
 
@@ -1591,7 +1591,7 @@ function (
     IT.prototype.forget = function (eventId, action) {
         this.logger.trace("[IT]  : forget...") ;
         // verifications de base de la classe mère
-        if (eventId !== "pickFeature" && !IMap.prototype.forget.apply(this,arguments)) {
+        if (!IMap.prototype.forget.apply(this,arguments)) {
             return false ;
         }
     } ;

@@ -52,6 +52,8 @@ function itowns() {
   gulp publish
 }
 
+npm install
+
 while getopts "aoi" opts
 do
    case $opts in

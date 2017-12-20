@@ -430,12 +430,12 @@ define([
                 this.addControls(this.mapOptions.controlsOptions) ;
 
                 // declenchement de l'evenement "configured"
-                var e = IMap.CustomEvent("mapLoaded", {
+                var eMapLoaded = IMap.CustomEvent("mapLoaded", {
                     detail : {
                         map : this
                     }
                 }) ;
-                this.div.dispatchEvent(e) ;
+                this.div.dispatchEvent(eMapLoaded) ;
                 return ;
             },
 
@@ -987,6 +987,7 @@ define([
                 if (library === "vg") {
                     oldMap.center = [oldMap.center.x, oldMap.center.y];
                     // transformation des coordonnées de planes en géographiques
+                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
                     var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
                     oldMap.center = {
                         x : lonlat[0],
@@ -997,6 +998,7 @@ define([
                 } else if (library === "ol3") {
                     oldMap.center = [oldMap.center.lon, oldMap.center.lat];
                     // transformation des coordonnées de géographiques en planes
+                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
                     var xy = ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
                     oldMap.center = {
                         x : xy[0],
@@ -1065,6 +1067,7 @@ define([
                 if (library === "itowns") {
                     oldMap.center = [oldMap.center.x, oldMap.center.y];
                     // transformation des coordonnées de planes en géographiques
+                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
                     var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
                     oldMap.center = {
                         x : lonlat[0],
@@ -1075,6 +1078,7 @@ define([
                 } else if (library === "ol3") {
                     oldMap.center = [oldMap.center.lon, oldMap.center.lat];
                     // transformation des coordonnées de géographiques en planes
+                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
                     var xy = ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
                     oldMap.center = {
                         x : xy[0],
@@ -1954,12 +1958,13 @@ define([
             _onLayerChanged : function (evt) {
                 var layerOpts = null ;
                 var idx = -1 ;
+                var layerId = null ;
                 if (evt.hasOwnProperty("layerAdded")) {
                     layerOpts = evt.layerAdded ;
                     idx = this._getLayerIndexByLayerOpts(layerOpts) ;
                     this.logger.trace("[IMap] _onLayerChanged : layerAdded : " + idx ) ;
                     if (idx >= 0 && idx < this._layers.length) {
-                        var layerId = this._layers[idx].id ;
+                        layerId = this._layers[idx].id ;
                         this._layers[idx].options.position = evt.position ;
                         this.logger.trace("[IMap] _onLayerChanged : setting position value to " + evt.position + " for layer : " + layerId ) ;
                     } else {
@@ -1986,7 +1991,7 @@ define([
                     layerOpts = evt.layerChanged ;
                     var idxx = this._getLayerIndexByLayerOpts(layerOpts) ;
                     if (idxx >= 0 && idxx < this._layers.length) {
-                        var layerId = this._layers[idxx].id ;
+                        layerId = this._layers[idxx].id ;
                         this._layers[idxx].options[evt.property] = evt.newValue ;
                         this.logger.trace("[IMap] _onLayerChanged : setting " + evt.property + " value to " + evt.newValue + " for layer : " + layerId ) ;
                     } else {
@@ -2174,6 +2179,7 @@ define([
                     case "projectionChanged" :
                     case "layerChanged" :
                     case "controlChanged" :
+                    case "pickFeature" :
                         // on cherche l'enregistrement de l'evenement
                         var rEvents = this._events[eventId] ;
                         if (!rEvents) {
@@ -2187,8 +2193,8 @@ define([
                                     continue;
                                 }
                                 itCallback = rEvents[i].key ;
-                                eventOrigin = rEvents[i].eventOrigin;
-                                eventType = rEvents[i].eventType;
+                                var eventOrigin = rEvents[i].eventOrigin;
+                                var eventType = rEvents[i].eventType;
                                 if (!itCallback) {
                                     console.log("action to forget not found for  : " + eventId) ;
                                     return false ;

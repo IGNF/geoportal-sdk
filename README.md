@@ -17,12 +17,12 @@ Il s’adresse à des gestionnaires de site internet désireux de proposer rapid
 
 ### Téléchargement
 
-Vous pouvez récupérer le Kit de Développement Géoportail [ici](https://github.com/ignf/geoportal-sdk/releases/download/v1.0.0-beta.1/GpSDK.zip).
+Vous pouvez récupérer le Kit de Développement Géoportail soit par [téléchargement direct](#download-direct), soit en utilisant le [gestionnaire de dépendances javascript NPM](#download-npm).
 
 
 Il contient l'arborescence suivante :
 
-    sdk-ol3/
+    <Kit de Développement Géoportail>/
         GpOl3.js
             (version minifiée du code javascript pour une utilisation en production)
         GpOl3.css
@@ -35,10 +35,33 @@ Il contient l'arborescence suivante :
             (resources images utilisées par les fichiers CSS)
 
 
+<a id="download-direct"/>
+
+#### Téléchargement direct
+
+Vous pouvez télécharger la dernière version du Kit de Développement Géoportail directement sur [la page Github des releases du SDK](https://github.com/IGNF/geoportal-sdk/releases).
+
+L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
+
+
+<a id="download-npm"/>
+
+#### Récupération avec NPM
+
+Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/geoportal-sdk).
+
+Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
+
+```
+npm i geoportal-sdk
+```
+
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/ol3/` de votre projet.
+
 
 ### Intégration dans une page web
 
-Dézippez le SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
+Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
 
 Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
 
