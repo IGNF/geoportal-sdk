@@ -1236,23 +1236,34 @@ define([
             var gfiOpts = {} ;
             gfiOpts.options = {};
 
-            if (controlOpts.options.hasOwnProperty("auto")) {
-                gfiOpts.options.auto = controlOpts.options.auto ;
-            }
-            if (controlOpts.options.hasOwnProperty("active")) {
-                gfiOpts.options.active = controlOpts.options.active ;
-            }
-            if (controlOpts.options.hasOwnProperty("hidden")) {
-                gfiOpts.options.hidden = controlOpts.options.hidden ;
-            }
-            if (controlOpts.options.hasOwnProperty("defaultEvent")) {
-                gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
-            }
-            if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
-                gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
-            }
-            if (controlOpts.options.hasOwnProperty("cursorStyle")) {
-                gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+            if (controlOpts.hasOwnProperty("options")) {
+                if (controlOpts.options.hasOwnProperty("auto")) {
+                    gfiOpts.options.auto = controlOpts.options.auto ;
+                }
+                if (controlOpts.options.hasOwnProperty("active")) {
+                    gfiOpts.options.active = controlOpts.options.active ;
+                }
+                if (controlOpts.options.hasOwnProperty("hidden")) {
+                    gfiOpts.options.hidden = controlOpts.options.hidden ;
+                }
+                if (controlOpts.options.hasOwnProperty("defaultEvent")) {
+                    gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
+                }
+                if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
+                    gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
+                }
+                if (controlOpts.options.hasOwnProperty("cursorStyle")) {
+                    gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+                }
+                // autoPan Options. If undefined : set defaults
+                if (!controlOpts.options.hasOwnProperty("autoPanOptions")) {
+                    controlOpts.options.autoPanOptions = IMap.DEFAULT_AUTOPAN_OPTIONS ;
+                }
+                gfiOpts.options.autoPan = controlOpts.options.autoPanOptions.autoPan ;
+                gfiOpts.options.autoPanAnimation = {
+                    duration : controlOpts.options.autoPanOptions.duration
+                } ;
+                gfiOpts.options.autoPanMargin = controlOpts.options.autoPanOptions.margin ;
             }
             if (this.mapOptions && this.mapOptions.proxyUrl) {
                 gfiOpts.options.proxyUrl = this.mapOptions.proxyUrl ;
@@ -1265,9 +1276,12 @@ define([
             for (var gfiLayerId in controlOpts.layers) {
                 var gfiLayer = controlOpts.layers[gfiLayerId];
 
+                console.log("gfiLayers : " + gfiLayerId) ;
                 for ( var i = 0 ; i < this._layers.length ; ++i ) {
                     var mapLayer = this._layers[i];
 
+                    console.log("mapLayers : " + mapLayer.id) ;
+ 
                     if ( gfiLayerId === mapLayer.id ) {
                         if ( !mapLayer.options.queryable ) {
                             console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
@@ -1281,12 +1295,16 @@ define([
                             if ( mapLayer.options.gfiFormat ) {
                                 layerConf.infoFormat = mapLayer.options.gfiFormat;
                             }
+                            
+                            console.log(layerConf) ;
                             gfiOpts.layers.push(layerConf) ;
                             break;
                         }
                     }
                 }
             }
+
+            console.log(gfiOpts) ;
 
             var control = new ol.control.GetFeatureInfo(gfiOpts) ;
             this.libMap.addControl(control) ;

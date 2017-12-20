@@ -591,6 +591,7 @@ define([
          * | options.defaultEvent | String | optional | 'singleclick' | Specifies the default triggering event chosen in the list ['singleclick', 'dblclick', 'contextmenu']. This is the triggering event of all layers added to the control without configured triggering event. |
          * | options.defaultInfoFormat | String | optional | 'text/html' | Indicates the default format mime-type of the response of GetFeatureInfo requests. |
          * | options.cursorStyle | String | optional | 'pointer' | Specifies the type of cursor to be displayed when pointing on vector feature of a layer previously added to the control. The value must be choosen in the possible values of the css cursor property. |
+         * | options.autoPanOptions | {@link Gp.AutoPanOptions} | optional |  | Defines autoPan Options for popup display on click. |
          * | layers | Object | | | List of layers requested by the control and their options (those layers have to be queryable). Associative array mapping ids of layers and their properties : </br><ul><li>event (String, optional) : name of the mouse event triggering the "getfeatureinfo" request.</li><li>infoFormat (String, optional) : indicates the format mime-type of the response of GetFeatureInfo requests.</li></ul> |
          *
          * <a id="layerimport"></a>
