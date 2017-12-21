@@ -1276,12 +1276,9 @@ define([
             for (var gfiLayerId in controlOpts.layers) {
                 var gfiLayer = controlOpts.layers[gfiLayerId];
 
-                console.log("gfiLayers : " + gfiLayerId) ;
                 for ( var i = 0 ; i < this._layers.length ; ++i ) {
                     var mapLayer = this._layers[i];
 
-                    console.log("mapLayers : " + mapLayer.id) ;
- 
                     if ( gfiLayerId === mapLayer.id ) {
                         if ( !mapLayer.options.queryable ) {
                             console.log("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.") ;
@@ -1296,15 +1293,12 @@ define([
                                 layerConf.infoFormat = mapLayer.options.gfiFormat;
                             }
                             
-                            console.log(layerConf) ;
                             gfiOpts.layers.push(layerConf) ;
                             break;
                         }
                     }
                 }
             }
-
-            console.log(gfiOpts) ;
 
             var control = new ol.control.GetFeatureInfo(gfiOpts) ;
             this.libMap.addControl(control) ;
@@ -1318,6 +1312,7 @@ define([
          * @param {Array.<String>} controlIds - A list of control's id or null.
          */
         OL3.prototype.removeControls = function (controlIds) {
+ 
             this.logger.trace("[OL3] : removeControls ... ");
             if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
                 console.log("No control to remove.") ;
