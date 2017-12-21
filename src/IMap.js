@@ -1434,7 +1434,7 @@ define([
              * |-|-|
              * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction. |
              * | 'keyboard' | Enable (true) / disable (false) map dragging/zoomming by keybord interaction. |
-             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. |
+             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. [**DEPRECATED**] : use ['getfeatureinfo'](./Gp.ControlOptions.html#getfeatureinfo) control instead to allow users to interact with features. |
              * | 'zoom' | Adds Zoom widget to the map. See [options availables](./Gp.ControlOptions.html#zoom) |
              * | 'orientation' | Adds orientation widget to the map. See [options availables](./Gp.ControlOptions.html#orientation) |
              * | 'layerswitcher' | Adds layers selector widget to the map. See [options availables](./Gp.ControlOptions.html#layerswitcher) |
