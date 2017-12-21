@@ -16,14 +16,15 @@
         <script src="../../dist/ol3/GpOl3-src.js"></script>
     </head>
     <body>
-        <h1>WMSC Géoportail comme WMS</h1>
+        <h1>WMSC Géologie comme WMS</h1>
+        <p>Charge la couche géologie du BRGM depuis le serveur WMSC comme une couche WMS (en mode tuilé)</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
 
             var map = Gp.Map.load('geoportalMap',{
                 apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
-                proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
-                noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+                // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
                 center : {
                     x : 5.35,
                     y : 45.27,
@@ -36,8 +37,8 @@
                 },
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {},
-                    // Couche WMS-C externe proxyfiée...
                     "GEOLOGY.GEOLOGY::EXTERNAL:OGC:EXTERNALWMS" : {
+                        tiled : true,
                         format : "wms",
                         version : "1.1.1",
                         title : "Géologie (BRGM)",

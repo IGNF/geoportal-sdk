@@ -343,8 +343,24 @@ define([
          * @property {String} [url = <default lightOrange marker>] - Icon URL used to materialize the marker.
          * @property {Array.<Number>} [offset = [-25.5, -38]] - Offsets in pixels used when positioning the marker towards targeted point. The first element in the array is the horizontal offset. A positive value shifts the marker right. The second element in the array is the vertical offset. A positive value shifts the marker down. Default is offset associated to default marker image.
          * @property {Array.<Number>} [ppoffset = [0,-15]] - Offsets in pixels used when positioning the popup towards click. The first element in the array is the horizontal offset. A positive value shifts the popup right. The second element in the array is the vertical offset. A positive value shifts the popup down. Default value ([0, -15]) fits with default popup positioning.
+         * @property {Gp.AutoPanOptions} autoPanOptions - Defines autoPan options for popups. 
          */
         var markerOptions = {
+        } ;
+
+        /**
+         * AutoPan options object.
+         *
+         * Holds options to define autopan behaviour for popups displaying when they overlap the borders of the map.
+         *
+         * @namespace
+         * @alias Gp.AutoPanOptions
+         *
+         * @property {Boolean} [autoPan = true] - If true, then autoPan is activated.
+         * @property {Number} [duration = 250] - Duration (in ms) of autoPan animation when autoPan is set to true.
+         * @property {Number} [margin = 5] - Size (in px) of the space between the border of the map and the border of the popup when autoPan is set to true and occurs.
+         */
+        var autoPanOptions = {
         } ;
 
         /**
@@ -575,6 +591,7 @@ define([
          * | options.defaultEvent | String | optional | 'singleclick' | Specifies the default triggering event chosen in the list ['singleclick', 'dblclick', 'contextmenu']. This is the triggering event of all layers added to the control without configured triggering event. |
          * | options.defaultInfoFormat | String | optional | 'text/html' | Indicates the default format mime-type of the response of GetFeatureInfo requests. |
          * | options.cursorStyle | String | optional | 'pointer' | Specifies the type of cursor to be displayed when pointing on vector feature of a layer previously added to the control. The value must be choosen in the possible values of the css cursor property. |
+         * | options.autoPanOptions | {@link Gp.AutoPanOptions} | optional |  | Defines autoPan Options for popup display on click. |
          * | layers | Object | | | List of layers requested by the control and their options (those layers have to be queryable). Associative array mapping ids of layers and their properties : </br><ul><li>event (String, optional) : name of the mouse event triggering the "getfeatureinfo" request.</li><li>infoFormat (String, optional) : indicates the format mime-type of the response of GetFeatureInfo requests.</li></ul> |
          *
          * <a id="layerimport"></a>
