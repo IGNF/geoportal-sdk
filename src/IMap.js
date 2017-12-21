@@ -430,14 +430,14 @@ define([
                     this._addMarkers(this.mapOptions.markersOptions) ;
                 }
 
+                // ajout des couches
+                this.addLayers(this.mapOptions.layersOptions) ;
+                
                 // ajout des controles
                 // ... par defaut
                 this.addControls(this._getDefaultControls()) ;
                 // ceux demandés par l'utilisateur
                 this.addControls(this.mapOptions.controlsOptions) ;
-
-                // ajout des couches
-                this.addLayers(this.mapOptions.layersOptions) ;
 
                 // declenchement de l'evenement "configured"
                 var eMapLoaded = IMap.CustomEvent("mapLoaded", {
