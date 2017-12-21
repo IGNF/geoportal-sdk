@@ -1,6 +1,6 @@
 {
   "name": "geoportal-sdk",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0",
   "description": "French Geoportal SDK",
   "main": "dist/ol3/GpOl3.js",
   "scripts": {
