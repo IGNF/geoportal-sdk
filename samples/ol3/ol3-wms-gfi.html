@@ -17,8 +17,8 @@
     </head>
     <body>
         <h1>WMS Géoportail "externe" et GetFeatureInfo</h1>
-        <p>couche WMS SHOM chargée avec l'option tiled : true => logos parfois tronqués</p>
-        <p>couche WMS Ecoles chargée sans l'option tiled => logos non tronqués</p>
+        <p>couche WMS SHOM chargée avec l'option tiled : true => logos parfois tronqués, queryable avec le bouton droit (event : "contextmenu").</p>
+        <p>couche WMS Ecoles chargée sans l'option tiled => logos non tronqués, queryable au clic gauche.</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
 
@@ -38,6 +38,8 @@
                         layers : {
                             'WMS1' : {
                                 event: "contextmenu",
+                            },
+                            'ecoles' : {
                             }
                         },
                         options : {

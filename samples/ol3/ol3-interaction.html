@@ -14,10 +14,11 @@
     </head>
     <body>
         <h1>Test de l'activation / desactivation des interactions</h1>
+        <p>Version 1.0 : bugs constatés : (1) Après activation puis desactivation de getfeatureinfo => erreur au clic. (2) activation / desactivation de la navigation au clavier ("keyboard") inopérante </p>
         <div id="eventsDiv">
             <input type="checkbox" name="draggable" onclick="toggle(this);"/>enable Mouse navigation<br/>
             <input type="checkbox" name="keyboard" onclick="toggle(this);"/>enable keybord navigation<br/>
-            <input type="checkbox" name="selectable" onclick="toggle(this);"/>enable feature selection<br/>
+            <input type="checkbox" name="getfeatureinfo" onclick="toggle(this);"/>enable feature selection<br/>
         </div>
         <div id="geoportalMap"></div>
 
@@ -39,13 +40,32 @@
                 },
                 zoom : 14,
                 controlsOptions : {
-                    selectable : false
+                    getfeatureinfo : {
+                        options : {
+                            auto : true,
+                            // hidden : true,
+                            active : false
+                        }
+                    },
+                    draggable : false,
+                    keyboard : false
                 }
             });
             function toggle(elem) {
                 var controlsOptions = {} ;
-                controlsOptions[elem.name] = elem.checked
-                map.addControls(controlsOptions) ;
+                if ( elem.name == "getfeatureinfo" ) {
+                    controlsOptions[elem.name] = {
+                        options : {
+                            auto : true,
+                            active : elem.checked,
+                            // hidden : true
+                        } 
+                    } ;
+                    map.modifyControls(controlsOptions) ;
+                } else {
+                    controlsOptions[elem.name] = elem.checked
+                    map.addControls(controlsOptions) ;
+                }
             }
         </script>
     </body>

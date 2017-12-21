@@ -14,6 +14,7 @@
     </head>
     <body>
         <h1>Affichage couche WFS Géoportail</h1>
+        <p>En mode : "couche externe"</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
 
@@ -28,7 +29,8 @@
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {},
                     maCoucheWFS : {
                         format :"wfs",
-                        url : "http://wxs.ign.fr/kgco926a9mj4fcng4whjf5ac/geoportail/wfs",
+                        // TODO : changer la clef ?
+                        url : "https://wxs.ign.fr/kgco926a9mj4fcng4whjf5ac/geoportail/wfs",
                         typeNames : "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle",
                         version : "2.0.0",
                         // version : "1.1",
