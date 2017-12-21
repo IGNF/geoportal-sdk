@@ -17,7 +17,7 @@
     </head>
     <body>
         <h1>Get Feature Info</h1>
-        <p>Exemple de mise en oeuvre du widget getFeatureInfo avec une couche WMTS.</p>
+        <p>Exemple de mise en oeuvre du widget getFeatureInfo avec une couche WMS (école) et WMTS (photos).</p>
         <p>Ici l'évènement par défault est le simple click.</p>
         <div id="geoportalMap"></div>
         <script type="text/javascript">
@@ -61,7 +61,7 @@
                         layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                         outputFormat : "image/png",
                         queryable : true,
-                        gfiFormat : "text/plain",
+                        gfiFormat : "text/html",
                         originators: [{
                                 "name":"IGN",
                                 "attribution":"Institut national de l'information géographique et forestière",
