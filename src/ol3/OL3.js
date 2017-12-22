@@ -1236,23 +1236,34 @@ define([
             var gfiOpts = {} ;
             gfiOpts.options = {};
 
-            if (controlOpts.options.hasOwnProperty("auto")) {
-                gfiOpts.options.auto = controlOpts.options.auto ;
-            }
-            if (controlOpts.options.hasOwnProperty("active")) {
-                gfiOpts.options.active = controlOpts.options.active ;
-            }
-            if (controlOpts.options.hasOwnProperty("hidden")) {
-                gfiOpts.options.hidden = controlOpts.options.hidden ;
-            }
-            if (controlOpts.options.hasOwnProperty("defaultEvent")) {
-                gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
-            }
-            if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
-                gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
-            }
-            if (controlOpts.options.hasOwnProperty("cursorStyle")) {
-                gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+            if (controlOpts.hasOwnProperty("options")) {
+                if (controlOpts.options.hasOwnProperty("auto")) {
+                    gfiOpts.options.auto = controlOpts.options.auto ;
+                }
+                if (controlOpts.options.hasOwnProperty("active")) {
+                    gfiOpts.options.active = controlOpts.options.active ;
+                }
+                if (controlOpts.options.hasOwnProperty("hidden")) {
+                    gfiOpts.options.hidden = controlOpts.options.hidden ;
+                }
+                if (controlOpts.options.hasOwnProperty("defaultEvent")) {
+                    gfiOpts.options.defaultEvent = controlOpts.options.defaultEvent ;
+                }
+                if (controlOpts.options.hasOwnProperty("defaultInfoFormat")) {
+                    gfiOpts.options.defaultInfoFormat = controlOpts.options.defaultInfoFormat ;
+                }
+                if (controlOpts.options.hasOwnProperty("cursorStyle")) {
+                    gfiOpts.options.cursorStyle = controlOpts.options.cursorStyle ;
+                }
+                // autoPan Options. If undefined : set defaults
+                if (!controlOpts.options.hasOwnProperty("autoPanOptions")) {
+                    controlOpts.options.autoPanOptions = IMap.DEFAULT_AUTOPAN_OPTIONS ;
+                }
+                gfiOpts.options.autoPan = controlOpts.options.autoPanOptions.autoPan ;
+                gfiOpts.options.autoPanAnimation = {
+                    duration : controlOpts.options.autoPanOptions.duration
+                } ;
+                gfiOpts.options.autoPanMargin = controlOpts.options.autoPanOptions.margin ;
             }
             if (this.mapOptions && this.mapOptions.proxyUrl) {
                 gfiOpts.options.proxyUrl = this.mapOptions.proxyUrl ;
@@ -1281,6 +1292,7 @@ define([
                             if ( mapLayer.options.gfiFormat ) {
                                 layerConf.infoFormat = mapLayer.options.gfiFormat;
                             }
+                            
                             gfiOpts.layers.push(layerConf) ;
                             break;
                         }
@@ -1300,6 +1312,7 @@ define([
          * @param {Array.<String>} controlIds - A list of control's id or null.
          */
         OL3.prototype.removeControls = function (controlIds) {
+ 
             this.logger.trace("[OL3] : removeControls ... ");
             if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
                 console.log("No control to remove.") ;
@@ -1424,7 +1437,8 @@ define([
                         evtPx[1] + this.mo.ppoffset[1]
                     ]),
                     this.mo.content,
-                    this.mo.contentType
+                    this.mo.contentType,
+                    this.mo.autoPanOptions
                  ) ;
             } ;
             for (ii = 0 ; ii < markersOptions.length ; ii++) {
@@ -1458,6 +1472,18 @@ define([
                 }
                 if (!mo.hasOwnProperty("contentType")) {
                     mo.contentType = "text/html" ;
+                }
+                // autoPan Options
+                if (!mo.hasOwnProperty("autoPanOptions")) {
+                    // by default : autoPan true
+                    mo.autoPanOptions = {
+                        autoPan : IMap.DEFAULT_AUTOPAN_OPTIONS.autoPan,
+                        // properties of autoPanAnimation : https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions
+                        autoPanAnimation : {
+                            duration : IMap.DEFAULT_AUTOPAN_OPTIONS.duration
+                        },
+                        autoPanMargin : IMap.DEFAULT_AUTOPAN_OPTIONS.margin
+                    } ;
                 }
                 // create overlay
                 var fcoords = [mo.position.x, mo.position.y] ;
