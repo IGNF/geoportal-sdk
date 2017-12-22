@@ -2529,7 +2529,7 @@ define([
 
                                 var registredEvent = map._registerEvent(layerChangeGrayScaledCallBack,eventId,action,context) ;
                                 registredEvent.eventOrigin = olLayer;
-                                registredEvent.eventType = "changed:" + obsProperty;
+                                registredEvent.eventType = "change:" + obsProperty;
                                 registredEvent.eventOrigin.addEventListener(registredEvent.eventType, layerChangeGrayScaledCallBack, this) ;
                             } else {
                                 olEventKey = olLayer.on(
