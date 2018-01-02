@@ -175,6 +175,10 @@ function (
 
     /**
      * Action triggered when map is clicked
+     *
+     * @param {Object} evt - evenement sent on map click
+     *
+     * @private
      */
     IT.prototype._onMapClick = function (evt) {
         this.logger.trace("[IT] : _onMapClick...") ;
@@ -227,6 +231,7 @@ function (
     /**
     * Remove all the feature info PopUp displayed on the map.
     *
+    * @private
     */
     IT.prototype._removeInfoDivs = function () {
         var featureInfoDivs = document.getElementsByClassName("gp-feature-info-div-it");
@@ -242,6 +247,8 @@ function (
      *
      * @param {Array} features - itowns features Array
      * @returns {String} HTML content.
+     *
+     * @private
      */
     IT.prototype._features2html = function (features) {
         this.logger.trace("[IT] : _features2html...") ;
@@ -313,6 +320,8 @@ function (
      *
      * @param {Object} position - position on the screen where to display the popUp
      * @param {HTMLElement} content - content to display
+     *
+     * @private
      */
     IT.prototype._displayInfo = function (position, content) {
         this.logger.trace("[IT] : _displayInfo...") ;
@@ -354,7 +363,7 @@ function (
     } ;
 
     /**
-     * Add a vector Layer to the map
+     * Adds a vector Layer to the map
      *
      * @param {Object} layerObj - geoportalLayer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -453,7 +462,7 @@ function (
     } ;
 
     /**
-     * Add a Raster Layer to the map
+     * Adds a Raster Layer to the map
      *
      * @param {Object} layerObj - raster layer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -667,7 +676,7 @@ function (
     } ;
 
     /**
-     * Add a geoportal Layer to the map
+     * Adds a geoportal Layer to the map
      *
      * @param {Object} layerObj - geoportalLayer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -700,7 +709,7 @@ function (
     } ;
 
     /**
-     * center Map on a given point
+     * Centers the map on the given coordinates at the specified zoom
      *
      * @param {Object} point - center point
      * @param {Float} point.x - x coordinates for center
@@ -739,7 +748,7 @@ function (
     };
 
     /**
-     * center Map on a given point in case of auto centering
+     * Centers the map on the given coordinates at the specified zoom, with a 45 degrees tilt (autocenter 3D)
      *
      * @param {Object} point - center point
      * @param {Float} point.x - x coordinates for center
@@ -781,7 +790,9 @@ function (
     };
 
     /**
-     * retourne les coordonnées courantes du centre de la carte
+     * Returns the coordinates of the current map center
+     *
+     * @returns {Object} - Coordinates of the map center
      */
     IT.prototype.getCenter = function () {
         var cameraCenter = this.libMap.getGlobeView().controls.getCameraTargetGeoPosition();
@@ -794,7 +805,9 @@ function (
     };
 
     /**
-     * retourne le zoom Géoportail de la carte à partir de l'echelle courante de la carte
+     * Returns the geoportal zoom level of the map calculated with the current map scale
+     *
+     * @returns {Number} - ZoomLevel of the map
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
@@ -803,7 +816,9 @@ function (
     };
 
     /**
-     * Définit le niveau de zoom de la carte
+     * Sets the zoom Level of the map
+     *
+     * @param {Number} zoom - ZoomLevel
      */
     IT.prototype.setZoom = function (zoom) {
         if ((parseFloat(zoom) !== parseInt(zoom, 10)) || isNaN(zoom)) {
@@ -817,7 +832,7 @@ function (
     };
 
     /**
-     * Incrémente le niveau de zoom de la carte de 1.
+     * Increments the zoom level of the map by 1
      */
     IT.prototype.zoomIn = function () {
         var zoom = this.getZoom();
@@ -829,7 +844,7 @@ function (
     };
 
     /**
-     * Décrémente le niveau de zoom de la carte de 1.
+     * Decrements the zoom level of the map by 1
      */
     IT.prototype.zoomOut = function () {
         var zoom = this.getZoom();
@@ -841,14 +856,18 @@ function (
     };
 
     /**
-     * retourne l'azimut courant de la carte
+     * Returns the current azimuth of the map
+     *
+     * @returns {Number} azimuth - orientation of the map
      */
     IT.prototype.getAzimuth = function () {
         return this.libMap.getGlobeView().controls.getCameraOrientation()[1];
     };
 
     /**
-     * définit le niveau de zoom de la carte
+     * Sets the orientation of the map
+     *
+     * @param {Number} azimuth - Azimuth of the map
      */
     IT.prototype.setAzimuth = function (azimuth) {
         if (isNaN(azimuth)) {
@@ -861,14 +880,18 @@ function (
     };
 
     /**
-     * retourne l'inclinaison courante de la carte
+     * Returns the current tilt of the map
+     *
+     * @returns {Number} tilt - tilt of the map
      */
     IT.prototype.getTilt = function () {
         return this.libMap.getGlobeView().controls.getCameraOrientation()[0];
     };
 
     /**
-     * définit l'inclinaison de la caméra
+     * Sets the tilt of the map
+     *
+     * @param {Number} tilt - Tilt of the map
      */
     IT.prototype.setTilt = function (tilt) {
         tilt = parseFloat(tilt);
@@ -895,6 +918,8 @@ function (
      * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
      * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
      * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
+     *
+     * @returns {Object} control - mousePosition control
      */
     IT.prototype.addMousePositionControl = function (controlOpts) {
         var mpOpts = {} ;
@@ -945,6 +970,8 @@ function (
      * @param {Object} controlOpts - control options
      * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
      * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+     *
+     * @returns {Object} control - layerSwitcher control
      */
     IT.prototype.addLayerSwitcherControl = function (controlOpts) {
         this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
@@ -1012,6 +1039,8 @@ function (
      * @param {Number} controlOpts.height - The height of the minimap (100px by default)
      * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+     *
+     * @returns {Object} control - overview control
      */
     IT.prototype.addOverviewControl = function (controlOpts) {
         this.logger.trace("[IT] addOverviewControl : ... ") ;
@@ -1062,13 +1091,15 @@ function (
     } ;
 
     /**
-     * Ajoute l'echelle graphique sur la carte
+     * Adds the graphic scale control to the map
      *
-     * @param {Object} controlOpts - options du controle
+     * @param {Object} controlOpts - control options
      * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
      * @param {Boolean} controlOpts.maximised - Display or not the control
      * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+     *
+     * @returns {Object} control - graphic scale control
      */
     IT.prototype.addGraphicScaleControl = function (controlOpts) {
         this.logger.trace("[IT] addGraphicScaleControl...") ;
@@ -1102,9 +1133,11 @@ function (
     } ;
 
     /**
-     * Ajoute l'outil d'attributions
+     * Adds the attributions control to to the map
      *
-     * @param {Object} controlOpts - options du controle
+     * @param {Object} controlOpts - control options
+     *
+     * @returns {Object} control - attributions control
      */
     IT.prototype.addAttributionsControl = function (controlOpts) {
         var attOpts = {} ;
@@ -1119,7 +1152,7 @@ function (
     } ;
 
     /**
-     * Remove the controls listed to the map.
+     * Removes the listed controls of the map.
      *
      * @param {Array.<String>} controlIds - A list of control's id or null.
      */
@@ -1192,7 +1225,7 @@ function (
     } ;
 
     /**
-     * Remove of the map the layers given as parameters
+     * Removes of the map the layers given as parameters
      *
      * @param {Array.<String>} layerIds - A list of layer's id or null.
      */
@@ -1216,7 +1249,7 @@ function (
     } ;
 
     /**
-     * Modify the layers'options listed to the map
+     * Modifies the listed layers'options of the map
      *
      * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}).
      */
@@ -1260,7 +1293,7 @@ function (
     } ;
 
     /**
-     * get layer params from IT layer params
+     * Gets layer parameterss from IT layer params
      * opacity, visibility, sequence
      *
      * @param {Object} itlayerOpts - options of the layer
@@ -1288,7 +1321,7 @@ function (
     } ;
 
     /**
-     * Apply params common to all kind of layers  :
+     * Applies params common to all kind of layers  :
      * opacity, visibility, minZoom, maxZoom
      *
      * @param {Gp.LayerOptions} layerOpts - options of the layer
@@ -1597,16 +1630,19 @@ function (
     } ;
 
     /**
-     * retourne l'objet Itowns.GlobeView
+     * returns the Itowns.GlobeView object
      */
     IT.prototype.getLibMap = function () {
         return this.libMap;
     };
 
     /**
-     * Trouve l'objet layerOpts correspondant au layer IT
+     * Finds the layerOpts object corresponding to the IT layer
      *
      * @param {String} layerId - layer id
+     * @returns {Object} layerOpts - layer options
+     *
+     * @private
      */
     IT.prototype._getLayerOpts = function ( layerId, layersStack ) {
         var layerOpts = null ;
@@ -1624,9 +1660,12 @@ function (
     } ;
 
     /**
-     * Trouve la couche iTowns via son id
+     * Finds the IT layer by its id
      *
      * @param {String} layerId - IT layer id
+     * @returns {Object} layer - itowns Layer
+     *
+     * @private
      */
     IT.prototype._getItownsColorLayerById = function ( layerId ) {
         var layer = this.libMap.getGlobeView().getLayers(function (layer) {
@@ -1677,6 +1716,8 @@ function (
      *
      * @param {Object} layerObj -  IT layer
      * @returns {Object} - new layer index in this._layers
+     *
+     * @private
      */
     IT.prototype._registerUnknownLayer = function ( layerObj ) {
         // couches de résultat (itineraire, isochrone)
@@ -1700,8 +1741,12 @@ function (
     } ;
 
     /**
-      * retrieve max TMSLimits
+      * Retrieves max TMSLimits with its id
       *
+      * @param {String} TMSID - Id of the tileMatrixSet
+      * @returns {Object} TMSLimits - limits of the tileMatrixSet
+      *
+      * @private
       */
     IT.prototype._getTMSLimits = function (TMSID) {
         var TMSlimits;
