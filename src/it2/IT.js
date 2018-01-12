@@ -582,9 +582,9 @@ function (
                     url  : layerOpts.url,
                     protocol  : layerOpts.format.toLowerCase(),
                     id  : layerId,
-                    title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
+                    title  : ( layerOpts.title === undefined ) ? layerId : layerOpts.title,
+                    visible : ( layerOpts.visibility === undefined ) ? true : layerOpts.visibility,
+                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity,
                     updateStrategy  : {
                         type  : "0",
                         options  : {}
@@ -1268,15 +1268,15 @@ function (
             // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
             if (commonOpts.hasOwnProperty("opacity")) {
                 this.logger.trace("[IMap] modifyLayers  : setting opacity of  : [" + _layerObj.id + "] to  : " + commonOpts.opacity) ;
-                this._getItownsColorLayerById(_layerObj.id).opacity = commonOpts.opacity;
+                this.libMap.setLayerOpacity(_layerObj.id, commonOpts.opacity);
             }
             if (commonOpts.hasOwnProperty("visible")) {
                 this.logger.trace("[IMap] modifyLayers  : setting visible of  : [" + _layerObj.id + "] to  : " + commonOpts.visible) ;
-                this._getItownsColorLayerById(_layerObj.id).visible = commonOpts.visible;
+                this.libMap.setLayerVisibility(_layerObj.id, commonOpts.visible);
             }
             if (commonOpts.hasOwnProperty("zIndex")) {
                 this.logger.trace("[IMap] modifyLayers  : setting zIndex of  : [" + _layerObj.id + "] to  : " + commonOpts.zIndex) ;
-                Itowns.ColorLayersOrdering.moveLayerToIndex(this.libMap.getGlobeView(), _layerObj.id, commonOpts.zIndex);
+                this.libMap.moveLayerToIndex(_layerObj.id, commonOpts.zIndex);
             }
             /* TODO A compléter
             if (commonOpts.hasOwnProperty("minResolution")) {
@@ -1515,7 +1515,7 @@ function (
                     var ladded = itevt ;
                     var layerIndex;
                     var layerOpts = map._getLayerOpts(ladded.layerId) ;
-                    var itColorLayer = map._getItownsColorLayerById(Object.keys(layerOpts)[0]);
+                    var itColorLayer = map.libMap.getColorLayerById(Object.keys(layerOpts)[0]);
 
                     if (itColorLayer && itColorLayer.sequence >= 0) {
                         layerIndex = itColorLayer.sequence;
@@ -1658,27 +1658,6 @@ function (
         }
         return layerOpts ;
     } ;
-
-    /**
-     * Finds the IT layer by its id
-     *
-     * @param {String} layerId - IT layer id
-     * @returns {Object} layer - itowns Layer
-     *
-     * @private
-     */
-    IT.prototype._getItownsColorLayerById = function ( layerId ) {
-        var layer = this.libMap.getGlobeView().getLayers(function (layer) {
-            if (layer.id === layerId && layer.type === "color") {
-                return layer;
-            }
-        });
-        if ( !layer[0] ) {
-            this.logger.trace("[IT]  : no colorLayer found for this id") ;
-            return;
-        }
-        return layer[0] ;
-    };
 
     /**
      * Gets Layer Container div ID for a given layerId.
