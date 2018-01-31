@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 1.0.0
- * @date 2018-01-12
+ * @date 2018-01-31
  *
  */
 /* MOUSE POSITION */
@@ -75,6 +75,10 @@ input.marker-input-radio:checked + label {
 }
 
 
+div[id^=GPelevationPathPanelInfo] {
+  display: none; /* on n'affiche pas le bouton d'information par defaut */
+}
+
 /* Calc waiting */
 
 .GPelevationPathCalcWaitingContainerVisible,
@@ -90,6 +94,19 @@ input.marker-input-radio:checked + label {
   overflow: hidden;
 }
 
+.GPelevationPathInformationsContainerVisible,
+.GPelevationPathInformationsContainerHidden {
+  position: absolute;
+  top: 32px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255,255,255,0.9);
+  font-size: 13px;
+  font-weight: bold;
+  overflow: hidden;
+}
+
 .GPelevationPathCalcWaitingContainerVisible {
   display: -webkit-flex;
   display: -webkit-box;
@@ -97,16 +114,32 @@ input.marker-input-radio:checked + label {
   display: flex;
 }
 
-.GPelevationPathCalcWaitingContainerHidden {
+.GPelevationPathInformationsContainerVisible {
+  display: -webkit-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
+
+.GPelevationPathCalcWaitingContainerHidden,
+.GPelevationPathInformationsContainerHidden {
   display: none;
 }
 
-.GPelevationPathCalcWaiting {
+.GPelevationPathCalcWaiting,
+.GPelevationPathInformations {
   margin: auto;
 }
 
+.GPelevationPathInformations {
+  font-size: 0.8em;
+}
+
 .GPelevationPathCalcWaitingContainerVisible,
-.GPelevationPathCalcWaitingContainerHidden {
+.GPelevationPathCalcWaitingContainerHidden,
+.GPelevationPathInformationsContainerVisible,
+.GPelevationPathInformationsContainerHidden {
   border-radius: 5px;
 }
 
@@ -420,7 +453,7 @@ ul#profile-data .percent:hover {
 
 /* CSS : D3 */
 
-text {
+.axis-d3 > text {
   fill: rgb(94, 94, 94);
   font-family: Verdana;
   font-size: 10px;
@@ -485,10 +518,10 @@ div.tooltip-d3 {
     position: inherit;;
     text-align: left;
     width: 80px;
-    height: 35px;
-    padding: 2px;
+    height: 45px;
+    padding: 5px;
     font: 8px sans-serif;
-    background: lightsteelblue;
+    background: white;
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
@@ -553,7 +586,7 @@ div.tooltip-d3 {
   font-weight: bold;
 }
 
-.GPpanelClose, .GPpanelReduce {
+.GPpanelClose, .GPpanelReduce, .GPpanelInfo {
   position: absolute;
   cursor: pointer;
 }
@@ -2663,6 +2696,14 @@ div[id^=GPgeocodeResults-] {
   background-position: -26px 0;
 }
 
+.GPpanelInfo {
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  background-position: -78px 0;
+}
+
 /* Showing/hiding advanced panels */
 
 .GPshowAdvancedToolPicto {
@@ -2989,7 +3030,7 @@ button[id^=drawing-export-] {
 .tool-form-submit {
     border: medium none;
     border-radius: 20px;
-    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif; 
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
     font-size: 0.9em;
     text-align: center;
     text-transform: uppercase;
@@ -2998,8 +3039,8 @@ button[id^=drawing-export-] {
     color: #fff;
 }
 
-/* 
- * popups 
+/*
+ * popups
  */
 .gp-label-div,
 .gp-styling-div {
@@ -3033,6 +3074,14 @@ button[id^=drawing-export-] {
   width: 240px;
   height: 80px;
   resize: none;
+}
+
+.gp-input-measure-style {
+  width: 240px;
+  font-size: 0.75em;
+  background-color: #FFF;
+  text-align: center;
+  border-radius: 10px;
 }
 
 .gp-textarea-att-label-style {
@@ -3280,6 +3329,36 @@ button[id^=drawing-export-] {
   height: 24px;
 }
 
+/* GET FEATURE INFO */
+
+div[id^=GPgetFeatureInfo-] {
+  top: 260px;
+  left: 10px;
+}
+
+span[id^=GPgetFeatureInfoActivate],
+span[id^=GPgetFeatureInfoDeactivate] {
+  width: 26px;
+  height: 26px;
+  background-image: url("img/GPactivateGfi.png");
+}
+
+span[id^=GPgetFeatureInfoDeactivate] {
+  background-position: -26px 0;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
+  opacity: 0.7;
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.3);
+}
+
+div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
+  background-color: rgba(0,60,136,0.4);
+}
+
 div[id^=GPelevationPath-] {
   bottom: 48px;
   left: 10px;
@@ -3304,12 +3383,12 @@ input[id^=GPshowElevationPath-]:checked + label {
 
 input[id^=GPshowElevationPath-] + label + div {
   display: none;
-  /*visibility: hidden;*/
+  /* visibility: hidden; */
 }
 
 input[id^=GPshowElevationPath-]:checked + label + div {
   display: block;
-  /*visibility: visible;*/
+  /* visibility: visible; */
 }
 
 span[id^=GPshowElevationPathOpen] {
@@ -3323,6 +3402,10 @@ span[id^=GPshowElevationPathOpen] {
 }
 
 div[id^=GPelevationPathPanelReduce] {
+  background-image: url("img/GPshowElevationPath.png");
+}
+
+div[id^=GPelevationPathPanelInfo] {
   background-image: url("img/GPshowElevationPath.png");
 }
 
@@ -3374,36 +3457,6 @@ display: none !important;
 
 }
 */
-
-/* GET FEATURE INFO */
-
-div[id^=GPgetFeatureInfo-] {
-  top: 260px;
-  left: 10px;
-}
-
-span[id^=GPgetFeatureInfoActivate],
-span[id^=GPgetFeatureInfoDeactivate] {
-  width: 26px;
-  height: 26px;
-  background-image: url("img/GPactivateGfi.png");
-}
-
-span[id^=GPgetFeatureInfoDeactivate] {
-  background-position: -26px 0;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoActivate] {
-  opacity: 0.7;
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto] span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.3);
-}
-
-div[id^=GPgetFeatureInfo-] input[type="checkbox"]:not(:checked) + label[id^=GPgetFeatureInfoPicto]:hover span[id^=GPgetFeatureInfoDeactivate] {
-  background-color: rgba(0,60,136,0.4);
-}
 
 /* ISOCHRON */
 

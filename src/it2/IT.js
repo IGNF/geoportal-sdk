@@ -179,40 +179,8 @@ function (
     IT.prototype._onMapClick = function (evt) {
         this.logger.trace("[IT] : _onMapClick...") ;
         this._removeInfoDivs();
-        var position = {
-            x : evt.layerX,
-            y : evt.layerY
-        };
-        // retrieve the vector layer of the map
-        var vectorLayers = this.libMap.getGlobeView().getLayers( function (layer) {
-            if (layer.protocol === "rasterizer") {
-                return layer;
-            }
-        });
-        if (!vectorLayers) {
-            return;
-        }
-        // array of the visible features on the clicker coord
-        var visibleFeatures = [];
 
-        var geoCoord = this.libMap.getGlobeView().controls.pickGeoPosition(position.x, position.y);
-        if (geoCoord) {
-            // buffer around the click inside we retrieve the features
-            var precision = this.libMap.getGlobeView().controls.pixelsToDegrees(5);
-            for (var i = 0; i < vectorLayers.length; i++) {
-                var idx;
-                var layer = vectorLayers[i];
-                // if the layer is not visible, we ignore it
-                if (!layer.visible) {
-                    continue;
-                }
-                var result = itowns.FeaturesUtils.filterFeaturesUnderCoordinate(geoCoord, layer.feature, precision);
-                // we add the features to the visible features array
-                for (idx = 0; idx < result.length; idx++) {
-                    visibleFeatures.push(result[idx]);
-                }
-            }
-        }
+        var visibleFeatures = this.libMap.getFeaturesAtPixel(evt);
 
         if (visibleFeatures.length == 0) {
             // no visible features
@@ -734,7 +702,7 @@ function (
             position.zoom = zoom;
         }
         // set the camera aimed point on the specified coords
-        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
+        this.libMap.setCameraTargetGeoPosition(position);
         this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")") ;
     };
 
@@ -776,21 +744,8 @@ function (
             position.zoom = zoom;
         }
         // set the camera aimed point on the specified coords
-        this.libMap.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(position, false);
+        this.libMap.setCameraTargetGeoPosition(position);
         this.logger.trace("[IT] - setAutoCenter(" + point.x + "," + point.y + ")") ;
-    };
-
-    /**
-     * retourne les coordonnées courantes du centre de la carte
-     */
-    IT.prototype.getCenter = function () {
-        var cameraCenter = this.libMap.getGlobeView().controls.getCameraTargetGeoPosition();
-        var center = {
-            lon  : cameraCenter.longitude(),
-            lat  : cameraCenter.latitude(),
-            alt  : cameraCenter.altitude()
-        };
-        return center;
     };
 
     /**
@@ -798,7 +753,7 @@ function (
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
-        var zoom = this.libMap.getGlobeView().controls.getZoom() - 1;
+        var zoom = this.libMap.getZoom() - 1;
         return zoom;
     };
 
@@ -812,7 +767,7 @@ function (
         }
         zoom = parseInt(zoom, 10);
         // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
-        this.libMap.getGlobeView().controls.setZoom(zoom + 1, false);
+        this.libMap.setZoom(zoom + 1);
         this.logger.trace("[IT] - setZoom(" + zoom + ")") ;
     };
 
@@ -841,13 +796,6 @@ function (
     };
 
     /**
-     * retourne l'azimut courant de la carte
-     */
-    IT.prototype.getAzimuth = function () {
-        return this.libMap.getGlobeView().controls.getCameraOrientation()[1];
-    };
-
-    /**
      * définit le niveau de zoom de la carte
      */
     IT.prototype.setAzimuth = function (azimuth) {
@@ -856,15 +804,8 @@ function (
             return ;
         }
         // IT method to set the camera orientation
-        this.libMap.getGlobeView().controls.setHeading(azimuth, false);
+        this.libMap.setAzimuth(azimuth);
         this.logger.trace("[IT] - setAzimuth(" + azimuth + ")") ;
-    };
-
-    /**
-     * retourne l'inclinaison courante de la carte
-     */
-    IT.prototype.getTilt = function () {
-        return this.libMap.getGlobeView().controls.getCameraOrientation()[0];
     };
 
     /**
@@ -877,7 +818,7 @@ function (
             return ;
         }
         // methode setTilt d'itowns pour régler l'inclinaison
-        this.libMap.getGlobeView().controls.setTilt(tilt, false);
+        this.libMap.setTilt(tilt);
         this.logger.trace("[IT] - setTilt(" + tilt + ")") ;
     };
 
