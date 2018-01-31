@@ -347,8 +347,8 @@ function (
                     id : layerId,
                     type : "color",
                     protocol : "rasterizer",
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1
+                    visible : ( layerOpts.visibility === undefined ) ? true : layerOpts.visibility,
+                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity,
                 };
                 // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
                 if (this.mapOptions.extractStyles === true) {
@@ -370,8 +370,8 @@ function (
                     id : layerId,
                     type : "color",
                     protocol : "rasterizer",
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
+                    visible : ( layerOpts.visibility === undefined ) ? true : layerOpts.visibility,
+                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity,
                     style : {
                         stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
                         strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
@@ -491,9 +491,9 @@ function (
                     id  : layerId,
                     name  : layerNames,
                     style  : layerOpts.styleName || "",
-                    title  : layerOpts.title || layerId,
-                    visible : layerOpts.visibility || true,
-                    opacity : layerOpts.opacity || 1,
+                    title  : ( layerOpts.title === undefined ) ? layerId : layerOpts.title,
+                    visible : ( layerOpts.visibility === undefined ) ? true : layerOpts.visibility,
+                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity,
                     projection  : layerOpts.projection || "EPSG:4326",
                     extent  : boundingBox,
                     transparent  : true,
