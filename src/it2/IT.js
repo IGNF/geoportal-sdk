@@ -189,6 +189,10 @@ function (
 
         var content = this._features2html(visibleFeatures) ;
         // Affichage des features.
+        var position = {
+            x : evt.layerX,
+            y : evt.layerY
+        };
         this._displayInfo(position, content.innerHTML) ;
     } ;
 
@@ -348,7 +352,7 @@ function (
                     type : "color",
                     protocol : "rasterizer",
                     visible : ( layerOpts.visibility === undefined ) ? true : layerOpts.visibility,
-                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity,
+                    opacity : ( layerOpts.opacity === undefined ) ? 1 : layerOpts.opacity
                 };
                 // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
                 if (this.mapOptions.extractStyles === true) {
@@ -749,6 +753,13 @@ function (
     };
 
     /**
+    * retourne les coordonnées courantes du centre de la carte
+    */
+    IT.prototype.getCenter = function () {
+        return this.libMap.getCenter();
+    };
+
+    /**
      * retourne le zoom Géoportail de la carte à partir de l'echelle courante de la carte
      */
     IT.prototype.getZoom = function () {
@@ -796,6 +807,13 @@ function (
     };
 
     /**
+    * retourne l'azimut courant de la carte
+    */
+    IT.prototype.getAzimuth = function () {
+        return this.libMap.getAzimuth();
+    };
+
+    /**
      * définit le niveau de zoom de la carte
      */
     IT.prototype.setAzimuth = function (azimuth) {
@@ -806,6 +824,13 @@ function (
         // IT method to set the camera orientation
         this.libMap.setAzimuth(azimuth);
         this.logger.trace("[IT] - setAzimuth(" + azimuth + ")") ;
+    };
+
+    /**
+    * retourne l'inclinaison courante de la carte
+    */
+    IT.prototype.getTilt = function () {
+        return this.libMap.getTilt();
     };
 
     /**
