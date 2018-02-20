@@ -1292,7 +1292,7 @@ define([
                             if ( mapLayer.options.gfiFormat ) {
                                 layerConf.infoFormat = mapLayer.options.gfiFormat;
                             }
-                            
+
                             gfiOpts.layers.push(layerConf) ;
                             break;
                         }
@@ -1312,7 +1312,7 @@ define([
          * @param {Array.<String>} controlIds - A list of control's id or null.
          */
         OL3.prototype.removeControls = function (controlIds) {
- 
+
             this.logger.trace("[OL3] : removeControls ... ");
             if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
                 console.log("No control to remove.") ;
@@ -2780,32 +2780,6 @@ define([
 
             // maj du cache
             source.refresh();
-        };
-
-        /**
-         *  Remove and re-initialize layerChanged event
-         *
-         * @private
-         */
-        OL3.prototype._manageLayerChangedEvent = function () {
-            // re-abonnement à l'evenement layerChanged
-            // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
-            if (this._events.hasOwnProperty("layerChanged")) {
-                var layerChangedArray = [] ;
-                // on recopie le tableau
-                this._events["layerChanged"].forEach(function (eventObj) {
-                    layerChangedArray.push(eventObj) ;
-                },
-                this) ;
-                layerChangedArray.forEach(function (eventObj) {
-                    // on oublie ...
-                    this.forget("layerChanged", eventObj.action) ;
-                    // ... pour mieux se souvenir
-                    this.listen("layerChanged", eventObj.action , eventObj.context) ;
-                },
-                this) ;
-                layerChangedArray = null ;
-            }
         };
 
         return OL3;
