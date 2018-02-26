@@ -1475,7 +1475,7 @@ function (
                             oldItObj[key] = layerEvtinfos.previousValue;
                             var oldCommonProp = map._getCommonLayerParams(oldItObj) ;
                             var newItObj = {} ;
-                            newItObj[key] = layerEvtinfos.newsValue;
+                            newItObj[key] = layerEvtinfos.newValue;
                             var newCommonProp = map._getCommonLayerParams(newItObj) ;
 
                             action.call(context,{
