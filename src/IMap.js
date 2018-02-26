@@ -1083,7 +1083,7 @@ define([
                         x : lonlat[0],
                         y : lonlat[1]
                     };
-                    oldMap.azimuth = this.getAzimuth() + 90;
+                    oldMap.azimuth = this.getAzimuth();
                     this.libMap.setTarget(null);
                 } else if (library === "ol3") {
                     oldMap.center = [oldMap.center.lon, oldMap.center.lat];
