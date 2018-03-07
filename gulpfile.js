@@ -206,11 +206,12 @@
         var pluginsDir;
         // param bundle ol3
         if (isOl3) {
-            pluginsDir = "../../node_modules/geoportal-extensions-openlayers/dist/",
+            // pluginsDir = "../../node_modules/geoportal-extensions-openlayers/dist/";
             // Use lib external to test dev releases of geoportal-extensions
-            // pluginsDir = "../lib/external/geoportail/plugins-ol3/";
+            pluginsDir = "../lib/external/geoportail/plugins-openlayers-es6/";
             _deps.ol =  "../lib/external/ol3/ol";
-            _deps["gp"] = pluginsDir + "GpPluginOl3-src";
+            // _deps["Gp"] = pluginsDir + "GpPluginOl3-src";
+            _deps["Gp"] = pluginsDir + "GpPluginOpenLayers-src";
             _includes.push("ol3/OL3");
             _globalModules.push("ol");
         }
@@ -220,7 +221,7 @@
         else if (isVG) {
             pluginsDir = "../lib/external/geoportail/plugins-vg/";
             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
-            _deps["gp"] = pluginsDir + "GpPluginVg-src";
+            _deps["Gp"] = pluginsDir + "GpPluginVg-src";
             _includes.push("virtual/VG");
             // VirtualGeo est déjà déclaré globale :
             //     _globalModules.push("VirtualGeo");
@@ -229,15 +230,15 @@
         // param bundle itowns
         else if (isItowns) {
             _deps.itowns = "../lib/external/itowns/js/init-itowns";
-            pluginsDir = "../lib/external/geoportail/plugins-itowns/";
-            _deps["gp"] = pluginsDir + "GpPluginItowns-src";
+            pluginsDir = "../lib/external/geoportail/plugins-itowns-es6/";
+            _deps["Gp"] = pluginsDir + "GpPluginItowns-src";
             _includes.push("it2/IT");
             _globalModules.push("itowns");
         } else if (isMix) {
             _deps.ol = "../lib/external/ol3/ol";
             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
             pluginsDir = "../lib/external/geoportail/plugins-mix/";
-            _deps["gp"] = pluginsDir + "GpPluginOl3Vg-src";
+            _deps["Gp"] = pluginsDir + "GpPluginOl3Vg-src";
             _includes.push("virtual/VG");
             _includes.push("ol3/OL3");
             _globalModules.push("ol");
@@ -246,7 +247,7 @@
             _deps.ol = "../lib/external/ol3/ol";
             _deps.itowns = "../lib/external/itowns/js/init-itowns";
             pluginsDir = "../lib/external/geoportail/plugins-mixIt/";
-            _deps["gp"] = pluginsDir + "GpPluginOl3Itowns-src";
+            _deps["Gp"] = pluginsDir + "GpPluginOl3Itowns-src";
             _includes.push("it2/IT");
             _includes.push("ol3/OL3");
             _globalModules.push("ol", "itowns");
@@ -276,8 +277,13 @@
             findNestedDependencies : false,
             preserveLicenseComments : false,
             useStrict : true,
+            loglevel : 0,
             /** onBuildRead */
             onBuildRead : function (moduleName, path, contents) {
+
+                if (moduleName === "Gp") {
+                    return contents;
+                }
 
                 if (!isDebug) {
                     var groundskeeper = require("groundskeeper");
@@ -307,6 +313,7 @@
                     globalModules : _globalModules,
                     filePath : outputFile,
                     prefixMode : "camelCase",
+                    transformAMDChecks : false,
                     wrap : {
                         start : "\n/* BEGIN CODE */\n",
                         end  : "\n/* END CODE   */\n"
@@ -463,7 +470,7 @@
         } else if (isVG) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*.png"));
         } else if (isItowns) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-itowns", "**", "*.png"));
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-itowns-es6", "**", "*.png"));
         } else if (isMix) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.png"));
             svgdir = path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.svg");
@@ -540,11 +547,6 @@
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     gulp.task("res-styles", function () {
 
-        // pour information,
-        // le fichier de licence peut être un template,
-        // les balises en nottion ES6-style : ${date}
-        var licence = path.join(_.utils, "licence-template.txt");
-
         var fs = require("fs");
         var header  = require("gulp-header");
         var minifyCss = require("gulp-clean-css");
@@ -561,6 +563,11 @@
         if (isOl3) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-ol3", "**", "*-src.css"));
             srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
+            srcdir.push(path.join(_.res, "ol3", "*.css"));
+        } else if (isItowns) {
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-itowns-es6", "**", "*-src.css"));
+            srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
+            srcdir.push(path.join(_.res, "it2", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
         } else if (isVG) {
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-vg", "**", "*-src.css"));

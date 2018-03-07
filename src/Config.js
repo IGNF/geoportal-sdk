@@ -7,7 +7,7 @@ requirejs.config({
         log4js      : "../lib/external/woodman/woodman-amd",
         ol          : "../lib/external/ol3/ol",
         itowns      : "../lib/external/itowns/js/itowns",
-        gp          : "../node_modules/geoportal-extensions-openlayers/dist/GpPluginOl3-src",
+        Gp          : "../node_modules/geoportal-extensions-openlayers/dist/GpPluginOl3-src",
         // Use lib external to test dev releases of geoportal-extensions
         // gp          : "../lib/external/geoportail/plugins-ol3/GpPluginOl3-src",
         // "plugins-itowns" : "../lib/external/geoportail/plugins-mix/GpPluginOl3Itowns-src",

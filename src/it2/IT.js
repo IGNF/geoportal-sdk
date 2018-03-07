@@ -2,7 +2,7 @@
 define([
     "Utils/LoggerByDefault",
     "Utils/Loader",
-    "gp",
+    "Gp",
     "itowns",
     "IMap"
 ],

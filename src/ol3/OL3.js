@@ -1,7 +1,7 @@
 define([
     "Utils/LoggerByDefault",
     "ol",
-    "gp", // "plugins-ol3"
+    "Gp", // "plugins-ol3"
     "IMap"
 ],
     function (
@@ -1292,7 +1292,7 @@ define([
                             if ( mapLayer.options.gfiFormat ) {
                                 layerConf.infoFormat = mapLayer.options.gfiFormat;
                             }
-                            
+
                             gfiOpts.layers.push(layerConf) ;
                             break;
                         }
@@ -1312,7 +1312,7 @@ define([
          * @param {Array.<String>} controlIds - A list of control's id or null.
          */
         OL3.prototype.removeControls = function (controlIds) {
- 
+
             this.logger.trace("[OL3] : removeControls ... ");
             if (!controlIds || (Array.isArray(controlIds) && controlIds.length == 0) ) {
                 console.log("No control to remove.") ;
