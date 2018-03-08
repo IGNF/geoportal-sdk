@@ -54,7 +54,7 @@ function (
     };
 
     /**
-     * Association controlId <-> classe VirtualGeo d'implemenation
+     * Association controlId <-> classe iTowns d'implemenation
      */
     IT.CONTROLSCLASSES = {
         mouseposition  : "itowns.control.MousePosition",
@@ -658,16 +658,16 @@ function (
     IT.prototype._addGeoportalLayer = function (layerObj, layerConf) {
         // FIXME à faire ailleurs
         var layerId = Object.keys(layerObj)[0] ;
-        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques VG
+        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
             layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
-            // Paramètres spécifiques aux couches WMS pour ajout avec VG
+            // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMS") {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
                 layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
             }
-            // Paramètres spécifiques aux couches WMTS pour ajout avec VG
+            // Paramètres spécifiques aux couches WMTS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMTS") {
                 layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID() ;
                 layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimit;
@@ -676,7 +676,7 @@ function (
             }
 
         }
-        // Ajout de la couche avec VirtualGeo
+        // Ajout de la couche avec iTowns via l'interface du SDK
         this._addRasterLayer(layerObj);
     } ;
 

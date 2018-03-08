@@ -972,87 +972,6 @@ define([
 
             /**
              * Reloads the map with a new cartographic library. The current parameters will be conserved.
-             * FIXME : le fait-on ???
-             *
-             * @param {Integer} library - The cartographic library to use.
-             * @private
-             */
-            switchToLib : function (library) {
-                var oldMap = {};
-                oldMap.projection = this.getProjection();
-                oldMap.center = this.getCenter();
-                oldMap.azimuth = this.getAzimuth();
-                oldMap.tilt = this.getTilt();
-                oldMap.zoom = this.getZoom();
-                oldMap.layersOptions = this.getLayersOptions();
-                oldMap.controlsOptions = this.getControlsOptions();
-                oldMap.mapDiv = this.div.id;
-                oldMap.apiKey = this.apiKey;
-                oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
-
-                // remove old controls and associated listeners
-                for (var controlId in oldMap.controlsOptions) {
-                    this.removeControls(controlId);
-                }
-                if (library === "vg") {
-                    oldMap.center = [oldMap.center.x, oldMap.center.y];
-                    // transformation des coordonnées de planes en géographiques
-                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-                    var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
-                    oldMap.center = {
-                        x : lonlat[0],
-                        y : lonlat[1]
-                    };
-
-                    this.libMap.setTarget(null);
-                } else if (library === "ol3") {
-                    oldMap.center = [oldMap.center.lon, oldMap.center.lat];
-                    // transformation des coordonnées de géographiques en planes
-                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-                    var xy = ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
-                    oldMap.center = {
-                        x : xy[0],
-                        y : xy[1]
-                    };
-                    this.libMap.dispose();
-                } else {
-                    console.log("Unknown Library");
-                    return;
-                }
-                // this.libMap = null;
-                var newMap = Gp.Map.load(
-                    // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
-                    // this.libMap.getApiKeys(),
-                    // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
-                    // this.libMap.getDiv(),
-                    oldMap.mapDiv,
-                    // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
-                    {
-                        apiKey : oldMap.apiKey,
-                        enginePath3d : oldMap.enginePath3d || null,
-                        projection : oldMap.projection,
-                        center : oldMap.center,
-                        azimuth : oldMap.azimuth,
-                        tilt : oldMap.tilt,
-                        zoom : oldMap.zoom,
-                        // maxZoom : this.
-                        // minZoom : this.
-                        // markerOptions :
-                        library : library,
-                        // proxyUrl
-                        // noProxyDomains
-                        // reloadConfig
-                        // autoconfUrl
-                        layersOptions : oldMap.layersOptions,
-                        controlsOptions : oldMap.controlsOptions
-                        // mapEventsOptions :
-                    }
-                );
-                return newMap;
-            },
-
-            /**
-             * Reloads the map with a new cartographic library. The current parameters will be conserved.
              *
              * @param {Integer} library - The cartographic library to use.
              * @private
@@ -1222,7 +1141,6 @@ define([
                         switch (format) {
                             case "WMTS" :
                             case "WMS" :
-                                // FIXME on passe layerConf pour VG uniquement (ajout des params spécifiques VG)
                                 this._addGeoportalLayer(addLayerParam, layerConf) ;
                                 continue ;
                             default :
@@ -1258,7 +1176,6 @@ define([
                         case "WMS":
                         case "WMTS":
                         case "OSM":
-                        case "VIRTUALGEO":
                             this._addRasterLayer(addLayerParam) ;
                             break;
                         default:
@@ -1960,7 +1877,6 @@ define([
 
             /**
              * Ecouteur de changements sur les couches pour gerer le tableau this._layers.
-             * écrasé avec VG
              *
              * @param {Gp.LayerChangedEvent} evt - evenement de changement sur les couches
              * @private

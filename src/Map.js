@@ -11,16 +11,14 @@
 define([
         "Utils/LoggerByDefault",
         "require"
-        // "it2/IT"
-        // "ol3/OL3",
-        // "virtual/VG"
+        // "it2/IT",
+        // "ol3/OL3"
     ],
     function (
         Logger,
         require
-        // IT
-        // OL3,
-        // VG
+        // IT,
+        // OL3
     ) {
 
         "use strict";
@@ -78,15 +76,10 @@ define([
 
                 // auto detect lib. loaded
                 var OL3 = null;
-                var VG  = null;
                 var IT  = null;
 
                 if (this.__classOl !== null && typeof this.__classOl === "function") {
                     OL3 = this.__classOl;
-                }
-
-                if (this.__classVg !== null && typeof this.__classVg === "function") {
-                    VG = this.__classVg;
                 }
 
                 if (this.__classItowns !== null && typeof this.__classItowns === "function") {
@@ -107,18 +100,6 @@ define([
                         }
 
                         objMap = new OL3({
-                            div : div,
-                            mapOptions : mapOptions
-                        });
-
-                        break;
-                    case "vg":
-                        logger.trace("construction du globe virtualGeo 3D");
-                        if (VG === null || typeof VG !== "function") {
-                            throw new Error("library vg is not loaded !");
-                        }
-
-                        objMap = new VG({
                             div : div,
                             mapOptions : mapOptions
                         });
