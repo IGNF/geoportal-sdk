@@ -1349,28 +1349,28 @@ define([
              *
              * | Key | Control Description |
              * |-|-|
-             * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction. |
-             * | 'keyboard' | Enable (true) / disable (false) map dragging/zoomming by keybord interaction. |
-             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. [**DEPRECATED**] : use ['getfeatureinfo'](./Gp.ControlOptions.html#getfeatureinfo) control instead to allow users to interact with features. |
-             * | 'zoom' | Adds Zoom widget to the map. See [options availables](./Gp.ControlOptions.html#zoom) |
-             * | 'orientation' | Adds orientation widget to the map. See [options availables](./Gp.ControlOptions.html#orientation) |
+             * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction. Available in 2D only.|
+             * | 'keyboard' | Enable (true) / disable (false) map dragging/zoomming by keybord interaction. Available in 2D only.|
+             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. [**DEPRECATED**] : use ['getfeatureinfo'](./Gp.ControlOptions.html#getfeatureinfo) control instead to allow users to interact with features. Available in 2D only.|
+             * | 'zoom' | Adds Zoom widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#zoom) |
+             * | 'orientation' | Adds orientation widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#orientation) |
              * | 'layerswitcher' | Adds layers selector widget to the map. See [options availables](./Gp.ControlOptions.html#layerswitcher) |
-             * | 'length' | Adds length measurement widget to the map. See [options availables](./Gp.ControlOptions.html#length) |
-             * | 'area' | Adds area measurment widget to the map. See [options availables](./Gp.ControlOptions.html#area) |
-             * | 'azimuth' | Adds azimuth measurment to the map. See [options availables](./Gp.ControlOptions.html#azimuth) |
-             * | 'elevationpath' | Adds elevationpath computation widget to the map. See [options availables](./Gp.ControlOptions.html#elevationpath) |
-             * | 'search' | Adds search widget to the map. See [options availables](./Gp.ControlOptions.html#searchctrl) |
-             * | 'reversesearch' | Adds reverse search widget to the map. See [options availables](./Gp.ControlOptions.html#reversesearch) |
-             * | 'layerimport' | Adds layer import widget to the map. See [options availables](./Gp.ControlOptions.html#layerimport) |
-             * | 'drawing' | Adds drawing tools widget to the map. See [options availables](./Gp.ControlOptions.html#drawing) |
+             * | 'length' | Adds length measurement widget to the map. Available in 2D Only. See [options availables](./Gp.ControlOptions.html#length).|
+             * | 'area' | Adds area measurment widget to the map. 2D Only. Available in 2D only. See [options availables](./Gp.ControlOptions.html#area) |
+             * | 'azimuth' | Adds azimuth measurment to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#azimuth) |
+             * | 'elevationpath' | Adds elevationpath computation widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#elevationpath) |
+             * | 'search' | Adds search widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#searchctrl) |
+             * | 'reversesearch' | Adds reverse search widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#reversesearch) |
+             * | 'layerimport' | Adds layer import widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#layerimport) |
+             * | 'drawing' | Adds drawing tools widget to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#drawing) |
              * | 'graphicscale' | Adds scale line widget to the map. See [options availables](./Gp.ControlOptions.html#graphicscale) |
              * | 'mouseposition' | Adds mouse position widget to the map. See [options availables](./Gp.ControlOptions.html#mouseposition) |
-             * | 'route' | Adds route control to the map. See [options availables](./Gp.ControlOptions.html#route) |
-             * | 'isocurve' | Adds isocurve control to the map. See [options availables](./Gp.ControlOptions.html#isocurve) |
+             * | 'route' | Adds route control to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#route) |
+             * | 'isocurve' | Adds isocurve control to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#isocurve) |
              * | 'overview' | Adds mini overview map to the map. See [options availables](./Gp.ControlOptions.html#overview) |
-             * | 'graticule' | Adds graticule control to the map. See [options availables](./Gp.ControlOptions.html#graticule) |
+             * | 'graticule' | Adds graticule control to the map. Available in 2D only. See [options availables](./Gp.ControlOptions.html#graticule) |
              * | 'attributions' | Adds layers originators display to the map. See [options availables](./Gp.ControlOptions.html#attributions) |
-             * | 'getfeatureinfo' | Adds capability to retrieve and display information about layer features. See [options availables](./Gp.ControlOptions.html#getfeatureinfo) |
+             * | 'getfeatureinfo' | Adds capability to retrieve and display information about layer features. Available in 2D only. See [options availables](./Gp.ControlOptions.html#getfeatureinfo) |
              */
             addControls : function (controlsOptions) {
                 this.logger.trace("[IMap] addControls") ;

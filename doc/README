@@ -6,7 +6,11 @@ It is a wrapper over the following libraries :
 
 * {@link http://openlayers.org/ OpenLayers 3}
 
+* {@link http://www.itowns-project.org/ iTowns}
+
 * {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md Geoportal extension for OpenLayers 3}
+
+* {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md Geoportal extension for iTowns}
 
 
 ## Basic usage
@@ -60,7 +64,11 @@ See [Gp.MapOptions property](Gp.MapOptions.html) : **mapEventsOptions** and {@li
 
 ## Advanced Functionalities
 
-If you want more functionalities, you will then have to use those offered by [OpenLayers 3 API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md) which are part of the Geoportal SDK.
+If you want more functionalities, you will then have to use those offered by : 
+
+* [OpenLayers 3 API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md) which are part of the Geoportal SDK.
+
+* [iTowns API](http://www.itowns-project.org/itowns/API_Doc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md) which are part of the Geoportal SDK.
 
 Also note that the [Geoportal Access library API](https://github.com/IGNF/geoportal-access-lib) is also available with the Geoportal SDK.
 
