@@ -29,10 +29,15 @@ function (
         * Nom de la classe (heritage)
         */
         this.CLASSNAME = "IT";
+        var scope = typeof window !== "undefined" ? window : {
+            itowns : {}
+        };
 
-        for ( var prop in Itowns ) {
-            if ( Itowns.hasOwnProperty(prop) ) {
-                itowns[prop] = Itowns[prop];
+        Itowns = Itowns || {};
+        
+        for ( var prop in scope.itowns ) {
+            if ( scope.itowns.hasOwnProperty(prop) ) {
+                Itowns[prop] = scope.itowns[prop];
             }
         }
 
@@ -89,11 +94,12 @@ function (
                 var scope = typeof window !== "undefined" ? window : {
                     itowns : {}
                 };
-                for ( var prop in scope.itowns ) {
-                    if ( scope.itowns.hasOwnProperty(prop) ) {
-                        Itowns[prop] =  scope.itowns[prop];
+                for ( var prop in Itowns ) {
+                    if ( Itowns.hasOwnProperty(prop) ) {
+                        scope.itowns[prop] = Itowns[prop];
                     }
                 }
+                Itowns = scope.itowns;
 
                 // position à l'initialisation
                 var positionOnGlobe = {
@@ -112,7 +118,7 @@ function (
 
                 var self = this;
                 // when globe is loaded, we set the user map parameters
-                this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+                this.libMap.listen(Itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
                     // we show the div when globe is loaded
                     window.setTimeout(function () {
                         self.div.style.visibility = "";
@@ -180,7 +186,7 @@ function (
         this.logger.trace("[IT] : _onMapClick...") ;
         this._removeInfoDivs();
 
-        var visibleFeatures = this.libMap.getFeaturesAtPixel(evt);
+        var visibleFeatures = this.libMap.getFeaturesAtMousePosition(evt);
 
         if (visibleFeatures.length == 0) {
             // no visible features
@@ -686,13 +692,13 @@ function (
             console.log("no valid coordinates for map center") ;
             return ;
         }
-        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
-            var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
+            var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
             point = {
                 x : wgs84Coords[0],
                 y : wgs84Coords[1]
             };
-        } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) == undefined) {
+        } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) == undefined) {
             this.logger.trace("[IT] - setXYCenter(" + point.projection + " not handled ! )") ;
             return;
         }
@@ -726,13 +732,13 @@ function (
             return ;
         }
 
-        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
-            var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
+            var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
             point = {
                 x : wgs84Coords[0],
                 y : wgs84Coords[1]
             };
-        } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) == undefined) {
+        } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) == undefined) {
             this.logger.trace("[IT] - setAutoCenter(" + point.projection + " not handled ! )") ;
             return;
         }
@@ -1297,28 +1303,28 @@ function (
     } ;
 
     /**
-      * Associate a function to trigger when an event is received.
-      *
-      * @param {String} eventId - The map's event listened. Possible values are  : 'loaded', 'failure', 'geolocated', 'located', 'zoomchanged', 'azimuthchanged', 'tiltchanged', 'dragstart', 'drag', 'dragend', 'projectionchanged', 'layerchanged', 'controlchanged'.
-      *
-      * | eventId  | description |
-      * |-|-|
-      * | mapLoaded | fired when map has finished loading |
-      * | mapFailure | fired when map has problem loading |
-      * | geolocated | fired when map has finished centering by geolocation |
-      * | located | fired when map has finished centering by geocoding |
-      * | configured | fired when map has finished loading geoportal configuration |
-      * | centerChanged | fired when map center has changed |
-      * | zoomChanged | fired when map zoom has changed |
-      * | azimuthChanged | fired when map orientation has changed |
-      * | tiltChanged | fired when map tilt has changed |
-      * | projectionChanged | fired when map projection has changed |
-      * | layerChanged | fired when map's layer(s) has changed someway |
-      * | controlChanged | fired when map's control(s) has changed |
-      *
-      * @param {Function} action - The function to execute when the event occures.
-      * @param {Object} context - The object that will be used as "this" in the action function
-      */
+    * Associate a function to trigger when an event is received.
+    *
+    * @param {String} eventId - The map's event listened. Possible values are  : 'loaded', 'failure', 'geolocated', 'located', 'zoomchanged', 'azimuthchanged', 'tiltchanged', 'dragstart', 'drag', 'dragend', 'projectionchanged', 'layerchanged', 'controlchanged'.
+    *
+    * | eventId  | description |
+    * |-|-|
+    * | mapLoaded | fired when map has finished loading |
+    * | mapFailure | fired when map has problem loading |
+    * | geolocated | fired when map has finished centering by geolocation |
+    * | located | fired when map has finished centering by geocoding |
+    * | configured | fired when map has finished loading geoportal configuration |
+    * | centerChanged | fired when map center has changed |
+    * | zoomChanged | fired when map zoom has changed |
+    * | azimuthChanged | fired when map orientation has changed |
+    * | tiltChanged | fired when map tilt has changed |
+    * | projectionChanged | fired when map projection has changed |
+    * | layerChanged | fired when map's layer(s) has changed someway |
+    * | controlChanged | fired when map's control(s) has changed |
+    *
+    * @param {Function} action - The function to execute when the event occures.
+    * @param {Object} context - The object that will be used as "this" in the action function
+    */
     IT.prototype.listen = function (eventId, action,context) {
         this.logger.trace("[IT]  : listen...") ;
         // verifications de base de la classe mère
@@ -1327,16 +1333,13 @@ function (
         }
         context = context || this ;
         var map = this ;
+        var key = null;
         switch (eventId) {
-            case "mapLoaded"  :
             case "mapFailure"  :
-                break ;
+                break;
+            case "mapLoaded"  :
             case "located"  :
-                // handled in IMap
-                break ;
             case "geolocated"  :
-                // handled in IMap
-                break ;
             case "configured"  :
                 // handled in IMap
                 break ;
@@ -1366,11 +1369,7 @@ function (
                     }
                     action.call(context,centerChangedEvt) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "camera-target-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
                 break ;
             case "zoomChanged"  :
                 var oldZoom = context.getZoom();
@@ -1391,19 +1390,13 @@ function (
                     // update the oldZoom vale
                     oldZoom = newZoom;
                 };
-
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "range-changed";
-                // on écoute le range (et non le zoom, non implémenté côté itowns)
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
                 break ;
             case "azimuthChanged"  :
                 /**
                 * azimuthChanged callback
                 */
-                var callbackAzimuthchange = function (itEvent) {
+                var callbackAzimuthChange = function (itEvent) {
                     if (itEvent.new.heading === itEvent.previous.heading) {
                         return;
                     }
@@ -1412,17 +1405,13 @@ function (
                         newAzimuth  : itEvent.new.heading
                     }) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "orientation-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
                 break ;
             case "tiltChanged"  :
                 /**
                 * tiltChanged callback
                 */
-                var callbackTiltchange = function (itEvent) {
+                var callbackTiltChange = function (itEvent) {
                     if (itEvent.new.tilt === itEvent.previous.tilt) {
                         return;
                     }
@@ -1431,11 +1420,7 @@ function (
                         newTilt  : itEvent.new.tilt
                     }) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "orientation-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
                 break ;
             case "projectionChanged"  :
                 // TODO  : interet ?
@@ -1467,12 +1452,8 @@ function (
                         position  : layerIndex
                     }) ;
                 } ;
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
-                registredEvent.eventType = "layer-added";
-                // abonnement à un ajout de couche
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
+                map._registerEvent(key,eventId,action,context) ;
 
                 /**
                 * layerRemoved callback
@@ -1484,27 +1465,23 @@ function (
                         layerRemoved  : layerOpts
                     }) ;
                 };
-
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
-                registredEvent.eventType = "layer-removed";
-                // abonnement à un retrait de couche
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
+                map._registerEvent(key,eventId,action,context) ;
 
                 // abonnement à un changement de propriete sur chaque couche
                 for (var obsProperty in IT.LAYERPROPERTIES) {
-                    this.libMap.getColorLayers().forEach(function (itLayer) {
+                    map.libMap.getColorLayers().forEach(function (itLayer) {
                         var layerOpts = map._getLayerOpts(itLayer.id) ;
 
                         /** callbackLayerChanged */
                         var callbackLayerChanged = function (itevt) {
-                            var key = itevt.type.replace("-property-changed","");
+                            var layerEvtinfos = map.libMap.getLayerEventInfos(itevt);
+                            var key = layerEvtinfos.propertyName;
                             var oldItObj = {} ;
-                            oldItObj[key] = itevt.previous[key] ;
+                            oldItObj[key] = layerEvtinfos.previousValue;
                             var oldCommonProp = map._getCommonLayerParams(oldItObj) ;
                             var newItObj = {} ;
-                            newItObj[key] = itevt.new[key] ;
+                            newItObj[key] = layerEvtinfos.newsValue;
                             var newCommonProp = map._getCommonLayerParams(newItObj) ;
 
                             action.call(context,{
@@ -1515,50 +1492,72 @@ function (
                             }) ;
                         };
 
-                        // ajout de l'evenement au tableau des événements
-                        var registredEvent = map._registerEvent(callbackLayerChanged,eventId,action,context) ;
-                        registredEvent.eventOrigin = itLayer;
-                        registredEvent.eventType = obsProperty + "-property-changed";
-                        registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerChanged, this) ;
+                        var type =  ( obsProperty === "visible" ) ? Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED :
+                                  ( obsProperty === "opacity" ) ? Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED :
+                                  Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED ;
+
+                        key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
+                        map._registerEvent(key, eventId, action, context) ;
+                        key = null;
                     });
                 };
-
                 break ;
             case "controlChanged"  :
                 break ;
             default  :
                 console.log("unhandled event  : " + eventId ) ;
         } ;
+        if ( key ) {
+            // ajout de l'evenement au tableau des événements
+            this._registerEvent(key,eventId,action,context) ;
+        }
         return true ;
     } ;
 
     /**
-      * Cancel an event listening.
-      *
-      * @param {String} eventId - The map's event to forget. Possible values are  :
-      *
-      * | eventId  | description |
-      * |-|-|
-      * | mapLoaded | fired when map has finished loading |
-      * | mapFailure | fired when map has problem loading |
-      * | geolocated | fired when map has finished centering by geolocation |
-      * | located | fired when map has finished centering by geocoding |
-      * | configured | fired when map has finished loading geoportal configuration |
-      * | centerChanged | fired when map center has changed |
-      * | zoomChanged | fired when map zoom has changed |
-      * | azimuthChanged | fired when map orientation has changed |
-      * | tiltChanged | fired when map tilt has changed |
-      * | projectionChanged | fired when map projection has changed |
-      * | layerChanged | fired when map's layer(s) has changed someway |
-      * | controlChanged | fired when map's control(s) has changed |
-      *
-      * @param {Function} action - The function associated to the event.
-      */
+    * Cancel an event listening.
+    *
+    * @param {String} eventId - The map's event to forget. Possible values are  :
+    *
+    * | eventId  | description |
+    * |-|-|
+    * | mapLoaded | fired when map has finished loading |
+    * | mapFailure | fired when map has problem loading |
+    * | geolocated | fired when map has finished centering by geolocation |
+    * | located | fired when map has finished centering by geocoding |
+    * | configured | fired when map has finished loading geoportal configuration |
+    * | centerChanged | fired when map center has changed |
+    * | zoomChanged | fired when map zoom has changed |
+    * | azimuthChanged | fired when map orientation has changed |
+    * | tiltChanged | fired when map tilt has changed |
+    * | projectionChanged | fired when map projection has changed |
+    * | layerChanged | fired when map's layer(s) has changed someway |
+    * | controlChanged | fired when map's control(s) has changed |
+    *
+    * @param {Function} action - The function associated to the event.
+    */
     IT.prototype.forget = function (eventId, action) {
         this.logger.trace("[IT]  : forget...") ;
+
         // verifications de base de la classe mère
         if (!IMap.prototype.forget.apply(this,arguments)) {
             return false ;
+        }
+
+        // on cherche l'enregistrement de l'evenement
+        var rEvents = this._events[eventId] ;
+        if (!rEvents) {
+            console.log("nothing to forget for : " + eventId) ;
+            return false ;
+        }
+        var evKey = null ;
+        for (var i = rEvents.length - 1 ; i >= 0 ; i --) {
+            if (rEvents[i].action == action) {
+                evKey = rEvents[i].key;
+                rEvents.splice(i,1) ;
+                this.logger.trace("[IT] : forgetting : " + eventId + " (" + evKey + ")") ;
+                this.libMap.forgetByKey(evKey) ;
+            }
         }
     } ;
 

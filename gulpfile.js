@@ -226,14 +226,13 @@
             // VirtualGeo est déjà déclaré globale :
             //     _globalModules.push("VirtualGeo");
         }
-
         // param bundle itowns
         else if (isItowns) {
             _deps.itowns = "../lib/external/itowns/js/init-itowns";
             pluginsDir = "../lib/external/geoportail/plugins-itowns-es6/";
             _deps["Gp"] = pluginsDir + "GpPluginItowns-src";
             _includes.push("it2/IT");
-            _globalModules.push("itowns");
+            // _globalModules.push("itowns");
         } else if (isMix) {
             _deps.ol = "../lib/external/ol3/ol";
             _deps.vg = "../lib/external/virtual/js/VirtualGeoWeb-5.0.11";
@@ -242,16 +241,15 @@
             _includes.push("virtual/VG");
             _includes.push("ol3/OL3");
             _globalModules.push("ol");
-
         } else if (isMixIt) {
             _deps.ol = "../lib/external/ol3/ol";
             _deps.itowns = "../lib/external/itowns/js/init-itowns";
-            pluginsDir = "../lib/external/geoportail/plugins-mixIt/";
-            _deps["Gp"] = pluginsDir + "GpPluginOl3Itowns-src";
+            pluginsDir = "../lib/external/geoportail/plugins-mixIt-es6/";
+            _deps["Gp"] = pluginsDir + "GpPluginOlItowns-src";
             _includes.push("it2/IT");
             _includes.push("ol3/OL3");
-            _globalModules.push("ol", "itowns");
-
+            _globalModules.push("ol");
+            // _globalModules.push("itowns");
         } else {
             // TODO ...
             $.util.log("TODO ...");
@@ -475,8 +473,8 @@
             srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.png"));
             svgdir = path.join(_.lib, "external", "geoportail", "plugins-mix", "**", "*.svg");
         } else if (isMixIt) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.png"));
-            svgdir = path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.svg");
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt-es6", "**", "*.png"));
+            svgdir = path.join(_.lib, "external", "geoportail", "plugins-mixIt-es6", "**", "*.svg");
         } else {
             $.util.log("Exception !");
         }
@@ -578,7 +576,7 @@
             srcdir.push(path.join(_.res, "ol3", "*.css"));
             srcdir.push(path.join(_.res, "virtual", "*.css"));
         } else if (isMixIt) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*-src.css"));
+            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt-es6", "**", "*-src.css"));
             srcdir.push(path.join(_.lib, "external", "ol3", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
             srcdir.push(path.join(_.res, "it2", "*.css"));
