@@ -228,7 +228,8 @@
         }
         // param bundle itowns
         else if (isItowns) {
-            _deps.itowns = "../lib/external/itowns/js/init-itowns";
+            // _deps.itowns = "../lib/external/itowns/js/init-itowns";
+             _deps.itowns = "empty:";
             pluginsDir = "../lib/external/geoportail/plugins-itowns-es6/";
             _deps["Gp"] = pluginsDir + "GpPluginItowns-src";
             _includes.push("it2/IT");
@@ -243,7 +244,8 @@
             _globalModules.push("ol");
         } else if (isMixIt) {
             _deps.ol = "../lib/external/ol3/ol";
-            _deps.itowns = "../lib/external/itowns/js/init-itowns";
+            // _deps.itowns = "../lib/external/itowns/js/init-itowns";
+             _deps.itowns = "empty:";
             pluginsDir = "../lib/external/geoportail/plugins-mixIt-es6/";
             _deps["Gp"] = pluginsDir + "GpPluginOlItowns-src";
             _includes.push("it2/IT");

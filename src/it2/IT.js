@@ -29,17 +29,22 @@ function (
         * Nom de la classe (heritage)
         */
         this.CLASSNAME = "IT";
-        var scope = typeof window !== "undefined" ? window : {
-            itowns : {}
-        };
 
-        Itowns = Itowns || {};
-        
-        for ( var prop in scope.itowns ) {
-            if ( scope.itowns.hasOwnProperty(prop) ) {
-                Itowns[prop] = scope.itowns[prop];
-            }
-        }
+        // A l'initialisation de l'application, la librairie itowns n'est
+        // pas encore chargée dans la variable globale 'itowns'. Seules les extensions
+        // itowns sont disponible.
+        // Cette copie ne semble donc pas utile...
+        // cf. Loader.loadEngine() pour le chargement de la librairie...
+
+        // Itowns = Itowns || {};
+        // var env = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : {
+        //     itowns : {}
+        // };
+        // for ( var prop in env.itowns ) {
+        //     if ( env.itowns.hasOwnProperty(prop) ) {
+        //         Itowns[prop] = env.itowns[prop];
+        //     }
+        // }
 
         // appel du constructeur par heritage,
         IMap.apply(this, arguments);
@@ -89,17 +94,18 @@ function (
         var _enginePath3d = Loader.getEnginePath(this.mapOptions.enginePath3d);
 
         Loader.loadEngine(_enginePath3d,
-            function () {
-                console.warn("Itowns engine, loaded...");
-                var scope = typeof window !== "undefined" ? window : {
-                    itowns : {}
-                };
+            function (itowns) {
+                console.warn("Itowns engine, loaded...", itowns);
+
+                // On fusionne les extensions et la librairie itowns
                 for ( var prop in Itowns ) {
                     if ( Itowns.hasOwnProperty(prop) ) {
-                        scope.itowns[prop] = Itowns[prop];
+                        itowns[prop] = Itowns[prop];
                     }
                 }
-                Itowns = scope.itowns;
+
+                // puis, on garde une copie...
+                Itowns = itowns;
 
                 // position à l'initialisation
                 var positionOnGlobe = {
@@ -172,8 +178,8 @@ function (
                     self._afterInitMap();
                 });
             },
-            function () {
-                console.warn("Itowns engine, failed !");
+            function (error) {
+                console.warn("Itowns engine, failed...", error);
             },
             this);
 

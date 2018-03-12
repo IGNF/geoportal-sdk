@@ -10,8 +10,10 @@ define([], function () {
                 scope = this;
             }
 
+            var env = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : this;
+
             if (document.getElementById("engine-itowns")) {
-                callbackSuccess.call(scope);
+                callbackSuccess.call(scope, env.itowns || {});
                 return;
             }
 
@@ -26,18 +28,18 @@ define([], function () {
                     scriptEngine.onreadystatechange = function () {
                         if (scriptEngine.readyState == "loaded" || scriptEngine.readyState == "complete") {
                             scriptEngine.onreadystatechange = null;
-                            callbackSuccess.call(scope, arguments);
+                            callbackSuccess.call(scope, env.itowns || {});
                         }
                     };
                 } else { // Other browsers
                     /** ... */
                     scriptEngine.onload = function () {
-                        callbackSuccess.call(scope, arguments);
+                        callbackSuccess.call(scope, env.itowns || {});
                     };
                     if (callbackError !== null) {
                         /** ... */
-                        scriptEngine.onerror = function () {
-                            callbackError.call(scope, arguments);
+                        scriptEngine.onerror = function (e) {
+                            callbackError.call(scope, e);
                         };
                     }
                 }
