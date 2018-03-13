@@ -1033,7 +1033,7 @@ function (
             var elementSize = {};
             elementSize.width = parseFloat(control.getElement().style.width) || 100;
             elementSize.height = parseFloat(control.getElement().style.height) || 100;
-            control._globeObj.mainLoop.gfxEngine.onWindowResize(elementSize.width, elementSize.height);
+            control._globeObj.resize(elementSize.width, elementSize.height);
         }
 
         return control ;
