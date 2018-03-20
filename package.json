@@ -2,10 +2,16 @@
   "name": "geoportal-sdk",
   "version": "1.0.0",
   "description": "French Geoportal SDK",
-  "main": "dist/ol3/GpOl3.js",
+  "main": "dist/ol3/GpOl3.js, dist/mixIt/GpOl3Itowns.js",
   "scripts": {
     "setup": "npm install",
     "build": "npm run setup && gulp build",
+    "build:it": "npm run setup && gulp build --itowns",
+    "build:it:prod": "npm run setup && gulp build --itowns --production",
+    "build:mix": "npm run setup && gulp build --mixIt",
+    "build:mix:prod": "npm run setup && gulp build --mixIt --production",
+    "build:ol": "npm run setup && gulp build --ol3",
+    "build:ol:prod": "npm run setup && gulp build --ol3 --production",
     "test": "npm run setup && gulp test",
     "doc": "npm run setup && gulp doc",
     "dist": "npm run setup && gulp dist",
@@ -17,6 +23,7 @@
   },
   "keywords": [
     "openlayers",
+    "itowns",
     "geoportail",
     "webservice",
     "javascript"
@@ -30,6 +37,7 @@
   "dependencies": {},
   "devDependencies": {
     "geoportal-extensions-openlayers": "^1.0.0",
+    "geoportal-extensions-itowns": "^1.0.0",
     "amdclean": "^2.7.0",
     "glob": "^7.0.3",
     "groundskeeper": "^0.1.12",
