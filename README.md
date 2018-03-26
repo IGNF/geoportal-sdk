@@ -61,6 +61,8 @@ L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `nod
 
 ### Intégration dans une page web
 
+#### En déposant les fichiers nécessaires sur votre serveur web
+
 Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
 
 Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
@@ -71,6 +73,15 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 <link rel="stylesheet" href="chemin/vers/GpOl3.css" />
 ```
 
+#### En utilisant les sources disponibles sur JSDeliver
+
+Intégrez le SDK géoportail dans votre page web à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css à partir du [CDN JSDELIVER](https://www.jsdelivr.com/package/gh/IGNF/geoportal-sdk).
+
+``` html
+<!-- SDK Géoportail -->
+<script src="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@1.0.0/lib/external/geoportail/plugins-ol3/GpPluginOl3.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@1.0.0/lib/external/geoportail/plugins-ol3/GpPluginOl3.css" />
+```
 
 ### Interfaces de programmation
 
