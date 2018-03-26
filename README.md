@@ -79,8 +79,8 @@ Intégrez le SDK géoportail dans votre page web à l'aide d'une balise **script
 
 ``` html
 <!-- SDK Géoportail -->
-<script src="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@1.0.0/lib/external/geoportail/plugins-ol3/GpPluginOl3.js"></script>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@1.0.0/lib/external/geoportail/plugins-ol3/GpPluginOl3.css" />
+<script src="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@latest/lib/external/geoportail/plugins-ol3/GpPluginOl3.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/IGNF/geoportal-sdk@latest/lib/external/geoportail/plugins-ol3/GpPluginOl3.css" />
 ```
 
 ### Interfaces de programmation
