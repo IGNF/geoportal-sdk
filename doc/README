@@ -24,6 +24,7 @@ var map = Gp.map.load(
     "mapDiv",                     // html element id  where to attach the map
     {                             // mapOptions
         apiKey : "YOUR_API_KEY",   // geoportal access key
+        library : "itowns",        // "ol3" by default. Library the map will be loaded with.
         center : {                // -> map center params
             location : "73 avenue de Paris, Saint-Mandé"
         },

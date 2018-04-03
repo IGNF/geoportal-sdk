@@ -150,6 +150,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * Point object.
          *
          * @namespace
@@ -162,6 +164,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * Center Changed Event. Triggered when the map's center has changed.<br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
@@ -175,6 +179,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * ZoomChanged Event.
          *
          * @namespace
@@ -187,6 +193,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * Azimuth Changed Event. Triggered when the map's orientation has changed.<br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
@@ -200,6 +208,23 @@ define([
         } ;
 
         /**
+         * **Specific 3D event**
+         * 
+         * Tilt Changed Event. Triggered when the map's tilt has changed.<br/>
+         * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+         *
+         * @namespace
+         * @alias Gp.TiltChangedEvent
+         *
+         * @property {Float} oldTilt - old map tilt
+         * @property {Float} newTilt - new map tilt
+         */
+        var tiltChangedEvent = {
+        } ;
+
+        /**
+         * **Common 2D/3D event**
+         * 
          * LayerChanged Event. Triggered when one of the map's layers has changed in some way : <br/>
          * * If a layer has be removed from the map, property **layerRemoved** will host the removed layer definition.
          * * If a layer has be added to the map, property **layerAdded** will host the added layer definition.
@@ -221,6 +246,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D object**
+         * 
          * Geolocated Event. Triggered when the map's center has changed by user geo-localization.<br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
@@ -233,6 +260,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * Located Event. Triggered when the map's center has changed by geocoding.<br/>
          * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
          *
@@ -245,6 +274,8 @@ define([
         } ;
 
         /**
+         * **Common 2D/3D event**
+         * 
          * Configured Event. Triggered when the map has finished to configure itself with the given apiKey at startup.<br/>
          * One can listen to this event with [Gp.Map.load()](module-Map.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
          * *NB* : for a full map availability at startup you'd better listen to {@link Gp.MapLoadedEvent}.
@@ -258,6 +289,8 @@ define([
 
         } ;
         /**
+         * **Common 2D/3D event**
+         * 
          * Map Loaded Event. Triggered at startup when the map has finished to load and is ready to be commanded with {@link Gp.Map} object methods.<br/>
          * One can listen to this event with [Gp.Map.load()](module-Map.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
          *
@@ -275,37 +308,54 @@ define([
          * Holds options for map creation when using [Gp.Map.load()](module-Map.html) function.
          *
          * Availables options are described below.
+         * 
+         * * ** Common 2D/3D properties**
+         * 
+         * | property | Type | Argument | Default | Description |
+         * | - | - | - | - | - |
+         * | apiKey | String / Array.<String> | | | access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats) |
+         * | library | String | optional | "ol3" | Library to load the map with. "ol3" by default (2D) or "itowns" (3D). Use : <ul> <li>GpOL3 bundle to load the map only with openLayers (2D). </li> <li>GpItowns bundle to load the map only with iTowns (3D).</li><li>GpOL3Itowns bundle to be able to switch between ol3 and iTowns views (see {@link Gp.Map#switchToLibITOL3 Gp.Map.switchToLibITOL3()}).</li></ul> |
+         * | center | {@link Gp.Center Gp.Center} | optional | | Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization. |
+         * | azimuth | Float | optional | 0 | Map orientation in decimal degrees clockwise to the north. |
+         * | zoom | Integer / Float | optional | 10 | Zoom level, between 0 (world wide zoom) and 21 (street wide zoom). |
+         * | defaultFeaturesStyle | {@link Gp.StyleOptions Gp.StyleOptions} | optional | | Default style options for vector layers features (KML, GPX, GeoJSON). |
+         * | layersOptions | Object | optional | | Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide. |
+         * | controlsOptions | Object | optional | | Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties. |
+         * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects. |
+         * | minZoom | Integer | optional | 0 | Zoom level beyond which the user can't zoom out. | 
+         * | maxZoom | Integer | optional | 21 | Zoom level beyond which the user can't zoom in. | 
+         * | configUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. | 
+         * | proxyUrl | String | optional | | Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing. |  
+         * | noProxyDomains | Array.<String> | optional | | Proxy will not be used for this list of domain names. Only use if you know what you're doing. |  
+         * 
+         * * **Specific 2D options**
+         * 
+         * | property | Type | Argument | Default | Description |
+         * | - | - | - | - | - |
+         * | enableRotation | Boolean | optional | true | Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used. |  
+         * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. |  
+         * | projection | String | optional | "EPSG:3857" | Projection code (in EPSG or IGNF register) for the map. Not available in 3D as the projection is always "EPSG:4326" |            
          *
+         * * **Specific 3D options**
+         * 
+         * | property | Type | Argument | Default | Description |
+         * | - | - | - | - | - |
+         * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |  
+         * 
          * @namespace
          * @alias Gp.MapOptions
-         *
-         * @property {String | Array.<String>} apiKey - access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats)
-         * @property {Gp.Center} [center] - Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization.
-         * @property {Float} [azimuth=0] - Map orientation in decimal degrees clockwise to the north.
-         * @property {Boolean} [enableRotation=true] - Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used.
-         * @property {Integer | Float} [zoom=10] - Zoom level, between 0 (world wide zoom) and 21 (street wide zoom).
-         * @property {Array.<Gp.MarkerOptions>} [markersOptions] - Options for displaying markers on the map.
-         * @property {Gp.StyleOptions} [defaultFeaturesStyle] - Default style options for vector layers features (KML, GPX, GeoJSON).
-         * @property {Object} [layersOptions] - Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide.
-         * @property {Object} [controlsOptions] - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties.
-         * @property {Object} [mapEventsOptions] - Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects.
-         * @property {Integer} [minZoom=0] - Zoom level beyond which the user can't zoom out.
-         * @property {Integer} [maxZoom=21] - Zoom level beyond which the user can't zoom in.
-         * @property {String} [configUrl] - Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter.
-         * @property {String} [projection="EPSG:3857"] - Projection code (in EPSG or IGNF register) for the map.
-         * @property {String} [proxyUrl] - Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing.
-         * @property {Array.<String>} [noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing.
+         * 
          */
         var mapOptions = {
             /*
          * undocumented options - for the moment
          * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
-         * @property {Float} [tilt=0] - (3d only) Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view.
-         * @property {String} [library="ol3"] - Cartographic library used with the Geoportal API. Supported values are : 'ol3', '3d'.
          */
         } ;
 
         /**
+         * **Specific 2D options**
+         * 
          * Marker options object.
          *
          * Holds options for marker to display on the map at startup. To be used for map creation (See markersOptions property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Map.html) function).
@@ -330,6 +380,8 @@ define([
         } ;
 
         /**
+         * **Specific 2D options**
+         * 
          * AutoPan options object.
          *
          * Holds options to define autopan behaviour for popups displaying when they overlap the borders of the map.
@@ -353,6 +405,8 @@ define([
          *
          * ### Common properties
          *
+         * ** Common 2D/3D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | format | String | The layer's format. Supported values are : 'kml', 'gpx', 'geojson', 'wmts', 'wms', 'wfs', or 'osm'. This property is optionnal for Geoportal layers but mandatory for others. |
@@ -370,52 +424,91 @@ define([
          *
          * ### WMTS specific properties
          *
+         * ** Common 2D/3D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
-         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layer | String | The layer's Identifier to add (found in GetCapabilities response). |
-         * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. Not yet implemented for WMTS. |
-         * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html". Not yet implemented for WMTS. |
          * | tileMatrixSet | String | The name of the layer's TileMatrixSet (see in GetCapabilities response). |
          * | topLeftCorner | Gp.Point | The layer's origin coordinates (found in GetCapabilities response). |
          * | resolutions | Array[Float] | The layer's resolutions list (found in GetCapabilities response). |
          * | matrixIds | Array[String] | The layer's zoom levels ids (found in GetCapabilities response). |
          * | outputFormat | String | The output image format (Mime-type) |
          * | styleName | String | The layer's style name to apply (found in GetCapabilities response). |
-         *
+         * 
+         * ** Specific 2D properties ** 
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
+         * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. Not yet implemented for WMTS. |
+         * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html". Not yet implemented for WMTS. |
+         * 
+         * 
+         * ** Specific 3D properties ** 
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
+         * | tileMatrixSetLimits | Object | Tiles limits of the tileMatrixSet used.  |
+         * | isElevation | Boolean | If true, the layer is displayed as an elevation layer (DTM) |
+         * 
          * ### KML specific properties
          *
+         * ** Common 2D/3D properties**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
+         * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
+         *           
+         * ** Specific 2D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | showPointNames | Boolean | If true, show names as labels for placemarks which contain points. |
-         * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
          * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
          * | projection | String | coordinate reference system id used for Layer (default is map projection) |
          *
          * ### KML, GPX and GeoJSON specific properties
          *
+         * **Common 2D/3D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | styleOptions | {@link Gp.StyleOptions} | options for layer style (points, strokes, polygons) |
          *
          * ### WMS specific properties
          *
+         *          
+         * ** Common 2D/3D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
-         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
          * | layers | Array[String] layers | List of layer's identifiers to add (found in GetCapabilities response). |
-         * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. |
-         * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html" |
          * | version | String | The version of the Web Service providing the layer. Default : "1.3.0" |
          * | stylesNames | Array[String] | List of the styles names to apply to layers (see in GetCapabilities response). |
          * | outputFormat | String | The output image format (Mime-type) |
-         * | backgroundColor | String | The layer's background RVB color in hexadecimal. |
          * | projection | String | Coordinate reference system id used for Layer (default is map projection) |
-         * | tiled | Boolean | If true, map will load WMS layer in a tiled way. Otherwise, layer will be displayed with an unique GetMap request covering the whole map view (default). |
          *
+         * **Specific 2D properties**
+         *          
+         * | property | Type | Description |
+         * | - | - | - |
+         * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
+         * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer. |
+         * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html" |
+         * | backgroundColor | String | The layer's background RVB color in hexadecimal. |
+         * | tiled | Boolean | If true, map will load WMS layer in a tiled way. Otherwise, layer will be displayed with an unique GetMap request covering the whole map view (default). |
+         * 
+         * **Specific 3D properties**
+         *           
+         * | property | Type | Description |
+         * | - | - | - |
+         * | bbox | Array[Float] | Bounding box where to display the layer. The array must be "[west, south, east, north]". If the layer is in PM, the bbox needs to be in planar coordinates. World extent by default |
          *
          * ### WFS specific properties
          *
+         * **Specific 2D properties**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | version | String | The version of the Web Service providing the layer. Default : "2.0.0" |
@@ -439,9 +532,10 @@ define([
          * Given a specific control, availables options are the following :
          *
          * <a id="zoom"></a>
-         *
+         * 
          * ### Options for "zoom" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation. |
@@ -450,18 +544,37 @@ define([
          *
          * ### Options for "overview" control
          *
+         * **Common 2D/3D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation. |
+         * | maximised | Boolean | If the control has to be opened or not. |
+         *
+         * **Specific 2D options**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
          * | layers | Array(String) | List of layers Ids to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
          * | minZoom | Number | min zoom level for overview map. |
          * | maxZoom | Number | max zoom level for overview map. |
          * | projection | String | projection code for overview map. |
+         * 
+         * **Specific 3D options**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
+         * | position | String | The type of positionment of the overview element inside its container. Can be "absolute" or "relative" ("absolute" by default) |
+         * | width | Number | The width of the minimap (100px by default) |
+         * | heigth | Number | The height of the minimap (100px by default) |
+         * | x | Number | The position of the minimap from the left of the container div (20px by default) |
+         * | y | Number | The position of the minimap from the bottom of the container div (20px by default) |
          *
          * <a id="orientation"></a>
          *
          * ### Options for "orientation" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -471,16 +584,33 @@ define([
          *
          * ### Options for "graphicscale" control
          *
+         * **Common 2D/3D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+         * 
+         * **Specific 2D options**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
          * | units | String | Units to display : "deg" (degrees) or "m" (metric values). |
          * | minWidth | Number | Minimum width in pixels. Default is 64. |
+         *
+         * **Specific 3D options**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
+         * | maximised | Boolean | Display or not the control |
+         * | x | Number | The position of the minimap from the left of the container div (20px by default) |
+         * | y | Number | The position of the minimap from the bottom of the container div (20px by default) |
          *
          * <a id="mouseposition"></a>
          *
          * ### Options for "mouseposition" control
          *
+         * **Common 2D/3D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -493,16 +623,23 @@ define([
          * | displayAltitude | Boolean | (de)activate altitude display |
          * | displayCoordinates | Boolean | (de)activate planimetric coordinates display. |
          * | altitude | Object | altitude interaction specific configuration. Implementation specific. |
+         *
+         * **Specific 2D options**
+         * 
+         * | property | Type | Description |
+         * | - | - | - |
          * | editCoordinates | Boolean | Allows users to change map center by giving their coordinates. False by default. |
          * | positionMarker | Object | options for a position marker to use when editingCoordinates. |
          * | positionMarker.url | String | Marker url |
          * | positionMarker.offset | Array(Number) | Offsets in pixels used when positioning the marker towards targeted point. The *first element* in the array is the horizontal offset. A positive value shifts the marker right. The *second element* in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point. Default is offset associated to default marker image. |
          * | positionMarker.hide | Boolean | If true, marker is not displayed, otherwise displayed (False by default.) |
-         *
+         * 
+         * 
          * <a id="route"></a>
          *
          * ### Options for "route" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -521,7 +658,8 @@ define([
          * <a id="isocurve"></a>
          *
          * ### Options for "isocurve" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -541,7 +679,8 @@ define([
          * <a id="graticule"></a>
          *
          * ### Options for "graticule" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -552,7 +691,8 @@ define([
          * <a id="layerswitcher"></a>
          *
          * ### Options for "layerswitcher" control
-         *
+         * **Common 2D/3D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -561,7 +701,8 @@ define([
          * <a id="getfeatureinfo"></a>
          *
          * ### Options for "getfeatureinfo" control
-         *
+         * **Specific 2D options**
+         * 
          * | Property | Type | Argument | Default | Description |
          * | - | - | - | - | - |
          * | div | String / DOMElement | | | Target HTML element container or its id. Default is chosen by map implementation. |
@@ -578,7 +719,8 @@ define([
          * <a id="layerimport"></a>
          *
          * ### Options for "layerimport" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -617,6 +759,7 @@ define([
          * <a id="length"></a>
          *
          * ### Options for "length" control
+         * **Specific 2D options**
          *
          * | property | Type | Description |
          * | - | - | - |
@@ -640,6 +783,7 @@ define([
          * <a id="area"></a>
          *
          * ### Options for "area" control
+         * **Specific 2D options**
          *
          * | property | Type | Description |
          * | - | - | - |
@@ -665,7 +809,8 @@ define([
          * <a id="azimuth"></a>
          *
          * ### Options for "azimuth" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -688,7 +833,8 @@ define([
          * <a id="elevationpath"></a>
          *
          * ### Options for "elevationpath" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -720,7 +866,8 @@ define([
          * <a id="searchctrl"></a>
          *
          * ### Options for "search" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -736,7 +883,8 @@ define([
          * <a id="reversesearch"></a>
          *
          * ### Options for "reversesearch" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -749,7 +897,8 @@ define([
          * <a id="drawing"></a>
          *
          * ### Options for "drawing" control
-         *
+         * **Specific 2D options**
+         * 
          * | property | Type | Description |
          * | - | - | - |
          * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
@@ -801,6 +950,7 @@ define([
          * <a id="attributions"></a>
          *
          * ### Options for "attributions" control
+         * ** Common 2D/3D options**
          *
          * | property | Type | Description |
          * | - | - | - |
@@ -819,19 +969,31 @@ define([
         *
         * Options for vector layers styling (KML, GPX, GeoJSON)
         *
+        * **Common 2D/3D properties**
+        *
+        * | property | Type | Description |
+        * | - | - | - |
+        * | strokeColor | String | Stroke color for lines or polygons border styling (RGB hex value). Default is "#002A50".|
+        * | strokeWidth | Number | Stroke width in pixels for lines or polygons border styling. Default is 4. |
+        * | strokeOpacity | Number | Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8. |
+        * | polyFillColor | String | Polygons fill color (RGB hex value). Default is "#00B798". |
+        * | polyFillOpacity | Number | Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5. |
+        *
+        *
+        * **Specific 2D properties**
+        *
+        * | property | Type | Description |
+        * | - | - | - |
+        * | markerSrc | String | URL of a marker image (for points styling). Default is an orange marker.|
+        * | markerXAnchor | Float | Position of marker anchor in X from left of the image expressed in pixels (for points styling). Default is 25.5. |
+        * | markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38. |
+        * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
+        * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
+        *
+        *
         * @namespace
         * @alias Gp.StyleOptions
         *
-        * @property {String} markerSrc - URL of a marker image (for points styling). Default is an orange marker.
-        * @property {Float} markerXAnchor - Position of marker anchor in X from left of the image expressed in pixels (for points styling). Default is 25.5.
-        * @property {Float} markerYAnchor - Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38.
-        * @property {String} strokeColor - Stroke color for lines or polygons border styling (RGB hex value). Default is "#002A50".
-        * @property {Number} strokeWidth - Stroke width in pixels for lines or polygons border styling. Default is 4.
-        * @property {Number} strokeOpacity - Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8.
-        * @property {String} polyFillColor - Polygons fill color (RGB hex value). Default is "#00B798".
-        * @property {Number} polyFillOpacity - Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5.
-        * @property {String} textColor - Text fill color for labels (RGB hex value). Default is "#FFFFFF".
-        * @property {String} textStrokeColor - Text surrounding color for labels (RGB hex value). Default is "#000000".
         */
         var styleOptions = {
         };

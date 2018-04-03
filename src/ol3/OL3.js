@@ -293,6 +293,11 @@ define([
          * Ajoute l'echelle graphique sur la carte
          *
          * @param {Object} controlOpts - options du controle
+         * @param {String} controlOpts.div - Target HTML element container or its id. Default is chosen by map implementation.
+         * @param {String} controlOpts.units - Units to display : "deg" (degrees) or "m" (metric values).
+         * @param {Number} controlOpts.minWidth - Minimum width in pixels. Default is 64.
+         * 
+         * @returns {Object} Overview control
          */
         OL3.prototype.addGraphicScaleControl = function (controlOpts) {
             var ol3units = controlOpts.units ;
