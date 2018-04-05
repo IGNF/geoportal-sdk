@@ -97,8 +97,8 @@ function (
 
                 // position à l'initialisation
                 var positionOnGlobe = {
-                    longitude  : this.mapOptions.center.x,
-                    latitude  : this.mapOptions.center.y,
+                    longitude  : this.mapOptions.center.x || 2,
+                    latitude  : this.mapOptions.center.y || 48,
                     altitude  : 25000000
                 };
 
@@ -695,6 +695,10 @@ function (
             console.log("no valid coordinates for map center") ;
             return ;
         }
+        if (point.location && point.location.trim().length > 0 ) {
+            console.log("point object has location property to center on...") ;
+            return;
+        }
         if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
             var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
             point = {
@@ -757,7 +761,9 @@ function (
             position.zoom = zoom;
         }
         // set the camera aimed point on the specified coords
-        this.libMap.setCameraTargetGeoPosition(position);
+        this.libMap.onCameraMoveStop((function () { 
+            this.libMap.setCameraTargetGeoPosition(position); 
+        }).bind(this));
         this.logger.trace("[IT] - setAutoCenter(" + point.x + "," + point.y + ")") ;
     };
 
