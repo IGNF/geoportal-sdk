@@ -2,7 +2,7 @@
 
 Le Kit de développement - ou SDK - Géoportail est une librairie JavaScript mise à disposition sous licence libre par l’IGN permettant d’ajouter simplement dans un site web une carte utilisant les ressources du Géoportail.
 
-Le SDK est disponible sous deux versions :
+**Le SDK est disponible sous deux versions :**
 
 - Une version "SDK 2D" uniquement, qui propose l'affichage des ressources du Géoportail sur une cartographie classique en 2D se basant sur [OpenLayers](https://openlayers.org/). [Cliquer ici pour accéder au README correspondant à cette version du SDK](./README-SDK-2D.md).
 

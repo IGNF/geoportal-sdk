@@ -210,6 +210,8 @@ var map = Gp.Map.load(
     "mapDiv",   // identifiant du conteneur HTML
     // options d'affichage de la carte (Gp.MapOptions)
     {
+        // chargement de la cartographie en 3D avec la librairie itowns
+         library : "itowns",
          // centrage de la carte
          center : {
              x : -4.620391,
@@ -264,6 +266,8 @@ var map = Gp.Map.load(
     "mapDiv",   // identifiant du conteneur HTML
     // options d'affichage de la carte (Gp.MapOptions)
     {
+        // chargement de la cartographie en 3D avec la librairie itowns
+         library : "itowns",
          // centrage de la carte
          center : {
              geolocate : true
@@ -314,7 +318,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/oLy81mf6/embedded/result,js,css,html/)**
+**TODO Exemple jsFiddle en 3D**
 
 
 **Exemple 2** : ajout de couches WMS INSPIRE servies par la plateforme Géoportail.
@@ -333,7 +337,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/7dg0yj9v/embedded/result,js,css,html/)**
+**TODO Exemple jsFiddle en 3D**
 
 
 
@@ -343,9 +347,9 @@ Le couches externes sont des données issues d'autres serveurs que ceux de la pl
 
 Les formats supportés par le SDK pour les couches externes sont les suivants :
 
-Pour les données images : WMS, WMTS, Open Street Map
+Pour les données images : WMS, WMTS (Open Street Map uniquement en 2D)
 
-Pour les données vecteur : WFS, KML, GPX, GeoJSON
+Pour les données vecteur : KML, GPX, GeoJSON (WFS uniquement en 2D)
 
 Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
 
@@ -379,15 +383,16 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/pLcebctq/embedded/result,js,css,html/)**
+**TODO exemple jsFiddle**
 
 *NB* : on peut ajouter, modifier ou retirer les couches de la carte à tout moment après son chargement initial à l'aide des méthodes [addLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addLayers), [modifyLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyLayers) ou [removeLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeLayers) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
 <a id="markers"/>
 
-### Configuration des markers
+### Configuration des markers - visu 2D uniquement
 
-Le SDK vous permet de rajouter des repères (markers) sur votre carte. Cela se fait à l'aide de la propriété **markersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
+Le SDK 3D vous permet de rajouter des repères (markers) sur votre carte, **mais uniquement pour un affichage 2D**. 
+Cela se fait à l'aide de la propriété **markersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
 Il s'agit d'un tableau javascript contenant autant d'éléments que de markers à rajouter. Chaque élément est un objet javascript de type [Gp.MarkerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MarkerOptions.html) ; il permet de préciser les caractéristiques (positionnement, apparence, ...) du repère de positionnement à afficher.
 
@@ -408,22 +413,36 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/a9Lhp3tz/embedded/result,js,html,css/)**
+**TODO exemple jsFiddle**
 
 
 <a id="controls"/>
 
 ### Configuration des outils additionnels à proposer sur la carte
 
-Par défaut la carte se présente avec les boutons de zoom et l'affichage des attributions. Le SDK vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'intéragir avec la celle-ci.
+Par défaut, la carte se présente :
+- en 2D avec les boutons de zoom et l'affichage des attributions. 
+- en 3D avec l'affichage des attributions. 
+Le SDK 3D vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'intéragir avec la celle-ci. **Attention :** certains de ces outils ne sont disponibles que sur la visualisation 2D.
 
 L'ajout d'outils se fait à l'aide de la propriété **controlsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). Il s'agit d'un objet javascript dont chaque propriété a le nom de l'outil à rajouter et chaque valeur de propriété permet de préciser - si besoin - le paramétrage de l'outil. Ce paramétrage se fait à l'aide d'un objet javascript de type [Gp.ControlOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html), dont les propriétés vont varier selon l'outil.
 
-Les outils disponibles sont les suivants :
-
-* boutons de zoom (["zoom"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#zoom)) ;
+Les outils disponibles en 2D et 3D sont les suivants :
 
 * gestionnaire de couches (["layerswitcher"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#layerswitcher))
+
+* affichage des producteurs de données (["attributions"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#attributions))
+
+* mini vue (["overview"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#overview)) ;
+
+* échelle graphique (["graphicscale"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#graphicscale)) ;
+
+* coordonnées de la souris (["mouseposition"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#mouseposition))
+
+
+Les outils disponibles en 2D uniquement sont les suivants :
+
+* boutons de zoom (["zoom"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#zoom)) ;
 
 * barre de recherche (["search"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#searchctrl))
 
@@ -431,15 +450,7 @@ Les outils disponibles sont les suivants :
 
 * outils de dessin (["drawing"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#drawing))
 
-* affichage des producteurs de données (["attributions"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#attributions))
-
-* mini vue (["overview"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#overview)) ;
-
 * bouton d'orientation (["orientation"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#orientation)) ;
-
-* échelle graphique (["graphicscale"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#graphicscale)) ;
-
-* coordonnées de la souris (["mouseposition"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#mouseposition))
 
 * calcul d'isochrones (["isocurve"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#isocurve))
 
@@ -457,6 +468,8 @@ Les outils disponibles sont les suivants :
 
 *NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
+*NB* : lors d'une bascule d'une visualisation 2D vers 3D à l'aide de la fonction [switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3) , les outils non disponibles en 3D disparaitront de la carte. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
+
 
 <a id="events"/>
 
@@ -472,7 +485,7 @@ Les événements auxquels on peut s'abonner sont les suivants :
 
 * Evénements d'initialisation : "mapLoaded", "geolocated", "located", "configured"
 
-* Evénements de changement d'état de la carte : "centerChanged", "zoomChanged" ,"azimuthChanged", "layerChanged"
+* Evénements de changement d'état de la carte : "centerChanged", "zoomChanged" ,"azimuthChanged", "layerChanged", "tiltChanged"
 
 
 **Exemple** : Déclenchement d'une alerte à la fin de l'initialisation de la carte.
@@ -494,7 +507,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/gwxLbrdd/embedded/result,js,html,css/)**
+**TODO Exemple JSFIDDLE**
 
 
 *NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
@@ -526,7 +539,7 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
-Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieursau chargement de la carte à la réception de cet événment à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
+Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événment à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
 
 ``` javascript
 
