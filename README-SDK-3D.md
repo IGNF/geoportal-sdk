@@ -125,7 +125,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * utilisation des **droits de la clef** 'APIKEY' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
 
-* **library** : "itowns" pour un chargement de la cartographie en 3D, ou "ol3" (par défaut) pour un chargement de la cartographie en 2D.
+* **library** : "itowns" pour un chargement de la cartographie en 3D, ou "ol3" (par défaut) pour un chargement de la cartographie en 2D. Il sera ensuite possible de basculer d'un mode de visualisation à l'autre ([Voir la partie "Bascule entre 2D et 3D](#switchToLib)).
 
 * **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 
@@ -461,7 +461,9 @@ Les outils disponibles en 2D uniquement sont les suivants :
 
 *NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
-*NB* : lors d'une bascule d'une visualisation 2D vers 3D à l'aide de la fonction [switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3) , les outils non disponibles en 3D disparaitront de la carte. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
+<a id="switch_tools"/>
+
+*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
 
 
 <a id="events"/>
@@ -505,6 +507,11 @@ var map = Gp.Map.load(
 
 *NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
+<a id="switchToLib"/>
+
+### Bascule entre 2D et 3D
+
+Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
 
 <a id="others"/>
 
@@ -517,6 +524,8 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 * les niveaux de zoom courant, minimal et maximal
 
 * l'orientation (azimuth) de la carte
+
+* l'inclinaison (tilt) de la vue en 3D
 
 * ...
 

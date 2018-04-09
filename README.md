@@ -4,6 +4,6 @@ Le Kit de développement - ou SDK - Géoportail est une librairie JavaScript mis
 
 **Le SDK est disponible sous deux versions :**
 
-- Une version "SDK 2D" uniquement, qui propose l'affichage des ressources du Géoportail sur une cartographie classique en 2D se basant sur [OpenLayers](https://openlayers.org/). [Cliquer ici pour accéder au README correspondant à cette version du SDK](./README-SDK-2D.md).
+- Une version "SDK 2D", qui propose l'affichage des ressources du Géoportail sur une cartographie classique en 2D uniquement, en se basant sur [OpenLayers](https://openlayers.org/). [Cliquer ici pour accéder au README correspondant à cette version du SDK](./README-SDK-2D.md).
 
 - Une version "SDK 3D", qui propose l'affichage des ressources du Géoportail sur une cartographie soit en 2D basée sur la librairie [OpenLayers](https://openlayers.org/), soit en 3D basée sur la librairie [iTowns](http://www.itowns-project.org/). La possibilité de basculer entre les deux modes de visualisation 2D et 3D est proposée par le SDK 3D. [Cliquer ici pour accéder au README correspondant à cette version du SDK](./README-SDK-3D.md).
