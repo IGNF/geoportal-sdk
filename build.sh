@@ -52,6 +52,12 @@ function itowns() {
   gulp publish
 }
 
+# documentation
+function doc() {
+  echo "####### SDK documentation !"
+  gulp doc
+}
+
 npm install
 
 while getopts "aoi" opts
@@ -74,6 +80,7 @@ do
         ol3
         itowns
         mixIt
+        doc
         ;;
      \?)
         echo "$OPTARG : invalide, use option : -a(all), -o(openlayers), -i(mix && itowns) !"
