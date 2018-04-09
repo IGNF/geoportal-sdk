@@ -1,6 +1,6 @@
-# Kit de Développement (SDK) Géoportail - version Mix (2D/3D)
+# Kit de Développement (SDK) Géoportail - version 3D
 
-Le Kit de Développement Géoportail dans sa version "SDK-mix" s’adresse à des gestionnaires de site internet désireux de proposer rapidement une cartographie dynamique en 2D et 3D utilisant les fonds IGN sur leur site et faisant appel à des fonctionnalités simples :
+Le Kit de Développement Géoportail dans sa version "SDK 3D" s’adresse à des gestionnaires de site internet désireux de proposer rapidement une cartographie dynamique en 2D et 3D utilisant les fonds IGN sur leur site et faisant appel à des fonctionnalités simples :
 
 * positionnement de la carte ([centrage, orientation, niveau de zoom](#center))
 
@@ -29,7 +29,7 @@ Il contient l'arborescence suivante :
         GpOl3Itowns-src.css
             (version non minifiée des css pour une utilisation en développement)
         itowns.js
-            (version minifiée de la librairie iTowns compatible avec le SDK-mix)
+            (version minifiée de la librairie iTowns compatible avec le SDK 3D)
         img/
             (resources images utilisées par les fichiers CSS)
 
