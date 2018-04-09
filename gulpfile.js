@@ -216,7 +216,7 @@
         // param bundle itowns
         else if (isItowns) {
             _deps.itowns = "../lib/external/itowns/js/init-itowns";
-            pluginsDir = "../lib/external/geoportail/plugins-itowns/";
+            pluginsDir = "../../node_modules/geoportal-extensions-itowns/dist/";
             _deps["gp"] = pluginsDir + "GpPluginItowns-src";
             _includes.push("it2/IT");
             _globalModules.push("itowns");
