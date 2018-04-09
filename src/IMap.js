@@ -1490,15 +1490,17 @@ define([
                             break ;
                         default :
                             console.log("Controle " + controlId + "inconnu.") ;
-                    }
-                    if (controlObj) {
-                        this.logger.trace("[IMap] addControls : registering : [" + controlId + "]") ;
-                        this._controls.push({
-                            obj : controlObj,
-                            id : controlId.toLowerCase(),
-                            options : controlOpts
-                        }) ;
-                    }
+                            // if the controlId is not recognized, we skip it
+                            continue;
+                    }                    
+                    this.logger.trace("[IMap] addControls : registering : [" + controlId + "]") ;
+                    // if the control is not implemented in 3D, controlObj doesn't exist
+                    // then we register it as "2D-only-control", to re-add it in case of switch 3D->2D
+                    this._controls.push({
+                        obj : controlObj || "2D-only-control",
+                        id : controlId.toLowerCase(),
+                        options : controlOpts
+                    }) ;
                 }
             },
 
