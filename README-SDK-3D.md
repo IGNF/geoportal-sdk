@@ -38,8 +38,6 @@ Il contient l'arborescence suivante :
 
 #### Téléchargement direct
 
-TODO : Proposer le bundle 3D en téléchargement direct et adapter le texte ci-dessous 
-
 Vous pouvez télécharger la dernière version du Kit de Développement Géoportail directement sur [la page Github des releases du SDK](https://github.com/IGNF/geoportal-sdk/releases).
 
 L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
@@ -48,8 +46,6 @@ L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
 <a id="download-npm"/>
 
 #### Récupération avec NPM
-
-TODO : Npmiser le projet pour la 3D et adapter le texte ci-dessous 
 
 Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/geoportal-sdk).
 
@@ -137,10 +133,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * **outils additionnels** : barre de recherche (*controlsOptions*). [Plus d'infos sur le paramétrage des outils additionnels...](#controls) ;
 
-
-**Voir le code sur jsFiddle :**
-
-TODO : JSFIDDLE exemple d'une map en 3D
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/ck2pftgw/embedded/result,js,css,html/)**
 
 
 <a id="config"/>
@@ -318,7 +311,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**TODO Exemple jsFiddle en 3D**
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/ewe0ms98/embedded/result,js,css,html/)**
 
 
 **Exemple 2** : ajout de couches WMS INSPIRE servies par la plateforme Géoportail.
@@ -337,7 +330,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**TODO Exemple jsFiddle en 3D**
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/w4Lfxmtv/embedded/result,js,css,html/)**
 
 
 
@@ -383,7 +376,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**TODO exemple jsFiddle**
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/sbefqt0j/embedded/result,js,css,html/)**
 
 *NB* : on peut ajouter, modifier ou retirer les couches de la carte à tout moment après son chargement initial à l'aide des méthodes [addLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addLayers), [modifyLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyLayers) ou [removeLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeLayers) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
@@ -413,7 +406,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**TODO exemple jsFiddle**
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/a9Lhp3tz/embedded/result,js,html,css/)**
 
 
 <a id="controls"/>
@@ -507,7 +500,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-**TODO Exemple JSFIDDLE**
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/9fmLyhLL/embedded/result,js,html,css/)**
 
 
 *NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
