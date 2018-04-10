@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <!-- !meta IGN -->
 
-    <title>Namespace: MarkerOptions</title>
+    <title>Namespace: TiltChangedEvent</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -1143,7 +1143,7 @@
 
     <section class="content">
         <label class="openLeftMenu" for="showLeftMenu" title="Ouvrir le menu latéral"></label>
-        <h1 class="page-title" data-filename="Gp.MarkerOptions.html">Namespace: MarkerOptions</h1>
+        <h1 class="page-title" data-filename="Gp.TiltChangedEvent.html">Namespace: TiltChangedEvent</h1>
         
 
 
@@ -1154,7 +1154,7 @@
 <header>
 -->
     <h1>
-    <span class="main-title" data-classname=Gp.MarkerOptions> Gp.MarkerOptions </span>
+    <span class="main-title" data-classname=Gp.TiltChangedEvent> Gp.TiltChangedEvent </span>
     </h1>
     
     
@@ -1168,10 +1168,8 @@
     
     
         
-            <div class="description"><p><strong>Specific 2D options</strong></p>
-<p>Marker options object.</p>
-<p>Holds options for marker to display on the map at startup. To be used for map creation (See markersOptions property of <a href="Gp.MapOptions.html">Gp.MapOptions</a> object used as a parameter of <a href="module-Map.html">Gp.Map.load()</a> function).</p>
-<p>Available options to define a marker are described below.</p></div>
+            <div class="description"><p><strong>Specific 3D event</strong></p>
+<p>Tilt Changed Event. Triggered when the map's tilt has changed.<br/><br>One can listen to this event with <a href="Gp.Map.html#listen">Gp.Map.listen()</a> method</p></div>
         
         
         
@@ -1192,11 +1190,7 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
 		
-		
-		
-		<th>Default</th>
 		
 		
 		<th class="last">Description</th>
@@ -1208,66 +1202,7 @@
 	
         <tr>
             
-                <td class="name">position</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    map center
-                
-                </td>
-            
-            
-            <td class="description last"><p>Geographical position of the marker. If none, map center will be used.</p>
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name">x</td>
+                <td class="name">oldTilt</td>
             
             
             <td class="type">
@@ -1280,27 +1215,17 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>x coordinates for position</p></td>
+            <td class="description last"><p>old map tilt</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name">y</td>
+                <td class="name">newTilt</td>
             
             
             <td class="type">
@@ -1313,278 +1238,10 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>y coordinates for position</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">projection</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    map projection
-                
-                </td>
-            
-            
-            <td class="description last"><p>srs center coordinates</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-
-            </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">content</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>Content displayed in the popup when clicking on the marker. HTML is supported.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">contentType</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    "text/html"
-                
-                </td>
-            
-            
-            <td class="description last"><p>MimeType of Content displayed in the popup.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">url</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    &lt;default lightOrange marker>
-                
-                </td>
-            
-            
-            <td class="description last"><p>Icon URL used to materialize the marker.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">offset</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Number></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    [-25.5, -38]
-                
-                </td>
-            
-            
-            <td class="description last"><p>Offsets in pixels used when positioning the marker towards targeted point. The first element in the array is the horizontal offset. A positive value shifts the marker right. The second element in the array is the vertical offset. A positive value shifts the marker down. Default is offset associated to default marker image.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">ppoffset</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Number></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    [0,-15]
-                
-                </td>
-            
-            
-            <td class="description last"><p>Offsets in pixels used when positioning the popup towards click. The first element in the array is the horizontal offset. A positive value shifts the popup right. The second element in the array is the vertical offset. A positive value shifts the popup down. Default value ([0, -15]) fits with default popup positioning.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">autoPanOptions</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Gp.AutoPanOptions.html">Gp.AutoPanOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>Defines autoPan options for popups.</p></td>
+            <td class="description last"><p>new map tilt</p></td>
         </tr>
 	
 	

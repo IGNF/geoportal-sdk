@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 1.0.0
- * @date 2018-04-09
+ * @version 1.1.0
+ * @date 2018-04-10
  *
  */
 /*!
@@ -27164,25 +27164,28 @@ itowns = { control: {} };
             return typeof factory === 'function' ? factory(ol, itowns) : factory;
         }(ol, itowns);
     } else if (typeof exports === 'object') {
-        module.exports = factory(ol, itowns);
+        module.exports = factory(openlayers, itowns);
     } else {
         root.Gp = factory(root.ol, root.itowns);
     }
 }(this, function (ol, itowns) {
     var request, xmldom;
-    var gp, CommonUtilsAutoLoadConfig, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, CommonUtilsConfig, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, CommonUtilsSelectorID, sortable, CommonControlsLayerSwitcherDOM, Ol3ControlsLayerSwitcher, CommonControlsGetFeatureInfoDOM, Ol3ControlsGetFeatureInfo, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonUtilsSearchEngineUtils, CommonControlsSearchEngineDOM, Ol3ControlsSearchEngine, CommonUtilsMathUtils, CommonControlsMousePositionDOM, Ol3ControlsMousePosition, Ol3ControlsUtilsInteractions, CommonControlsDrawingDOM, Ol3ControlsDrawing, CommonControlsLocationSelectorDOM, Ol3ControlsLocationSelector, CommonControlsRouteDOM, Ol3ControlsRoute, CommonControlsIsoDOM, Ol3ControlsIsocurve, CommonControlsReverseGeocodingDOM, Ol3ControlsReverseGeocode, CommonControlsLayerImportDOM, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsMeasuresMeasures, CommonControlsMeasureToolBoxDOM, Ol3ControlsMeasureToolBox, CommonControlsElevationPathDOM, CommonControlsProfileElevationPathDOM, Ol3ControlsElevationPath, CommonControlsMeasureLengthDOM, Ol3ControlsMeasuresMeasureLength, CommonControlsMeasureAreaDOM, Ol3ControlsMeasuresMeasureArea, CommonControlsMeasureAzimuthDOM, Ol3ControlsMeasuresMeasureAzimuth, Ol3GpPluginOl3, ItownsControlsWidget, ItownsControlsUtilsPositionFormater, ItownsCRSCRS, ItownsControlsMousePosition, ItownsControlsLayerSwitcher, CommonControlsAttributionDOM, ItownsControlsAttributions, CommonControlsScaleDOM, ItownsControlsScale, CommonControlsMiniGlobeDOM, ItownsControlsMiniGlobe, ItownsGlobeViewExtended, ItownsGpPluginItowns;
+    var gp, CommonUtilsAutoLoadConfig, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, CommonUtilsConfig, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, CommonUtilsSelectorID, sortable, CommonControlsLayerSwitcherDOM, Ol3ControlsLayerSwitcher, CommonControlsGetFeatureInfoDOM, Ol3ControlsGetFeatureInfo, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonUtilsSearchEngineUtils, CommonControlsSearchEngineDOM, Ol3ControlsSearchEngine, CommonUtilsMathUtils, CommonControlsMousePositionDOM, Ol3ControlsMousePosition, Ol3ControlsUtilsInteractions, CommonControlsDrawingDOM, Ol3ControlsDrawing, CommonControlsLocationSelectorDOM, Ol3ControlsLocationSelector, CommonControlsRouteDOM, Ol3ControlsRoute, CommonControlsIsoDOM, Ol3ControlsIsocurve, CommonControlsReverseGeocodingDOM, Ol3ControlsReverseGeocode, CommonControlsLayerImportDOM, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsMeasuresMeasures, CommonControlsMeasureToolBoxDOM, Ol3ControlsMeasureToolBox, CommonControlsElevationPathDOM, CommonControlsProfileElevationPathDOM, Ol3ControlsElevationPath, CommonControlsMeasureLengthDOM, Ol3ControlsMeasuresMeasureLength, CommonControlsMeasureAreaDOM, Ol3ControlsMeasuresMeasureArea, CommonControlsMeasureAzimuthDOM, Ol3ControlsMeasuresMeasureAzimuth, Ol3GpPluginOl3, ItownsGlobeViewExtended, ItownsControlsWidget, ItownsControlsUtilsPositionFormater, ItownsCRSCRS, ItownsControlsMousePosition, ItownsControlsLayerSwitcher, CommonControlsAttributionDOM, ItownsControlsAttributions, CommonControlsScaleDOM, ItownsControlsScale, CommonControlsMiniGlobeDOM, ItownsControlsMiniGlobe, ItownsGpPluginItowns;
     (function (root, factory) {
         if (true) {
             gp = function (require, require) {
                 return typeof factory === 'function' ? factory(require, require) : factory;
             }({}, {});
-        } else if (typeof exports === 'object') {
+        } else if (typeof exports === 'object' && module.exports) {
             module.exports = factory(request, xmldom);
+        } else if (typeof exports === 'object') {
+            exports['Gp'] = factory(request, xmldom);
         } else {
             root.Gp = factory(root.request, root.xmldom);
         }
-    }(this, function (request, xmldom) {
-        var log4js, loggerCfg, UtilsLoggerByDefault, UtilsHelper, es6Promise, ProtocolsXHR, UtilsMessagesResources, ExceptionsErrorService, ProtocolsJSONP, ProtocolsProtocol, ServicesDefaultUrlService, ServicesCommonService, ServicesAltiRequestModelAltiRequest, ServicesAltiRequestModelAltiElevationRequest, ServicesAltiRequestModelAltiProfilRequest, ServicesAltiRequestAltiRequestREST, FormatsWPS, ServicesAltiRequestAltiRequestWPS, ServicesAltiRequestAltiRequestFactory, FormatsXML, ServicesAltiResponseModelAltiResponse, ServicesAltiResponseModelElevation, ServicesAltiFormatsAltiResponseReader, ServicesAltiResponseAltiResponseFactory, ServicesAltiAlti, ServicesAutoConfResponseModelAutoConfResponse, ServicesAutoConfResponseModelConstraint, ServicesAutoConfResponseModelFormat, ServicesAutoConfResponseModelLayer, ServicesAutoConfResponseModelLegend, ServicesAutoConfResponseModelMetadata, ServicesAutoConfResponseModelOriginator, ServicesAutoConfResponseModelService, ServicesAutoConfResponseModelStyle, ServicesAutoConfResponseModelTerritory, ServicesAutoConfResponseModelThematic, ServicesAutoConfResponseModelTileMatrixSet, ServicesAutoConfResponseModelTileMatrix, ServicesAutoConfResponseModelTileMatrixLimit, ServicesAutoConfFormatsAutoConfResponseReader, ServicesAutoConfResponseAutoConfResponseFactory, ServicesAutoConfAutoConf, FormatsXLSRequestHeader, FormatsXLSRequest, FormatsXLSAbstractService, FormatsXLS, FormatsXLSLocationUtilityServiceModelAddress, FormatsXLSLocationUtilityServiceGeocodeFilterExtension, FormatsXLSLocationUtilityServiceGeocodeRequest, FormatsXLSLocationUtilityServiceModelPosition, FormatsXLSLocationUtilityServiceModelPreference, FormatsXLSLocationUtilityServiceReverseGeocodeRequest, FormatsXLSLocationUtilityService, ServicesGeocodeRequestGeocodeLocation, ServicesGeocodeRequestModelStreetAddress, ServicesGeocodeRequestModelPositionOfInterest, ServicesGeocodeRequestModelCadastralParcel, ServicesGeocodeRequestModelAdministratif, ServicesGeocodeRequestDirectGeocodeRequestFactory, ServicesGeocodeResponseModelGeocodeResponse, ServicesGeocodeResponseModelGeocodedLocation, ServicesGeocodeResponseModelDirectGeocodedLocation, ServicesGeocodeFormatsDirectGeocodeResponseReader, ServicesGeocodeResponseDirectGeocodeResponseFactory, ServicesGeocodeGeocode, ServicesGeocodeRequestReverseGeocodeRequestFactory, ServicesGeocodeResponseModelReverseGeocodedLocation, ServicesGeocodeFormatsReverseGeocodeResponseReader, ServicesGeocodeResponseReverseGeocodeResponseFactory, ServicesGeocodeReverseGeocode, ServicesAutoCompleteResponseModelAutoCompleteResponse, ServicesAutoCompleteResponseModelSuggestedLocation, ServicesAutoCompleteResponseAutoCompleteResponseFactory, ServicesAutoCompleteAutoComplete, FormatsXLSRouteServiceModelRoutePlan, FormatsXLSRouteServiceDetermineRouteRequest, FormatsXLSRouteServiceRouteRequestExtension, FormatsXLSRouteService, ServicesRouteRequestRouteRequestOLS, ServicesRouteRequestModelRouteParamREST, ServicesRouteRequestRouteRequestREST, ServicesRouteRequestRouteRequestFactory, FormatsWKT, ServicesRouteResponseModelRouteResponse, ServicesRouteResponseModelRouteInstruction, ServicesRouteFormatsRouteResponseRESTReader, ServicesRouteFormatsRouteResponseOLSReader, ServicesRouteResponseRouteResponseFactory, ServicesRouteRoute, ServicesProcessIsoCurveRequestModelProcessIsoCurveParam, ServicesProcessIsoCurveRequestProcessIsoCurveRequest, ServicesProcessIsoCurveResponseModelProcessIsoCurveResponse, ServicesProcessIsoCurveFormatsProcessIsoCurveResponseReader, ServicesProcessIsoCurveResponseProcessIsoCurveResponseFactory, ServicesProcessIsoCurveProcessIsoCurve, ServicesServices, Gp;
+    }(typeof self !== 'undefined' ? self : this, function (request, xmldom) {
+        var es6Promise;
+        var log4js, loggerCfg, UtilsLoggerByDefault, UtilsHelper, ProtocolsXHR, UtilsMessagesResources, ExceptionsErrorService, ProtocolsJSONP, ProtocolsProtocol, ServicesDefaultUrlService, ServicesCommonService, ServicesAltiRequestModelAltiRequest, ServicesAltiRequestModelAltiElevationRequest, ServicesAltiRequestModelAltiProfilRequest, ServicesAltiRequestAltiRequestREST, FormatsWPS, ServicesAltiRequestAltiRequestWPS, ServicesAltiRequestAltiRequestFactory, FormatsXML, ServicesAltiResponseModelAltiResponse, ServicesAltiResponseModelElevation, ServicesAltiFormatsAltiResponseReader, ServicesAltiResponseAltiResponseFactory, ServicesAltiAlti, ServicesAutoConfResponseModelAutoConfResponse, ServicesAutoConfResponseModelConstraint, ServicesAutoConfResponseModelFormat, ServicesAutoConfResponseModelLayer, ServicesAutoConfResponseModelLegend, ServicesAutoConfResponseModelMetadata, ServicesAutoConfResponseModelOriginator, ServicesAutoConfResponseModelService, ServicesAutoConfResponseModelStyle, ServicesAutoConfResponseModelTerritory, ServicesAutoConfResponseModelThematic, ServicesAutoConfResponseModelTileMatrixSet, ServicesAutoConfResponseModelTileMatrix, ServicesAutoConfResponseModelTileMatrixLimit, ServicesAutoConfFormatsAutoConfResponseReader, ServicesAutoConfResponseAutoConfResponseFactory, ServicesAutoConfAutoConf, FormatsXLSRequestHeader, FormatsXLSRequest, FormatsXLSAbstractService, FormatsXLS, FormatsXLSLocationUtilityServiceModelAddress, FormatsXLSLocationUtilityServiceGeocodeFilterExtension, FormatsXLSLocationUtilityServiceGeocodeRequest, FormatsXLSLocationUtilityServiceModelPosition, FormatsXLSLocationUtilityServiceModelPreference, FormatsXLSLocationUtilityServiceReverseGeocodeRequest, FormatsXLSLocationUtilityService, ServicesGeocodeRequestGeocodeLocation, ServicesGeocodeRequestModelStreetAddress, ServicesGeocodeRequestModelPositionOfInterest, ServicesGeocodeRequestModelCadastralParcel, ServicesGeocodeRequestModelAdministratif, ServicesGeocodeRequestDirectGeocodeRequestFactory, ServicesGeocodeResponseModelGeocodeResponse, ServicesGeocodeResponseModelGeocodedLocation, ServicesGeocodeResponseModelDirectGeocodedLocation, ServicesGeocodeFormatsDirectGeocodeResponseReader, ServicesGeocodeResponseDirectGeocodeResponseFactory, ServicesGeocodeGeocode, ServicesGeocodeRequestReverseGeocodeRequestFactory, ServicesGeocodeResponseModelReverseGeocodedLocation, ServicesGeocodeFormatsReverseGeocodeResponseReader, ServicesGeocodeResponseReverseGeocodeResponseFactory, ServicesGeocodeReverseGeocode, ServicesAutoCompleteResponseModelAutoCompleteResponse, ServicesAutoCompleteResponseModelSuggestedLocation, ServicesAutoCompleteResponseAutoCompleteResponseFactory, ServicesAutoCompleteAutoComplete, FormatsXLSRouteServiceModelRoutePlan, FormatsXLSRouteServiceDetermineRouteRequest, FormatsXLSRouteServiceRouteRequestExtension, FormatsXLSRouteService, ServicesRouteRequestRouteRequestOLS, ServicesRouteRequestModelRouteParamREST, ServicesRouteRequestRouteRequestREST, ServicesRouteRequestRouteRequestFactory, FormatsWKT, ServicesRouteResponseModelRouteResponse, ServicesRouteResponseModelRouteInstruction, ServicesRouteFormatsRouteResponseRESTReader, ServicesRouteFormatsRouteResponseOLSReader, ServicesRouteResponseRouteResponseFactory, ServicesRouteRoute, ServicesProcessIsoCurveRequestModelProcessIsoCurveParam, ServicesProcessIsoCurveRequestProcessIsoCurveRequest, ServicesProcessIsoCurveResponseModelProcessIsoCurveResponse, ServicesProcessIsoCurveFormatsProcessIsoCurveResponseReader, ServicesProcessIsoCurveResponseProcessIsoCurveResponseFactory, ServicesProcessIsoCurveProcessIsoCurve, ServicesServices, Gp;
         log4js = undefined;
         loggerCfg = {
             loggers: [{
@@ -27261,35 +27264,28 @@ itowns = { control: {} };
             return Helper;
         }();
         (function (global, factory) {
-            if (true) {
-                es6Promise = function () {
-                    return typeof factory === 'function' ? factory() : factory;
-                }();
-            } else if (typeof exports === 'object') {
-                module.exports = factory();
-            } else {
-                global.ES6Promise = factory();
-            }
-        }(this, function () {
+            es6Promise = typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd && false ? define('es6-promise', factory) : global.ES6Promise = factory();
+        }(typeof self !== 'undefined' ? self : this, function () {
             'use strict';
             function objectOrFunction(x) {
-                return typeof x === 'function' || typeof x === 'object' && x !== null;
+                var type = typeof x;
+                return x !== null && (type === 'object' || type === 'function');
             }
             function isFunction(x) {
                 return typeof x === 'function';
             }
-            var _isArray = undefined;
-            if (!Array.isArray) {
+            var _isArray = void 0;
+            if (Array.isArray) {
+                _isArray = Array.isArray;
+            } else {
                 _isArray = function (x) {
                     return Object.prototype.toString.call(x) === '[object Array]';
                 };
-            } else {
-                _isArray = Array.isArray;
             }
             var isArray = _isArray;
             var len = 0;
-            var vertxNext = undefined;
-            var customSchedulerFn = undefined;
+            var vertxNext = void 0;
+            var customSchedulerFn = void 0;
             var asap = function asap(callback, arg) {
                 queue[len] = callback;
                 queue[len + 1] = arg;
@@ -27361,15 +27357,14 @@ itowns = { control: {} };
             }
             function attemptVertx() {
                 try {
-                    var r = require;
-                    var vertx = r('vertx');
+                    var vertx = Function('return this')().require('vertx');
                     vertxNext = vertx.runOnLoop || vertx.runOnContext;
                     return useVertxTimer();
                 } catch (e) {
                     return useSetTimeout();
                 }
             }
-            var scheduleFlush = undefined;
+            var scheduleFlush = void 0;
             if (isNode) {
                 scheduleFlush = useNextTick();
             } else if (BrowserMutationObserver) {
@@ -27382,7 +27377,6 @@ itowns = { control: {} };
                 scheduleFlush = useSetTimeout();
             }
             function then(onFulfillment, onRejection) {
-                var _arguments = arguments;
                 var parent = this;
                 var child = new this.constructor(noop);
                 if (child[PROMISE_ID] === undefined) {
@@ -27390,33 +27384,31 @@ itowns = { control: {} };
                 }
                 var _state = parent._state;
                 if (_state) {
-                    (function () {
-                        var callback = _arguments[_state - 1];
-                        asap(function () {
-                            return invokeCallback(_state, child, callback, parent._result);
-                        });
-                    }());
+                    var callback = arguments[_state - 1];
+                    asap(function () {
+                        return invokeCallback(_state, child, callback, parent._result);
+                    });
                 } else {
                     subscribe(parent, child, onFulfillment, onRejection);
                 }
                 return child;
             }
-            function resolve(object) {
+            function resolve$1(object) {
                 var Constructor = this;
                 if (object && typeof object === 'object' && object.constructor === Constructor) {
                     return object;
                 }
                 var promise = new Constructor(noop);
-                _resolve(promise, object);
+                resolve(promise, object);
                 return promise;
             }
-            var PROMISE_ID = Math.random().toString(36).substring(16);
+            var PROMISE_ID = Math.random().toString(36).substring(2);
             function noop() {
             }
             var PENDING = void 0;
             var FULFILLED = 1;
             var REJECTED = 2;
-            var GET_THEN_ERROR = new ErrorObject();
+            var TRY_CATCH_ERROR = { error: null };
             function selfFulfillment() {
                 return new TypeError('You cannot resolve a promise with itself');
             }
@@ -27427,27 +27419,27 @@ itowns = { control: {} };
                 try {
                     return promise.then;
                 } catch (error) {
-                    GET_THEN_ERROR.error = error;
-                    return GET_THEN_ERROR;
+                    TRY_CATCH_ERROR.error = error;
+                    return TRY_CATCH_ERROR;
                 }
             }
-            function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+            function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
                 try {
-                    then.call(value, fulfillmentHandler, rejectionHandler);
+                    then$$1.call(value, fulfillmentHandler, rejectionHandler);
                 } catch (e) {
                     return e;
                 }
             }
-            function handleForeignThenable(promise, thenable, then) {
+            function handleForeignThenable(promise, thenable, then$$1) {
                 asap(function (promise) {
                     var sealed = false;
-                    var error = tryThen(then, thenable, function (value) {
+                    var error = tryThen(then$$1, thenable, function (value) {
                         if (sealed) {
                             return;
                         }
                         sealed = true;
                         if (thenable !== value) {
-                            _resolve(promise, value);
+                            resolve(promise, value);
                         } else {
                             fulfill(promise, value);
                         }
@@ -27456,11 +27448,11 @@ itowns = { control: {} };
                             return;
                         }
                         sealed = true;
-                        _reject(promise, reason);
+                        reject(promise, reason);
                     }, 'Settle: ' + (promise._label || ' unknown promise'));
                     if (!sealed && error) {
                         sealed = true;
-                        _reject(promise, error);
+                        reject(promise, error);
                     }
                 }, promise);
             }
@@ -27468,34 +27460,34 @@ itowns = { control: {} };
                 if (thenable._state === FULFILLED) {
                     fulfill(promise, thenable._result);
                 } else if (thenable._state === REJECTED) {
-                    _reject(promise, thenable._result);
+                    reject(promise, thenable._result);
                 } else {
                     subscribe(thenable, undefined, function (value) {
-                        return _resolve(promise, value);
+                        return resolve(promise, value);
                     }, function (reason) {
-                        return _reject(promise, reason);
+                        return reject(promise, reason);
                     });
                 }
             }
-            function handleMaybeThenable(promise, maybeThenable, then$$) {
-                if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+            function handleMaybeThenable(promise, maybeThenable, then$$1) {
+                if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
                     handleOwnThenable(promise, maybeThenable);
                 } else {
-                    if (then$$ === GET_THEN_ERROR) {
-                        _reject(promise, GET_THEN_ERROR.error);
-                        GET_THEN_ERROR.error = null;
-                    } else if (then$$ === undefined) {
+                    if (then$$1 === TRY_CATCH_ERROR) {
+                        reject(promise, TRY_CATCH_ERROR.error);
+                        TRY_CATCH_ERROR.error = null;
+                    } else if (then$$1 === undefined) {
                         fulfill(promise, maybeThenable);
-                    } else if (isFunction(then$$)) {
-                        handleForeignThenable(promise, maybeThenable, then$$);
+                    } else if (isFunction(then$$1)) {
+                        handleForeignThenable(promise, maybeThenable, then$$1);
                     } else {
                         fulfill(promise, maybeThenable);
                     }
                 }
             }
-            function _resolve(promise, value) {
+            function resolve(promise, value) {
                 if (promise === value) {
-                    _reject(promise, selfFulfillment());
+                    reject(promise, selfFulfillment());
                 } else if (objectOrFunction(value)) {
                     handleMaybeThenable(promise, value, getThen(value));
                 } else {
@@ -27518,7 +27510,7 @@ itowns = { control: {} };
                     asap(publish, promise);
                 }
             }
-            function _reject(promise, reason) {
+            function reject(promise, reason) {
                 if (promise._state !== PENDING) {
                     return;
                 }
@@ -27543,7 +27535,7 @@ itowns = { control: {} };
                 if (subscribers.length === 0) {
                     return;
                 }
-                var child = undefined, callback = undefined, detail = promise._result;
+                var child = void 0, callback = void 0, detail = promise._result;
                 for (var i = 0; i < subscribers.length; i += 3) {
                     child = subscribers[i];
                     callback = subscribers[i + settled];
@@ -27555,10 +27547,6 @@ itowns = { control: {} };
                 }
                 promise._subscribers.length = 0;
             }
-            function ErrorObject() {
-                this.error = null;
-            }
-            var TRY_CATCH_ERROR = new ErrorObject();
             function tryCatch(callback, detail) {
                 try {
                     return callback(detail);
@@ -27568,7 +27556,7 @@ itowns = { control: {} };
                 }
             }
             function invokeCallback(settled, promise, callback, detail) {
-                var hasCallback = isFunction(callback), value = undefined, error = undefined, succeeded = undefined, failed = undefined;
+                var hasCallback = isFunction(callback), value = void 0, error = void 0, succeeded = void 0, failed = void 0;
                 if (hasCallback) {
                     value = tryCatch(callback, detail);
                     if (value === TRY_CATCH_ERROR) {
@@ -27579,7 +27567,7 @@ itowns = { control: {} };
                         succeeded = true;
                     }
                     if (promise === value) {
-                        _reject(promise, cannotReturnOwn());
+                        reject(promise, cannotReturnOwn());
                         return;
                     }
                 } else {
@@ -27588,24 +27576,24 @@ itowns = { control: {} };
                 }
                 if (promise._state !== PENDING) {
                 } else if (hasCallback && succeeded) {
-                    _resolve(promise, value);
+                    resolve(promise, value);
                 } else if (failed) {
-                    _reject(promise, error);
+                    reject(promise, error);
                 } else if (settled === FULFILLED) {
                     fulfill(promise, value);
                 } else if (settled === REJECTED) {
-                    _reject(promise, value);
+                    reject(promise, value);
                 }
             }
             function initializePromise(promise, resolver) {
                 try {
                     resolver(function resolvePromise(value) {
-                        _resolve(promise, value);
+                        resolve(promise, value);
                     }, function rejectPromise(reason) {
-                        _reject(promise, reason);
+                        reject(promise, reason);
                     });
                 } catch (e) {
-                    _reject(promise, e);
+                    reject(promise, e);
                 }
             }
             var id = 0;
@@ -27618,85 +27606,85 @@ itowns = { control: {} };
                 promise._result = undefined;
                 promise._subscribers = [];
             }
-            function Enumerator(Constructor, input) {
-                this._instanceConstructor = Constructor;
-                this.promise = new Constructor(noop);
-                if (!this.promise[PROMISE_ID]) {
-                    makePromise(this.promise);
-                }
-                if (isArray(input)) {
-                    this._input = input;
-                    this.length = input.length;
-                    this._remaining = input.length;
-                    this._result = new Array(this.length);
-                    if (this.length === 0) {
-                        fulfill(this.promise, this._result);
-                    } else {
-                        this.length = this.length || 0;
-                        this._enumerate();
-                        if (this._remaining === 0) {
-                            fulfill(this.promise, this._result);
-                        }
-                    }
-                } else {
-                    _reject(this.promise, validationError());
-                }
-            }
             function validationError() {
                 return new Error('Array Methods must be provided an Array');
             }
-            Enumerator.prototype._enumerate = function () {
-                var length = this.length;
-                var _input = this._input;
-                for (var i = 0; this._state === PENDING && i < length; i++) {
-                    this._eachEntry(_input[i], i);
+            var Enumerator = function () {
+                function Enumerator(Constructor, input) {
+                    this._instanceConstructor = Constructor;
+                    this.promise = new Constructor(noop);
+                    if (!this.promise[PROMISE_ID]) {
+                        makePromise(this.promise);
+                    }
+                    if (isArray(input)) {
+                        this.length = input.length;
+                        this._remaining = input.length;
+                        this._result = new Array(this.length);
+                        if (this.length === 0) {
+                            fulfill(this.promise, this._result);
+                        } else {
+                            this.length = this.length || 0;
+                            this._enumerate(input);
+                            if (this._remaining === 0) {
+                                fulfill(this.promise, this._result);
+                            }
+                        }
+                    } else {
+                        reject(this.promise, validationError());
+                    }
                 }
-            };
-            Enumerator.prototype._eachEntry = function (entry, i) {
-                var c = this._instanceConstructor;
-                var resolve$$ = c.resolve;
-                if (resolve$$ === resolve) {
-                    var _then = getThen(entry);
-                    if (_then === then && entry._state !== PENDING) {
-                        this._settledAt(entry._state, i, entry._result);
-                    } else if (typeof _then !== 'function') {
+                Enumerator.prototype._enumerate = function _enumerate(input) {
+                    for (var i = 0; this._state === PENDING && i < input.length; i++) {
+                        this._eachEntry(input[i], i);
+                    }
+                };
+                Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
+                    var c = this._instanceConstructor;
+                    var resolve$$1 = c.resolve;
+                    if (resolve$$1 === resolve$1) {
+                        var _then = getThen(entry);
+                        if (_then === then && entry._state !== PENDING) {
+                            this._settledAt(entry._state, i, entry._result);
+                        } else if (typeof _then !== 'function') {
+                            this._remaining--;
+                            this._result[i] = entry;
+                        } else if (c === Promise$1) {
+                            var promise = new c(noop);
+                            handleMaybeThenable(promise, entry, _then);
+                            this._willSettleAt(promise, i);
+                        } else {
+                            this._willSettleAt(new c(function (resolve$$1) {
+                                return resolve$$1(entry);
+                            }), i);
+                        }
+                    } else {
+                        this._willSettleAt(resolve$$1(entry), i);
+                    }
+                };
+                Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
+                    var promise = this.promise;
+                    if (promise._state === PENDING) {
                         this._remaining--;
-                        this._result[i] = entry;
-                    } else if (c === Promise) {
-                        var promise = new c(noop);
-                        handleMaybeThenable(promise, entry, _then);
-                        this._willSettleAt(promise, i);
-                    } else {
-                        this._willSettleAt(new c(function (resolve$$) {
-                            return resolve$$(entry);
-                        }), i);
+                        if (state === REJECTED) {
+                            reject(promise, value);
+                        } else {
+                            this._result[i] = value;
+                        }
                     }
-                } else {
-                    this._willSettleAt(resolve$$(entry), i);
-                }
-            };
-            Enumerator.prototype._settledAt = function (state, i, value) {
-                var promise = this.promise;
-                if (promise._state === PENDING) {
-                    this._remaining--;
-                    if (state === REJECTED) {
-                        _reject(promise, value);
-                    } else {
-                        this._result[i] = value;
+                    if (this._remaining === 0) {
+                        fulfill(promise, this._result);
                     }
-                }
-                if (this._remaining === 0) {
-                    fulfill(promise, this._result);
-                }
-            };
-            Enumerator.prototype._willSettleAt = function (promise, i) {
-                var enumerator = this;
-                subscribe(promise, undefined, function (value) {
-                    return enumerator._settledAt(FULFILLED, i, value);
-                }, function (reason) {
-                    return enumerator._settledAt(REJECTED, i, reason);
-                });
-            };
+                };
+                Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
+                    var enumerator = this;
+                    subscribe(promise, undefined, function (value) {
+                        return enumerator._settledAt(FULFILLED, i, value);
+                    }, function (reason) {
+                        return enumerator._settledAt(REJECTED, i, reason);
+                    });
+                };
+                return Enumerator;
+            }();
             function all(entries) {
                 return new Enumerator(this, entries).promise;
             }
@@ -27715,10 +27703,10 @@ itowns = { control: {} };
                     });
                 }
             }
-            function reject(reason) {
+            function reject$1(reason) {
                 var Constructor = this;
                 var promise = new Constructor(noop);
-                _reject(promise, reason);
+                reject(promise, reason);
                 return promise;
             }
             function needsResolver() {
@@ -27727,31 +27715,44 @@ itowns = { control: {} };
             function needsNew() {
                 throw new TypeError('Failed to construct \'Promise\': Please use the \'new\' operator, this object constructor cannot be called as a function.');
             }
-            function Promise(resolver) {
-                this[PROMISE_ID] = nextId();
-                this._result = this._state = undefined;
-                this._subscribers = [];
-                if (noop !== resolver) {
-                    typeof resolver !== 'function' && needsResolver();
-                    this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+            var Promise$1 = function () {
+                function Promise(resolver) {
+                    this[PROMISE_ID] = nextId();
+                    this._result = this._state = undefined;
+                    this._subscribers = [];
+                    if (noop !== resolver) {
+                        typeof resolver !== 'function' && needsResolver();
+                        this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+                    }
                 }
-            }
-            Promise.all = all;
-            Promise.race = race;
-            Promise.resolve = resolve;
-            Promise.reject = reject;
-            Promise._setScheduler = setScheduler;
-            Promise._setAsap = setAsap;
-            Promise._asap = asap;
-            Promise.prototype = {
-                constructor: Promise,
-                then: then,
-                'catch': function _catch(onRejection) {
+                Promise.prototype.catch = function _catch(onRejection) {
                     return this.then(null, onRejection);
-                }
-            };
+                };
+                Promise.prototype.finally = function _finally(callback) {
+                    var promise = this;
+                    var constructor = promise.constructor;
+                    return promise.then(function (value) {
+                        return constructor.resolve(callback()).then(function () {
+                            return value;
+                        });
+                    }, function (reason) {
+                        return constructor.resolve(callback()).then(function () {
+                            throw reason;
+                        });
+                    });
+                };
+                return Promise;
+            }();
+            Promise$1.prototype.then = then;
+            Promise$1.all = all;
+            Promise$1.race = race;
+            Promise$1.resolve = resolve$1;
+            Promise$1.reject = reject$1;
+            Promise$1._setScheduler = setScheduler;
+            Promise$1._setAsap = setAsap;
+            Promise$1._asap = asap;
             function polyfill() {
-                var local = undefined;
+                var local = void 0;
                 if (typeof global !== 'undefined') {
                     local = global;
                 } else if (typeof self !== 'undefined') {
@@ -27774,11 +27775,11 @@ itowns = { control: {} };
                         return;
                     }
                 }
-                local.Promise = Promise;
+                local.Promise = Promise$1;
             }
-            Promise.polyfill = polyfill;
-            Promise.Promise = Promise;
-            return Promise;
+            Promise$1.polyfill = polyfill;
+            Promise$1.Promise = Promise$1;
+            return Promise$1;
         }));
         ProtocolsXHR = function (Logger, Helper, ES6Promise, require) {
             var XHR = {
@@ -27855,11 +27856,12 @@ itowns = { control: {} };
                             if (options.data && typeof options.data === 'string' && corps) {
                                 options.body = options.data;
                             }
+                            options.rejectUnauthorized = false;
                             req(options, function (error, response, body) {
                                 if (!error && response.statusCode == 200 && body) {
                                     resolve(body);
                                 } else {
-                                    reject('Errors Occured on Http Request (nodejs) : ' + body);
+                                    reject('Errors Occured on Http Request (nodejs) : ' + error);
                                 }
                             });
                         } else {
@@ -27944,7 +27946,6 @@ itowns = { control: {} };
                 __callJSON: function (options) {
                     return this.__call(options).then(JSON.parse).catch(function (error) {
                         console.log('_callJSON failed on : ', options.url, error);
-                        throw error;
                     });
                 },
                 __callXML: function (options) {
@@ -27966,7 +27967,6 @@ itowns = { control: {} };
                         return xmlDoc;
                     }).catch(function (error) {
                         console.log('__callXML failed on : ', options.url, error);
-                        throw error;
                     });
                 }
             };
@@ -28207,57 +28207,61 @@ itowns = { control: {} };
             return Protocol;
         }(UtilsHelper, ProtocolsXHR, ProtocolsJSONP);
         ServicesDefaultUrlService = function () {
-            var isBrowser = typeof window !== 'undefined' ? true : false;
-            var protocol = isBrowser ? location && location.protocol && location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : 'http://';
-            var hostname = 'wxs.ign.fr';
-            var keyname = '%KEY%';
-            var url = protocol + hostname.concat('/', keyname);
-            var fkey = function (key) {
-                return this._key.replace(key ? keyname : null, key);
-            };
+            var ISBROWSER = typeof window !== 'undefined' ? true : false;
+            var HOSTNAME = 'wxs.ign.fr';
             var DefaultUrlService = {
+                ssl: false,
+                url: function (key, path) {
+                    var _protocol = ISBROWSER ? location && location.protocol && location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : DefaultUrlService.ssl ? 'https://' : 'http://';
+                    return _protocol + HOSTNAME.concat('/', key, path);
+                },
                 Alti: {
                     _key: {
-                        'elevation-json': url + '/alti/rest/elevation.json',
-                        'elevation-xml': url + '/alti/rest/elevation.xml',
-                        'profil-json': url + '/alti/rest/elevationLine.json',
-                        'profil-xml': url + '/alti/rest/elevationLine.xml',
-                        wps: url + '/alti/wps'
+                        'elevation-json': '/alti/rest/elevation.json',
+                        'elevation-xml': '/alti/rest/elevation.xml',
+                        'profil-json': '/alti/rest/elevationLine.json',
+                        'profil-xml': '/alti/rest/elevationLine.xml',
+                        wps: '/alti/wps'
                     },
                     url: function (key) {
                         return {
-                            'elevation-json': this._key['elevation-json'].replace(key ? keyname : null, key),
-                            'elevation-xml': this._key['elevation-xml'].replace(key ? keyname : null, key),
-                            'profil-json': this._key['profil-json'].replace(key ? keyname : null, key),
-                            'profil-xml': this._key['profil-xml'].replace(key ? keyname : null, key),
-                            wps: this._key.wps.replace(key ? keyname : null, key)
+                            'elevation-json': DefaultUrlService.url(key, this._key['elevation-json']),
+                            'elevation-xml': DefaultUrlService.url(key, this._key['elevation-xml']),
+                            'profil-json': DefaultUrlService.url(key, this._key['profil-json']),
+                            'profil-xml': DefaultUrlService.url(key, this._key['profil-xml']),
+                            wps: DefaultUrlService.url(key, this._key['wps'])
                         };
                     }
                 },
                 ProcessIsoCurve: {
                     _key: {
-                        'iso-json': url + '/isochrone/isochrone.json',
-                        'iso-xml': url + '/isochrone/isochrone.xml'
+                        'iso-json': '/isochrone/isochrone.json',
+                        'iso-xml': '/isochrone/isochrone.xml'
                     },
                     url: function (key) {
                         return {
-                            'iso-json': this._key['iso-json'].replace(key ? keyname : null, key),
-                            'iso-xml': this._key['iso-xml'].replace(key ? keyname : null, key)
+                            'iso-json': DefaultUrlService.url(key, this._key['iso-json']),
+                            'iso-xml': DefaultUrlService.url(key, this._key['iso-xml'])
                         };
                     }
                 },
                 AutoComplete: {
-                    _key: url + '/ols/apis/completion',
-                    url: fkey
+                    _key: '/ols/apis/completion',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 ReverseGeocode: {
-                    _key: url + '/geoportail/ols',
-                    url: fkey
+                    _key: '/geoportail/ols',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 AutoConf: {
                     _key: {
-                        apiKey: url + '/autoconf',
-                        apiKeys: url + '/autoconf?keys=%KEYS%'
+                        apiKey: '/autoconf',
+                        apiKeys: '/autoconf?keys=%KEYS%',
+                        aggregate: '/autoconf/id/'
                     },
                     url: function (key) {
                         var keys = '';
@@ -28268,27 +28272,29 @@ itowns = { control: {} };
                             }
                         }
                         return {
-                            apiKey: this._key['apiKey'].replace(key ? keyname : null, key),
-                            apiKeys: this._key['apiKeys'].replace(keyname, key[0]).replace('%KEYS%', keys),
-                            aggregate: protocol + hostname.concat('/') + key + '/autoconf/id/'
+                            apiKey: DefaultUrlService.url(key, this._key['apiKey']),
+                            apiKeys: DefaultUrlService.url(key[0], this._key['apiKeys']).replace('%KEYS%', keys),
+                            aggregate: DefaultUrlService.url(key, this._key['aggregate'])
                         };
                     }
                 },
                 Geocode: {
-                    _key: url + '/geoportail/ols',
-                    url: fkey
+                    _key: '/geoportail/ols',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 Route: {
                     _key: {
-                        ols: url + '/itineraire/ols',
-                        'route-json': url + '/itineraire/rest/route.json',
-                        'route-xml': url + '/itineraire/rest/route.xml'
+                        ols: '/itineraire/ols',
+                        'route-json': '/itineraire/rest/route.json',
+                        'route-xml': '/itineraire/rest/route.xml'
                     },
                     url: function (key) {
                         return {
-                            ols: this._key.ols.replace(key ? keyname : null, key),
-                            'route-json': this._key['route-json'].replace(key ? keyname : null, key),
-                            'route-xml': this._key['route-xml'].replace(key ? keyname : null, key)
+                            ols: DefaultUrlService.url(key, this._key['ols']),
+                            'route-json': DefaultUrlService.url(key, this._key['route-json']),
+                            'route-xml': DefaultUrlService.url(key, this._key['route-xml'])
                         };
                     }
                 }
@@ -28302,6 +28308,7 @@ itowns = { control: {} };
                 }
                 this.options = {
                     protocol: 'XHR',
+                    ssl: false,
                     proxyURL: '',
                     callbackSuffix: null,
                     httpMethod: 'GET',
@@ -28337,6 +28344,7 @@ itowns = { control: {} };
                     throw new Error(_.getMessage('PARAM_MISSING', 'onSuccess()'));
                 }
                 if (!this.options.serverUrl) {
+                    DefaultUrlService.ssl = this.options.ssl;
                     var urlByDefault = DefaultUrlService[this.CLASSNAME].url(this.options.apiKey);
                     if (typeof urlByDefault === 'string') {
                         this.options.serverUrl = urlByDefault;
@@ -28409,7 +28417,7 @@ itowns = { control: {} };
                     var strUrlProxified = null;
                     var strData = this.request;
                     var bUrlProxified = this.options.proxyURL && this.options.protocol === 'XHR' ? true : false;
-                    this.options.serverUrl = Helper.normalyzeUrl(this.options.serverUrl, { 'gp-access-lib': '1.1.0' }, false);
+                    this.options.serverUrl = Helper.normalyzeUrl(this.options.serverUrl, { 'gp-access-lib': '1.2.0' }, false);
                     if (bUrlProxified) {
                         if (this.options.httpMethod === 'GET') {
                             strUrlProxified = this.options.proxyURL + Helper.normalyzeUrl(this.options.serverUrl, this.request, true);
@@ -29331,7 +29339,7 @@ itowns = { control: {} };
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -32730,7 +32738,7 @@ itowns = { control: {} };
                         } else {
                             var JSONResponse;
                             if (typeof options.response === 'string') {
-                                JSONResponse = window.JSON.parse(options.response);
+                                JSONResponse = JSON.parse(options.response);
                             } else {
                                 JSONResponse = options.response;
                             }
@@ -33604,7 +33612,7 @@ itowns = { control: {} };
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -34265,7 +34273,7 @@ itowns = { control: {} };
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -34461,8 +34469,8 @@ itowns = { control: {} };
         Gp = function (XHR, Services, AltiResponse, Elevation, AutoCompleteResponse, SuggestedLocation, GetConfigResponse, Constraint, Format, Layer, Legend, Metadata, Originator, Service, Style, Territory, Thematic, TM, TMLimit, TMS, GeocodeResponse, GeocodedLocation, DirectGeocodedLocation, ReverseGeocodedLocation, IsoCurveResponse, RouteResponse, RouteInstruction, Error, Helper, DefaultUrl) {
             var scope = typeof window !== 'undefined' ? window : {};
             var Gp = scope.Gp || {
-                servicesVersion: '1.1.0',
-                servicesDate: '2017-11-24',
+                servicesVersion: '1.2.0',
+                servicesDate: '2018-02-26',
                 extend: function (strNS, value) {
                     var parts = strNS.split('.');
                     var parent = this;
@@ -41522,17 +41530,22 @@ itowns = { control: {} };
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
             var layerId = Config.getLayerId(options.layer, 'WMTS');
             if (layerId && Config.configuration.getLayerConf(layerId)) {
                 var wmtsParams = Config.getLayerParams(options.layer, 'WMTS', options.apiKey);
+                var ctx = typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : null;
+                var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : options.ssl ? 'https://' : 'http://';
                 this._originators = wmtsParams.originators;
                 this._legends = wmtsParams.legends;
                 this._metadata = wmtsParams.metadata;
                 var wmtsSourceOptions = {
-                    url: Gp.Helper.normalyzeUrl(wmtsParams.url, { 'gp-ol3-ext': '1.0.0' }, false),
+                    url: Gp.Helper.normalyzeUrl(wmtsParams.url.replace(/(http|https):\/\//, protocol), { 'gp-ol3-ext': '1.0.0' }, false),
                     version: wmtsParams.version,
                     style: wmtsParams.styles,
                     format: wmtsParams.format,
@@ -41578,14 +41591,19 @@ itowns = { control: {} };
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
             var layerId = Config.getLayerId(options.layer, 'WMS');
             if (layerId && Config.configuration.getLayerConf(layerId)) {
                 var wmsParams = Config.getLayerParams(options.layer, 'WMS', options.apiKey);
+                var ctx = typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : null;
+                var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : options.ssl ? 'https://' : 'http://';
                 var wmsSourceOptions = {
-                    url: Gp.Helper.normalyzeUrl(wmsParams.url, { 'gp-ol3-ext': '1.0.0' }, false),
+                    url: Gp.Helper.normalyzeUrl(wmsParams.url.replace(/(http|https):\/\//, protocol), { 'gp-ol3-ext': '1.0.0' }, false),
                     params: {
                         SERVICE: 'WMS',
                         LAYERS: options.layer,
@@ -41623,6 +41641,9 @@ itowns = { control: {} };
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
@@ -41632,6 +41653,7 @@ itowns = { control: {} };
             }
             var wmtsSource = new SourceWMTS({
                 layer: options.layer,
+                ssl: options.ssl,
                 apiKey: options.apiKey,
                 olParams: olSourceParams
             });
@@ -41674,6 +41696,9 @@ itowns = { control: {} };
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
@@ -41683,6 +41708,7 @@ itowns = { control: {} };
             }
             var wmsSource = new SourceWMS({
                 layer: options.layer,
+                ssl: options.ssl,
                 apiKey: options.apiKey,
                 olParams: olSourceParams
             });
@@ -57012,7 +57038,7 @@ itowns = { control: {} };
     }(ol, {}, CommonUtils, Ol3ControlsMeasureToolBox, Ol3ControlsMeasuresMeasures, CommonControlsMeasureAzimuthDOM, CommonUtilsSelectorID);
     Ol3GpPluginOl3 = function (ol, Gp, LayerUtils, Register, ProxyUtils, GfiUtils, Utils, KML, WMTS, CRS, SourceWMTS, SourceWMS, LayerWMTS, LayerWMS, LayerSwitcher, GetFeatureInfo, SearchEngine, MousePosition, Drawing, Route, Isocurve, ReverseGeocode, LayerImport, GeoportalAttribution, Markers, ElevationPath, MeasureLength, MeasureArea, MeasureAzimuth) {
         Gp.ol3extVersion = '1.0.0';
-        Gp.ol3extDate = '2018-01-31';
+        Gp.ol3extDate = '2018-04-05';
         Gp.olUtils = Utils;
         Gp.LayerUtils = LayerUtils;
         Gp.ProxyUtils = ProxyUtils;
@@ -57042,6 +57068,404 @@ itowns = { control: {} };
         ol.control.ElevationPath = ElevationPath;
         return Gp;
     }(ol, gp, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, Ol3ControlsLayerSwitcher, Ol3ControlsGetFeatureInfo, Ol3ControlsSearchEngine, Ol3ControlsMousePosition, Ol3ControlsDrawing, Ol3ControlsRoute, Ol3ControlsIsocurve, Ol3ControlsReverseGeocode, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsUtilsMarkers, Ol3ControlsElevationPath, Ol3ControlsMeasuresMeasureLength, Ol3ControlsMeasuresMeasureArea, Ol3ControlsMeasuresMeasureAzimuth);
+    ItownsGlobeViewExtended = function (Itowns, woodman) {
+        function GlobeViewExtended(viewerDiv, coordCarto, options) {
+            viewerDiv.style.position = 'relative';
+            this._viewerDiv = viewerDiv;
+            this._widgets = [];
+            this._initEventMap();
+            this._isInitialized = false;
+            this._globeView = new Itowns.GlobeView(viewerDiv, coordCarto, options);
+            var self = this;
+            this.listen(GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
+                self._isInitialized = true;
+            });
+            this._globeView.addFrameRequester(Itowns.MAIN_LOOP_EVENTS.BEFORE_RENDER, function () {
+                clearTimeout(this._preRenderTimer);
+                self._preRenderTimer = setTimeout(function () {
+                    if (self._fetchVisibleColorLayers || self._fetchVisibleElevationLayers || self._fetchExtent) {
+                        var event = { type: GlobeViewExtended.EVENTS.PRE_RENDER };
+                        if (self._fetchExtent) {
+                            event.extent = new Itowns.Extent('EPSG:4326', 180, -180, 90, -90);
+                        }
+                        if (self._fetchVisibleColorLayers) {
+                            event.colorLayersId = [];
+                        }
+                        if (self._fetchVisibleElevationLayers) {
+                            event.elevationLayersId = [];
+                        }
+                        self._getCurrentSceneInfos(self._globeView.scene, event);
+                        self._globeView.dispatchEvent(event);
+                    }
+                }, 100);
+            }.bind(this));
+            this.freezeControl();
+        }
+        GlobeViewExtended.prototype._initEventMap = function () {
+            if (!GlobeViewExtended.EVENTS) {
+                GlobeViewExtended.EVENTS = {
+                    RANGE_CHANGED: Itowns.CONTROL_EVENTS.RANGE_CHANGED,
+                    CENTER_CHANGED: Itowns.CONTROL_EVENTS.CAMERA_TARGET_CHANGED,
+                    ORIENTATION_CHANGED: Itowns.CONTROL_EVENTS.ORIENTATION_CHANGED,
+                    LAYER_ADDED: Itowns.GLOBE_VIEW_EVENTS.LAYER_ADDED,
+                    LAYER_REMOVED: Itowns.GLOBE_VIEW_EVENTS.LAYER_REMOVED,
+                    LAYERS_ORDER_CHANGED: Itowns.GLOBE_VIEW_EVENTS.COLOR_LAYERS_ORDER_CHANGED,
+                    GLOBE_INITIALIZED: Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED,
+                    VIEW_INITIALIZED: 'viewinitialized',
+                    PRE_RENDER: 'prerender',
+                    MOUSE_MOVE: 'mousemove',
+                    AFTER_RENDER: Itowns.MAIN_LOOP_EVENTS.AFTER_RENDER,
+                    OPACITY_PROPERTY_CHANGED: 'opacity-property-changed',
+                    VISIBLE_PROPERTY_CHANGED: 'visible-property-changed',
+                    SEQUENCE_PROPERTY_CHANGED: 'sequence-property-changed'
+                };
+            }
+        };
+        GlobeViewExtended.prototype.constructor = GlobeViewExtended;
+        GlobeViewExtended.prototype.getGlobeView = function () {
+            return this._globeView;
+        };
+        GlobeViewExtended.prototype.isInitialized = function () {
+            return this._isInitialized;
+        };
+        GlobeViewExtended.prototype.onCameraMoveStop = function (cb) {
+            var self = this;
+            function afterRenderHandler() {
+                self._globeView.removeFrameRequester(Itowns.MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, afterRenderHandler);
+                cb();
+            }
+            this._globeView.addFrameRequester(Itowns.MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, afterRenderHandler);
+        };
+        GlobeViewExtended.prototype.freezeControl = function () {
+            this._globeView.controls.enabled = false;
+            this.onCameraMoveStop(function () {
+                this._globeView.controls.enabled = true;
+            }.bind(this));
+        };
+        GlobeViewExtended.prototype.listen = function (type, callback) {
+            if (typeof callback != 'function') {
+                console.log('no callback provided for event : ' + type);
+                return null;
+            }
+            var target = this._getEventTarget(type);
+            if (!target) {
+                return null;
+            }
+            if (type === GlobeViewExtended.EVENTS.AFTER_RENDER) {
+                target.addFrameRequester(type, callback);
+            } else {
+                target.addEventListener(type, callback);
+            }
+            return {
+                target: target,
+                callback: callback,
+                type: type
+            };
+        };
+        GlobeViewExtended.prototype.addLayerListener = function (layer, type, callback) {
+            if (typeof callback != 'function') {
+                console.log('no callback provided for event : ' + type);
+                return null;
+            }
+            layer.addEventListener(type, callback);
+            return {
+                target: layer,
+                callback: callback,
+                type: type
+            };
+        };
+        GlobeViewExtended.prototype._getEventTarget = function (type) {
+            switch (type) {
+            case GlobeViewExtended.EVENTS.RANGE_CHANGED:
+            case GlobeViewExtended.EVENTS.CENTER_CHANGED:
+            case GlobeViewExtended.EVENTS.ORIENTATION_CHANGED:
+                return this.getGlobeView().controls;
+            case GlobeViewExtended.EVENTS.LAYER_ADDED:
+            case GlobeViewExtended.EVENTS.LAYER_REMOVED:
+            case GlobeViewExtended.EVENTS.LAYERS_ORDER_CHANGED:
+            case GlobeViewExtended.EVENTS.GLOBE_INITIALIZED:
+            case GlobeViewExtended.EVENTS.PRE_RENDER:
+            case GlobeViewExtended.EVENTS.AFTER_RENDER:
+            case GlobeViewExtended.EVENTS.VIEW_INITIALIZED:
+                return this.getGlobeView();
+            case GlobeViewExtended.EVENTS.MOUSE_MOVE:
+                return this._viewerDiv;
+            default:
+                console.log('unhandled event : ' + type);
+                return null;
+            }
+        };
+        GlobeViewExtended.prototype.forgetByKey = function (key) {
+            if (key.type === GlobeViewExtended.EVENTS.AFTER_RENDER) {
+                key.target.removeFrameRequester(key.type, key.callback);
+            } else {
+                key.target.removeEventListener(key.type, key.callback);
+            }
+        };
+        GlobeViewExtended.prototype.removeLayerListener = function (layer, type, callback) {
+            this.forgetByKey({
+                target: layer,
+                callback: callback,
+                type: type
+            });
+        };
+        GlobeViewExtended.prototype.forget = function (type, callback) {
+            var target = this._getEventTarget(type);
+            if (!target) {
+                return null;
+            }
+            this.forgetByKey({
+                target: target,
+                callback: callback,
+                type: type
+            });
+        };
+        GlobeViewExtended.prototype.addLayer = function (layer) {
+            this.getGlobeView().addLayer(layer);
+            this.getGlobeView().notifyChange(true);
+        };
+        GlobeViewExtended.prototype.removeLayer = function (layerId) {
+            this.getGlobeView().removeLayer(layerId);
+            this.getGlobeView().notifyChange(true);
+        };
+        GlobeViewExtended.prototype.setLayerOpacity = function (layerId, opacityValue) {
+            this.getColorLayerById(layerId).opacity = opacityValue;
+            this.getGlobeView().notifyChange(true);
+        };
+        GlobeViewExtended.prototype.setLayerVisibility = function (layerId, visible) {
+            this.getColorLayerById(layerId).visible = visible;
+            this.getGlobeView().notifyChange(true);
+        };
+        GlobeViewExtended.prototype.moveLayerToIndex = function (layerId, index) {
+            Itowns.ColorLayersOrdering.moveLayerToIndex(this.getGlobeView(), layerId, index);
+            this.getGlobeView().notifyChange(true);
+        };
+        GlobeViewExtended.prototype.removeEventListener = function (type, callback) {
+            switch (type) {
+            case 'mousemove':
+                this._viewerDiv.removeEventListener(type, callback);
+                break;
+            case 'centerchanged':
+                this.getGlobeView().controls.removeEventListener(type, callback);
+                break;
+            default:
+                this.getGlobeView().removeEventListener(type, callback);
+                break;
+            }
+        };
+        GlobeViewExtended.prototype.preRenderEventFetchViewExtent = function (b) {
+            if (typeof b === 'undefined') {
+                b = true;
+            }
+            this._fetchExtent = b;
+        };
+        GlobeViewExtended.prototype.preRenderEventFetchColorLayersDisplayed = function (b) {
+            if (typeof b === 'undefined') {
+                b = true;
+            }
+            this._fetchVisibleColorLayers = b;
+        };
+        GlobeViewExtended.prototype.preRenderEventFetchElevationLayersDisplayed = function (b) {
+            if (typeof b === 'undefined') {
+                b = true;
+            }
+            this._fetchVisibleElevationLayers = b;
+        };
+        GlobeViewExtended.prototype.preRenderEventFetchLayersDisplayed = function (b) {
+            if (typeof b === 'undefined') {
+                b = true;
+            }
+            this._fetchVisibleColorLayers = b;
+            this._fetchVisibleElevationLayers = b;
+        };
+        GlobeViewExtended.prototype.getLayerById = function (layerId) {
+            var layer = this.getGlobeView().getLayers(function (l) {
+                if (l.id === layerId) {
+                    return l;
+                }
+            })[0];
+            if (!layer) {
+                return;
+            }
+            return layer;
+        };
+        GlobeViewExtended.prototype.getColorLayerById = function (layerId) {
+            var layer = this.getGlobeView().getLayers(function (l) {
+                if (l.id === layerId && l.type === 'color') {
+                    return l;
+                }
+            })[0];
+            if (!layer) {
+                return;
+            }
+            return layer;
+        };
+        GlobeViewExtended.prototype.getColorLayers = function () {
+            return this.getGlobeView().getLayers(function (layer) {
+                if (layer.type === 'color') {
+                    return layer;
+                }
+            });
+        };
+        GlobeViewExtended.prototype.getVectorLayers = function () {
+            return this.getGlobeView().getLayers(function (layer) {
+                if (layer.protocol === 'rasterizer') {
+                    return layer;
+                }
+            });
+        };
+        GlobeViewExtended.prototype.getElevationLayers = function () {
+            return this.getGlobeView().getLayers(function (layer) {
+                if (layer.type === 'elevation') {
+                    return layer;
+                }
+            });
+        };
+        GlobeViewExtended.prototype.getExtent = function () {
+            var options = { extent: new Itowns.Extent('EPSG:4326', 180, -180, 90, -90) };
+            this._getCurrentSceneInfos(this.scene, options);
+            return options.extent;
+        };
+        GlobeViewExtended.prototype._getCurrentSceneInfos = function (node, options) {
+            if (!node || !node.visible) {
+                return;
+            }
+            if (node.level) {
+                if (node.material.visible) {
+                    if (options.colorLayersId) {
+                        for (var i = 0; i < node.material.colorLayersId.length; ++i) {
+                            if (options.colorLayersId.indexOf(node.material.colorLayersId[i]) < 0) {
+                                options.colorLayersId.push(node.material.colorLayersId[i]);
+                            }
+                        }
+                    }
+                    if (options.elevationLayersId) {
+                        for (var j = 0; j < node.material.elevationLayersId.length; ++j) {
+                            if (options.elevationLayersId.indexOf(node.material.elevationLayersId[j]) < 0) {
+                                options.elevationLayersId.push(node.material.elevationLayersId[j]);
+                            }
+                        }
+                    }
+                    if (options.extent) {
+                        options.extent.union(node.extent);
+                    }
+                }
+            }
+            if (node.children) {
+                for (var child in node.children) {
+                    this._getCurrentSceneInfos(node.children[child], options);
+                }
+            }
+        };
+        GlobeViewExtended.prototype.addWidget = function (widget) {
+            if (!widget.getTarget()) {
+                widget.setTarget(this._viewerDiv, 'absolute');
+            }
+            widget.setGlobe(this);
+            this._widgets.push(widget);
+        };
+        GlobeViewExtended.prototype.getWidgets = function () {
+            return this._widgets;
+        };
+        GlobeViewExtended.prototype.removeWidget = function (widget) {
+            widget.setGlobe();
+            for (var idx = 0; idx < this._widgets.length; idx++) {
+                if (this._widgets[idx] === widget) {
+                    this._widgets.splice(idx, 1);
+                }
+            }
+        };
+        GlobeViewExtended.prototype.getTargetElement = function () {
+            return this._viewerDiv;
+        };
+        GlobeViewExtended.prototype.getScale = function () {
+            return this.getGlobeView().controls.getScale();
+        };
+        GlobeViewExtended.prototype.setTilt = function (tilt) {
+            this.getGlobeView().controls.setTilt(tilt, false);
+        };
+        GlobeViewExtended.prototype.getTilt = function () {
+            return this.getGlobeView().controls.getCameraOrientation()[0];
+        };
+        GlobeViewExtended.prototype.setAzimuth = function (azimuth) {
+            this.getGlobeView().controls.setHeading(azimuth, false);
+        };
+        GlobeViewExtended.prototype.getAzimuth = function () {
+            return this.getGlobeView().controls.getCameraOrientation()[1];
+        };
+        GlobeViewExtended.prototype.getCoordinateFromPixel = function (x, y) {
+            return this.getGlobeView().controls.pickGeoPosition({
+                x: x,
+                y: y
+            });
+        };
+        GlobeViewExtended.prototype.getCoordinateFromMouseEvent = function (mouseEvent) {
+            var coords = this.getGlobeView().eventToViewCoords(mouseEvent);
+            return this.getGlobeView().controls.pickGeoPosition(coords);
+        };
+        GlobeViewExtended.prototype.getFeaturesAtMousePosition = function (mouseEvent) {
+            var vectorLayers = this.getVectorLayers();
+            if (!vectorLayers) {
+                return;
+            }
+            var visibleFeatures = [];
+            var geoCoord = this.getCoordinateFromMouseEvent(mouseEvent);
+            if (geoCoord) {
+                var precision = this.getGlobeView().controls.pixelsToDegrees(5);
+                for (var i = 0; i < vectorLayers.length; i++) {
+                    var idx;
+                    var layer = vectorLayers[i];
+                    if (!layer.visible) {
+                        continue;
+                    }
+                    var result = Itowns.FeaturesUtils.filterFeaturesUnderCoordinate(geoCoord, layer.feature, precision);
+                    for (idx = 0; idx < result.length; idx++) {
+                        visibleFeatures.push(result[idx]);
+                    }
+                }
+            }
+            return visibleFeatures;
+        };
+        GlobeViewExtended.prototype.setCameraTargetGeoPosition = function (center) {
+            this.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(center, false);
+        };
+        GlobeViewExtended.prototype.getCenter = function () {
+            var cameraCenter = this.getGlobeView().controls.getCameraTargetGeoPosition();
+            var center = {
+                lon: cameraCenter.longitude(),
+                lat: cameraCenter.latitude(),
+                alt: cameraCenter.altitude()
+            };
+            return center;
+        };
+        GlobeViewExtended.prototype.getZoom = function () {
+            return this.getGlobeView().controls.getZoom();
+        };
+        GlobeViewExtended.prototype.setZoom = function (zoom) {
+            this.getGlobeView().controls.setZoom(zoom, false);
+        };
+        GlobeViewExtended.prototype.pixelsToMeters = function (pixels) {
+            return this.getGlobeView().controls.pixelsToMeters(pixels);
+        };
+        GlobeViewExtended.prototype.metersToPixels = function (value) {
+            return this.getGlobeView().controls.metersToPixels(value);
+        };
+        GlobeViewExtended.prototype.getRange = function () {
+            return this.getGlobeView().controls.getRange();
+        };
+        GlobeViewExtended.prototype.moveTarget = function () {
+            return this.getGlobeView().controls.moveTarget();
+        };
+        GlobeViewExtended.prototype.getLayerEventInfos = function (evt) {
+            var propertyName = evt.type.replace('-property-changed', '');
+            return {
+                propertyName: propertyName,
+                previousValue: evt.previous[propertyName],
+                newValue: evt.new[propertyName]
+            };
+        };
+        return GlobeViewExtended;
+    }(itowns, {});
     ItownsControlsWidget = function () {
         function Widget(options) {
             this.name = null;
@@ -57142,7 +57566,7 @@ itowns = { control: {} };
         };
         return PositionFormater;
     }();
-    ItownsCRSCRS = function (proj4) {
+    ItownsCRSCRS = function () {
         var CRS = {
             'EPSG:4326': '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +units=degrees',
             'EPSG:3857': '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs',
@@ -57171,8 +57595,8 @@ itowns = { control: {} };
             'EPSG:3163': '+proj=lcc +lat_1=-20.66666666666667 +lat_2=-22.33333333333333 +lat_0=-21.5 +lon_0=166 +x_0=400000 +y_0=300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
         };
         return CRS;
-    }(proj4);
-    ItownsControlsMousePosition = function (Itowns, proj4, woodman, Gp, Utils, RightManagement, SelectorID, MousePositionDOM, Widget, PositionFormater, CRS) {
+    }();
+    ItownsControlsMousePosition = function (proj4, woodman, Gp, GlobeViewExtended, Utils, RightManagement, SelectorID, MousePositionDOM, Widget, PositionFormater, CRS) {
         function MousePosition(options) {
             options = options || {};
             if (!(this instanceof MousePosition)) {
@@ -57201,14 +57625,13 @@ itowns = { control: {} };
                 this._callbacks.mouseMove = this.onMouseMove.bind(this);
                 if (!this.collapsed) {
                     if (this._isDesktop) {
-                        globe.addEventListener('mousemove', this._callbacks.mouseMove);
+                        globe.listen(GlobeViewExtended.EVENTS.MOUSE_MOVE, this._callbacks.mouseMove);
                     } else {
-                        globe.addEventListener('centerchanged', this.onGlobeMove);
+                        globe.listen(GlobeViewExtended.EVENTS.CENTER_CHANGED, this.onGlobeMove);
                     }
                 }
-                this._globe = globe;
             } else if (globe == null) {
-                this._globe.removeEventListener('mousemove', this._callbacks.mouseMove);
+                this._globe.forget(GlobeViewExtended.EVENTS.MOUSE_MOVE, this._callbacks.mouseMove);
                 while (this.getElement().hasChildNodes()) {
                     this.getElement().removeChild(this.getElement().lastChild);
                 }
@@ -57677,7 +58100,7 @@ itowns = { control: {} };
         };
         MousePosition.prototype.onMouseMove = function (e) {
             var self = this;
-            var position = this.getGlobe().getGlobeView().controls.pickGeoPosition(e);
+            var position = this.getGlobe().getCoordinateFromMouseEvent(e);
             if (!position) {
                 this.GPdisplayCoords({
                     lon: '---',
@@ -57741,15 +58164,15 @@ itowns = { control: {} };
             this.collapsed = this._showMousePositionContainer.checked;
             if (this._showMousePositionContainer.checked) {
                 if (this._isDesktop) {
-                    globe.removeEventListener('mousemove', this._callbacks.mouseMove);
+                    globe.forget(GlobeViewExtended.EVENTS.MOUSE_MOVE, this._callbacks.mouseMove);
                 } else {
-                    globe.removeEventListener('centerchanged', this.onGlobeMove);
+                    globe.forget(GlobeViewExtended.EVENTS.CENTER_CHANGED, this.onGlobeMove);
                 }
             } else {
                 if (this._isDesktop) {
-                    globe.addEventListener('mousemove', this._callbacks.mouseMove);
+                    globe.listen(GlobeViewExtended.EVENTS.MOUSE_MOVE, this._callbacks.mouseMove);
                 } else {
-                    globe.addEventListener('centerchanged', this.onGlobeMove);
+                    globe.listen(GlobeViewExtended.EVENTS.CENTER_CHANGED, this.onGlobeMove);
                 }
             }
             this._setElevationPanel(this.options.displayAltitude);
@@ -57790,12 +58213,13 @@ itowns = { control: {} };
             var globeExtent = globe.getExtent();
             var systemList = document.getElementById(this._addUID('GPmousePositionProjectionSystem'));
             systemList.innerHTML = '';
+            var option;
             for (var j = 0; j < this._projectionSystems.length; j++) {
                 var proj = this._projectionSystems[j];
                 if (proj.geoBBox) {
                     if (globeExtent.west() > proj.geoBBox.right || globeExtent.south() > proj.geoBBox.top || globeExtent.east() < proj.geoBBox.left || globeExtent.north() < proj.geoBBox.bottom) {
                         if (proj === this._currentProjectionSystems) {
-                            var option = document.createElement('option');
+                            option = document.createElement('option');
                             option.value = proj.code;
                             option.text = proj.label || j;
                             option.setAttribute('selected', 'selected');
@@ -57805,7 +58229,7 @@ itowns = { control: {} };
                         continue;
                     }
                 }
-                var option = document.createElement('option');
+                option = document.createElement('option');
                 option.value = proj.code;
                 option.text = proj.label || j;
                 if (proj === this._currentProjectionSystems) {
@@ -57823,8 +58247,8 @@ itowns = { control: {} };
             }
         };
         return MousePosition;
-    }(itowns, proj4, {}, gp, CommonUtils, CommonUtilsCheckRightManagement, CommonUtilsSelectorID, CommonControlsMousePositionDOM, ItownsControlsWidget, ItownsControlsUtilsPositionFormater, ItownsCRSCRS);
-    ItownsControlsLayerSwitcher = function (Itowns, Utils, LayerUtils, SelectorID, LayerSwitcherDOM, Widget) {
+    }(proj4, {}, gp, ItownsGlobeViewExtended, CommonUtils, CommonUtilsCheckRightManagement, CommonUtilsSelectorID, CommonControlsMousePositionDOM, ItownsControlsWidget, ItownsControlsUtilsPositionFormater, ItownsCRSCRS);
+    ItownsControlsLayerSwitcher = function (GlobeViewExtended, Utils, LayerUtils, SelectorID, LayerSwitcherDOM, Widget) {
         function LayerSwitcher(lsOptions) {
             lsOptions = lsOptions || {};
             var options = lsOptions.options || {};
@@ -57852,6 +58276,7 @@ itowns = { control: {} };
         Utils.assign(LayerSwitcher.prototype, LayerSwitcherDOM);
         LayerSwitcher.prototype.constructor = LayerSwitcher;
         LayerSwitcher.prototype.setGlobe = function (globe) {
+            var layers;
             if (globe) {
                 var self = this;
                 for (var i = 0; i < this._initLayers.length; i++) {
@@ -57890,7 +58315,7 @@ itowns = { control: {} };
                 this._callbacks.onChangedViewCallBack = function (e) {
                     self._inRangeUpdate(e.colorLayersId);
                 };
-                globe.addEventListener('prerender', this._callbacks.onChangedViewCallBack);
+                globe.listen(GlobeViewExtended.EVENTS.PRE_RENDER, this._callbacks.onChangedViewCallBack);
                 globe.preRenderEventFetchColorLayersDisplayed();
                 this._callbacks.onAddedLayerCallBack = function (e) {
                     var id = e.layerId;
@@ -57910,14 +58335,14 @@ itowns = { control: {} };
                         }
                     }
                 };
-                globe.addEventListener(Itowns.GLOBE_VIEW_EVENTS.LAYER_ADDED, this._callbacks.onAddedLayerCallBack);
+                globe.listen(GlobeViewExtended.EVENTS.LAYER_ADDED, this._callbacks.onAddedLayerCallBack);
                 this._callbacks.onRemovedLayerCallBack = function (e) {
                     var id = e.layerId;
                     if (self) {
                         self.removeLayer(id);
                     }
                 };
-                globe.addEventListener(Itowns.GLOBE_VIEW_EVENTS.LAYER_REMOVED, this._callbacks.onRemovedLayerCallBack);
+                globe.listen(GlobeViewExtended.EVENTS.LAYER_REMOVED, this._callbacks.onRemovedLayerCallBack);
                 this._callbacks.onIndexLayerCallBack = function (e) {
                     var arraysEquals = function (a1, a2) {
                         if (a1.length !== a2.length) {
@@ -57934,24 +58359,23 @@ itowns = { control: {} };
                         self._updateLayerListContainer();
                     }
                 };
-                globe.addEventListener(Itowns.GLOBE_VIEW_EVENTS.COLOR_LAYERS_ORDER_CHANGED, this._callbacks.onIndexLayerCallBack);
-                var layers = globe.getColorLayers();
+                globe.listen(GlobeViewExtended.EVENTS.LAYERS_ORDER_CHANGED, this._callbacks.onIndexLayerCallBack);
+                layers = globe.getColorLayers();
                 for (var ii = 0; ii < layers.length; ++ii) {
-                    layers[ii].addEventListener('opacity-property-changed', this._callbacks.onOpacityLayerCallBack);
-                    layers[ii].addEventListener('visible-property-changed', this._callbacks.onVisibilityLayerCallBack);
+                    globe.addLayerListener(layers[ii], GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED, this._callbacks.onOpacityLayerCallBack);
+                    globe.addLayerListener(layers[ii], GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED, this._callbacks.onVisibilityLayerCallBack);
                     self._updateLayerVisibility(layers[ii].id, layers[ii].visible);
                     self._updateLayerOpacity(layers[ii].id, layers[ii].opacity);
                 }
-                this._globe = globe;
             } else {
-                this._globe.removeEventListener('prerender', this._callbacks.onChangedViewCallBack);
-                this._globe.removeEventListener(Itowns.GLOBE_VIEW_EVENTS.LAYER_ADDED, this._callbacks.onAddedLayerCallBack);
-                this._globe.removeEventListener(Itowns.GLOBE_VIEW_EVENTS.LAYER_REMOVED, this._callbacks.onRemovedLayerCallBack);
-                this._globe.removeEventListener(Itowns.GLOBE_VIEW_EVENTS.COLOR_LAYERS_ORDER_CHANGED, this._callbacks.onIndexLayerCallBack);
-                var layers = this._globe.getColorLayers();
+                this._globe.forget(GlobeViewExtended.EVENTS.PRE_RENDER, this._callbacks.onChangedViewCallBack);
+                this._globe.forget(GlobeViewExtended.EVENTS.LAYER_ADDED, this._callbacks.onAddedLayerCallBack);
+                this._globe.forget(GlobeViewExtended.EVENTS.LAYER_REMOVED, this._callbacks.onRemovedLayerCallBack);
+                this._globe.forget(GlobeViewExtended.EVENTS.LAYERS_ORDER_CHANGED, this._callbacks.onIndexLayerCallBack);
+                layers = this._globe.getColorLayers();
                 for (var j = 0; j < layers.length; ++j) {
-                    layers[j].removeEventListener('opacity-property-changed', this._callbacks.onOpacityLayerCallBack);
-                    layers[j].removeEventListener('visible-property-changed', this._callbacks.onVisibilityLayerCallBack);
+                    this._globe.removeLayerListener(layers[j], GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED, this._callbacks.onOpacityLayerCallBack);
+                    this._globe.removeLayerListener(layers[j], GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED, this._callbacks.onVisibilityLayerCallBack);
                 }
                 while (this._element.hasChildNodes()) {
                     this._element.removeChild(this._element.lastChild);
@@ -57972,8 +58396,8 @@ itowns = { control: {} };
                 console.log('[ERROR] LayerSwitcher:addLayer - configuration cannot be set for ' + layer + ' layer (layer id not found)');
                 return;
             }
-            layer.addEventListener('opacity-property-changed', this._callbacks.onOpacityLayerCallBack);
-            layer.addEventListener('visible-property-changed', this._callbacks.onVisibilityLayerCallBack);
+            globe.addLayerListener(layer, GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED, this._callbacks.onOpacityLayerCallBack);
+            globe.addLayerListener(layer, GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED, this._callbacks.onVisibilityLayerCallBack);
             var LayerInGlobe = globe.getLayerById(id);
             if (!LayerInGlobe) {
                 console.log('[ERROR] LayerSwitcher:addLayer - configuration cannot be set for ', layer, ' layer (layer is not in globe layers )');
@@ -58332,7 +58756,7 @@ itowns = { control: {} };
             return divName.substring(divName.indexOf('_ID_') + 4);
         };
         return LayerSwitcher;
-    }(itowns, CommonUtils, CommonUtilsLayerUtils, CommonUtilsSelectorID, CommonControlsLayerSwitcherDOM, ItownsControlsWidget);
+    }(ItownsGlobeViewExtended, CommonUtils, CommonUtilsLayerUtils, CommonUtilsSelectorID, CommonControlsLayerSwitcherDOM, ItownsControlsWidget);
     CommonControlsAttributionDOM = function () {
         var AttributionDOM = {
             _addUID: function (id) {
@@ -58381,7 +58805,7 @@ itowns = { control: {} };
         };
         return AttributionDOM;
     }();
-    ItownsControlsAttributions = function (Itowns, Utils, SelectorID, LayerUtils, AttributionDOM, Widget) {
+    ItownsControlsAttributions = function (GlobeViewExtended, Utils, SelectorID, LayerUtils, AttributionDOM, Widget) {
         function Attributions(aOptions) {
             aOptions = aOptions || {};
             var options = aOptions.options || {};
@@ -58410,11 +58834,11 @@ itowns = { control: {} };
                     var allLayers = e.colorLayersId.concat(e.elevationLayersId);
                     self._inRangeUpdate(allLayers, e.extent);
                 };
-                globe.addEventListener('prerender', this._callbacks.onPreRenderCallBack);
+                globe.listen(GlobeViewExtended.EVENTS.PRE_RENDER, this._callbacks.onPreRenderCallBack);
                 globe.preRenderEventFetchViewExtent();
                 globe.preRenderEventFetchLayersDisplayed();
             } else {
-                this._globe.removeEventListener('prerender', this._callbacks.onPreRenderCallBack);
+                this._globe.forget(GlobeViewExtended.EVENTS.PRE_RENDER, this._callbacks.onPreRenderCallBack);
                 while (this._element.hasChildNodes()) {
                     this._element.removeChild(this._element.lastChild);
                 }
@@ -58541,7 +58965,7 @@ itowns = { control: {} };
             21: 0.0746455354347424
         };
         return Attributions;
-    }(itowns, CommonUtils, CommonUtilsSelectorID, CommonUtilsLayerUtils, CommonControlsAttributionDOM, ItownsControlsWidget);
+    }(ItownsGlobeViewExtended, CommonUtils, CommonUtilsSelectorID, CommonUtilsLayerUtils, CommonControlsAttributionDOM, ItownsControlsWidget);
     CommonControlsScaleDOM = function () {
         var ScaleDOM = {
             _addUID: function (id) {
@@ -58557,7 +58981,7 @@ itowns = { control: {} };
         };
         return ScaleDOM;
     }();
-    ItownsControlsScale = function (Itowns, Utils, SelectorID, ScaleDOM, Widget) {
+    ItownsControlsScale = function (GlobeViewExtended, Utils, SelectorID, ScaleDOM, Widget) {
         function Scale(options) {
             options = options || {};
             if (!(this instanceof Scale)) {
@@ -58584,11 +59008,11 @@ itowns = { control: {} };
             if (globe) {
                 var self = this;
                 this._callbacks.onChangedViewCallback = function () {
-                    var value = self.getGlobe().getGlobeView().controls.pixelsToMeters(200);
+                    var value = globe.pixelsToMeters(200);
                     value = Math.floor(value);
                     var digit = Math.pow(10, value.toString().length - 1);
                     value = Math.round(value / digit) * digit;
-                    var pix = self.getGlobe().getGlobeView().controls.metersToPixels(value);
+                    var pix = globe.metersToPixels(value);
                     var unit = 'm';
                     if (value >= 1000) {
                         value /= 1000;
@@ -58597,12 +59021,15 @@ itowns = { control: {} };
                     self.getElement().innerHTML = value + ' ' + unit;
                     self.getElement().style.width = pix + 'px';
                 };
-                globe.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, this._callbacks.onChangedViewCallback);
-                globe.getGlobeView().controls.addEventListener(Itowns.CONTROL_EVENTS.RANGE_CHANGED, this._callbacks.onChangedViewCallback);
-                this._globe = globe;
+                if (globe.isInitialized()) {
+                    this._callbacks.onChangedViewCallback();
+                } else {
+                    globe.listen(GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, this._callbacks.onChangedViewCallback);
+                }
+                globe.listen(GlobeViewExtended.EVENTS.RANGE_CHANGED, this._callbacks.onChangedViewCallback);
             } else if (globe == null) {
-                this._globe.removeEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, this._callbacks.onChangedViewCallback);
-                this._globe.getGlobeView().controls.removeEventListener(Itowns.CONTROL_EVENTS.RANGE_CHANGED, this._callbacks.onChangedViewCallback);
+                this._globe.forget(GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, this._callbacks.onChangedViewCallback);
+                this._globe.forget(GlobeViewExtended.EVENTS.RANGE_CHANGED, this._callbacks.onChangedViewCallback);
                 while (this.getElement().hasChildNodes()) {
                     this.getElement().removeChild(this.getElement().lastChild);
                 }
@@ -58620,7 +59047,7 @@ itowns = { control: {} };
             return container;
         };
         return Scale;
-    }(itowns, CommonUtils, CommonUtilsSelectorID, CommonControlsScaleDOM, ItownsControlsWidget);
+    }(ItownsGlobeViewExtended, CommonUtils, CommonUtilsSelectorID, CommonControlsScaleDOM, ItownsControlsWidget);
     CommonControlsMiniGlobeDOM = function () {
         var MiniGlobeDOM = {
             _addUID: function (id) {
@@ -58636,7 +59063,7 @@ itowns = { control: {} };
         };
         return MiniGlobeDOM;
     }();
-    ItownsControlsMiniGlobe = function (Itowns, Utils, SelectorID, MiniGlobeDOM, Widget) {
+    ItownsControlsMiniGlobe = function (Itowns, GlobeViewExtended, Utils, SelectorID, MiniGlobeDOM, Widget) {
         function MiniGlobe(options) {
             options = options || {};
             if (!(this instanceof MiniGlobe)) {
@@ -58664,24 +59091,26 @@ itowns = { control: {} };
             if (globe) {
                 var minDistance = 6650000;
                 var maxDistance = 30000000;
-                var positionOnGlobe = {
-                    longitude: globe.getGlobeView().controls.getCameraTargetGeoPosition().longitude(),
-                    latitude: globe.getGlobeView().controls.getCameraTargetGeoPosition().latitude(),
-                    altitude: globe.getGlobeView().controls.getCameraTargetGeoPosition().altitude()
-                };
+                var positionOnGlobe = globe.getCenter();
                 var miniView = new Itowns.GlobeView(this._element, positionOnGlobe, {
                     maxSubdivisionLevel: 6,
                     noControls: true
                 });
                 miniView.mainLoop.gfxEngine.renderer.setClearColor(0, 0);
-                globe.getGlobeView().addFrameRequester(Itowns.MAIN_LOOP_EVENTS.AFTER_RENDER, function () {
-                    var range = globe.getGlobeView().controls.getRange();
+                var updateMiniGlobeHandler = function () {
+                    var range = globe.getRange();
                     var distance = Math.min(Math.max(range * 1.5, minDistance), maxDistance);
                     var camera = miniView.camera.camera3D;
-                    camera.position.copy(globe.getGlobeView().controls.moveTarget()).setLength(distance);
-                    camera.lookAt(globe.getGlobeView().controls.moveTarget());
+                    camera.position.copy(globe.moveTarget()).setLength(distance);
+                    camera.lookAt(globe.moveTarget());
                     miniView.notifyChange(true);
-                });
+                };
+                globe.listen(GlobeViewExtended.EVENTS.AFTER_RENDER, updateMiniGlobeHandler);
+                if (globe.isInitialized()) {
+                    updateMiniGlobeHandler;
+                } else {
+                    globe.listen(GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, updateMiniGlobeHandler);
+                }
                 var miniGlobeLayer = this._options.layer || this._baseLayer;
                 miniView.addLayer(miniGlobeLayer);
                 this._globeObj = miniView;
@@ -58835,271 +59264,10 @@ itowns = { control: {} };
             }
         };
         return MiniGlobe;
-    }(itowns, CommonUtils, CommonUtilsSelectorID, CommonControlsMiniGlobeDOM, ItownsControlsWidget);
-    ItownsGlobeViewExtended = function (Itowns, woodman) {
-        function GlobeViewExtended(viewerDiv, coordCarto, options) {
-            viewerDiv.style.position = 'relative';
-            this._viewerDiv = viewerDiv;
-            this._widgets = [];
-            this._globeView = new Itowns.GlobeView(viewerDiv, coordCarto, options);
-            this._globeView.addFrameRequester(Itowns.MAIN_LOOP_EVENTS.BEFORE_RENDER, function () {
-                var self = this;
-                clearTimeout(this._preRenderTimer);
-                this._preRenderTimer = setTimeout(function () {
-                    if (self._fetchVisibleColorLayers || self._fetchVisibleElevationLayers || self._fetchExtent) {
-                        var event = { type: 'prerender' };
-                        if (self._fetchExtent) {
-                            event.extent = new Itowns.Extent('EPSG:4326', 180, -180, 90, -90);
-                        }
-                        if (self._fetchVisibleColorLayers) {
-                            event.colorLayersId = [];
-                        }
-                        if (self._fetchVisibleElevationLayers) {
-                            event.elevationLayersId = [];
-                        }
-                        self._getCurrentSceneInfos(self._globeView.scene, event);
-                        self._globeView.dispatchEvent(event);
-                    }
-                }, 100);
-            }.bind(this));
-        }
-        GlobeViewExtended.prototype.constructor = GlobeViewExtended;
-        GlobeViewExtended.prototype.getGlobeView = function () {
-            return this._globeView;
-        };
-        GlobeViewExtended.prototype.addLayer = function (layer) {
-            this.getGlobeView().addLayer(layer);
-            this.getGlobeView().notifyChange(true);
-        };
-        GlobeViewExtended.prototype.removeLayer = function (layerId) {
-            this.getGlobeView().removeLayer(layerId);
-            this.getGlobeView().notifyChange(true);
-        };
-        GlobeViewExtended.prototype.setLayerOpacity = function (layerId, opacityValue) {
-            this.getColorLayerById(layerId).opacity = opacityValue;
-            this.getGlobeView().notifyChange(true);
-        };
-        GlobeViewExtended.prototype.setLayerVisibility = function (layerId, visible) {
-            this.getColorLayerById(layerId).visible = visible;
-            this.getGlobeView().notifyChange(true);
-        };
-        GlobeViewExtended.prototype.moveLayerToIndex = function (layerId, index) {
-            Itowns.ColorLayersOrdering.moveLayerToIndex(this.getGlobeView(), layerId, index);
-            this.getGlobeView().notifyChange(true);
-        };
-        GlobeViewExtended.prototype.addEventListener = function (type, callback) {
-            switch (type) {
-            case 'mousemove':
-                this._viewerDiv.addEventListener(type, callback);
-                break;
-            case 'centerchanged':
-                this.getGlobeView().controls.addEventListener(type, callback);
-                break;
-            default:
-                this.getGlobeView().addEventListener(type, callback);
-                break;
-            }
-        };
-        GlobeViewExtended.prototype.removeEventListener = function (type, callback) {
-            switch (type) {
-            case 'mousemove':
-                this._viewerDiv.removeEventListener(type, callback);
-                break;
-            case 'centerchanged':
-                this.getGlobeView().controls.removeEventListener(type, callback);
-                break;
-            default:
-                this.getGlobeView().removeEventListener(type, callback);
-                break;
-            }
-        };
-        GlobeViewExtended.prototype.preRenderEventFetchViewExtent = function (b) {
-            if (typeof b === 'undefined') {
-                b = true;
-            }
-            this._fetchExtent = b;
-        };
-        GlobeViewExtended.prototype.preRenderEventFetchColorLayersDisplayed = function (b) {
-            if (typeof b === 'undefined') {
-                b = true;
-            }
-            this._fetchVisibleColorLayers = b;
-        };
-        GlobeViewExtended.prototype.preRenderEventFetchElevationLayersDisplayed = function (b) {
-            if (typeof b === 'undefined') {
-                b = true;
-            }
-            this._fetchVisibleElevationLayers = b;
-        };
-        GlobeViewExtended.prototype.preRenderEventFetchLayersDisplayed = function (b) {
-            if (typeof b === 'undefined') {
-                b = true;
-            }
-            this._fetchVisibleColorLayers = b;
-            this._fetchVisibleElevationLayers = b;
-        };
-        GlobeViewExtended.prototype.getLayerById = function (layerId) {
-            var layer = this.getGlobeView().getLayers(function (l) {
-                if (l.id === layerId) {
-                    return l;
-                }
-            })[0];
-            if (!layer) {
-                return;
-            }
-            return layer;
-        };
-        GlobeViewExtended.prototype.getColorLayerById = function (layerId) {
-            var layer = this.getGlobeView().getLayers(function (l) {
-                if (l.id === layerId && l.type === 'color') {
-                    return l;
-                }
-            })[0];
-            if (!layer) {
-                return;
-            }
-            return layer;
-        };
-        GlobeViewExtended.prototype.getColorLayers = function () {
-            return this.getGlobeView().getLayers(function (layer) {
-                if (layer.type === 'color') {
-                    return layer;
-                }
-            });
-        };
-        GlobeViewExtended.prototype.getVectorLayers = function () {
-            return this.getGlobeView().getLayers(function (layer) {
-                if (layer.protocol === 'rasterizer') {
-                    return layer;
-                }
-            });
-        };
-        GlobeViewExtended.prototype.getElevationLayers = function () {
-            return this.getGlobeView().getLayers(function (layer) {
-                if (layer.type === 'elevation') {
-                    return layer;
-                }
-            });
-        };
-        GlobeViewExtended.prototype.getExtent = function () {
-            var options = { extent: new Itowns.Extent('EPSG:4326', 180, -180, 90, -90) };
-            this._getCurrentSceneInfos(this.scene, options);
-            return options.extent;
-        };
-        GlobeViewExtended.prototype._getCurrentSceneInfos = function (node, options) {
-            if (!node || !node.visible) {
-                return;
-            }
-            if (node.level) {
-                if (node.material.visible) {
-                    if (options.colorLayersId) {
-                        for (var i = 0; i < node.material.colorLayersId.length; ++i) {
-                            if (options.colorLayersId.indexOf(node.material.colorLayersId[i]) < 0) {
-                                options.colorLayersId.push(node.material.colorLayersId[i]);
-                            }
-                        }
-                    }
-                    if (options.elevationLayersId) {
-                        for (var j = 0; j < node.material.elevationLayersId.length; ++j) {
-                            if (options.elevationLayersId.indexOf(node.material.elevationLayersId[j]) < 0) {
-                                options.elevationLayersId.push(node.material.elevationLayersId[j]);
-                            }
-                        }
-                    }
-                    if (options.extent) {
-                        options.extent.union(node.extent);
-                    }
-                }
-            }
-            if (node.children) {
-                for (var child in node.children) {
-                    this._getCurrentSceneInfos(node.children[child], options);
-                }
-            }
-        };
-        GlobeViewExtended.prototype.addWidget = function addWidget(widget) {
-            if (!widget.getTarget()) {
-                widget.setTarget(this._viewerDiv, 'absolute');
-            }
-            widget.setGlobe(this);
-            this._widgets.push(widget);
-        };
-        GlobeViewExtended.prototype.getWidgets = function getWidgets() {
-            return this._widgets;
-        };
-        GlobeViewExtended.prototype.removeWidget = function removeWidget(widget) {
-            widget.setGlobe();
-            for (var idx = 0; idx < this._widgets.length; idx++) {
-                if (this._widgets[idx] === widget) {
-                    this._widgets.splice(idx, 1);
-                }
-            }
-        };
-        GlobeViewExtended.prototype.getTargetElement = function getTargetElement() {
-            return this._viewerDiv;
-        };
-        GlobeViewExtended.prototype.getScale = function getScale() {
-            return this.getGlobeView().controls.getScale();
-        };
-        GlobeViewExtended.prototype.setTilt = function setTilt(tilt) {
-            this.getGlobeView().controls.setTilt(tilt, false);
-        };
-        GlobeViewExtended.prototype.getTilt = function getTilt() {
-            return this.getGlobeView().controls.getCameraOrientation()[0];
-        };
-        GlobeViewExtended.prototype.setAzimuth = function (azimuth) {
-            this.getGlobeView().controls.setHeading(azimuth, false);
-        };
-        GlobeViewExtended.prototype.getAzimuth = function () {
-            return this.getGlobeView().controls.getCameraOrientation()[1];
-        };
-        GlobeViewExtended.prototype.getCoordinateFromPixel = function getCoordinateFromPixel(mouseEvent, y) {
-            return this.getGlobeView().controls.pickGeoPosition(mouseEvent, y);
-        };
-        GlobeViewExtended.prototype.getFeaturesAtPixel = function getFeaturesAtPixel(mouseEvent, y) {
-            var vectorLayers = this.getVectorLayers();
-            if (!vectorLayers) {
-                return;
-            }
-            var visibleFeatures = [];
-            var geoCoord = this.getCoordinateFromPixel(mouseEvent, y);
-            if (geoCoord) {
-                var precision = this.getGlobeView().controls.pixelsToDegrees(5);
-                for (var i = 0; i < vectorLayers.length; i++) {
-                    var idx;
-                    var layer = vectorLayers[i];
-                    if (!layer.visible) {
-                        continue;
-                    }
-                    var result = itowns.FeaturesUtils.filterFeaturesUnderCoordinate(geoCoord, layer.feature, precision);
-                    for (idx = 0; idx < result.length; idx++) {
-                        visibleFeatures.push(result[idx]);
-                    }
-                }
-            }
-            return visibleFeatures;
-        };
-        GlobeViewExtended.prototype.setCameraTargetGeoPosition = function setCameraTargetGeoPosition(center) {
-            this.getGlobeView().controls.setCameraTargetGeoPositionAdvanced(center, false);
-        };
-        GlobeViewExtended.prototype.getCenter = function getCenter() {
-            var cameraCenter = this.getGlobeView().controls.getCameraTargetGeoPosition();
-            var center = {
-                lon: cameraCenter.longitude(),
-                lat: cameraCenter.latitude(),
-                alt: cameraCenter.altitude()
-            };
-            return center;
-        };
-        GlobeViewExtended.prototype.getZoom = function getZoom() {
-            return this.getGlobeView().controls.getZoom();
-        };
-        GlobeViewExtended.prototype.setZoom = function setZoom(zoom) {
-            this.getGlobeView().controls.setZoom(zoom, false);
-        };
-        return GlobeViewExtended;
-    }(itowns, {});
+    }(itowns, ItownsGlobeViewExtended, CommonUtils, CommonUtilsSelectorID, CommonControlsMiniGlobeDOM, ItownsControlsWidget);
     ItownsGpPluginItowns = function (Itowns, Gp, Utils, LayerUtils, MousePosition, LayerSwitcher, Attributions, Scale, MiniGlobe, GlobeViewExtended) {
+        Gp.itownsextVersion = '1.0.0';
+        Gp.itownsextDate = '2018-04-05';
         Gp.LayerUtils = LayerUtils;
         var scope = typeof window !== 'undefined' ? window : {};
         var _itowns = Itowns || {};
@@ -59700,61 +59868,6 @@ IMap = function (Logger) {
         },
         zoomOut: function () {
         },
-        switchToLib: function (library) {
-            var oldMap = {};
-            oldMap.projection = this.getProjection();
-            oldMap.center = this.getCenter();
-            oldMap.azimuth = this.getAzimuth();
-            oldMap.tilt = this.getTilt();
-            oldMap.zoom = this.getZoom();
-            oldMap.layersOptions = this.getLayersOptions();
-            oldMap.controlsOptions = this.getControlsOptions();
-            oldMap.mapDiv = this.div.id;
-            oldMap.apiKey = this.apiKey;
-            oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
-            for (var controlId in oldMap.controlsOptions) {
-                this.removeControls(controlId);
-            }
-            if (library === 'vg') {
-                oldMap.center = [
-                    oldMap.center.x,
-                    oldMap.center.y
-                ];
-                var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, 'EPSG:4326');
-                oldMap.center = {
-                    x: lonlat[0],
-                    y: lonlat[1]
-                };
-                this.libMap.setTarget(null);
-            } else if (library === 'ol3') {
-                oldMap.center = [
-                    oldMap.center.lon,
-                    oldMap.center.lat
-                ];
-                var xy = ol.proj.transform(oldMap.center, 'EPSG:4326', 'EPSG:3857');
-                oldMap.center = {
-                    x: xy[0],
-                    y: xy[1]
-                };
-                this.libMap.dispose();
-            } else {
-                console.log('Unknown Library');
-                return;
-            }
-            var newMap = Gp.Map.load(oldMap.mapDiv, {
-                apiKey: oldMap.apiKey,
-                enginePath3d: oldMap.enginePath3d || null,
-                projection: oldMap.projection,
-                center: oldMap.center,
-                azimuth: oldMap.azimuth,
-                tilt: oldMap.tilt,
-                zoom: oldMap.zoom,
-                library: library,
-                layersOptions: oldMap.layersOptions,
-                controlsOptions: oldMap.controlsOptions
-            });
-            return newMap;
-        },
         switchToLibITOL3: function (library) {
             var oldMap = {};
             oldMap.projection = this.getProjection();
@@ -59771,6 +59884,9 @@ IMap = function (Logger) {
                 this.removeControls(controlId);
             }
             if (library === 'itowns') {
+                for (var l = 0; l < this._3Dlayers.length; l++) {
+                    oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                }
                 oldMap.center = [
                     oldMap.center.x,
                     oldMap.center.y
@@ -59780,7 +59896,7 @@ IMap = function (Logger) {
                     x: lonlat[0],
                     y: lonlat[1]
                 };
-                oldMap.azimuth = this.getAzimuth() + 90;
+                oldMap.azimuth = this.getAzimuth();
                 this.libMap.setTarget(null);
             } else if (library === 'ol3') {
                 oldMap.center = [
@@ -59903,7 +60019,6 @@ IMap = function (Logger) {
                 case 'WMS':
                 case 'WMTS':
                 case 'OSM':
-                case 'VIRTUALGEO':
                     this._addRasterLayer(addLayerParam);
                     break;
                 default:
@@ -60082,15 +60197,14 @@ IMap = function (Logger) {
                     break;
                 default:
                     console.log('Controle ' + controlId + 'inconnu.');
+                    continue;
                 }
-                if (controlObj) {
-                    this.logger.trace('[IMap] addControls : registering : [' + controlId + ']');
-                    this._controls.push({
-                        obj: controlObj,
-                        id: controlId.toLowerCase(),
-                        options: controlOpts
-                    });
-                }
+                this.logger.trace('[IMap] addControls : registering : [' + controlId + ']');
+                this._controls.push({
+                    obj: controlObj || '2D-only-control',
+                    id: controlId.toLowerCase(),
+                    options: controlOpts
+                });
             }
         },
         setDraggable: function (controlOpts) {
@@ -60433,14 +60547,14 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 }
             }
             var positionOnGlobe = {
-                longitude: this.mapOptions.center.x,
-                latitude: this.mapOptions.center.y,
+                longitude: this.mapOptions.center.x || 2,
+                latitude: this.mapOptions.center.y || 48,
                 altitude: 25000000
             };
             var viewerDiv = this.div;
             this.libMap = new Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe, { maxSubdivisionLevel: 18 });
             var self = this;
-            this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+            this.libMap.listen(Itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
                 window.setTimeout(function () {
                     self.div.style.visibility = '';
                 }, 1);
@@ -60482,7 +60596,7 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
     IT.prototype._onMapClick = function (evt) {
         this.logger.trace('[IT] : _onMapClick...');
         this._removeInfoDivs();
-        var visibleFeatures = this.libMap.getFeaturesAtPixel(evt);
+        var visibleFeatures = this.libMap.getFeaturesAtMousePosition(evt);
         if (visibleFeatures.length == 0) {
             return;
         }
@@ -60841,14 +60955,14 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         var layerId = Object.keys(layerObj)[0];
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat();
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDeaultFormat();
             if (layerObj[layerId].format === 'WMS') {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
                 layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
             }
             if (layerObj[layerId].format === 'WMTS') {
                 layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID();
-                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimit;
+                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimits;
                 layerObj[layerId].layer = layerId || layerConf.getName();
                 layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name;
             }
@@ -60859,6 +60973,10 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         this.logger.trace('[IT] - setXYCenter');
         if (!point.hasOwnProperty('x') || !point.hasOwnProperty('y')) {
             console.log('no valid coordinates for map center');
+            return;
+        }
+        if (point.location && point.location.trim().length > 0) {
+            console.log('point object has location property to center on...');
             return;
         }
         if (point.hasOwnProperty('projection') && point.projection !== 'EPSG:4326' && proj4.defs(point.projection)) {
@@ -60912,7 +61030,9 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         if (zoom) {
             position.zoom = zoom;
         }
-        this.libMap.setCameraTargetGeoPosition(position);
+        this.libMap.onCameraMoveStop(function () {
+            this.libMap.setCameraTargetGeoPosition(position);
+        }.bind(this));
         this.logger.trace('[IT] - setAutoCenter(' + point.x + ',' + point.y + ')');
     };
     IT.prototype.getCenter = function () {
@@ -61255,14 +61375,13 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         }
         context = context || this;
         var map = this;
+        var key = null;
         switch (eventId) {
-        case 'mapLoaded':
         case 'mapFailure':
             break;
+        case 'mapLoaded':
         case 'located':
-            break;
         case 'geolocated':
-            break;
         case 'configured':
             break;
         case 'centerChanged':
@@ -61287,10 +61406,7 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 }
                 action.call(context, centerChangedEvt);
             };
-            var registredEvent = this._registerEvent(callBackCenterChanged, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-            registredEvent.eventType = 'camera-target-changed';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
             break;
         case 'zoomChanged':
             var oldZoom = context.getZoom();
@@ -61305,13 +61421,10 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                 });
                 oldZoom = newZoom;
             };
-            var registredEvent = this._registerEvent(callbackZoomchange, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-            registredEvent.eventType = 'range-changed';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
         case 'azimuthChanged':
-            var callbackAzimuthchange = function (itEvent) {
+            var callbackAzimuthChange = function (itEvent) {
                 if (itEvent.new.heading === itEvent.previous.heading) {
                     return;
                 }
@@ -61320,13 +61433,10 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     newAzimuth: itEvent.new.heading
                 });
             };
-            var registredEvent = this._registerEvent(callbackAzimuthchange, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-            registredEvent.eventType = 'orientation-changed';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
         case 'tiltChanged':
-            var callbackTiltchange = function (itEvent) {
+            var callbackTiltChange = function (itEvent) {
                 if (itEvent.new.tilt === itEvent.previous.tilt) {
                     return;
                 }
@@ -61335,10 +61445,7 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     newTilt: itEvent.new.tilt
                 });
             };
-            var registredEvent = this._registerEvent(callbackTiltchange, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-            registredEvent.eventType = 'orientation-changed';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
             break;
         case 'projectionChanged':
             break;
@@ -61361,29 +61468,26 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                     position: layerIndex
                 });
             };
-            var registredEvent = this._registerEvent(callbackLayerAdded, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView();
-            registredEvent.eventType = 'layer-added';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
+            map._registerEvent(key, eventId, action, context);
             var callbackLayerRemoved = function (itevt) {
                 var lremoved = itevt;
                 var layerOpts = map._getLayerOpts(lremoved.layerId) || map._getLayerOpts(lremoved.layerId, map._layersRemoved);
                 action.call(context, { layerRemoved: layerOpts });
             };
-            var registredEvent = this._registerEvent(callbackLayerRemoved, eventId, action, context);
-            registredEvent.eventOrigin = this.libMap.getGlobeView();
-            registredEvent.eventType = 'layer-removed';
-            registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this);
+            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
+            map._registerEvent(key, eventId, action, context);
             for (var obsProperty in IT.LAYERPROPERTIES) {
-                this.libMap.getColorLayers().forEach(function (itLayer) {
+                map.libMap.getColorLayers().forEach(function (itLayer) {
                     var layerOpts = map._getLayerOpts(itLayer.id);
                     var callbackLayerChanged = function (itevt) {
-                        var key = itevt.type.replace('-property-changed', '');
+                        var layerEvtinfos = map.libMap.getLayerEventInfos(itevt);
+                        var key = layerEvtinfos.propertyName;
                         var oldItObj = {};
-                        oldItObj[key] = itevt.previous[key];
+                        oldItObj[key] = layerEvtinfos.previousValue;
                         var oldCommonProp = map._getCommonLayerParams(oldItObj);
                         var newItObj = {};
-                        newItObj[key] = itevt.new[key];
+                        newItObj[key] = layerEvtinfos.newValue;
                         var newCommonProp = map._getCommonLayerParams(newItObj);
                         action.call(context, {
                             property: IT.LAYERPROPERTIES[key],
@@ -61392,10 +61496,10 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
                             layerChanged: layerOpts
                         });
                     };
-                    var registredEvent = map._registerEvent(callbackLayerChanged, eventId, action, context);
-                    registredEvent.eventOrigin = itLayer;
-                    registredEvent.eventType = obsProperty + '-property-changed';
-                    registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerChanged, this);
+                    var type = obsProperty === 'visible' ? Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED : obsProperty === 'opacity' ? Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED : Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED;
+                    key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
+                    map._registerEvent(key, eventId, action, context);
+                    key = null;
                 });
             }
             ;
@@ -61405,12 +61509,29 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         default:
             console.log('unhandled event  : ' + eventId);
         }
+        if (key) {
+            this._registerEvent(key, eventId, action, context);
+        }
         return true;
     };
     IT.prototype.forget = function (eventId, action) {
         this.logger.trace('[IT]  : forget...');
         if (!IMap.prototype.forget.apply(this, arguments)) {
             return false;
+        }
+        var rEvents = this._events[eventId];
+        if (!rEvents) {
+            console.log('nothing to forget for : ' + eventId);
+            return false;
+        }
+        var evKey = null;
+        for (var i = rEvents.length - 1; i >= 0; i--) {
+            if (rEvents[i].action == action) {
+                evKey = rEvents[i].key;
+                rEvents.splice(i, 1);
+                this.logger.trace('[IT] : forgetting : ' + eventId + ' (' + evKey + ')');
+                this.libMap.forgetByKey(evKey);
+            }
         }
     };
     IT.prototype.getLibMap = function () {
@@ -62746,105 +62867,117 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
     OL3.prototype._addRasterLayer = function (layerObj) {
         var layerId = Object.keys(layerObj)[0];
         var layerOpts = layerObj[layerId];
-        var constructorOpts = this._applyCommonLayerParams(layerOpts);
-        switch (layerOpts.format.toUpperCase()) {
-        case 'WMS':
-            this.logger.trace('ajout d\'une couche WMS');
-            var params = {};
-            params.LAYERS = layerOpts.layers.join(',');
-            if (layerOpts.version) {
-                params.VERSION = layerOpts.version;
-            }
-            layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName;
-            if (layerOpts.stylesNames) {
-                if (Array.isArray(layerOpts.stylesNames)) {
-                    params.STYLES = layerOpts.stylesNames.join();
-                } else {
-                    console.log('\'stylesNames\' parameter should be an array of style names (string)');
+        if (layerOpts.isElevation !== true) {
+            var constructorOpts = this._applyCommonLayerParams(layerOpts);
+            switch (layerOpts.format.toUpperCase()) {
+            case 'WMS':
+                this.logger.trace('ajout d\'une couche WMS');
+                var params = {};
+                params.LAYERS = layerOpts.layers.join(',');
+                if (layerOpts.version) {
+                    params.VERSION = layerOpts.version;
                 }
+                layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName;
+                if (layerOpts.stylesNames) {
+                    if (Array.isArray(layerOpts.stylesNames)) {
+                        params.STYLES = layerOpts.stylesNames.join();
+                    } else {
+                        console.log('\'stylesNames\' parameter should be an array of style names (string)');
+                    }
+                }
+                if (layerOpts.outputFormat) {
+                    params.FORMAT = layerOpts.outputFormat;
+                }
+                if (layerOpts.backgroundColor) {
+                    params.BGCOLOR = layerOpts.backgroundColor;
+                    params.TRANSPARENT = 'FALSE';
+                } else {
+                    params.TRANSPARENT = 'TRUE';
+                }
+                var sourceOpts = {
+                    url: layerOpts.url,
+                    params: params
+                };
+                if (layerOpts.hasOwnProperty('projection')) {
+                    sourceOpts.projection = layerOpts.projection;
+                }
+                if (layerOpts.hasOwnProperty('tiled') && layerOpts.tiled === true) {
+                    constructorOpts.source = new ol.source.TileWMS(sourceOpts);
+                } else {
+                    constructorOpts.source = new ol.source.ImageWMS(sourceOpts);
+                }
+                break;
+            case 'WMTS':
+                this.logger.trace('ajout d\'une couche WMTS');
+                var lOpts = this._getWMTSDefaultOpts();
+                for (var opt in layerOpts) {
+                    lOpts[opt] = layerOpts[opt];
+                }
+                layerOpts = lOpts;
+                var sourceOpts = {
+                    url: layerOpts.url,
+                    layer: layerOpts.layer,
+                    matrixSet: layerOpts.tileMatrixSet,
+                    format: layerOpts.outputFormat,
+                    version: layerOpts.version,
+                    style: layerOpts.styleName,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: [
+                            layerOpts.topLeftCorner.x,
+                            layerOpts.topLeftCorner.y
+                        ],
+                        resolutions: layerOpts.resolutions,
+                        matrixIds: layerOpts.matrixIds
+                    })
+                };
+                if (layerOpts.url.indexOf('{TileMatrixSet}') > 0 || layerOpts.url.indexOf('{TileRow}') > 0 || layerOpts.url.indexOf('{TileCol}') > 0) {
+                    sourceOpts.requestEncoding = 'REST';
+                } else {
+                    sourceOpts.requestEncoding = 'KVP';
+                }
+                constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
+                break;
+            case 'OSM':
+                this.logger.trace('ajout d\'une couche OSM');
+                constructorOpts.source = new ol.source.OSM({ url: layerOpts.url });
+                break;
+            default:
             }
-            if (layerOpts.outputFormat) {
-                params.FORMAT = layerOpts.outputFormat;
+            if (constructorOpts.hasOwnProperty('source')) {
+                if (layerOpts.hasOwnProperty('originators')) {
+                    constructorOpts.source._originators = layerOpts.originators;
+                }
+                var layer = null;
+                if (layerOpts.format.toUpperCase() == 'WMS' && (!layerOpts.hasOwnProperty('tiled') || layerOpts.tiled !== true)) {
+                    layer = new ol.layer.Image(constructorOpts);
+                } else {
+                    layer = new ol.layer.Tile(constructorOpts);
+                }
+                if (constructorOpts.hasOwnProperty('zIndex') && constructorOpts.zIndex === 0) {
+                    layer._forceNullzIndex = true;
+                }
+                var gpLayer = {
+                    id: layerId,
+                    obj: layer,
+                    options: layerOpts
+                };
+                if (layerOpts.hasOwnProperty('grayScaled') && layerOpts.grayScaled) {
+                    this._colorGrayscaleLayerSwitch(gpLayer, true);
+                }
+                this._layers.push(gpLayer);
+                this.libMap.addLayer(gpLayer.obj);
+                this._addLayerConfToLayerSwitcher(gpLayer.obj, layerOpts);
             }
-            if (layerOpts.backgroundColor) {
-                params.BGCOLOR = layerOpts.backgroundColor;
-                params.TRANSPARENT = 'FALSE';
-            } else {
-                params.TRANSPARENT = 'TRUE';
-            }
-            var sourceOpts = {
-                url: layerOpts.url,
-                params: params
-            };
-            if (layerOpts.hasOwnProperty('projection')) {
-                sourceOpts.projection = layerOpts.projection;
-            }
-            if (layerOpts.hasOwnProperty('tiled') && layerOpts.tiled === true) {
-                constructorOpts.source = new ol.source.TileWMS(sourceOpts);
-            } else {
-                constructorOpts.source = new ol.source.ImageWMS(sourceOpts);
-            }
-            break;
-        case 'WMTS':
-            this.logger.trace('ajout d\'une couche WMTS');
-            var lOpts = this._getWMTSDefaultOpts();
-            for (var opt in layerOpts) {
-                lOpts[opt] = layerOpts[opt];
-            }
-            layerOpts = lOpts;
-            var sourceOpts = {
-                url: layerOpts.url,
-                layer: layerOpts.layer,
-                matrixSet: layerOpts.tileMatrixSet,
-                format: layerOpts.outputFormat,
-                version: layerOpts.version,
-                style: layerOpts.styleName,
-                tileGrid: new ol.tilegrid.WMTS({
-                    origin: [
-                        layerOpts.topLeftCorner.x,
-                        layerOpts.topLeftCorner.y
-                    ],
-                    resolutions: layerOpts.resolutions,
-                    matrixIds: layerOpts.matrixIds
-                })
-            };
-            if (layerOpts.url.indexOf('{TileMatrixSet}') > 0 || layerOpts.url.indexOf('{TileRow}') > 0 || layerOpts.url.indexOf('{TileCol}') > 0) {
-                sourceOpts.requestEncoding = 'REST';
-            } else {
-                sourceOpts.requestEncoding = 'KVP';
-            }
-            constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
-            break;
-        case 'OSM':
-            this.logger.trace('ajout d\'une couche OSM');
-            constructorOpts.source = new ol.source.OSM({ url: layerOpts.url });
-            break;
-        default:
-        }
-        if (constructorOpts.hasOwnProperty('source')) {
-            if (layerOpts.hasOwnProperty('originators')) {
-                constructorOpts.source._originators = layerOpts.originators;
-            }
-            var layer = null;
-            if (layerOpts.format.toUpperCase() == 'WMS' && (!layerOpts.hasOwnProperty('tiled') || layerOpts.tiled !== true)) {
-                layer = new ol.layer.Image(constructorOpts);
-            } else {
-                layer = new ol.layer.Tile(constructorOpts);
-            }
-            if (constructorOpts.hasOwnProperty('zIndex') && constructorOpts.zIndex === 0) {
-                layer._forceNullzIndex = true;
-            }
-            var gpLayer = {
+        } else {
+            var elevationLayer = {
                 id: layerId,
-                obj: layer,
+                obj: '3D-only-layer',
                 options: layerOpts
             };
-            if (layerOpts.hasOwnProperty('grayScaled') && layerOpts.grayScaled) {
-                this._colorGrayscaleLayerSwitch(gpLayer, true);
+            if (!this._3Dlayers) {
+                this._3Dlayers = [];
             }
-            this._layers.push(gpLayer);
-            this.libMap.addLayer(gpLayer.obj);
-            this._addLayerConfToLayerSwitcher(gpLayer.obj, layerOpts);
+            this._3Dlayers.push(elevationLayer);
         }
     };
     OL3.prototype._addVectorLayer = function (layerObj) {
@@ -63494,19 +63627,6 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
         }
         source.refresh();
     };
-    OL3.prototype._manageLayerChangedEvent = function () {
-        if (this._events.hasOwnProperty('layerChanged')) {
-            var layerChangedArray = [];
-            this._events['layerChanged'].forEach(function (eventObj) {
-                layerChangedArray.push(eventObj);
-            }, this);
-            layerChangedArray.forEach(function (eventObj) {
-                this.forget('layerChanged', eventObj.action);
-                this.listen('layerChanged', eventObj.action, eventObj.context);
-            }, this);
-            layerChangedArray = null;
-        }
-    };
     return OL3;
 }(UtilsLoggerByDefault, ol, gp, IMap);
 Map = function (Logger, require) {
@@ -63529,13 +63649,9 @@ Map = function (Logger, require) {
                 mapOptions.library = 'ol3';
             }
             var OL3 = null;
-            var VG = null;
             var IT = null;
             if (this.__classOl !== null && typeof this.__classOl === 'function') {
                 OL3 = this.__classOl;
-            }
-            if (this.__classVg !== null && typeof this.__classVg === 'function') {
-                VG = this.__classVg;
             }
             if (this.__classItowns !== null && typeof this.__classItowns === 'function') {
                 IT = this.__classItowns;
@@ -63549,16 +63665,6 @@ Map = function (Logger, require) {
                     throw new Error('library ol is not loaded !');
                 }
                 objMap = new OL3({
-                    div: div,
-                    mapOptions: mapOptions
-                });
-                break;
-            case 'vg':
-                logger.trace('construction du globe virtualGeo 3D');
-                if (VG === null || typeof VG !== 'function') {
-                    throw new Error('library vg is not loaded !');
-                }
-                objMap = new VG({
                     div: div,
                     mapOptions: mapOptions
                 });
@@ -63585,6 +63691,7 @@ Map = function (Logger, require) {
     var centerChangedEvent = {};
     var zoomChangedEvent = {};
     var azimuthChangedEvent = {};
+    var tiltChangedEvent = {};
     var layerChangedEvent = {};
     var geolocatedEvent = {};
     var locatedEvent = {};
@@ -63602,12 +63709,7 @@ AHN = function (Map, require) {
     var scope = typeof window !== 'undefined' ? window : {};
     var Gp = scope.Gp || {};
     Gp.Map = Map;
-    if (typeof ol3OL3 !== 'undefined' && typeof virtualVG !== 'undefined') {
-        console.log('Lib. ol3 et virtualgeo détectées !');
-        Gp.Map.__classOl = ol3OL3;
-        Gp.Map.__classVg = virtualVG;
-        Gp.Map._class = Gp.Map.__classOl.prototype;
-    } else if (typeof ol3OL3 !== 'undefined' && typeof it2IT !== 'undefined') {
+    if (typeof ol3OL3 !== 'undefined' && typeof it2IT !== 'undefined') {
         console.log('Lib. ol3 et itowns détectées !');
         Gp.Map.__classOl = ol3OL3;
         Gp.Map.__classItowns = it2IT;
@@ -63616,10 +63718,6 @@ AHN = function (Map, require) {
         console.log('Lib. ol3 détectée !');
         Gp.Map.__classOl = ol3OL3;
         Gp.Map._class = Gp.Map.__classOl.prototype;
-    } else if (typeof virtualVG !== 'undefined') {
-        console.log('Lib. virtualgeo détectée !');
-        Gp.Map.__classVg = virtualVG;
-        Gp.Map._class = Gp.Map.__classVg.prototype;
     } else if (typeof it2IT !== 'undefined') {
         console.log('Lib. itowns détectée !');
         Gp.Map.__classItowns = it2IT;
@@ -63627,8 +63725,8 @@ AHN = function (Map, require) {
     } else {
         console.log('Aucune lib. détectée !?');
     }
-    Gp.sdkVersion = '1.0.0';
-    Gp.sdkDate = '2018-04-09';
+    Gp.sdkVersion = '1.1.0';
+    Gp.sdkDate = '2018-04-10';
     scope.Gp = Gp;
     return scope.Gp;
 }(Map, {});

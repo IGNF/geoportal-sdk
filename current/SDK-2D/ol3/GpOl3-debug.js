@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 1.0.0
- * @date 2018-04-09
+ * @version 1.1.0
+ * @date 2018-04-10
  *
  */
 /*!
@@ -34,7 +34,7 @@
 }(this, function() {
 
 /* BEGIN CODE */
-var log4js, loggerCfg, UtilsLoggerByDefault, ol, gp, IMap, ol3OL3, Map, AHN;
+var log4js, loggerCfg, UtilsLoggerByDefault, ol, gp, sortable, IMap, ol3OL3, Map, AHN;
 (function (rootRequire) {
     log4js = function () {
         var requirejs, require, define;
@@ -27088,26 +27088,32 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         gp = function (ol) {
             return typeof factory === 'function' ? factory(ol) : factory;
         }(ol);
+    } else if (typeof exports === 'object' && module.exports) {
+        module.exports = factory(openlayers);
     } else if (typeof exports === 'object') {
-        module.exports = factory(ol);
+        exports['Gp'] = factory(openlayers);
     } else {
         root.Gp = factory(root.ol);
     }
-}(this, function (ol) {
+}(typeof self !== 'undefined' ? self : this, function (ol) {
     var request, xmldom;
-    var gp, CommonUtilsAutoLoadConfig, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, CommonUtilsConfig, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, CommonUtilsSelectorID, sortable, CommonControlsLayerSwitcherDOM, Ol3ControlsLayerSwitcher, CommonControlsGetFeatureInfoDOM, Ol3ControlsGetFeatureInfo, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonControlsSearchEngineDOM, CommonControlsSearchEngineUtils, Ol3ControlsSearchEngine, CommonUtilsMathUtils, CommonControlsMousePositionDOM, Ol3ControlsMousePosition, Ol3ControlsUtilsInteractions, CommonControlsDrawingDOM, Ol3ControlsDrawing, CommonControlsLocationSelectorDOM, Ol3ControlsLocationSelector, CommonControlsRouteDOM, Ol3ControlsRoute, CommonControlsIsoDOM, Ol3ControlsIsocurve, CommonControlsReverseGeocodingDOM, Ol3ControlsReverseGeocode, CommonControlsLayerImportDOM, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsMeasuresMeasures, CommonControlsMeasureToolBoxDOM, Ol3ControlsMeasureToolBox, CommonControlsElevationPathDOM, Ol3ControlsElevationPath, CommonControlsMeasureLengthDOM, Ol3ControlsMeasuresMeasureLength, CommonControlsMeasureAreaDOM, Ol3ControlsMeasuresMeasureArea, CommonControlsMeasureAzimuthDOM, Ol3ControlsMeasuresMeasureAzimuth, Ol3GpPluginOl3;
+    var gp, proj4, sortable;
+    var CommonUtilsAutoLoadConfig, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, CommonUtilsConfig, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, CommonUtilsSelectorID, CommonControlsLayerSwitcherDOM, Ol3ControlsLayerSwitcher, CommonControlsGetFeatureInfoDOM, Ol3ControlsGetFeatureInfo, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonUtilsSearchEngineUtils, CommonControlsSearchEngineDOM, Ol3ControlsSearchEngine, CommonUtilsMathUtils, CommonControlsMousePositionDOM, Ol3ControlsMousePosition, Ol3ControlsUtilsInteractions, CommonControlsDrawingDOM, Ol3ControlsDrawing, CommonControlsLocationSelectorDOM, Ol3ControlsLocationSelector, CommonControlsRouteDOM, Ol3ControlsRoute, CommonControlsIsoDOM, Ol3ControlsIsocurve, CommonControlsReverseGeocodingDOM, Ol3ControlsReverseGeocode, CommonControlsLayerImportDOM, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsMeasuresMeasures, CommonControlsMeasureToolBoxDOM, Ol3ControlsMeasureToolBox, CommonControlsElevationPathDOM, CommonControlsProfileElevationPathDOM, Ol3ControlsElevationPath, CommonControlsMeasureLengthDOM, Ol3ControlsMeasuresMeasureLength, CommonControlsMeasureAreaDOM, Ol3ControlsMeasuresMeasureArea, CommonControlsMeasureAzimuthDOM, Ol3ControlsMeasuresMeasureAzimuth, Ol3GpPluginOl3;
     (function (root, factory) {
         if (true) {
             gp = function (require, require) {
                 return typeof factory === 'function' ? factory(require, require) : factory;
             }({}, {});
+        } else if (typeof exports === 'object' && module.exports) {
+            gp = module.exports = factory(request, xmldom);
         } else if (typeof exports === 'object') {
-            module.exports = factory(request, xmldom);
+            exports['Gp'] = factory(request, xmldom);
         } else {
-            root.Gp = factory(root.request, root.xmldom);
+            gp = root.Gp = factory(root.request, root.xmldom);
         }
-    }(this, function (request, xmldom) {
-        var log4js, loggerCfg, UtilsLoggerByDefault, UtilsHelper, es6Promise, ProtocolsXHR, UtilsMessagesResources, ExceptionsErrorService, ProtocolsJSONP, ProtocolsProtocol, ServicesDefaultUrlService, ServicesCommonService, ServicesAltiRequestModelAltiRequest, ServicesAltiRequestModelAltiElevationRequest, ServicesAltiRequestModelAltiProfilRequest, ServicesAltiRequestAltiRequestREST, FormatsWPS, ServicesAltiRequestAltiRequestWPS, ServicesAltiRequestAltiRequestFactory, FormatsXML, ServicesAltiResponseModelAltiResponse, ServicesAltiResponseModelElevation, ServicesAltiFormatsAltiResponseReader, ServicesAltiResponseAltiResponseFactory, ServicesAltiAlti, ServicesAutoConfResponseModelAutoConfResponse, ServicesAutoConfResponseModelConstraint, ServicesAutoConfResponseModelFormat, ServicesAutoConfResponseModelLayer, ServicesAutoConfResponseModelLegend, ServicesAutoConfResponseModelMetadata, ServicesAutoConfResponseModelOriginator, ServicesAutoConfResponseModelService, ServicesAutoConfResponseModelStyle, ServicesAutoConfResponseModelTerritory, ServicesAutoConfResponseModelThematic, ServicesAutoConfResponseModelTileMatrixSet, ServicesAutoConfResponseModelTileMatrix, ServicesAutoConfResponseModelTileMatrixLimit, ServicesAutoConfFormatsAutoConfResponseReader, ServicesAutoConfResponseAutoConfResponseFactory, ServicesAutoConfAutoConf, FormatsXLSRequestHeader, FormatsXLSRequest, FormatsXLSAbstractService, FormatsXLS, FormatsXLSLocationUtilityServiceModelAddress, FormatsXLSLocationUtilityServiceGeocodeFilterExtension, FormatsXLSLocationUtilityServiceGeocodeRequest, FormatsXLSLocationUtilityServiceModelPosition, FormatsXLSLocationUtilityServiceModelPreference, FormatsXLSLocationUtilityServiceReverseGeocodeRequest, FormatsXLSLocationUtilityService, ServicesGeocodeRequestGeocodeLocation, ServicesGeocodeRequestModelStreetAddress, ServicesGeocodeRequestModelPositionOfInterest, ServicesGeocodeRequestModelCadastralParcel, ServicesGeocodeRequestModelAdministratif, ServicesGeocodeRequestDirectGeocodeRequestFactory, ServicesGeocodeResponseModelGeocodeResponse, ServicesGeocodeResponseModelGeocodedLocation, ServicesGeocodeResponseModelDirectGeocodedLocation, ServicesGeocodeFormatsDirectGeocodeResponseReader, ServicesGeocodeResponseDirectGeocodeResponseFactory, ServicesGeocodeGeocode, ServicesGeocodeRequestReverseGeocodeRequestFactory, ServicesGeocodeResponseModelReverseGeocodedLocation, ServicesGeocodeFormatsReverseGeocodeResponseReader, ServicesGeocodeResponseReverseGeocodeResponseFactory, ServicesGeocodeReverseGeocode, ServicesAutoCompleteResponseModelAutoCompleteResponse, ServicesAutoCompleteResponseModelSuggestedLocation, ServicesAutoCompleteResponseAutoCompleteResponseFactory, ServicesAutoCompleteAutoComplete, FormatsXLSRouteServiceModelRoutePlan, FormatsXLSRouteServiceDetermineRouteRequest, FormatsXLSRouteServiceRouteRequestExtension, FormatsXLSRouteService, ServicesRouteRequestRouteRequestOLS, ServicesRouteRequestModelRouteParamREST, ServicesRouteRequestRouteRequestREST, ServicesRouteRequestRouteRequestFactory, FormatsWKT, ServicesRouteResponseModelRouteResponse, ServicesRouteResponseModelRouteInstruction, ServicesRouteFormatsRouteResponseRESTReader, ServicesRouteFormatsRouteResponseOLSReader, ServicesRouteResponseRouteResponseFactory, ServicesRouteRoute, ServicesProcessIsoCurveRequestModelProcessIsoCurveParam, ServicesProcessIsoCurveRequestProcessIsoCurveRequest, ServicesProcessIsoCurveResponseModelProcessIsoCurveResponse, ServicesProcessIsoCurveFormatsProcessIsoCurveResponseReader, ServicesProcessIsoCurveResponseProcessIsoCurveResponseFactory, ServicesProcessIsoCurveProcessIsoCurve, ServicesServices, Gp;
+    }(typeof self !== 'undefined' ? self : this, function (request, xmldom) {
+        var es6Promise;
+        var log4js, loggerCfg, UtilsLoggerByDefault, UtilsHelper, ProtocolsXHR, UtilsMessagesResources, ExceptionsErrorService, ProtocolsJSONP, ProtocolsProtocol, ServicesDefaultUrlService, ServicesCommonService, ServicesAltiRequestModelAltiRequest, ServicesAltiRequestModelAltiElevationRequest, ServicesAltiRequestModelAltiProfilRequest, ServicesAltiRequestAltiRequestREST, FormatsWPS, ServicesAltiRequestAltiRequestWPS, ServicesAltiRequestAltiRequestFactory, FormatsXML, ServicesAltiResponseModelAltiResponse, ServicesAltiResponseModelElevation, ServicesAltiFormatsAltiResponseReader, ServicesAltiResponseAltiResponseFactory, ServicesAltiAlti, ServicesAutoConfResponseModelAutoConfResponse, ServicesAutoConfResponseModelConstraint, ServicesAutoConfResponseModelFormat, ServicesAutoConfResponseModelLayer, ServicesAutoConfResponseModelLegend, ServicesAutoConfResponseModelMetadata, ServicesAutoConfResponseModelOriginator, ServicesAutoConfResponseModelService, ServicesAutoConfResponseModelStyle, ServicesAutoConfResponseModelTerritory, ServicesAutoConfResponseModelThematic, ServicesAutoConfResponseModelTileMatrixSet, ServicesAutoConfResponseModelTileMatrix, ServicesAutoConfResponseModelTileMatrixLimit, ServicesAutoConfFormatsAutoConfResponseReader, ServicesAutoConfResponseAutoConfResponseFactory, ServicesAutoConfAutoConf, FormatsXLSRequestHeader, FormatsXLSRequest, FormatsXLSAbstractService, FormatsXLS, FormatsXLSLocationUtilityServiceModelAddress, FormatsXLSLocationUtilityServiceGeocodeFilterExtension, FormatsXLSLocationUtilityServiceGeocodeRequest, FormatsXLSLocationUtilityServiceModelPosition, FormatsXLSLocationUtilityServiceModelPreference, FormatsXLSLocationUtilityServiceReverseGeocodeRequest, FormatsXLSLocationUtilityService, ServicesGeocodeRequestGeocodeLocation, ServicesGeocodeRequestModelStreetAddress, ServicesGeocodeRequestModelPositionOfInterest, ServicesGeocodeRequestModelCadastralParcel, ServicesGeocodeRequestModelAdministratif, ServicesGeocodeRequestDirectGeocodeRequestFactory, ServicesGeocodeResponseModelGeocodeResponse, ServicesGeocodeResponseModelGeocodedLocation, ServicesGeocodeResponseModelDirectGeocodedLocation, ServicesGeocodeFormatsDirectGeocodeResponseReader, ServicesGeocodeResponseDirectGeocodeResponseFactory, ServicesGeocodeGeocode, ServicesGeocodeRequestReverseGeocodeRequestFactory, ServicesGeocodeResponseModelReverseGeocodedLocation, ServicesGeocodeFormatsReverseGeocodeResponseReader, ServicesGeocodeResponseReverseGeocodeResponseFactory, ServicesGeocodeReverseGeocode, ServicesAutoCompleteResponseModelAutoCompleteResponse, ServicesAutoCompleteResponseModelSuggestedLocation, ServicesAutoCompleteResponseAutoCompleteResponseFactory, ServicesAutoCompleteAutoComplete, FormatsXLSRouteServiceModelRoutePlan, FormatsXLSRouteServiceDetermineRouteRequest, FormatsXLSRouteServiceRouteRequestExtension, FormatsXLSRouteService, ServicesRouteRequestRouteRequestOLS, ServicesRouteRequestModelRouteParamREST, ServicesRouteRequestRouteRequestREST, ServicesRouteRequestRouteRequestFactory, FormatsWKT, ServicesRouteResponseModelRouteResponse, ServicesRouteResponseModelRouteInstruction, ServicesRouteFormatsRouteResponseRESTReader, ServicesRouteFormatsRouteResponseOLSReader, ServicesRouteResponseRouteResponseFactory, ServicesRouteRoute, ServicesProcessIsoCurveRequestModelProcessIsoCurveParam, ServicesProcessIsoCurveRequestProcessIsoCurveRequest, ServicesProcessIsoCurveResponseModelProcessIsoCurveResponse, ServicesProcessIsoCurveFormatsProcessIsoCurveResponseReader, ServicesProcessIsoCurveResponseProcessIsoCurveResponseFactory, ServicesProcessIsoCurveProcessIsoCurve, ServicesServices, Gp;
         log4js = undefined;
         loggerCfg = {
             loggers: [{
@@ -27186,35 +27192,28 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             return Helper;
         }();
         (function (global, factory) {
-            if (true) {
-                es6Promise = function () {
-                    return typeof factory === 'function' ? factory() : factory;
-                }();
-            } else if (typeof exports === 'object') {
-                module.exports = factory();
-            } else {
-                global.ES6Promise = factory();
-            }
-        }(this, function () {
+            es6Promise = typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd && false ? define('es6-promise', factory) : global.ES6Promise = factory();
+        }(typeof self !== 'undefined' ? self : this, function () {
             'use strict';
             function objectOrFunction(x) {
-                return typeof x === 'function' || typeof x === 'object' && x !== null;
+                var type = typeof x;
+                return x !== null && (type === 'object' || type === 'function');
             }
             function isFunction(x) {
                 return typeof x === 'function';
             }
-            var _isArray = undefined;
-            if (!Array.isArray) {
+            var _isArray = void 0;
+            if (Array.isArray) {
+                _isArray = Array.isArray;
+            } else {
                 _isArray = function (x) {
                     return Object.prototype.toString.call(x) === '[object Array]';
                 };
-            } else {
-                _isArray = Array.isArray;
             }
             var isArray = _isArray;
             var len = 0;
-            var vertxNext = undefined;
-            var customSchedulerFn = undefined;
+            var vertxNext = void 0;
+            var customSchedulerFn = void 0;
             var asap = function asap(callback, arg) {
                 queue[len] = callback;
                 queue[len + 1] = arg;
@@ -27286,15 +27285,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             function attemptVertx() {
                 try {
-                    var r = require;
-                    var vertx = r('vertx');
+                    var vertx = Function('return this')().require('vertx');
                     vertxNext = vertx.runOnLoop || vertx.runOnContext;
                     return useVertxTimer();
                 } catch (e) {
                     return useSetTimeout();
                 }
             }
-            var scheduleFlush = undefined;
+            var scheduleFlush = void 0;
             if (isNode) {
                 scheduleFlush = useNextTick();
             } else if (BrowserMutationObserver) {
@@ -27307,7 +27305,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 scheduleFlush = useSetTimeout();
             }
             function then(onFulfillment, onRejection) {
-                var _arguments = arguments;
                 var parent = this;
                 var child = new this.constructor(noop);
                 if (child[PROMISE_ID] === undefined) {
@@ -27315,33 +27312,31 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
                 var _state = parent._state;
                 if (_state) {
-                    (function () {
-                        var callback = _arguments[_state - 1];
-                        asap(function () {
-                            return invokeCallback(_state, child, callback, parent._result);
-                        });
-                    }());
+                    var callback = arguments[_state - 1];
+                    asap(function () {
+                        return invokeCallback(_state, child, callback, parent._result);
+                    });
                 } else {
                     subscribe(parent, child, onFulfillment, onRejection);
                 }
                 return child;
             }
-            function resolve(object) {
+            function resolve$1(object) {
                 var Constructor = this;
                 if (object && typeof object === 'object' && object.constructor === Constructor) {
                     return object;
                 }
                 var promise = new Constructor(noop);
-                _resolve(promise, object);
+                resolve(promise, object);
                 return promise;
             }
-            var PROMISE_ID = Math.random().toString(36).substring(16);
+            var PROMISE_ID = Math.random().toString(36).substring(2);
             function noop() {
             }
             var PENDING = void 0;
             var FULFILLED = 1;
             var REJECTED = 2;
-            var GET_THEN_ERROR = new ErrorObject();
+            var TRY_CATCH_ERROR = { error: null };
             function selfFulfillment() {
                 return new TypeError('You cannot resolve a promise with itself');
             }
@@ -27352,27 +27347,27 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 try {
                     return promise.then;
                 } catch (error) {
-                    GET_THEN_ERROR.error = error;
-                    return GET_THEN_ERROR;
+                    TRY_CATCH_ERROR.error = error;
+                    return TRY_CATCH_ERROR;
                 }
             }
-            function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+            function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
                 try {
-                    then.call(value, fulfillmentHandler, rejectionHandler);
+                    then$$1.call(value, fulfillmentHandler, rejectionHandler);
                 } catch (e) {
                     return e;
                 }
             }
-            function handleForeignThenable(promise, thenable, then) {
+            function handleForeignThenable(promise, thenable, then$$1) {
                 asap(function (promise) {
                     var sealed = false;
-                    var error = tryThen(then, thenable, function (value) {
+                    var error = tryThen(then$$1, thenable, function (value) {
                         if (sealed) {
                             return;
                         }
                         sealed = true;
                         if (thenable !== value) {
-                            _resolve(promise, value);
+                            resolve(promise, value);
                         } else {
                             fulfill(promise, value);
                         }
@@ -27381,11 +27376,11 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             return;
                         }
                         sealed = true;
-                        _reject(promise, reason);
+                        reject(promise, reason);
                     }, 'Settle: ' + (promise._label || ' unknown promise'));
                     if (!sealed && error) {
                         sealed = true;
-                        _reject(promise, error);
+                        reject(promise, error);
                     }
                 }, promise);
             }
@@ -27393,34 +27388,34 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 if (thenable._state === FULFILLED) {
                     fulfill(promise, thenable._result);
                 } else if (thenable._state === REJECTED) {
-                    _reject(promise, thenable._result);
+                    reject(promise, thenable._result);
                 } else {
                     subscribe(thenable, undefined, function (value) {
-                        return _resolve(promise, value);
+                        return resolve(promise, value);
                     }, function (reason) {
-                        return _reject(promise, reason);
+                        return reject(promise, reason);
                     });
                 }
             }
-            function handleMaybeThenable(promise, maybeThenable, then$$) {
-                if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+            function handleMaybeThenable(promise, maybeThenable, then$$1) {
+                if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
                     handleOwnThenable(promise, maybeThenable);
                 } else {
-                    if (then$$ === GET_THEN_ERROR) {
-                        _reject(promise, GET_THEN_ERROR.error);
-                        GET_THEN_ERROR.error = null;
-                    } else if (then$$ === undefined) {
+                    if (then$$1 === TRY_CATCH_ERROR) {
+                        reject(promise, TRY_CATCH_ERROR.error);
+                        TRY_CATCH_ERROR.error = null;
+                    } else if (then$$1 === undefined) {
                         fulfill(promise, maybeThenable);
-                    } else if (isFunction(then$$)) {
-                        handleForeignThenable(promise, maybeThenable, then$$);
+                    } else if (isFunction(then$$1)) {
+                        handleForeignThenable(promise, maybeThenable, then$$1);
                     } else {
                         fulfill(promise, maybeThenable);
                     }
                 }
             }
-            function _resolve(promise, value) {
+            function resolve(promise, value) {
                 if (promise === value) {
-                    _reject(promise, selfFulfillment());
+                    reject(promise, selfFulfillment());
                 } else if (objectOrFunction(value)) {
                     handleMaybeThenable(promise, value, getThen(value));
                 } else {
@@ -27443,7 +27438,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     asap(publish, promise);
                 }
             }
-            function _reject(promise, reason) {
+            function reject(promise, reason) {
                 if (promise._state !== PENDING) {
                     return;
                 }
@@ -27468,7 +27463,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 if (subscribers.length === 0) {
                     return;
                 }
-                var child = undefined, callback = undefined, detail = promise._result;
+                var child = void 0, callback = void 0, detail = promise._result;
                 for (var i = 0; i < subscribers.length; i += 3) {
                     child = subscribers[i];
                     callback = subscribers[i + settled];
@@ -27480,10 +27475,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
                 promise._subscribers.length = 0;
             }
-            function ErrorObject() {
-                this.error = null;
-            }
-            var TRY_CATCH_ERROR = new ErrorObject();
             function tryCatch(callback, detail) {
                 try {
                     return callback(detail);
@@ -27493,7 +27484,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
             }
             function invokeCallback(settled, promise, callback, detail) {
-                var hasCallback = isFunction(callback), value = undefined, error = undefined, succeeded = undefined, failed = undefined;
+                var hasCallback = isFunction(callback), value = void 0, error = void 0, succeeded = void 0, failed = void 0;
                 if (hasCallback) {
                     value = tryCatch(callback, detail);
                     if (value === TRY_CATCH_ERROR) {
@@ -27504,7 +27495,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         succeeded = true;
                     }
                     if (promise === value) {
-                        _reject(promise, cannotReturnOwn());
+                        reject(promise, cannotReturnOwn());
                         return;
                     }
                 } else {
@@ -27513,24 +27504,24 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
                 if (promise._state !== PENDING) {
                 } else if (hasCallback && succeeded) {
-                    _resolve(promise, value);
+                    resolve(promise, value);
                 } else if (failed) {
-                    _reject(promise, error);
+                    reject(promise, error);
                 } else if (settled === FULFILLED) {
                     fulfill(promise, value);
                 } else if (settled === REJECTED) {
-                    _reject(promise, value);
+                    reject(promise, value);
                 }
             }
             function initializePromise(promise, resolver) {
                 try {
                     resolver(function resolvePromise(value) {
-                        _resolve(promise, value);
+                        resolve(promise, value);
                     }, function rejectPromise(reason) {
-                        _reject(promise, reason);
+                        reject(promise, reason);
                     });
                 } catch (e) {
-                    _reject(promise, e);
+                    reject(promise, e);
                 }
             }
             var id = 0;
@@ -27543,85 +27534,85 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 promise._result = undefined;
                 promise._subscribers = [];
             }
-            function Enumerator(Constructor, input) {
-                this._instanceConstructor = Constructor;
-                this.promise = new Constructor(noop);
-                if (!this.promise[PROMISE_ID]) {
-                    makePromise(this.promise);
-                }
-                if (isArray(input)) {
-                    this._input = input;
-                    this.length = input.length;
-                    this._remaining = input.length;
-                    this._result = new Array(this.length);
-                    if (this.length === 0) {
-                        fulfill(this.promise, this._result);
-                    } else {
-                        this.length = this.length || 0;
-                        this._enumerate();
-                        if (this._remaining === 0) {
-                            fulfill(this.promise, this._result);
-                        }
-                    }
-                } else {
-                    _reject(this.promise, validationError());
-                }
-            }
             function validationError() {
                 return new Error('Array Methods must be provided an Array');
             }
-            Enumerator.prototype._enumerate = function () {
-                var length = this.length;
-                var _input = this._input;
-                for (var i = 0; this._state === PENDING && i < length; i++) {
-                    this._eachEntry(_input[i], i);
+            var Enumerator = function () {
+                function Enumerator(Constructor, input) {
+                    this._instanceConstructor = Constructor;
+                    this.promise = new Constructor(noop);
+                    if (!this.promise[PROMISE_ID]) {
+                        makePromise(this.promise);
+                    }
+                    if (isArray(input)) {
+                        this.length = input.length;
+                        this._remaining = input.length;
+                        this._result = new Array(this.length);
+                        if (this.length === 0) {
+                            fulfill(this.promise, this._result);
+                        } else {
+                            this.length = this.length || 0;
+                            this._enumerate(input);
+                            if (this._remaining === 0) {
+                                fulfill(this.promise, this._result);
+                            }
+                        }
+                    } else {
+                        reject(this.promise, validationError());
+                    }
                 }
-            };
-            Enumerator.prototype._eachEntry = function (entry, i) {
-                var c = this._instanceConstructor;
-                var resolve$$ = c.resolve;
-                if (resolve$$ === resolve) {
-                    var _then = getThen(entry);
-                    if (_then === then && entry._state !== PENDING) {
-                        this._settledAt(entry._state, i, entry._result);
-                    } else if (typeof _then !== 'function') {
+                Enumerator.prototype._enumerate = function _enumerate(input) {
+                    for (var i = 0; this._state === PENDING && i < input.length; i++) {
+                        this._eachEntry(input[i], i);
+                    }
+                };
+                Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
+                    var c = this._instanceConstructor;
+                    var resolve$$1 = c.resolve;
+                    if (resolve$$1 === resolve$1) {
+                        var _then = getThen(entry);
+                        if (_then === then && entry._state !== PENDING) {
+                            this._settledAt(entry._state, i, entry._result);
+                        } else if (typeof _then !== 'function') {
+                            this._remaining--;
+                            this._result[i] = entry;
+                        } else if (c === Promise$1) {
+                            var promise = new c(noop);
+                            handleMaybeThenable(promise, entry, _then);
+                            this._willSettleAt(promise, i);
+                        } else {
+                            this._willSettleAt(new c(function (resolve$$1) {
+                                return resolve$$1(entry);
+                            }), i);
+                        }
+                    } else {
+                        this._willSettleAt(resolve$$1(entry), i);
+                    }
+                };
+                Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
+                    var promise = this.promise;
+                    if (promise._state === PENDING) {
                         this._remaining--;
-                        this._result[i] = entry;
-                    } else if (c === Promise) {
-                        var promise = new c(noop);
-                        handleMaybeThenable(promise, entry, _then);
-                        this._willSettleAt(promise, i);
-                    } else {
-                        this._willSettleAt(new c(function (resolve$$) {
-                            return resolve$$(entry);
-                        }), i);
+                        if (state === REJECTED) {
+                            reject(promise, value);
+                        } else {
+                            this._result[i] = value;
+                        }
                     }
-                } else {
-                    this._willSettleAt(resolve$$(entry), i);
-                }
-            };
-            Enumerator.prototype._settledAt = function (state, i, value) {
-                var promise = this.promise;
-                if (promise._state === PENDING) {
-                    this._remaining--;
-                    if (state === REJECTED) {
-                        _reject(promise, value);
-                    } else {
-                        this._result[i] = value;
+                    if (this._remaining === 0) {
+                        fulfill(promise, this._result);
                     }
-                }
-                if (this._remaining === 0) {
-                    fulfill(promise, this._result);
-                }
-            };
-            Enumerator.prototype._willSettleAt = function (promise, i) {
-                var enumerator = this;
-                subscribe(promise, undefined, function (value) {
-                    return enumerator._settledAt(FULFILLED, i, value);
-                }, function (reason) {
-                    return enumerator._settledAt(REJECTED, i, reason);
-                });
-            };
+                };
+                Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
+                    var enumerator = this;
+                    subscribe(promise, undefined, function (value) {
+                        return enumerator._settledAt(FULFILLED, i, value);
+                    }, function (reason) {
+                        return enumerator._settledAt(REJECTED, i, reason);
+                    });
+                };
+                return Enumerator;
+            }();
             function all(entries) {
                 return new Enumerator(this, entries).promise;
             }
@@ -27640,10 +27631,10 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     });
                 }
             }
-            function reject(reason) {
+            function reject$1(reason) {
                 var Constructor = this;
                 var promise = new Constructor(noop);
-                _reject(promise, reason);
+                reject(promise, reason);
                 return promise;
             }
             function needsResolver() {
@@ -27652,31 +27643,44 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             function needsNew() {
                 throw new TypeError('Failed to construct \'Promise\': Please use the \'new\' operator, this object constructor cannot be called as a function.');
             }
-            function Promise(resolver) {
-                this[PROMISE_ID] = nextId();
-                this._result = this._state = undefined;
-                this._subscribers = [];
-                if (noop !== resolver) {
-                    typeof resolver !== 'function' && needsResolver();
-                    this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+            var Promise$1 = function () {
+                function Promise(resolver) {
+                    this[PROMISE_ID] = nextId();
+                    this._result = this._state = undefined;
+                    this._subscribers = [];
+                    if (noop !== resolver) {
+                        typeof resolver !== 'function' && needsResolver();
+                        this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+                    }
                 }
-            }
-            Promise.all = all;
-            Promise.race = race;
-            Promise.resolve = resolve;
-            Promise.reject = reject;
-            Promise._setScheduler = setScheduler;
-            Promise._setAsap = setAsap;
-            Promise._asap = asap;
-            Promise.prototype = {
-                constructor: Promise,
-                then: then,
-                'catch': function _catch(onRejection) {
+                Promise.prototype.catch = function _catch(onRejection) {
                     return this.then(null, onRejection);
-                }
-            };
+                };
+                Promise.prototype.finally = function _finally(callback) {
+                    var promise = this;
+                    var constructor = promise.constructor;
+                    return promise.then(function (value) {
+                        return constructor.resolve(callback()).then(function () {
+                            return value;
+                        });
+                    }, function (reason) {
+                        return constructor.resolve(callback()).then(function () {
+                            throw reason;
+                        });
+                    });
+                };
+                return Promise;
+            }();
+            Promise$1.prototype.then = then;
+            Promise$1.all = all;
+            Promise$1.race = race;
+            Promise$1.resolve = resolve$1;
+            Promise$1.reject = reject$1;
+            Promise$1._setScheduler = setScheduler;
+            Promise$1._setAsap = setAsap;
+            Promise$1._asap = asap;
             function polyfill() {
-                var local = undefined;
+                var local = void 0;
                 if (typeof global !== 'undefined') {
                     local = global;
                 } else if (typeof self !== 'undefined') {
@@ -27699,11 +27703,11 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         return;
                     }
                 }
-                local.Promise = Promise;
+                local.Promise = Promise$1;
             }
-            Promise.polyfill = polyfill;
-            Promise.Promise = Promise;
-            return Promise;
+            Promise$1.polyfill = polyfill;
+            Promise$1.Promise = Promise$1;
+            return Promise$1;
         }));
         ProtocolsXHR = function (Logger, Helper, ES6Promise, require) {
             var XHR = {
@@ -27780,11 +27784,12 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             if (options.data && typeof options.data === 'string' && corps) {
                                 options.body = options.data;
                             }
+                            options.rejectUnauthorized = false;
                             req(options, function (error, response, body) {
                                 if (!error && response.statusCode == 200 && body) {
                                     resolve(body);
                                 } else {
-                                    reject('Errors Occured on Http Request (nodejs) : ' + body);
+                                    reject('Errors Occured on Http Request (nodejs) : ' + error);
                                 }
                             });
                         } else {
@@ -27869,7 +27874,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 __callJSON: function (options) {
                     return this.__call(options).then(JSON.parse).catch(function (error) {
                         console.log('_callJSON failed on : ', options.url, error);
-                        throw error;
                     });
                 },
                 __callXML: function (options) {
@@ -27891,7 +27895,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         return xmlDoc;
                     }).catch(function (error) {
                         console.log('__callXML failed on : ', options.url, error);
-                        throw error;
                     });
                 }
             };
@@ -28132,57 +28135,61 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             return Protocol;
         }(UtilsHelper, ProtocolsXHR, ProtocolsJSONP);
         ServicesDefaultUrlService = function () {
-            var isBrowser = typeof window !== 'undefined' ? true : false;
-            var protocol = isBrowser ? location && location.protocol && location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : 'http://';
-            var hostname = 'wxs.ign.fr';
-            var keyname = '%KEY%';
-            var url = protocol + hostname.concat('/', keyname);
-            var fkey = function (key) {
-                return this._key.replace(key ? keyname : null, key);
-            };
+            var ISBROWSER = typeof window !== 'undefined' ? true : false;
+            var HOSTNAME = 'wxs.ign.fr';
             var DefaultUrlService = {
+                ssl: false,
+                url: function (key, path) {
+                    var _protocol = ISBROWSER ? location && location.protocol && location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : DefaultUrlService.ssl ? 'https://' : 'http://';
+                    return _protocol + HOSTNAME.concat('/', key, path);
+                },
                 Alti: {
                     _key: {
-                        'elevation-json': url + '/alti/rest/elevation.json',
-                        'elevation-xml': url + '/alti/rest/elevation.xml',
-                        'profil-json': url + '/alti/rest/elevationLine.json',
-                        'profil-xml': url + '/alti/rest/elevationLine.xml',
-                        wps: url + '/alti/wps'
+                        'elevation-json': '/alti/rest/elevation.json',
+                        'elevation-xml': '/alti/rest/elevation.xml',
+                        'profil-json': '/alti/rest/elevationLine.json',
+                        'profil-xml': '/alti/rest/elevationLine.xml',
+                        wps: '/alti/wps'
                     },
                     url: function (key) {
                         return {
-                            'elevation-json': this._key['elevation-json'].replace(key ? keyname : null, key),
-                            'elevation-xml': this._key['elevation-xml'].replace(key ? keyname : null, key),
-                            'profil-json': this._key['profil-json'].replace(key ? keyname : null, key),
-                            'profil-xml': this._key['profil-xml'].replace(key ? keyname : null, key),
-                            wps: this._key.wps.replace(key ? keyname : null, key)
+                            'elevation-json': DefaultUrlService.url(key, this._key['elevation-json']),
+                            'elevation-xml': DefaultUrlService.url(key, this._key['elevation-xml']),
+                            'profil-json': DefaultUrlService.url(key, this._key['profil-json']),
+                            'profil-xml': DefaultUrlService.url(key, this._key['profil-xml']),
+                            wps: DefaultUrlService.url(key, this._key['wps'])
                         };
                     }
                 },
                 ProcessIsoCurve: {
                     _key: {
-                        'iso-json': url + '/isochrone/isochrone.json',
-                        'iso-xml': url + '/isochrone/isochrone.xml'
+                        'iso-json': '/isochrone/isochrone.json',
+                        'iso-xml': '/isochrone/isochrone.xml'
                     },
                     url: function (key) {
                         return {
-                            'iso-json': this._key['iso-json'].replace(key ? keyname : null, key),
-                            'iso-xml': this._key['iso-xml'].replace(key ? keyname : null, key)
+                            'iso-json': DefaultUrlService.url(key, this._key['iso-json']),
+                            'iso-xml': DefaultUrlService.url(key, this._key['iso-xml'])
                         };
                     }
                 },
                 AutoComplete: {
-                    _key: url + '/ols/apis/completion',
-                    url: fkey
+                    _key: '/ols/apis/completion',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 ReverseGeocode: {
-                    _key: url + '/geoportail/ols',
-                    url: fkey
+                    _key: '/geoportail/ols',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 AutoConf: {
                     _key: {
-                        apiKey: url + '/autoconf',
-                        apiKeys: url + '/autoconf?keys=%KEYS%'
+                        apiKey: '/autoconf',
+                        apiKeys: '/autoconf?keys=%KEYS%',
+                        aggregate: '/autoconf/id/'
                     },
                     url: function (key) {
                         var keys = '';
@@ -28193,27 +28200,29 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             }
                         }
                         return {
-                            apiKey: this._key['apiKey'].replace(key ? keyname : null, key),
-                            apiKeys: this._key['apiKeys'].replace(keyname, key[0]).replace('%KEYS%', keys),
-                            aggregate: protocol + hostname.concat('/') + key + '/autoconf/id/'
+                            apiKey: DefaultUrlService.url(key, this._key['apiKey']),
+                            apiKeys: DefaultUrlService.url(key[0], this._key['apiKeys']).replace('%KEYS%', keys),
+                            aggregate: DefaultUrlService.url(key, this._key['aggregate'])
                         };
                     }
                 },
                 Geocode: {
-                    _key: url + '/geoportail/ols',
-                    url: fkey
+                    _key: '/geoportail/ols',
+                    url: function (key) {
+                        return DefaultUrlService.url(key, this._key);
+                    }
                 },
                 Route: {
                     _key: {
-                        ols: url + '/itineraire/ols',
-                        'route-json': url + '/itineraire/rest/route.json',
-                        'route-xml': url + '/itineraire/rest/route.xml'
+                        ols: '/itineraire/ols',
+                        'route-json': '/itineraire/rest/route.json',
+                        'route-xml': '/itineraire/rest/route.xml'
                     },
                     url: function (key) {
                         return {
-                            ols: this._key.ols.replace(key ? keyname : null, key),
-                            'route-json': this._key['route-json'].replace(key ? keyname : null, key),
-                            'route-xml': this._key['route-xml'].replace(key ? keyname : null, key)
+                            ols: DefaultUrlService.url(key, this._key['ols']),
+                            'route-json': DefaultUrlService.url(key, this._key['route-json']),
+                            'route-xml': DefaultUrlService.url(key, this._key['route-xml'])
                         };
                     }
                 }
@@ -28227,6 +28236,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
                 this.options = {
                     protocol: 'XHR',
+                    ssl: false,
                     proxyURL: '',
                     callbackSuffix: null,
                     httpMethod: 'GET',
@@ -28262,6 +28272,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     throw new Error(_.getMessage('PARAM_MISSING', 'onSuccess()'));
                 }
                 if (!this.options.serverUrl) {
+                    DefaultUrlService.ssl = this.options.ssl;
                     var urlByDefault = DefaultUrlService[this.CLASSNAME].url(this.options.apiKey);
                     if (typeof urlByDefault === 'string') {
                         this.options.serverUrl = urlByDefault;
@@ -28334,7 +28345,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     var strUrlProxified = null;
                     var strData = this.request;
                     var bUrlProxified = this.options.proxyURL && this.options.protocol === 'XHR' ? true : false;
-                    this.options.serverUrl = Helper.normalyzeUrl(this.options.serverUrl, { 'gp-access-lib': '1.1.0' }, false);
+                    this.options.serverUrl = Helper.normalyzeUrl(this.options.serverUrl, { 'gp-access-lib': '1.2.0' }, false);
                     if (bUrlProxified) {
                         if (this.options.httpMethod === 'GET') {
                             strUrlProxified = this.options.proxyURL + Helper.normalyzeUrl(this.options.serverUrl, this.request, true);
@@ -29256,7 +29267,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -32655,7 +32666,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         } else {
                             var JSONResponse;
                             if (typeof options.response === 'string') {
-                                JSONResponse = window.JSON.parse(options.response);
+                                JSONResponse = JSON.parse(options.response);
                             } else {
                                 JSONResponse = options.response;
                             }
@@ -33529,7 +33540,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -34190,7 +34201,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             case 'json':
                                 var JSONResponse;
                                 if (typeof options.response === 'string') {
-                                    JSONResponse = window.JSON.parse(options.response);
+                                    JSONResponse = JSON.parse(options.response);
                                 } else {
                                     JSONResponse = options.response;
                                 }
@@ -34386,8 +34397,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         Gp = function (XHR, Services, AltiResponse, Elevation, AutoCompleteResponse, SuggestedLocation, GetConfigResponse, Constraint, Format, Layer, Legend, Metadata, Originator, Service, Style, Territory, Thematic, TM, TMLimit, TMS, GeocodeResponse, GeocodedLocation, DirectGeocodedLocation, ReverseGeocodedLocation, IsoCurveResponse, RouteResponse, RouteInstruction, Error, Helper, DefaultUrl) {
             var scope = typeof window !== 'undefined' ? window : {};
             var Gp = scope.Gp || {
-                servicesVersion: '1.1.0',
-                servicesDate: '2017-11-24',
+                servicesVersion: '1.2.0',
+                servicesDate: '2018-02-26',
                 extend: function (strNS, value) {
                     var parts = strNS.split('.');
                     var parent = this;
@@ -34646,8 +34657,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         return LayerUtils;
     }();
     (function (global, factory) {
-        typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define('proj4', factory) : global.proj4 = factory();
-    }(this, function () {
+        proj4 = typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define('proj4', factory) : global.proj4 = factory();
+    }(typeof self !== 'undefined' ? self : this, function () {
         'use strict';
         var globals = function (defs) {
             defs('EPSG:4326', '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
@@ -41447,17 +41458,22 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
             var layerId = Config.getLayerId(options.layer, 'WMTS');
             if (layerId && Config.configuration.getLayerConf(layerId)) {
                 var wmtsParams = Config.getLayerParams(options.layer, 'WMTS', options.apiKey);
+                var ctx = typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : null;
+                var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : options.ssl ? 'https://' : 'http://';
                 this._originators = wmtsParams.originators;
                 this._legends = wmtsParams.legends;
                 this._metadata = wmtsParams.metadata;
                 var wmtsSourceOptions = {
-                    url: Gp.Helper.normalyzeUrl(wmtsParams.url, { 'gp-ol3-ext': '1.0.0' }, false),
+                    url: Gp.Helper.normalyzeUrl(wmtsParams.url.replace(/(http|https):\/\//, protocol), { 'gp-ol3-ext': '1.1.0' }, false),
                     version: wmtsParams.version,
                     style: wmtsParams.styles,
                     format: wmtsParams.format,
@@ -41503,14 +41519,19 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
             var layerId = Config.getLayerId(options.layer, 'WMS');
             if (layerId && Config.configuration.getLayerConf(layerId)) {
                 var wmsParams = Config.getLayerParams(options.layer, 'WMS', options.apiKey);
+                var ctx = typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : null;
+                var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf('https:') === 0 ? 'https://' : 'http://' : options.ssl ? 'https://' : 'http://';
                 var wmsSourceOptions = {
-                    url: Gp.Helper.normalyzeUrl(wmsParams.url, { 'gp-ol3-ext': '1.0.0' }, false),
+                    url: Gp.Helper.normalyzeUrl(wmsParams.url.replace(/(http|https):\/\//, protocol), { 'gp-ol3-ext': '1.1.0' }, false),
                     params: {
                         SERVICE: 'WMS',
                         LAYERS: options.layer,
@@ -41548,6 +41569,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
@@ -41557,6 +41581,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             var wmtsSource = new SourceWMTS({
                 layer: options.layer,
+                ssl: options.ssl,
                 apiKey: options.apiKey,
                 olParams: olSourceParams
             });
@@ -41599,6 +41624,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             if (typeof options.layer !== 'string') {
                 throw new Error('ERROR WRONG TYPE : layer');
             }
+            if (typeof options.ssl === 'undefined') {
+                options.ssl = false;
+            }
             if (!Config.isConfigLoaded()) {
                 throw new Error('ERROR : contract key configuration has to be loaded to load Geoportal layers. See http://ignf.github.io/evolution-apigeoportail/ol3/ol3-autoconf.html');
             }
@@ -41608,6 +41636,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             var wmsSource = new SourceWMS({
                 layer: options.layer,
+                ssl: options.ssl,
                 apiKey: options.apiKey,
                 olParams: olSourceParams
             });
@@ -41693,11 +41722,11 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 return typeof factory === 'function' ? factory() : factory;
             }();
         } else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
-            module.exports = factory();
+            sortable = module.exports = factory();
         } else if (typeof Package !== 'undefined') {
             Sortable = factory();
         } else {
-            window['Sortable'] = factory();
+            sortable = window['Sortable'] = factory();
         }
     }(function () {
         'use strict';
@@ -43506,43 +43535,45 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this._activateGetFeatureInfoContainer = null;
         };
         GetFeatureInfo.prototype.setMap = function (map) {
+            if (map) {
+                this._updateEvents(map);
+                if (this._cursorStyle && this._active) {
+                    this._activateCursor(true, map);
+                }
+                map.getLayers().on('remove', function (evt) {
+                    for (var i = 0; i < this._layers.length; ++i) {
+                        if (this._layers[i].obj === evt.element) {
+                            this._layers.splice(i, 1);
+                            break;
+                        }
+                    }
+                    this._updateEvents(map);
+                }, this);
+                if (this._auto) {
+                    var updated = false;
+                    map.getLayers().forEach(function (olLayer) {
+                        var layerFormat = GfiUtils.getLayerFormat(olLayer);
+                        if (!this._hasLayer(olLayer) && layerFormat == 'vector') {
+                            this._layers.push({ obj: olLayer });
+                            updated = true;
+                        }
+                    }, this);
+                    if (updated) {
+                        this._updateEvents(map);
+                    }
+                    map.getLayers().on('add', function (evt) {
+                        var layerFormat = GfiUtils.getLayerFormat(evt.element);
+                        if (layerFormat == 'vector') {
+                            this._layers.push({ obj: evt.element });
+                        }
+                        this._updateEvents(map);
+                    }, this);
+                }
+            } else {
+                this._clearEvents();
+                this._activateCursor(false);
+            }
             ol.control.Control.prototype.setMap.call(this, map);
-            this._updateEvents();
-            if (map == null) {
-                return;
-            }
-            if (this._cursorStyle && this._active) {
-                this._activateCursor(true);
-            }
-            map.getLayers().on('remove', function (evt) {
-                for (var i = 0; i < this._layers.length; ++i) {
-                    if (this._layers[i].obj === evt.element) {
-                        this._layers.splice(i, 1);
-                        break;
-                    }
-                }
-                this._updateEvents();
-            }, this);
-            if (this._auto) {
-                var updated = false;
-                map.getLayers().forEach(function (olLayer) {
-                    var layerFormat = GfiUtils.getLayerFormat(olLayer);
-                    if (!this._hasLayer(olLayer) && layerFormat == 'vector') {
-                        this._layers.push({ obj: olLayer });
-                        updated = true;
-                    }
-                }, this);
-                if (updated) {
-                    this._updateEvents();
-                }
-                map.getLayers().on('add', function (evt) {
-                    var layerFormat = GfiUtils.getLayerFormat(evt.element);
-                    if (layerFormat == 'vector') {
-                        this._layers.push({ obj: evt.element });
-                    }
-                    this._updateEvents();
-                }, this);
-            }
         };
         GetFeatureInfo.prototype.getLayers = function () {
             return this._layers;
@@ -43609,8 +43640,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         GetFeatureInfo.prototype._isValidEvent = function (eventName) {
             return Object.keys(this._events).indexOf(eventName) > -1;
         };
-        GetFeatureInfo.prototype._activateEvent = function (eventName) {
-            var map = this.getMap();
+        GetFeatureInfo.prototype._activateEvent = function (eventName, map) {
             var gfiObj = this;
             var getFeatureInfoHandler = function (e) {
                 GfiUtils.onDisplayFeatureInfo(e, gfiObj);
@@ -43623,8 +43653,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this._eventsHandler[eventName] = getFeatureInfoHandler;
             this._events[eventName] = true;
         };
-        GetFeatureInfo.prototype._deactivateEvent = function (eventName) {
-            var map = this.getMap();
+        GetFeatureInfo.prototype._deactivateEvent = function (eventName, map) {
             if (eventName == 'contextmenu') {
                 map.getViewport().removeEventListener(eventName, this._eventsHandler[eventName]);
             } else {
@@ -43633,7 +43662,10 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             delete this._eventsHandler[eventName];
             this._events[eventName] = false;
         };
-        GetFeatureInfo.prototype._updateEvents = function () {
+        GetFeatureInfo.prototype._updateEvents = function (map) {
+            if (!map) {
+                map = this.getMap();
+            }
             var sEvent = [];
             for (var i = 0; i < this._layers.length; ++i) {
                 var event = this._layers[i].event ? this._layers[i].event : this._defaultEvent;
@@ -43643,9 +43675,17 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             for (var eventName in this._events) {
                 if (!this._events[eventName] && sEvent.indexOf(eventName) >= 0) {
-                    this._activateEvent(eventName);
+                    this._activateEvent(eventName, map);
                 } else if (this._events[eventName] && sEvent.indexOf(eventName) < 0) {
-                    this._deactivateEvent(eventName);
+                    this._deactivateEvent(eventName, map);
+                }
+            }
+        };
+        GetFeatureInfo.prototype._clearEvents = function () {
+            var map = this.getMap();
+            for (var eventName in this._events) {
+                if (this._events[eventName]) {
+                    this._deactivateEvent(eventName, map);
                 }
             }
         };
@@ -43657,8 +43697,10 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             return false;
         };
-        GetFeatureInfo.prototype._activateCursor = function (activate) {
-            var map = this.getMap();
+        GetFeatureInfo.prototype._activateCursor = function (activate, map) {
+            if (!map) {
+                map = this.getMap();
+            }
             if (activate) {
                 if (this._eventsHandler.hasOwnProperty('pointermove')) {
                     console.log('[ERROR] _activateCursor - inconsistent state: pointermove event handler already registered');
@@ -43809,6 +43851,138 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
         };
     }({}, CommonUtilsConfig);
+    CommonUtilsSearchEngineUtils = function () {
+        var SearchEngineUtils = {
+            advancedSearchFiltersByDefault: {
+                PositionOfInterest: [
+                    {
+                        name: 'importance',
+                        title: 'Importance'
+                    },
+                    {
+                        name: 'nature',
+                        title: 'Nature'
+                    },
+                    {
+                        name: 'territory',
+                        title: 'Territoire'
+                    },
+                    {
+                        name: 'insee',
+                        title: 'Code INSEE'
+                    },
+                    {
+                        name: 'municipality',
+                        title: 'Ville'
+                    },
+                    {
+                        name: 'department',
+                        title: 'Département'
+                    }
+                ],
+                StreetAddress: [
+                    {
+                        name: 'territory',
+                        title: 'Territoire'
+                    },
+                    {
+                        name: 'insee',
+                        title: 'Code INSEE'
+                    },
+                    {
+                        name: 'municipality',
+                        title: 'Ville'
+                    },
+                    {
+                        name: 'department',
+                        title: 'Département'
+                    }
+                ],
+                CadastralParcel: [
+                    {
+                        name: 'department',
+                        title: 'Département',
+                        description: 'Numéro du département (ex: 01, 94)'
+                    },
+                    {
+                        name: 'commune',
+                        title: 'Code commune (INSEE)',
+                        description: 'Code commune (INSEE) : 3 chiffres (ex: 067)'
+                    },
+                    {
+                        name: 'absorbedCity',
+                        title: 'Commune absorbée',
+                        description: 'Commune absorbée : 3 chiffres (ex: 000, 001)'
+                    },
+                    {
+                        name: 'section',
+                        title: 'Section',
+                        description: 'Section : 2 caractères (ex: AA, 0D)'
+                    },
+                    {
+                        name: 'number',
+                        title: 'Numéro',
+                        description: 'Numéro de la parcelle : 4 chiffres (ex: 0041, 0250)'
+                    }
+                ],
+                Administratif: [
+                    {
+                        name: 'prefecture',
+                        title: 'Préfecture'
+                    },
+                    {
+                        name: 'inseeRegion',
+                        title: 'Code région (INSEE)'
+                    },
+                    {
+                        name: 'inseeDepartment',
+                        title: 'Code département (INSEE)'
+                    },
+                    {
+                        name: 'municipality',
+                        title: 'Ville'
+                    }
+                ]
+            },
+            zoomToResultsByDefault: function (info) {
+                var zoom = 15;
+                var service = info.service;
+                var fields = info.fields;
+                var type = info.type;
+                var importance = {
+                    1: 11,
+                    2: 12,
+                    3: 13,
+                    4: 14,
+                    5: 15,
+                    6: 16,
+                    7: 17,
+                    8: 17
+                };
+                if (service === 'SuggestedLocation') {
+                    if (type === 'PositionOfInterest') {
+                        zoom = importance[fields.classification];
+                    }
+                }
+                if (service === 'DirectGeocodedLocation') {
+                    if (type === 'PositionOfInterest') {
+                        zoom = importance[fields.importance] || 14;
+                    }
+                }
+                if (type === 'StreetAddress') {
+                    zoom = 17;
+                }
+                if (type === 'CadastralParcel') {
+                    zoom = 17;
+                }
+                if (type === 'Administratif') {
+                    zoom = 12;
+                }
+                return zoom;
+            }
+        };
+        return SearchEngineUtils;
+    }();
     CommonControlsSearchEngineDOM = function (ID) {
         var SearchEngineDOM = {
             _addUID: function (id) {
@@ -43852,7 +44026,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 label.appendChild(spanOpen);
                 return label;
             },
-            _createSearchInputElement: function () {
+            _createSearchInputElement: function (placeholder) {
                 var self = this;
                 var form = document.createElement('form');
                 form.id = this._addUID('GPsearchInput');
@@ -43866,7 +44040,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 var input = document.createElement('input');
                 input.id = this._addUID('GPsearchInputText');
                 input.type = 'text';
-                input.placeholder = 'Rechercher un lieu, une adresse';
+                input.placeholder = placeholder;
                 input.autocomplete = 'off';
                 input.addEventListener('keyup', function (e) {
                     var charCode = e.which || e.keyCode;
@@ -43882,9 +44056,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     self.onAutoCompleteSearchText(e);
                 });
                 input.addEventListener('keydown', function (e) {
-                    if (true) {
-                        return;
-                    }
                     var charCode = e.which || e.keyCode;
                     var container = document.getElementById(self._addUID('GPautocompleteResults'));
                     if (!container) {
@@ -43929,6 +44100,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         next.style['background-color'] = '#CEDBEF';
                         break;
                     case 13:
+                        e.preventDefault();
                         current.click(e);
                         break;
                     }
@@ -44243,139 +44415,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         };
         return SearchEngineDOM;
     }(CommonUtilsSelectorID);
-    CommonControlsSearchEngineUtils = function () {
-        var SearchEngineUtils = {
-            advancedSearchFiltersByDefault: {
-                PositionOfInterest: [
-                    {
-                        name: 'importance',
-                        title: 'Importance'
-                    },
-                    {
-                        name: 'nature',
-                        title: 'Nature'
-                    },
-                    {
-                        name: 'territory',
-                        title: 'Territoire'
-                    },
-                    {
-                        name: 'insee',
-                        title: 'Code INSEE'
-                    },
-                    {
-                        name: 'municipality',
-                        title: 'Ville'
-                    },
-                    {
-                        name: 'department',
-                        title: 'Département'
-                    }
-                ],
-                StreetAddress: [
-                    {
-                        name: 'territory',
-                        title: 'Territoire'
-                    },
-                    {
-                        name: 'insee',
-                        title: 'Code INSEE'
-                    },
-                    {
-                        name: 'municipality',
-                        title: 'Ville'
-                    },
-                    {
-                        name: 'department',
-                        title: 'Département'
-                    }
-                ],
-                CadastralParcel: [
-                    {
-                        name: 'department',
-                        title: 'Département',
-                        description: 'Numéro du département (ex: 01, 94)'
-                    },
-                    {
-                        name: 'commune',
-                        title: 'Code commune (INSEE)',
-                        description: 'Code commune (INSEE) : 3 chiffres (ex: 067)'
-                    },
-                    {
-                        name: 'absorbedCity',
-                        title: 'Commune absorbée',
-                        description: 'Commune absorbée : 3 chiffres (ex: 000, 001)'
-                    },
-                    {
-                        name: 'section',
-                        title: 'Section',
-                        description: 'Section : 2 caractères (ex: AA, 0D)'
-                    },
-                    {
-                        name: 'number',
-                        title: 'Numéro',
-                        description: 'Numéro de la parcelle : 4 chiffres (ex: 0041, 0250)'
-                    }
-                ],
-                Administratif: [
-                    {
-                        name: 'prefecture',
-                        title: 'Préfecture'
-                    },
-                    {
-                        name: 'inseeRegion',
-                        title: 'Code région (INSEE)'
-                    },
-                    {
-                        name: 'inseeDepartment',
-                        title: 'Code département (INSEE)'
-                    },
-                    {
-                        name: 'municipality',
-                        title: 'Ville'
-                    }
-                ]
-            },
-            zoomToResultsByDefault: function (info) {
-                var zoom = 15;
-                var service = info.service;
-                var fields = info.fields;
-                var type = info.type;
-                var importance = {
-                    1: 11,
-                    2: 12,
-                    3: 13,
-                    4: 14,
-                    5: 15,
-                    6: 16,
-                    7: 17,
-                    8: 17
-                };
-                if (service === 'SuggestedLocation') {
-                    if (type === 'PositionOfInterest') {
-                        zoom = importance[fields.classification];
-                    }
-                }
-                if (service === 'DirectGeocodedLocation') {
-                    if (type === 'PositionOfInterest') {
-                        zoom = importance[fields.importance] || 14;
-                    }
-                }
-                if (type === 'StreetAddress') {
-                    zoom = 17;
-                }
-                if (type === 'CadastralParcel') {
-                    zoom = 17;
-                }
-                if (type === 'Administratif') {
-                    zoom = 12;
-                }
-                return zoom;
-            }
-        };
-        return SearchEngineUtils;
-    }();
-    Ol3ControlsSearchEngine = function (ol, Gp, woodman, Utils, Markers, RightManagement, SelectorID, SearchEngineDOM, SearchEngineUtils) {
+    Ol3ControlsSearchEngine = function (ol, Gp, woodman, Utils, Markers, RightManagement, SelectorID, SearchEngineUtils, SearchEngineDOM) {
         function SearchEngine(options) {
             options = options || {};
             if (!(this instanceof SearchEngine)) {
@@ -44434,7 +44474,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 displayAdvancedSearch: true,
                 advancedSearch: {},
                 geocodeOptions: {},
-                autocompleteOptions: {}
+                autocompleteOptions: {
+                    serviceOptions: {},
+                    triggerGeocode: false,
+                    triggerDelay: 1000
+                },
+                displayMarker: true,
+                markerStyle: 'lightOrange',
+                placeholder: 'Rechercher un lieu, une adresse'
             };
             Utils.mergeParams(this.options, options);
             if (this.options.resources.geocode.length === 0) {
@@ -44466,13 +44513,16 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this._advancedSearchCodes = [];
             this._initAdvancedSearchCodes();
             this._marker = null;
-            this._markerUrl = Markers['lightOrange'];
+            var _markerStyle = this.options.markerStyle;
+            this._markerUrl = Object.keys(Markers).indexOf(_markerStyle) === -1 ? Markers['lightOrange'] : Markers[_markerStyle];
+            this._displayMarker = this.options.displayMarker;
             this._popupContent = null;
             this._popupDiv = this._initPopupDiv();
             this._popupOverlay = null;
             this._servicesRightManagement = {};
             this._noRightManagement = false;
             this._checkRightsManagement();
+            this._triggerHandler = null;
         };
         SearchEngine.prototype._checkInputOptions = function (options) {
             var i;
@@ -44597,7 +44647,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             var picto = this._createShowSearchEnginePictoElement();
             container.appendChild(picto);
-            var search = this._inputSearchContainer = this._createSearchInputElement();
+            var search = this._inputSearchContainer = this._createSearchInputElement(this.options.placeholder);
             var context = this;
             if (search.addEventListener) {
                 search.addEventListener('click', function () {
@@ -44729,7 +44779,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 return;
             }
             var options = {};
-            Utils.assign(options, this.options.autocompleteOptions);
+            Utils.assign(options, this.options.autocompleteOptions.serviceOptions);
             Utils.assign(options, settings);
             var resources = this.options.resources.autocomplete;
             if (resources && Array.isArray(resources)) {
@@ -44802,7 +44852,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         };
         SearchEngine.prototype._setPosition = function (position, zoom) {
             var view = this.getMap().getView();
-            console.log(position);
             view.setCenter(position);
             view.setZoom(zoom);
         };
@@ -44936,6 +44985,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 this._clearSuggestedLocation();
                 return;
             }
+            var _triggerGeocode = this.options.autocompleteOptions.triggerGeocode;
+            var _triggerDelay = this.options.autocompleteOptions.triggerDelay;
             var context = this;
             this._requestAutoComplete({
                 text: value,
@@ -44952,10 +45003,43 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             }
                         }
                         context._fillAutoCompletedLocationListContainer(context._locationsToBeDisplayed);
+                        if (context._triggerHandler) {
+                            clearTimeout(context._triggerHandler);
+                            context._triggerHandler = null;
+                        }
                     }
                 },
                 onFailure: function (error) {
                     context._clearSuggestedLocation();
+                    if (error.message === 'No suggestion matching the search' && _triggerGeocode) {
+                        if (context._triggerHandler) {
+                            clearTimeout(context._triggerHandler);
+                        }
+                        context._triggerHandler = setTimeout(function () {
+                            context._requestGeocoding({
+                                location: value,
+                                returnFreeForm: true,
+                                onSuccess: function (results) {
+                                    if (results) {
+                                        context._locationsToBeDisplayed = [];
+                                        var locations = results.locations;
+                                        for (var i = 0; i < locations.length; i++) {
+                                            var location = locations[i];
+                                            location.fullText = location.placeAttributes.freeform;
+                                            location.position = {
+                                                x: location.position.y,
+                                                y: location.position.x
+                                            };
+                                            context._locationsToBeDisplayed.push(location);
+                                        }
+                                        context._fillAutoCompletedLocationListContainer(locations);
+                                    }
+                                },
+                                onFailure: function (error) {
+                                }
+                            });
+                        }, _triggerDelay);
+                    }
                 }
             });
             var map = this.getMap();
@@ -45011,7 +45095,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             var zoom = this._getZoom(info);
             this._setPosition(position, zoom);
-            this._setMarker(position, info);
+            if (this._displayMarker) {
+                this._setMarker(position, info);
+            }
         };
         SearchEngine.prototype.onGeocodingSearchSubmit = function (e) {
             var value = e.target[0].value;
@@ -45073,7 +45159,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
             var zoom = this._getZoom(info);
             this._setPosition(position, zoom);
-            this._setMarker(position, info);
+            if (this._displayMarker) {
+                this._setMarker(position, info);
+            }
         };
         SearchEngine.prototype.onGeocodingAdvancedSearchCodeChange = function (e) {
             var idx = e.target.selectedIndex;
@@ -45240,7 +45328,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
         };
         return SearchEngine;
-    }(ol, gp, {}, CommonUtils, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonUtilsSelectorID, CommonControlsSearchEngineDOM, CommonControlsSearchEngineUtils);
+    }(ol, gp, {}, CommonUtils, Ol3ControlsUtilsMarkers, CommonUtilsCheckRightManagement, CommonUtilsSelectorID, CommonUtilsSearchEngineUtils, CommonControlsSearchEngineDOM);
     CommonUtilsMathUtils = function () {
         var MathUtils = {
             modulo: function (a, b) {
@@ -46846,7 +46934,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 Utils.mergeParams(opts, options);
                 var interactions = map.getInteractions().getArray();
                 for (var i = 0; i < interactions.length; i++) {
-                    if (interactions[i].getActive() && interactions[i] instanceof ol.interaction.Draw) {
+                    if (interactions[i].getActive() && (interactions[i] instanceof ol.interaction.Draw || interactions[i] instanceof ol.interaction.Select || interactions[i] instanceof ol.interaction.Modify)) {
                         var prop = interactions[i].getProperties();
                         var name = prop.name;
                         if (typeof name !== 'undefined' && this._extensions.indexOf(name) > -1) {
@@ -47316,6 +47404,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         options.applyFunc.call(this, inputLabel.value, false);
                     }
                 };
+                if (options.measure && options.geomType != 'Text') {
+                    var inputMeasure = document.createElement('input');
+                    inputMeasure.type = 'text';
+                    inputMeasure.readonly = true;
+                    inputMeasure.className = 'gp-input-measure-style';
+                    inputMeasure.value = options.measure;
+                    popup.appendChild(inputMeasure);
+                }
                 if (options.geomType != 'Text') {
                     var applyButton = document.createElement('input');
                     applyButton.type = 'button';
@@ -47379,7 +47475,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             display: true,
             tooltip: true,
             edit: true,
-            export: true
+            export: true,
+            measure: false
         };
         Drawing.DefaultLabels = {
             control: 'Annoter la carte',
@@ -47454,9 +47551,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this.eventKey = this.getMap().getLayers().on('remove', function (evtRm) {
                 if (evtRm.element == this.layer) {
                     this.layer = null;
-                    if (this.interaction) {
-                        this.getMap().removeInteraction(this.interaction);
-                        this.interaction = null;
+                    if (this.interactionCurrent) {
+                        this.getMap().removeInteraction(this.interactionCurrent);
+                        this.interactionCurrent = null;
                     }
                 }
             }, this);
@@ -47751,7 +47848,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     this.options.defaultStyles[key] = intValue;
                 }
             }, this);
-            this.interaction = null;
+            this.interactionCurrent = null;
+            this.interactionSelectEdit = null;
             this.stylingOvl = null;
             this.layer = null;
             if (this.options.layer && this.options.layer instanceof ol.layer.Vector) {
@@ -47843,6 +47941,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 break;
             }
             feature.setStyle(style);
+            this._updateMeasure(feature, geomType);
             var popupOvl = null;
             var context = this;
             var setAttValue = function (value, save) {
@@ -47856,6 +47955,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 applyFunc: setAttValue,
                 inputId: this._addUID('att-input'),
                 placeholder: 'Saisir une description...',
+                measure: this.options.tools.measure ? feature.getProperties().measure : null,
                 geomType: geomType
             });
             popupOvl = new ol.Overlay({
@@ -47877,9 +47977,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     return;
                 }
                 this.layer.getSource().removeFeature(seEv.selected[0]);
-                this.getMap().removeInteraction(this.interaction);
-                this.interaction = this._createRemoveInteraction();
-                this.getMap().addInteraction(this.interaction);
+                this.getMap().removeInteraction(this.interactionCurrent);
+                this.interactionCurrent = this._createRemoveInteraction();
+                this.getMap().addInteraction(this.interactionCurrent);
             }, this);
             return interaction;
         };
@@ -48088,9 +48188,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 this.getMap().addOverlay(popupOvl);
                 popupOvl.setPosition(seEv.mapBrowserEvent.coordinate);
                 this.stylingOvl = popupOvl;
-                this.getMap().removeInteraction(this.interaction);
-                this.interaction = this._createStylingInteraction();
-                this.getMap().addInteraction(this.interaction);
+                this.getMap().removeInteraction(this.interactionCurrent);
+                this.interactionCurrent = this._createStylingInteraction();
+                this.getMap().addInteraction(this.interactionCurrent);
             }, this);
             return interaction;
         };
@@ -48105,7 +48205,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 }
                 var popupOvl = null;
                 var geomType = null;
-                var textValue = null;
+                var _textValue = null;
+                var _measure = null;
                 if (seEv.selected[0].getGeometry() instanceof ol.geom.Point) {
                     var _label = seEv.selected[0].getProperties().name;
                     if (seEv.selected[0].getStyle() && seEv.selected[0].getStyle().getText() && _label) {
@@ -48123,11 +48224,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     return;
                 }
                 if (geomType == 'Text') {
-                    textValue = seEv.selected[0].getStyle().getText().getText();
+                    _textValue = seEv.selected[0].getStyle().getText().getText();
                 } else {
                     var featProps = seEv.selected[0].getProperties();
                     if (featProps && featProps.hasOwnProperty('description')) {
-                        textValue = featProps['description'];
+                        _textValue = featProps['description'];
+                    }
+                    if (featProps && featProps.hasOwnProperty('measure')) {
+                        _measure = featProps['measure'];
                     }
                 }
                 var context = this;
@@ -48144,14 +48248,15 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         feature.setStyle(style);
                         return;
                     }
-                    var formated = value.replace(/\n/g, '<br>');
-                    feature.setProperties({ description: formated });
+                    var _formated = value.replace(/\n/g, '<br>');
+                    feature.setProperties({ description: _formated });
                 };
                 var popupDiv = this._createLabelDiv({
                     applyFunc: setTextValue,
                     inputId: this._addUID('label-input'),
                     placeholder: geomType == 'Text' ? 'Saisir un label...' : 'Saisir une description...',
-                    text: textValue,
+                    text: _textValue,
+                    measure: this.options.tools.measure ? _measure : null,
                     geomType: geomType
                 });
                 popupOvl = new ol.Overlay({
@@ -48162,11 +48267,53 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 popupOvl.setPosition(seEv.mapBrowserEvent.coordinate);
                 document.getElementById(this._addUID('label-input')).focus();
                 this.labelOvl = popupOvl;
-                this.getMap().removeInteraction(this.interaction);
-                this.interaction = this._createLabelInteraction();
-                this.getMap().addInteraction(this.interaction);
+                this.getMap().removeInteraction(this.interactionCurrent);
+                this.interactionCurrent = this._createLabelInteraction();
+                this.getMap().addInteraction(this.interactionCurrent);
             }, this);
             return interaction;
+        };
+        Drawing.prototype._updateMeasure = function (feature, geomType) {
+            var measure = null;
+            var wgs84Sphere = new ol.Sphere(6378137);
+            var projection = this.getMap().getView().getProjection();
+            function __roundDecimal(nombre, precision) {
+                precision = precision || 2;
+                var factor = Math.pow(10, precision);
+                return Math.round(nombre * factor) / factor;
+            }
+            var type = geomType ? geomType : feature.getProperties().type;
+            switch (type) {
+            case 'Point':
+                var coordinatesPoint = feature.getGeometry().getCoordinates();
+                var c = ol.proj.transform(coordinatesPoint, projection, 'EPSG:4326');
+                measure = 'lon : ';
+                measure += __roundDecimal(c[0], 4) + '\xB0';
+                measure += ' / ';
+                measure += 'lat : ';
+                measure += __roundDecimal(c[1], 4) + '\xB0';
+                break;
+            case 'LineString':
+                var measureLength = 0;
+                var coordinatesLine = feature.getGeometry().getCoordinates();
+                for (var i = 0, ii = coordinatesLine.length - 1; i < ii; ++i) {
+                    var c1 = ol.proj.transform(coordinatesLine[i], projection, 'EPSG:4326');
+                    var c2 = ol.proj.transform(coordinatesLine[i + 1], projection, 'EPSG:4326');
+                    measureLength += wgs84Sphere.haversineDistance(c1, c2);
+                }
+                measure = measureLength > 1000 ? __roundDecimal(measureLength / 1000, 3) + ' km' : __roundDecimal(measureLength, 3) + ' m';
+                break;
+            case 'Polygon':
+                var measureArea = 0;
+                var coordinatesAera = feature.getGeometry().clone().transform(projection, 'EPSG:4326').getLinearRing(0).getCoordinates();
+                measureArea = Math.abs(wgs84Sphere.geodesicArea(coordinatesAera));
+                measure = measureArea > 1000000 ? __roundDecimal(measureArea / 1000000, 3) + ' km^2' : __roundDecimal(measureArea, 2) + ' m^2';
+                break;
+            }
+            feature.setProperties({
+                measure: measure,
+                type: type
+            });
         };
         Drawing.prototype._handleToolClick = function (clickEvent, toolId, context) {
             var map = context.getMap();
@@ -48174,9 +48321,13 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 return;
             }
             Interactions.unset(map, { current: 'Drawing' });
-            if (context.interaction) {
-                map.removeInteraction(context.interaction);
-                context.interaction = null;
+            if (context.interactionCurrent) {
+                map.removeInteraction(context.interactionCurrent);
+                context.interactionCurrent = null;
+            }
+            if (context.interactionSelectEdit) {
+                map.removeInteraction(context.interactionSelectEdit);
+                context.interactionSelectEdit = null;
             }
             if (!this.layer) {
                 this._createEmptyLayer();
@@ -48184,19 +48335,19 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             switch (toolId) {
             case this._addUID('drawing-tool-point'):
                 if (context.dtOptions['points'].active) {
-                    context.interaction = new ol.interaction.Draw({
+                    context.interactionCurrent = new ol.interaction.Draw({
                         features: context.layer.getSource().getFeaturesCollection(),
                         style: new ol.style.Style({ image: new ol.style.Icon(this._getIconStyleOptions(this.options.markersList[0])) }),
                         type: 'Point'
                     });
-                    context.interaction.on('drawend', function (deEv) {
+                    context.interactionCurrent.on('drawend', function (deEv) {
                         context._drawEndFeature(deEv.feature, 'Point');
                     }, context);
                 }
                 break;
             case this._addUID('drawing-tool-line'):
                 if (context.dtOptions['lines'].active) {
-                    context.interaction = new ol.interaction.Draw({
+                    context.interactionCurrent = new ol.interaction.Draw({
                         features: context.layer.getSource().getFeaturesCollection(),
                         style: new ol.style.Style({
                             image: new ol.style.Circle({
@@ -48214,14 +48365,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         }),
                         type: 'LineString'
                     });
-                    context.interaction.on('drawend', function (deEv) {
+                    context.interactionCurrent.on('drawend', function (deEv) {
                         context._drawEndFeature(deEv.feature, 'LineString');
                     }, context);
                 }
                 break;
             case this._addUID('drawing-tool-polygon'):
                 if (context.dtOptions['polygons'].active) {
-                    context.interaction = new ol.interaction.Draw({
+                    context.interactionCurrent = new ol.interaction.Draw({
                         features: context.layer.getSource().getFeaturesCollection(),
                         style: new ol.style.Style({
                             image: new ol.style.Circle({
@@ -48240,14 +48391,14 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         }),
                         type: 'Polygon'
                     });
-                    context.interaction.on('drawend', function (deEv) {
+                    context.interactionCurrent.on('drawend', function (deEv) {
                         context._drawEndFeature(deEv.feature, 'Polygon');
                     }, context);
                 }
                 break;
             case this._addUID('drawing-tool-text'):
                 if (context.dtOptions['text'].active) {
-                    context.interaction = new ol.interaction.Draw({
+                    context.interactionCurrent = new ol.interaction.Draw({
                         features: context.layer.getSource().getFeaturesCollection(),
                         style: new ol.style.Style({
                             image: new ol.style.Circle({
@@ -48261,7 +48412,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                         }),
                         type: 'Point'
                     });
-                    context.interaction.on('drawend', function (deEv) {
+                    context.interactionCurrent.on('drawend', function (deEv) {
                         var popupOvl = null;
                         var setTextValue = function (value, save) {
                             context.getMap().removeOverlay(popupOvl);
@@ -48302,8 +48453,17 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 break;
             case this._addUID('drawing-tool-edit'):
                 if (context.dtOptions['edit'].active) {
-                    context.interaction = new ol.interaction.Modify({
-                        features: context.layer.getSource().getFeaturesCollection(),
+                    context.interactionSelectEdit = new ol.interaction.Select({
+                        condition: ol.events.condition.singleClick,
+                        layers: [this.layer]
+                    });
+                    context.interactionSelectEdit.setProperties({
+                        name: 'Drawing',
+                        source: context
+                    });
+                    map.addInteraction(context.interactionSelectEdit);
+                    context.interactionCurrent = new ol.interaction.Modify({
+                        features: this.interactionSelectEdit.getFeatures(),
                         style: new ol.style.Style({
                             image: new ol.style.Circle({
                                 radius: this.options.cursorStyle.radius,
@@ -48318,31 +48478,35 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                             return false;
                         }
                     });
+                    context.interactionCurrent.on('modifyend', function (deEv) {
+                        var feature = deEv.features.item(0);
+                        context._updateMeasure(feature);
+                    }, context);
                 }
                 break;
             case this._addUID('drawing-tool-display'):
                 if (context.dtOptions['display'].active) {
-                    context.interaction = this._createStylingInteraction();
+                    context.interactionCurrent = this._createStylingInteraction();
                 }
                 break;
             case this._addUID('drawing-tool-tooltip'):
                 if (context.dtOptions['tooltip'].active) {
-                    context.interaction = this._createLabelInteraction();
+                    context.interactionCurrent = this._createLabelInteraction();
                 }
                 break;
             case this._addUID('drawing-tool-remove'):
                 if (context.dtOptions['remove'].active) {
-                    context.interaction = context._createRemoveInteraction();
+                    context.interactionCurrent = context._createRemoveInteraction();
                 }
                 break;
             default:
             }
-            if (context.interaction) {
-                context.interaction.setProperties({
+            if (context.interactionCurrent) {
+                context.interactionCurrent.setProperties({
                     name: 'Drawing',
                     source: this
                 });
-                map.addInteraction(context.interaction);
+                map.addInteraction(context.interactionCurrent);
             }
         };
         Drawing.prototype.onShowDrawingClick = function () {
@@ -48350,6 +48514,15 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             Interactions.unset(map);
             this.collapsed = this._showDrawingContainer.checked;
             this.dispatchEvent('change:collapsed');
+            for (var toolsType in this.dtOptions) {
+                if (this.dtOptions.hasOwnProperty(toolsType)) {
+                    if (this.dtOptions[toolsType].active) {
+                        var toolsId = this._addUID('drawing-tool-' + this.dtOptions[toolsType].id);
+                        document.getElementById(toolsId).className = 'drawing-tool';
+                        this.dtOptions[toolsType].active = false;
+                    }
+                }
+            }
         };
         Drawing.prototype.onExportFeatureClick = function () {
             var content = this.exportFeatures();
@@ -55061,9 +55234,11 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                     var nodesToRemove = [];
                     for (var i = 0; i < len; i++) {
                         var node = nodes.children[i];
-                        var child = node.children[0];
-                        if (child.className === 'GPmeasureTooltip GPmeasureTooltip-static' || child.className === 'GPmeasureTooltip GPmeasureTooltip-measure') {
-                            nodesToRemove.push(node);
+                        if (node.children.length !== 0) {
+                            var child = node.children[0];
+                            if (child.className === 'GPmeasureTooltip GPmeasureTooltip-static' || child.className === 'GPmeasureTooltip GPmeasureTooltip-measure') {
+                                nodesToRemove.push(node);
+                            }
                         }
                     }
                     for (var j = 0; j < nodesToRemove.length; j++) {
@@ -55333,10 +55508,24 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 var self = this;
                 var container = document.createElement('div');
                 container.className = 'GPpanelHeader';
-                var div = document.createElement('div');
-                div.className = 'GPpanelTitle';
-                div.innerHTML = 'Profil Altimétrique';
-                container.appendChild(div);
+                var divInfo = document.createElement('div');
+                divInfo.id = this._addUID('GPelevationPathPanelInfo');
+                divInfo.className = 'GPpanelInfo';
+                divInfo.title = 'Informations';
+                if (divInfo.addEventListener) {
+                    divInfo.addEventListener('click', function () {
+                        self.onOpenElevationPathInfoClick();
+                    });
+                } else if (divInfo.attachEvent) {
+                    divInfo.attachEvent('onclick', function () {
+                        self.onOpenElevationPathInfoClick();
+                    });
+                }
+                container.appendChild(divInfo);
+                var divTitle = document.createElement('div');
+                divTitle.className = 'GPpanelTitle';
+                divTitle.innerHTML = 'Profil Altimétrique';
+                container.appendChild(divTitle);
                 var divReduce = document.createElement('div');
                 divReduce.id = this._addUID('GPelevationPathPanelReduce');
                 divReduce.className = 'GPpanelReduce';
@@ -55387,11 +55576,348 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 p.innerHTML = 'Calcul en cours...';
                 div.appendChild(p);
                 return div;
+            },
+            _createElevationPathInformationsElement: function () {
+                var div = document.createElement('div');
+                div.id = this._addUID('GPelevationPathInformationsContainer');
+                div.className = 'GPelevationPathInformationsContainerHidden';
+                var p = document.createElement('p');
+                p.className = 'GPelevationPathInformations';
+                p.innerHTML = 'Aucune information...';
+                div.appendChild(p);
+                return div;
+            },
+            _addElevationPathInformationsItem: function (value) {
+                var div = document.getElementById(this._addUID('GPelevationPathInformationsContainer'));
+                if (div) {
+                    var p = document.createElement('p');
+                    p.className = 'GPelevationPathInformations';
+                    p.innerHTML = value;
+                    div.appendChild(p);
+                }
+                return div;
             }
         };
         return ElevationPathDOM;
     }();
-    Ol3ControlsElevationPath = function (ol, woodman, Gp, Utils, RightManagement, Measures, MeasureToolBox, Interactions, ElevationPathDOM, ID) {
+    CommonControlsProfileElevationPathDOM = function () {
+        var ProfileElevationPathDOM = {
+            displayProfileByDefault: function (data, container, context, className) {
+                var self = context;
+                if (container) {
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+                }
+                if (!data) {
+                    return;
+                }
+                var _displayProfileOptions = self.options.displayProfileOptions;
+                var _points = data.points;
+                var sortedElev = JSON.parse(JSON.stringify(_points));
+                sortedElev.sort(function (e1, e2) {
+                    return e1.z - e2.z;
+                });
+                var minZ = sortedElev[0].z;
+                var maxZ = sortedElev[sortedElev.length - 1].z;
+                var diff = maxZ - minZ;
+                var dist = data.distance;
+                var unit = data.unit;
+                var barwidth = 100 / _points.length;
+                var div = document.createElement('div');
+                div.id = 'profileElevationByDefault';
+                container.appendChild(div);
+                var divBox = document.createElement('div');
+                divBox.className = 'profile-box';
+                var divZ = document.createElement('div');
+                divZ.className = 'profile-z-vertical';
+                var ulZ = document.createElement('ul');
+                var liZmin = document.createElement('li');
+                liZmin.setAttribute('class', 'profile-min-z');
+                liZmin.innerHTML = minZ + ' m';
+                var liZmax = document.createElement('li');
+                liZmax.setAttribute('class', 'profile-max-z');
+                liZmax.innerHTML = maxZ + ' m';
+                ulZ.appendChild(liZmax);
+                ulZ.appendChild(liZmin);
+                divZ.appendChild(ulZ);
+                divBox.appendChild(divZ);
+                var divData = document.createElement('div');
+                divData.className = 'profile-content';
+                divData.addEventListener('mouseover', function (e) {
+                    var _lon = parseFloat(e.target.dataset['lon']);
+                    var _lat = parseFloat(e.target.dataset['lat']);
+                    if (_lon && _lat) {
+                        className.__createProfileMarker(self, {
+                            lat: _lat,
+                            lon: _lon
+                        });
+                    }
+                });
+                divData.addEventListener('mousemove', function (e) {
+                    var _lon = parseFloat(e.target.dataset['lon']);
+                    var _lat = parseFloat(e.target.dataset['lat']);
+                    if (_lon && _lat) {
+                        className.__updateProfileMarker(self, {
+                            lat: _lat,
+                            lon: _lon
+                        });
+                    }
+                });
+                divData.addEventListener('mouseout', function () {
+                    className.__removeProfileMarker(self);
+                });
+                var ulData = document.createElement('ul');
+                ulData.id = 'profile-data';
+                ulData.className = 'profile-z-axis profile-x-axis';
+                divData.appendChild(ulData);
+                for (var i = 0; i < _points.length; i++) {
+                    var d = _points[i];
+                    var li = document.createElement('li');
+                    li.setAttribute('data-z', d.z);
+                    li.setAttribute('data-lon', d.lon);
+                    li.setAttribute('data-lat', d.lat);
+                    li.setAttribute('data-dist', d.dist);
+                    var pct = Math.floor((d.z - minZ) * 100 / diff);
+                    li.setAttribute('class', 'percent v' + pct);
+                    li.title = 'Altitude : ' + d.z + 'm';
+                    if (_displayProfileOptions.currentSlope) {
+                        li.title += ' - Pente : ' + d.slope + '%';
+                    }
+                    li.title += ' (Lat : ' + d.lat + ' / Lon : ' + d.lon + ')';
+                    li.setAttribute('style', 'width: ' + barwidth + '%');
+                    ulData.appendChild(li);
+                }
+                divBox.appendChild(divData);
+                div.appendChild(divBox);
+                var divX = document.createElement('div');
+                divX.className = 'profile-x-horizontal';
+                var ulX = document.createElement('ul');
+                var liXmin = document.createElement('li');
+                liXmin.setAttribute('class', 'profile-min-x');
+                liXmin.innerHTML = '';
+                var liXmax = document.createElement('li');
+                liXmax.setAttribute('class', 'profile-max-x');
+                liXmax.innerHTML = dist + ' ' + unit;
+                ulX.appendChild(liXmin);
+                ulX.appendChild(liXmax);
+                divX.appendChild(ulX);
+                div.appendChild(divX);
+                return container;
+            },
+            displayProfileRaw: function (data, container, context, className) {
+                if (container) {
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+                }
+                var _points = data.points;
+                var div = document.createElement('textarea');
+                div.id = 'profilElevationResults';
+                div.rows = 10;
+                div.cols = 50;
+                div.style.width = '100%';
+                div.innerHTML = JSON.stringify(_points, undefined, 4);
+                div.addEventListener('mouseover', function (e) {
+                    className.__customRawProfileMouseOverEvent(context, e);
+                });
+                container.appendChild(div);
+                return container;
+            },
+            displayProfileLibD3: function (data, container, context, className) {
+                var self = context;
+                if (container) {
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+                }
+                var _points = data.points;
+                var _displayProfileOptions = self.options.displayProfileOptions;
+                var margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 30,
+                    left: 40
+                };
+                var width = container.clientWidth - margin.left - margin.right;
+                var height = container.clientHeight - margin.top - margin.bottom;
+                var x = d3.scale.linear().range([
+                    0,
+                    width
+                ]);
+                var y = d3.scale.linear().range([
+                    height,
+                    0
+                ]);
+                var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(5);
+                var yAxis = d3.svg.axis().scale(y).orient('left').ticks(5);
+                var line = d3.svg.line().interpolate('basis').x(function (d) {
+                    return x(d.dist);
+                }).y(function (d) {
+                    return y(d.z);
+                });
+                var area = d3.svg.area().interpolate('basis').x(function (d) {
+                    return x(d.dist);
+                }).y0(height).y1(function (d) {
+                    return y(d.z);
+                });
+                var svg = d3.select(container).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                var xDomain = d3.extent(_points, function (d) {
+                    return d.dist;
+                });
+                x.domain(xDomain);
+                var yDomain = [
+                    0,
+                    d3.max(_points, function (d) {
+                        return d.z;
+                    })
+                ];
+                y.domain(yDomain);
+                svg.append('path').datum(_points).attr('class', 'area-d3').attr('d', area);
+                svg.append('g').attr('class', 'x axis-d3').attr('transform', 'translate(0,' + height + ')').call(xAxis).append('text').attr('y', -15).attr('dy', '.71em').attr('x', width).text('Distance (' + data.unit + ')');
+                svg.append('g').attr('class', 'y axis-d3').call(yAxis).append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '.71em').text('Altitude (m)');
+                svg.append('g').attr('class', 'grid-d3 vertical').attr('transform', 'translate(0,' + height + ')').call(xAxis.orient('bottom').tickSize(-height, 0, 0).tickFormat(''));
+                svg.append('g').attr('class', 'grid-d3 horizontal').call(yAxis.orient('left').tickSize(-width, 0, 0).tickFormat(''));
+                svg.append('path').datum(_points).attr('class', 'line-d3').attr('d', line);
+                svg.selectAll('circle').data(_points).enter().append('circle').attr('cx', function (d) {
+                    return x(d.dist);
+                }).attr('cy', function (d) {
+                    return y(d.z);
+                }).attr('r', 0).attr('class', 'circle-d3');
+                var focus = svg.append('g').style('display', 'none');
+                focus.append('line').attr('id', 'focusLineX').attr('class', 'focusLine-d3');
+                focus.append('line').attr('id', 'focusLineY').attr('class', 'focusLine-d3');
+                focus.append('circle').attr('id', 'focusCircle').attr('r', 4).attr('class', 'circle-d3 focusCircle-d3');
+                var div = d3.select(container).append('div').attr('class', 'tooltip-d3').style('opacity', 0);
+                var bisectDist = d3.bisector(function (d) {
+                    return d.dist;
+                }).left;
+                svg.append('rect').attr('class', 'overlay-d3').attr('width', width).attr('height', height).on('mouseover', function () {
+                    focus.style('display', null);
+                    className.__createProfileMarker(self, _points[0]);
+                }).on('mouseout', function () {
+                    focus.style('display', 'none');
+                    className.__removeProfileMarker(self);
+                    div.transition().duration(500).style('opacity', 0);
+                }).on('mousemove', function () {
+                    var m = d3.mouse(this);
+                    var distance = x.invert(m[0]);
+                    var i = bisectDist(_points, distance);
+                    var d0 = _points[i - 1];
+                    var d1 = _points[i];
+                    var d = distance - d0[0] > d1[0] - distance ? d1 : d0;
+                    var xc = x(d.dist);
+                    var yc = y(d.z);
+                    focus.select('#focusCircle').attr('cx', xc).attr('cy', yc);
+                    focus.select('#focusLineX').attr('x1', xc).attr('y1', y(yDomain[0])).attr('x2', xc).attr('y2', y(yDomain[1]));
+                    focus.select('#focusLineY').attr('x1', x(xDomain[0])).attr('y1', yc).attr('x2', x(xDomain[1])).attr('y2', yc);
+                    className.__updateProfileMarker(self, d);
+                    div.transition().duration(200).style('opacity', 0.9);
+                    var _message = '';
+                    _message += ' Altitude : ' + d.z + ' m';
+                    if (_displayProfileOptions.currentSlope) {
+                        _message += '<br/> Pente : ' + d.slope + ' %';
+                    }
+                    _message += '<br/> (Lat : ' + d.lat + '/ Lon : ' + d.lon + ')';
+                    div.html(_message).style('left', d3.event.pageX + 'px').style('top', d3.event.pageY - 28 + 'px');
+                });
+                return svg;
+            },
+            displayProfileLibAmCharts: function (data, container, context, className) {
+                var self = context;
+                var _points = data.points;
+                var ballonText = '<span class=\'altiPathValue\'>[[title]] : [[value]]m</span><br/>';
+                var currentSlope = self.options.displayProfileOptions.currentSlope;
+                if (currentSlope) {
+                    ballonText += '<span class=\'altiPathValue\'>Pente : [[slope]] %</span><br/>';
+                }
+                ballonText += '<span class=\'altiPathCoords\'>(Lat: [[lat]] / Lon:[[lon]])</span>';
+                AmCharts.addInitHandler(function () {
+                });
+                var settings = {
+                    type: 'serial',
+                    pathToImages: 'http://cdn.amcharts.com/lib/3/images/',
+                    categoryField: 'dist',
+                    autoMarginOffset: 0,
+                    marginRight: 10,
+                    marginTop: 10,
+                    startDuration: 0,
+                    color: '#5E5E5E',
+                    fontSize: 8,
+                    theme: 'light',
+                    thousandsSeparator: '',
+                    numberFormatter: {
+                        precision: -1,
+                        decimalSeparator: ',',
+                        thousandsSeparato: ' '
+                    },
+                    categoryAxis: {
+                        color: '#5E5E5E',
+                        gridPosition: 'start',
+                        minHorizontalGap: 40,
+                        tickPosition: 'start',
+                        title: 'Distance (' + data.unit + ')',
+                        titleColor: '#5E5E5E',
+                        labelOffset: 0,
+                        startOnAxis: true
+                    },
+                    chartCursor: {
+                        animationDuration: 0,
+                        bulletsEnabled: true,
+                        bulletSize: 10,
+                        categoryBalloonEnabled: false,
+                        cursorColor: '#F90',
+                        graphBulletAlpha: 1,
+                        graphBulletSize: 1,
+                        zoomable: false
+                    },
+                    trendLines: [],
+                    graphs: [{
+                            balloonColor: '#CCCCCC',
+                            balloonText: ballonText,
+                            bullet: 'round',
+                            bulletAlpha: 0,
+                            bulletBorderColor: '#FFF',
+                            bulletBorderThickness: 2,
+                            bulletColor: '#F90',
+                            bulletSize: 6,
+                            hidden: false,
+                            id: 'AmGraph-1',
+                            fillAlphas: 0.4,
+                            fillColors: '#C77A04',
+                            lineAlpha: 1,
+                            lineColor: '#C77A04',
+                            lineThickness: 1,
+                            title: 'Altitude',
+                            valueField: 'z'
+                        }],
+                    guides: [],
+                    valueAxes: [{
+                            id: 'ValueAxis-1',
+                            minVerticalGap: 20,
+                            title: 'Altitude (m)'
+                        }],
+                    balloon: {
+                        borderColor: '#CCCCCC',
+                        borderThickness: 1,
+                        fillColor: '#FFFFFF',
+                        showBullet: true
+                    },
+                    titles: [],
+                    allLabels: [],
+                    dataProvider: _points
+                };
+                var _containerProfile = AmCharts.makeChart(container, settings);
+                _containerProfile.addListener('changed', function (e) {
+                    var obj = e.chart.dataProvider[e.index];
+                    className.__updateProfileMarker(self, obj);
+                });
+                return _containerProfile;
+            }
+        };
+        return ProfileElevationPathDOM;
+    }();
+    Ol3ControlsElevationPath = function (ol, woodman, Gp, Utils, RightManagement, Measures, MeasureToolBox, Interactions, ElevationPathDOM, ProfileElevationPathDOM, ID) {
         function ElevationPath(options) {
             options = options || {};
             if (!(this instanceof ElevationPath)) {
@@ -55404,10 +55930,13 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this._panelContainer = null;
             this._profileContainer = null;
             this._waitingContainer = null;
+            this._infoContainer = null;
+            this._timerHdlr = null;
             this._drawStyleStart = null;
             this._drawStyleFinish = null;
             this._markerStyle = null;
             this._profile = null;
+            this._data = {};
             this._measureSource = null;
             this._measureVector = null;
             this._measureDraw = null;
@@ -55427,18 +55956,17 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         ol.inherits(ElevationPath, ol.control.Control);
         ElevationPath.prototype = Object.create(ol.control.Control.prototype, {});
         Utils.assign(ElevationPath.prototype, ElevationPathDOM);
-        ElevationPath.__removeProfilMarker = function (context) {
+        ElevationPath.__removeProfileMarker = function (context) {
             var self = context;
             if (self._marker) {
                 self._measureSource.removeFeature(self._marker);
                 self._marker = null;
             }
         };
-        ElevationPath.__updateProfilMarker = function (d, context) {
+        ElevationPath.__createProfileMarker = function (context, d) {
             var self = context;
             var map = self.getMap();
             var proj = map.getView().getProjection();
-            ElevationPath.__removeProfilMarker(self);
             var _coordinate = ol.proj.transform([
                 d.lon,
                 d.lat
@@ -55449,248 +55977,69 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             self._marker.setStyle(self._markerStyle);
             self._measureSource.addFeature(self._marker);
         };
+        ElevationPath.__updateProfileMarker = function (context, d) {
+            var self = context;
+            ElevationPath.__removeProfileMarker(self);
+            ElevationPath.__createProfileMarker(self, d);
+        };
+        ElevationPath.__customRawProfileOperation = function (context, d) {
+            var self = context;
+            var _pts = d.points;
+            var _proj = self.getMap().getView().getProjection();
+            for (var i = 0; i < _pts.length; i++) {
+                var obj = _pts[i];
+                var _coordinate = ol.proj.transform([
+                    obj.lon,
+                    obj.lat
+                ], 'EPSG:4326', _proj);
+                var _geometry = new ol.geom.Point(_coordinate);
+                self._marker = new ol.Feature({ geometry: _geometry });
+                var styles = ElevationPath.DEFAULT_STYLES.RESULTS;
+                var _image = new ol.style.Circle({
+                    radius: styles.imageRadius,
+                    stroke: new ol.style.Stroke({
+                        color: styles.imageStrokeColor,
+                        width: styles.imageStrokeWidth
+                    }),
+                    fill: new ol.style.Fill({ color: styles.imageFillColor })
+                });
+                self._marker.setStyle(new ol.style.Style({ image: _image }));
+                self._measureSource.addFeature(self._marker);
+            }
+        };
+        ElevationPath.__customRawProfileMouseOverEvent = function (context, e) {
+        };
         ElevationPath.DISPLAY_PROFILE_LIB_AMCHARTS = function (data, container, context) {
             if (typeof AmCharts === 'undefined') {
                 console.log('Lib. AmCharts is not loaded !');
                 return;
             }
-            AmCharts.addInitHandler(function () {
-            });
-            var self = context;
-            var _config = {};
-            Utils.mergeParams(_config, self.options.styles.profile);
-            Utils.mergeParams(_config, { dataProvider: data });
-            self._profile = AmCharts.makeChart(container, _config);
-            self._profile.addListener('changed', function (e) {
-                var obj = e.chart.dataProvider[e.index];
-                ElevationPath.__removeProfilMarker(self);
-                ElevationPath.__updateProfilMarker(obj, self);
-            });
+            var profile = ProfileElevationPathDOM.displayProfileLibAmCharts(data, container, context, ElevationPath);
+            if (profile) {
+                this._profile = profile;
+            }
         };
         ElevationPath.DISPLAY_PROFILE_LIB_D3 = function (data, container, context) {
             if (typeof d3 === 'undefined') {
                 console.log('Lib. D3 is not loaded !');
                 return;
             }
-            if (container) {
-                while (container.firstChild) {
-                    container.removeChild(container.firstChild);
-                }
+            var profile = ProfileElevationPathDOM.displayProfileLibD3(data, container, context, ElevationPath);
+            if (profile) {
+                this._profile = profile;
             }
-            var margin = {
-                top: 20,
-                right: 20,
-                bottom: 30,
-                left: 40
-            };
-            var h = getComputedStyle(container, null).getPropertyValue('height').replace('px', '');
-            var w = getComputedStyle(container, null).getPropertyValue('width').replace('px', '');
-            var width = w - margin.left - margin.right;
-            var height = h - margin.top - margin.bottom;
-            var x = d3.scale.linear().range([
-                0,
-                width
-            ]);
-            var y = d3.scale.linear().range([
-                height,
-                0
-            ]);
-            var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(5);
-            var yAxis = d3.svg.axis().scale(y).orient('left').ticks(5);
-            var line = d3.svg.line().interpolate('basis').x(function (d) {
-                return x(d.dist);
-            }).y(function (d) {
-                return y(d.z);
-            });
-            var area = d3.svg.area().interpolate('basis').x(function (d) {
-                return x(d.dist);
-            }).y0(height).y1(function (d) {
-                return y(d.z);
-            });
-            var svg = d3.select(container).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-            var xDomain = d3.extent(data, function (d) {
-                return d.dist;
-            });
-            x.domain(xDomain);
-            var yDomain = [
-                0,
-                d3.max(data, function (d) {
-                    return d.z;
-                })
-            ];
-            y.domain(yDomain);
-            svg.append('path').datum(data).attr('class', 'area-d3').attr('d', area);
-            svg.append('g').attr('class', 'x axis-d3').attr('transform', 'translate(0,' + height + ')').call(xAxis).append('text').attr('y', -15).attr('dy', '.71em').attr('x', width).text('Distance (km)');
-            svg.append('g').attr('class', 'y axis-d3').call(yAxis).append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '.71em').text('Altitude (m)');
-            svg.append('g').attr('class', 'grid-d3 vertical').attr('transform', 'translate(0,' + height + ')').call(xAxis.orient('bottom').tickSize(-height, 0, 0).tickFormat(''));
-            svg.append('g').attr('class', 'grid-d3 horizontal').call(yAxis.orient('left').tickSize(-width, 0, 0).tickFormat(''));
-            svg.append('path').datum(data).attr('class', 'line-d3').attr('d', line);
-            svg.selectAll('circle').data(data).enter().append('circle').attr('cx', function (d) {
-                return x(d.dist);
-            }).attr('cy', function (d) {
-                return y(d.z);
-            }).attr('r', 0).attr('class', 'circle-d3');
-            var focus = svg.append('g').style('display', 'none');
-            focus.append('line').attr('id', 'focusLineX').attr('class', 'focusLine-d3');
-            focus.append('line').attr('id', 'focusLineY').attr('class', 'focusLine-d3');
-            focus.append('circle').attr('id', 'focusCircle').attr('r', 4).attr('class', 'circle-d3 focusCircle-d3');
-            var div = d3.select(container).append('div').attr('class', 'tooltip-d3').style('opacity', 0);
-            var bisectDist = d3.bisector(function (d) {
-                return d.dist;
-            }).left;
-            var self = context;
-            svg.append('rect').attr('class', 'overlay-d3').attr('width', width).attr('height', height).on('mouseover', function () {
-                focus.style('display', null);
-                ElevationPath.__updateProfilMarker(data[0], self);
-            }).on('mouseout', function () {
-                focus.style('display', 'none');
-                ElevationPath.__removeProfilMarker(self);
-                div.transition().duration(500).style('opacity', 0);
-            }).on('mousemove', function () {
-                var m = d3.mouse(this);
-                var distance = x.invert(m[0]);
-                var i = bisectDist(data, distance);
-                var d0 = i === 0 ? data[0] : data[i - 1];
-                var d1 = data[i];
-                var d = distance - d0[0] > d1[0] - distance ? d1 : d0;
-                var xc = x(d.dist);
-                var yc = y(d.z);
-                focus.select('#focusCircle').attr('cx', xc).attr('cy', yc);
-                focus.select('#focusLineX').attr('x1', xc).attr('y1', y(yDomain[0])).attr('x2', xc).attr('y2', y(yDomain[1]));
-                focus.select('#focusLineY').attr('x1', x(xDomain[0])).attr('y1', yc).attr('x2', x(xDomain[1])).attr('y2', yc);
-                ElevationPath.__updateProfilMarker(d, self);
-                div.transition().duration(200).style('opacity', 0.9);
-                div.html('Alt : ' + d.z + ' m <br/>' + 'Lon : ' + d.lon + ' <br/>' + 'Lat : ' + d.lat).style('left', d3.event.pageX + 'px').style('top', d3.event.pageY - 28 + 'px');
-            });
-            self._profile = d3.selectAll('rect.overlay')[0][0];
         };
         ElevationPath.DISPLAY_PROFILE_RAW = function (data, container, context) {
-            if (container) {
-                while (container.firstChild) {
-                    container.removeChild(container.firstChild);
-                }
-            }
-            var self = context;
-            var div = document.createElement('textarea');
-            div.id = 'profileElevationRaw';
-            div.rows = 10;
-            div.cols = 50;
-            div.style.width = '100%';
-            div.wrap = 'off';
-            div.innerHTML = JSON.stringify(data, undefined, 4);
-            container.appendChild(div);
-            self._profile = container;
-            if (self.options.debug) {
-                var _proj = self.getMap().getView().getProjection();
-                for (var i = 0; i < data.length; i++) {
-                    var obj = data[i];
-                    var _coordinate = ol.proj.transform([
-                        obj.lon,
-                        obj.lat
-                    ], 'EPSG:4326', _proj);
-                    var _geometry = new ol.geom.Point(_coordinate);
-                    self._marker = new ol.Feature({ geometry: _geometry });
-                    var styles = ElevationPath.DEFAULT_STYLES.RESULTS;
-                    var _image = new ol.style.Circle({
-                        radius: styles.imageRadius,
-                        stroke: new ol.style.Stroke({
-                            color: styles.imageStrokeColor,
-                            width: styles.imageStrokeWidth
-                        }),
-                        fill: new ol.style.Fill({ color: styles.imageFillColor })
-                    });
-                    self._marker.setStyle(new ol.style.Style({ image: _image }));
-                    self._measureSource.addFeature(self._marker);
-                }
+            var profile = ProfileElevationPathDOM.displayProfileRaw(data, container, context, ElevationPath);
+            if (profile) {
+                this._profile = profile;
             }
         };
         ElevationPath.DISPLAY_PROFILE_BY_DEFAULT = function (data, container, context) {
-            if (container) {
-                while (container.firstChild) {
-                    container.removeChild(container.firstChild);
-                }
+            var profile = ProfileElevationPathDOM.displayProfileByDefault(data, container, context, ElevationPath);
+            if (profile) {
+                this._profile = profile;
             }
-            if (!data) {
-                return;
-            }
-            var sortedElev = JSON.parse(JSON.stringify(data));
-            sortedElev.sort(function (e1, e2) {
-                return e1.z - e2.z;
-            });
-            var minZ = sortedElev[0].z;
-            var maxZ = sortedElev[sortedElev.length - 1].z;
-            var diff = maxZ - minZ;
-            var distMax = data[data.length - 1].dist;
-            var barwidth = 100 / data.length;
-            var self = context;
-            var div = document.createElement('div');
-            div.id = 'profileElevationByDefault';
-            div.addEventListener('mouseover', function (e) {
-                var _lon = parseFloat(e.target.dataset['lon']);
-                var _lat = parseFloat(e.target.dataset['lat']);
-                if (_lon && _lat) {
-                    ElevationPath.__updateProfilMarker({
-                        lon: _lon,
-                        lat: _lat
-                    }, self);
-                }
-            });
-            div.addEventListener('mousemove', function () {
-            });
-            div.addEventListener('mouseout', function () {
-                ElevationPath.__removeProfilMarker(self);
-            });
-            container.appendChild(div);
-            var divBox = document.createElement('div');
-            divBox.className = 'profile-box';
-            var divZ = document.createElement('div');
-            divZ.className = 'profile-z-vertical';
-            var ulZ = document.createElement('ul');
-            var liZmin = document.createElement('li');
-            liZmin.setAttribute('class', 'profile-min-z');
-            liZmin.innerHTML = minZ + ' m';
-            var liZmax = document.createElement('li');
-            liZmax.setAttribute('class', 'profile-max-z');
-            liZmax.innerHTML = maxZ + ' m';
-            ulZ.appendChild(liZmax);
-            ulZ.appendChild(liZmin);
-            divZ.appendChild(ulZ);
-            divBox.appendChild(divZ);
-            var divData = document.createElement('div');
-            divData.className = 'profile-content';
-            var ulData = document.createElement('ul');
-            ulData.id = 'profile-data';
-            ulData.className = 'profile-z-axis profile-x-axis';
-            divData.appendChild(ulData);
-            for (var i = 0; i < data.length; i++) {
-                var d = data[i];
-                var li = document.createElement('li');
-                li.setAttribute('data-z', d.z);
-                li.setAttribute('data-lon', d.lon);
-                li.setAttribute('data-lat', d.lat);
-                li.setAttribute('data-dist', d.dist);
-                var pct = Math.floor((d.z - minZ) * 100 / diff);
-                li.setAttribute('class', 'percent v' + pct);
-                li.title = 'altitude : ' + d.z + 'm';
-                li.setAttribute('style', 'width: ' + barwidth + '%');
-                ulData.appendChild(li);
-            }
-            divBox.appendChild(divData);
-            div.appendChild(divBox);
-            var divX = document.createElement('div');
-            divX.className = 'profile-x-horizontal';
-            var ulX = document.createElement('ul');
-            var liXmin = document.createElement('li');
-            liXmin.setAttribute('class', 'profile-min-x');
-            liXmin.innerHTML = '';
-            var liXmax = document.createElement('li');
-            liXmax.setAttribute('class', 'profile-max-x');
-            liXmax.innerHTML = distMax + ' km';
-            ulX.appendChild(liXmin);
-            ulX.appendChild(liXmax);
-            divX.appendChild(ulX);
-            div.appendChild(divX);
-            self._profile = container;
         };
         ElevationPath.DEFAULT_STYLES = {
             MARKER: new ol.style.Icon({
@@ -55706,72 +56055,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 imageFillColor: 'rgba(128, 128, 128, 0.2)',
                 imageStrokeColor: 'rgba(0, 0, 0, 0.7)',
                 imageStrokeWidth: 2
-            },
-            PROFILE: {
-                type: 'serial',
-                pathToImages: 'http://cdn.amcharts.com/lib/3/images/',
-                categoryField: 'dist',
-                autoMarginOffset: 0,
-                marginRight: 10,
-                marginTop: 10,
-                startDuration: 0,
-                color: '#5E5E5E',
-                fontSize: 10,
-                theme: 'light',
-                thousandsSeparator: '',
-                categoryAxis: {
-                    color: '#5E5E5E',
-                    gridPosition: 'start',
-                    minHorizontalGap: 40,
-                    tickPosition: 'start',
-                    title: 'Distance (km)',
-                    titleColor: '#5E5E5E',
-                    startOnAxis: true
-                },
-                chartCursor: {
-                    animationDuration: 0,
-                    bulletsEnabled: true,
-                    bulletSize: 10,
-                    categoryBalloonEnabled: false,
-                    cursorColor: '#F90',
-                    graphBulletAlpha: 1,
-                    graphBulletSize: 1,
-                    zoomable: false
-                },
-                trendLines: [],
-                graphs: [{
-                        balloonColor: '#CCCCCC',
-                        balloonText: '<span class=\'altiPathValue\'>[[title]] : [[value]]m</span><br/><span class=\'altiPathCoords\'>(lat: [[lat]] / lon:[[lon]])</span>',
-                        bullet: 'round',
-                        bulletAlpha: 0,
-                        bulletBorderColor: '#FFF',
-                        bulletBorderThickness: 2,
-                        bulletColor: '#F90',
-                        bulletSize: 6,
-                        hidden: false,
-                        id: 'AmGraph-1',
-                        fillAlphas: 0.4,
-                        fillColors: '#C77A04',
-                        lineAlpha: 1,
-                        lineColor: '#C77A04',
-                        lineThickness: 1,
-                        title: 'Altitude',
-                        valueField: 'z'
-                    }],
-                guides: [],
-                valueAxes: [{
-                        id: 'ValueAxis-1',
-                        minVerticalGap: 20,
-                        title: 'Altitude (m)'
-                    }],
-                allLabels: [],
-                balloon: {
-                    borderColor: '#CCCCCC',
-                    borderThickness: 1,
-                    fillColor: '#FFFFFF',
-                    showBullet: true
-                },
-                titles: []
             }
         };
         ElevationPath.prototype.constructor = ElevationPath;
@@ -55827,42 +56110,39 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }
         };
         ElevationPath.prototype._initialize = function (options) {
-            this.options = {};
-            this.options.target = typeof options.target !== 'undefined' ? options.target : null;
-            this.options.render = typeof options.render !== 'undefined' ? options.render : null;
-            this.options.apiKey = options.apiKey;
-            var debug = options.debug;
-            this.options.debug = typeof debug === 'undefined' ? false : debug;
-            var active = options.active;
-            this.options.active = typeof active === 'undefined' ? false : active;
-            var service = options.elevationOptions;
-            this.options.service = typeof service === 'undefined' || Object.keys(service).length === 0 ? {} : service;
-            var profil = options.displayProfileOptions || {};
-            if (typeof profil === 'undefined' || Object.keys(profil).length === 0) {
-                this.options.profile = {
-                    apply: ElevationPath.DISPLAY_PROFILE_BY_DEFAULT,
+            this.options = {
+                target: null,
+                render: null,
+                active: false,
+                apiKey: null,
+                elevationOptions: {},
+                displayProfileOptions: {
+                    greaterSlope: true,
+                    meanSlope: true,
+                    ascendingElevation: true,
+                    descendingElevation: true,
+                    currentSlope: true,
+                    apply: null,
                     target: null
-                };
-            } else {
-                this.options.profile = {};
-            }
-            var displayFunction = profil.apply || this.options.profile.apply;
-            this.options.profile.apply = typeof displayFunction === 'function' ? displayFunction : ElevationPath.DISPLAY_PROFILE_BY_DEFAULT;
-            var displayContainer = profil.target || this.options.profile.target;
-            this.options.profile.target = typeof displayContainer === 'undefined' ? null : displayContainer;
-            var styles = options.stylesOptions || {};
-            if (typeof styles === 'undefined' || Object.keys(styles).length === 0) {
-                this.options.styles = { profile: ElevationPath.DEFAULT_STYLES.PROFILE };
-            } else {
-                this.options.styles = {};
-            }
-            this.options.styles.draw = styles.draw || {};
+                },
+                stylesOptions: {
+                    profile: null,
+                    draw: null,
+                    marker: null
+                }
+            };
+            Utils.mergeParams(this.options, options);
+            this.options.apiKey = options.apiKey;
+            var _profile = options.displayProfileOptions || {};
+            var displayFunction = _profile.apply;
+            this.options.displayProfileOptions.apply = typeof displayFunction === 'function' ? displayFunction : ElevationPath.DISPLAY_PROFILE_BY_DEFAULT;
+            var displayContainer = _profile.target;
+            this.options.displayProfileOptions.target = typeof displayContainer !== 'undefined' ? displayContainer : null;
+            var _styles = options.stylesOptions || {};
+            this.options.stylesOptions.draw = _styles.draw || {};
             this._createStylingDraw();
-            this.options.styles.marker = styles.marker || {};
+            this.options.stylesOptions.marker = _styles.marker || {};
             this._createStylingMarker();
-            var profile = styles.profile || this.options.styles.profile;
-            this.options.styles.profile = typeof profile === 'undefined' || Object.keys(profile).length === 0 ? ElevationPath.DEFAULT_STYLES.PROFILE : profile;
-            this._createStylingProfile();
         };
         ElevationPath.prototype._initializeContainer = function () {
             var container = this._createMainContainerElement();
@@ -55880,7 +56160,9 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             panel.appendChild(profile);
             var waiting = this._waitingContainer = this._createElevationPathWaitingElement();
             panel.appendChild(waiting);
-            if (this.options.profile.target === null) {
+            var info = this._infoContainer = this._createElevationPathInformationsElement();
+            panel.appendChild(info);
+            if (this.options.displayProfileOptions.target === null) {
                 container.appendChild(panel);
             }
             return container;
@@ -55900,13 +56182,13 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         };
         ElevationPath.prototype._createStylingMarker = function () {
             var marker = ElevationPath.DEFAULT_STYLES.MARKER;
-            if (this.options.styles.marker instanceof ol.style.Image) {
-                marker = this.options.styles.marker;
+            if (this.options.stylesOptions.marker instanceof ol.style.Image) {
+                marker = this.options.stylesOptions.marker;
             }
             this._markerStyle = new ol.style.Style({ image: marker });
         };
         ElevationPath.prototype._createStylingDraw = function () {
-            var styles = this.options.styles.draw;
+            var styles = this.options.stylesOptions.draw;
             var startStyleOpts = {
                 image: Measures.DEFAULT_POINTER_STYLE,
                 stroke: Measures.DEFAULT_DRAW_START_STYLE.getStroke()
@@ -55925,7 +56207,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             this._drawStyleFinish = new ol.style.Style(finishStyleOpts);
         };
         ElevationPath.prototype._createStylingProfile = function () {
-            var userStyles = this.options.styles.profile;
+            var userStyles = this.options.stylesOptions.profile;
             var defaultStyle = ElevationPath.DEFAULT_STYLES.PROFILE;
             Object.keys(defaultStyle).forEach(function (key) {
                 if (!userStyles.hasOwnProperty(key)) {
@@ -55984,7 +56266,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             }, this);
             this._measureDraw.on('drawend', function (evt) {
                 self._lastSketch = self._currentSketch;
-                if (typeof self.options.service.onSuccess === 'undefined' && self.options.profile.target === null) {
+                if (typeof self.options.elevationOptions.onSuccess === 'undefined' && self.options.displayProfileOptions.target === null) {
                     self._panelContainer.style.display = 'block';
                 }
                 self._requestService();
@@ -56051,7 +56333,7 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 return;
             }
             var options = {};
-            Utils.mergeParams(options, this.options.service);
+            Utils.mergeParams(options, this.options.elevationOptions);
             Utils.mergeParams(options, { apiKey: this.options.apiKey });
             var self = this;
             var _requestServiceOnSuccess = function (result) {
@@ -56068,8 +56350,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 self._waiting = false;
             };
             Utils.mergeParams(options, {
-                onSuccess: this.options.service.onSuccess || _requestServiceOnSuccess,
-                onFailure: this.options.service.onFailure || _requestServiceOnFailure
+                onSuccess: this.options.elevationOptions.onSuccess || _requestServiceOnSuccess,
+                onFailure: this.options.elevationOptions.onFailure || _requestServiceOnFailure
             });
             var sampling = options.sampling;
             if (!sampling) {
@@ -56088,46 +56370,129 @@ UtilsLoggerByDefault = function (Log4js, Config) {
             Gp.Services.getAltitude(options);
         };
         ElevationPath.prototype._computeElevationMeasure = function (elevations) {
+            var _data = elevations;
+            var _limite = 2000;
+            var _unit = 'km';
+            var _factor = 1000;
+            var _length = this._getLength();
+            if (_length < _limite) {
+                _factor = 1;
+                _unit = 'm';
+            }
+            _data[0].dist = 0;
+            _data[0].slope = 0;
+            var _distanceMinus = 0;
+            var _distancePlus = 0;
+            var _ascendingElevation = 0;
+            var _descendingElevation = 0;
+            var _distance = 0;
+            var _slopes = 0;
             var wgs84Sphere = new ol.Sphere(6378137);
-            elevations[0].dist = 0;
-            var distance = 0;
-            for (var i = 1; i < elevations.length; i++) {
-                distance += wgs84Sphere.haversineDistance([
-                    elevations[i].lon,
-                    elevations[i].lat
-                ], [
-                    elevations[i - 1].lon,
-                    elevations[i - 1].lat
-                ]) / 1000;
-                elevations[i].dist = distance;
-                elevations[i].lat = Math.round(elevations[i].lat * 10000) / 10000;
-                elevations[i].lon = Math.round(elevations[i].lon * 10000) / 10000;
+            for (var i = 1; i < _data.length; i++) {
+                var a = [
+                    _data[i].lon,
+                    _data[i].lat
+                ];
+                var b = [
+                    _data[i - 1].lon,
+                    _data[i - 1].lat
+                ];
+                var dist = wgs84Sphere.haversineDistance(a, b);
+                var za = _data[i].z;
+                var zb = _data[i - 1].z;
+                if (za < 0) {
+                    za = 0;
+                }
+                if (zb < 0) {
+                    zb = 0;
+                }
+                var slope = za - zb;
+                if (slope < 0) {
+                    _distanceMinus += dist;
+                    _descendingElevation += slope;
+                } else if (slope > 0) {
+                    _distancePlus += dist;
+                    _ascendingElevation += slope;
+                }
+                _distance += dist / _factor;
+                _data[i].dist = _distance;
+                _slopes += slope ? Math.abs(Math.round(slope / dist * 100)) : 0;
+                _data[i].slope = slope ? Math.abs(Math.round(slope / dist * 100)) : 0;
+                var value = _data[i].slope;
+                if (value > 15 && value < 30) {
+                    _data[i].color = '#005b4c';
+                } else if (value > 30 && value < 45) {
+                    _data[i].color = '#00362d';
+                } else if (value > 45) {
+                    _data[i].color = '#00120f';
+                } else {
+                    _data[i].color = '#00B798';
+                }
+                _data[i].lat = Math.round(_data[i].lat * 10000) / 10000;
+                _data[i].lon = Math.round(_data[i].lon * 10000) / 10000;
             }
             var coeffArrond = 100;
-            if (distance > 100) {
+            if (_distance > 100) {
                 coeffArrond = 1;
-            } else if (distance > 10) {
+            } else if (_distance > 10) {
                 coeffArrond = 10;
             }
-            for (var j = 0; j < elevations.length; j++) {
-                var data = elevations[j];
-                if (data.z < 0) {
-                    data.z = 0;
+            _distance = Math.round(_distance * coeffArrond) / coeffArrond;
+            _distanceMinus = Math.round(_distanceMinus * coeffArrond) / coeffArrond;
+            _distancePlus = Math.round(_distancePlus * coeffArrond) / coeffArrond;
+            var _altMin = _data[0].z;
+            var _altMax = _data[0].z;
+            var _greaterSlope = _data[0].slope;
+            for (var ji = 0; ji < _data.length; ji++) {
+                var d = _data[ji];
+                if (d.z < 0) {
+                    d.z = 0;
                 }
-                data.dist = Math.round(data.dist * coeffArrond) / coeffArrond;
+                if (d.z >= _altMax) {
+                    _altMax = d.z;
+                }
+                if (d.z <= _altMin) {
+                    _altMin = d.z;
+                }
+                d.dist = Math.round(d.dist * coeffArrond) / coeffArrond;
+                if (d.slope > _greaterSlope) {
+                    _greaterSlope = d.slope;
+                }
             }
-            return elevations;
+            return {
+                greaterSlope: _greaterSlope,
+                meanSlope: Math.round(_slopes / _data.length),
+                distancePlus: _distancePlus.toLocaleString(),
+                distanceMinus: _distanceMinus.toLocaleString(),
+                ascendingElevation: _ascendingElevation,
+                descendingElevation: _descendingElevation,
+                altMin: _altMin.toLocaleString(),
+                altMax: _altMax.toLocaleString(),
+                distance: _distance.toLocaleString(),
+                unit: _unit,
+                points: _data
+            };
         };
         ElevationPath.prototype._displayProfile = function (elevations) {
-            var data = this._computeElevationMeasure(elevations);
-            var container = this.options.profile.target;
+            if (this._data) {
+                this._data = {};
+            }
+            var data = this._data = this._computeElevationMeasure(elevations);
+            var container = this.options.displayProfileOptions.target;
             if (container) {
                 container.appendChild(this._panelContainer);
             }
             container = this._profileContainer;
             var context = this;
-            var displayFunction = this.options.profile.apply;
+            var displayFunction = this.options.displayProfileOptions.apply;
             displayFunction.call(this, data, container, context);
+            var opts = this.options.displayProfileOptions;
+            var element = document.getElementById('GPelevationPathPanelInfo-' + this._uid);
+            if (element) {
+                if (opts.greaterSlope || opts.meanSlope || opts.ascendingElevation || opts.descendingElevation) {
+                    element.style.display = 'block';
+                }
+            }
         };
         ElevationPath.prototype.onShowElevationPathClick = function () {
             var map = this.getMap();
@@ -56145,8 +56510,41 @@ UtilsLoggerByDefault = function (Log4js, Config) {
                 this._removeMeasureInteraction(map);
             }
         };
+        ElevationPath.prototype.onOpenElevationPathInfoClick = function () {
+            var meanSlope = this.options.displayProfileOptions.meanSlope;
+            var greaterSlope = this.options.displayProfileOptions.greaterSlope;
+            var ascendingElevation = this.options.displayProfileOptions.ascendingElevation;
+            var descendingElevation = this.options.displayProfileOptions.descendingElevation;
+            var div = this._infoContainer;
+            if (div.childElementCount) {
+                while (div.firstChild) {
+                    div.removeChild(div.firstChild);
+                }
+            }
+            if (ascendingElevation) {
+                this._addElevationPathInformationsItem('Dénivelé positif : ' + this._data.ascendingElevation.toLocaleString() + ' m');
+            }
+            if (descendingElevation) {
+                this._addElevationPathInformationsItem('Dénivelé négatif : ' + this._data.descendingElevation.toLocaleString() + ' m');
+            }
+            if (meanSlope) {
+                this._addElevationPathInformationsItem('Pente moyenne : ' + this._data.meanSlope.toLocaleString() + ' %');
+            }
+            if (greaterSlope) {
+                this._addElevationPathInformationsItem('Plus forte pente : ' + this._data.greaterSlope.toLocaleString() + ' %');
+            }
+            if (div.className === 'GPelevationPathInformationsContainerVisible') {
+                clearTimeout(this._timerHdlr);
+                div.className = 'GPelevationPathInformationsContainerHidden';
+            } else {
+                div.className = 'GPelevationPathInformationsContainerVisible';
+            }
+            this._timerHdlr = setTimeout(function () {
+                div.className = 'GPelevationPathInformationsContainerHidden';
+            }, 4000);
+        };
         return ElevationPath;
-    }(ol, {}, gp, CommonUtils, CommonUtilsCheckRightManagement, Ol3ControlsMeasuresMeasures, Ol3ControlsMeasureToolBox, Ol3ControlsUtilsInteractions, CommonControlsElevationPathDOM, CommonUtilsSelectorID);
+    }(ol, {}, gp, CommonUtils, CommonUtilsCheckRightManagement, Ol3ControlsMeasuresMeasures, Ol3ControlsMeasureToolBox, Ol3ControlsUtilsInteractions, CommonControlsElevationPathDOM, CommonControlsProfileElevationPathDOM, CommonUtilsSelectorID);
     CommonControlsMeasureLengthDOM = function () {
         var MeasureLengthDOM = {
             _addUID: function (id) {
@@ -56567,8 +56965,8 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         return MeasureAzimuth;
     }(ol, {}, CommonUtils, Ol3ControlsMeasureToolBox, Ol3ControlsMeasuresMeasures, CommonControlsMeasureAzimuthDOM, CommonUtilsSelectorID);
     Ol3GpPluginOl3 = function (ol, Gp, LayerUtils, Register, ProxyUtils, GfiUtils, Utils, KML, WMTS, CRS, SourceWMTS, SourceWMS, LayerWMTS, LayerWMS, LayerSwitcher, GetFeatureInfo, SearchEngine, MousePosition, Drawing, Route, Isocurve, ReverseGeocode, LayerImport, GeoportalAttribution, Markers, ElevationPath, MeasureLength, MeasureArea, MeasureAzimuth) {
-        Gp.ol3extVersion = '1.0.0';
-        Gp.ol3extDate = '2017-12-11';
+        Gp.ol3extVersion = '1.1.0';
+        Gp.ol3extDate = '2018-04-09';
         Gp.olUtils = Utils;
         Gp.LayerUtils = LayerUtils;
         Gp.ProxyUtils = ProxyUtils;
@@ -56598,7 +56996,6 @@ UtilsLoggerByDefault = function (Log4js, Config) {
         ol.control.ElevationPath = ElevationPath;
         return Gp;
     }(ol, gp, CommonUtilsLayerUtils, CommonUtilsRegister, CommonUtilsProxyUtils, Ol3GfiUtils, CommonUtils, Ol3FormatsKML, Ol3SourcesWMTS, Ol3CRSCRS, Ol3LayersSourceWMTS, Ol3LayersSourceWMS, Ol3LayersLayerWMTS, Ol3LayersLayerWMS, Ol3ControlsLayerSwitcher, Ol3ControlsGetFeatureInfo, Ol3ControlsSearchEngine, Ol3ControlsMousePosition, Ol3ControlsDrawing, Ol3ControlsRoute, Ol3ControlsIsocurve, Ol3ControlsReverseGeocode, Ol3ControlsLayerImport, Ol3ControlsGeoportalAttribution, Ol3ControlsUtilsMarkers, Ol3ControlsElevationPath, Ol3ControlsMeasuresMeasureLength, Ol3ControlsMeasuresMeasureArea, Ol3ControlsMeasuresMeasureAzimuth);
-    window.proj4 = proj4;
     return Gp;
 }));
 IMap = function (Logger) {
@@ -57184,61 +57581,6 @@ IMap = function (Logger) {
         },
         zoomOut: function () {
         },
-        switchToLib: function (library) {
-            var oldMap = {};
-            oldMap.projection = this.getProjection();
-            oldMap.center = this.getCenter();
-            oldMap.azimuth = this.getAzimuth();
-            oldMap.tilt = this.getTilt();
-            oldMap.zoom = this.getZoom();
-            oldMap.layersOptions = this.getLayersOptions();
-            oldMap.controlsOptions = this.getControlsOptions();
-            oldMap.mapDiv = this.div.id;
-            oldMap.apiKey = this.apiKey;
-            oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
-            for (var controlId in oldMap.controlsOptions) {
-                this.removeControls(controlId);
-            }
-            if (library === 'vg') {
-                oldMap.center = [
-                    oldMap.center.x,
-                    oldMap.center.y
-                ];
-                var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, 'EPSG:4326');
-                oldMap.center = {
-                    x: lonlat[0],
-                    y: lonlat[1]
-                };
-                this.libMap.setTarget(null);
-            } else if (library === 'ol3') {
-                oldMap.center = [
-                    oldMap.center.lon,
-                    oldMap.center.lat
-                ];
-                var xy = ol.proj.transform(oldMap.center, 'EPSG:4326', 'EPSG:3857');
-                oldMap.center = {
-                    x: xy[0],
-                    y: xy[1]
-                };
-                this.libMap.dispose();
-            } else {
-                console.log('Unknown Library');
-                return;
-            }
-            var newMap = Gp.Map.load(oldMap.mapDiv, {
-                apiKey: oldMap.apiKey,
-                enginePath3d: oldMap.enginePath3d || null,
-                projection: oldMap.projection,
-                center: oldMap.center,
-                azimuth: oldMap.azimuth,
-                tilt: oldMap.tilt,
-                zoom: oldMap.zoom,
-                library: library,
-                layersOptions: oldMap.layersOptions,
-                controlsOptions: oldMap.controlsOptions
-            });
-            return newMap;
-        },
         switchToLibITOL3: function (library) {
             var oldMap = {};
             oldMap.projection = this.getProjection();
@@ -57255,6 +57597,9 @@ IMap = function (Logger) {
                 this.removeControls(controlId);
             }
             if (library === 'itowns') {
+                for (var l = 0; l < this._3Dlayers.length; l++) {
+                    oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                }
                 oldMap.center = [
                     oldMap.center.x,
                     oldMap.center.y
@@ -57264,7 +57609,7 @@ IMap = function (Logger) {
                     x: lonlat[0],
                     y: lonlat[1]
                 };
-                oldMap.azimuth = this.getAzimuth() + 90;
+                oldMap.azimuth = this.getAzimuth();
                 this.libMap.setTarget(null);
             } else if (library === 'ol3') {
                 oldMap.center = [
@@ -57387,7 +57732,6 @@ IMap = function (Logger) {
                 case 'WMS':
                 case 'WMTS':
                 case 'OSM':
-                case 'VIRTUALGEO':
                     this._addRasterLayer(addLayerParam);
                     break;
                 default:
@@ -57566,15 +57910,14 @@ IMap = function (Logger) {
                     break;
                 default:
                     console.log('Controle ' + controlId + 'inconnu.');
+                    continue;
                 }
-                if (controlObj) {
-                    this.logger.trace('[IMap] addControls : registering : [' + controlId + ']');
-                    this._controls.push({
-                        obj: controlObj,
-                        id: controlId.toLowerCase(),
-                        options: controlOpts
-                    });
-                }
+                this.logger.trace('[IMap] addControls : registering : [' + controlId + ']');
+                this._controls.push({
+                    obj: controlObj || '2D-only-control',
+                    id: controlId.toLowerCase(),
+                    options: controlOpts
+                });
             }
         },
         setDraggable: function (controlOpts) {
@@ -58908,105 +59251,117 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
     OL3.prototype._addRasterLayer = function (layerObj) {
         var layerId = Object.keys(layerObj)[0];
         var layerOpts = layerObj[layerId];
-        var constructorOpts = this._applyCommonLayerParams(layerOpts);
-        switch (layerOpts.format.toUpperCase()) {
-        case 'WMS':
-            this.logger.trace('ajout d\'une couche WMS');
-            var params = {};
-            params.LAYERS = layerOpts.layers.join(',');
-            if (layerOpts.version) {
-                params.VERSION = layerOpts.version;
-            }
-            layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName;
-            if (layerOpts.stylesNames) {
-                if (Array.isArray(layerOpts.stylesNames)) {
-                    params.STYLES = layerOpts.stylesNames.join();
-                } else {
-                    console.log('\'stylesNames\' parameter should be an array of style names (string)');
+        if (layerOpts.isElevation !== true) {
+            var constructorOpts = this._applyCommonLayerParams(layerOpts);
+            switch (layerOpts.format.toUpperCase()) {
+            case 'WMS':
+                this.logger.trace('ajout d\'une couche WMS');
+                var params = {};
+                params.LAYERS = layerOpts.layers.join(',');
+                if (layerOpts.version) {
+                    params.VERSION = layerOpts.version;
                 }
+                layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName;
+                if (layerOpts.stylesNames) {
+                    if (Array.isArray(layerOpts.stylesNames)) {
+                        params.STYLES = layerOpts.stylesNames.join();
+                    } else {
+                        console.log('\'stylesNames\' parameter should be an array of style names (string)');
+                    }
+                }
+                if (layerOpts.outputFormat) {
+                    params.FORMAT = layerOpts.outputFormat;
+                }
+                if (layerOpts.backgroundColor) {
+                    params.BGCOLOR = layerOpts.backgroundColor;
+                    params.TRANSPARENT = 'FALSE';
+                } else {
+                    params.TRANSPARENT = 'TRUE';
+                }
+                var sourceOpts = {
+                    url: layerOpts.url,
+                    params: params
+                };
+                if (layerOpts.hasOwnProperty('projection')) {
+                    sourceOpts.projection = layerOpts.projection;
+                }
+                if (layerOpts.hasOwnProperty('tiled') && layerOpts.tiled === true) {
+                    constructorOpts.source = new ol.source.TileWMS(sourceOpts);
+                } else {
+                    constructorOpts.source = new ol.source.ImageWMS(sourceOpts);
+                }
+                break;
+            case 'WMTS':
+                this.logger.trace('ajout d\'une couche WMTS');
+                var lOpts = this._getWMTSDefaultOpts();
+                for (var opt in layerOpts) {
+                    lOpts[opt] = layerOpts[opt];
+                }
+                layerOpts = lOpts;
+                var sourceOpts = {
+                    url: layerOpts.url,
+                    layer: layerOpts.layer,
+                    matrixSet: layerOpts.tileMatrixSet,
+                    format: layerOpts.outputFormat,
+                    version: layerOpts.version,
+                    style: layerOpts.styleName,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: [
+                            layerOpts.topLeftCorner.x,
+                            layerOpts.topLeftCorner.y
+                        ],
+                        resolutions: layerOpts.resolutions,
+                        matrixIds: layerOpts.matrixIds
+                    })
+                };
+                if (layerOpts.url.indexOf('{TileMatrixSet}') > 0 || layerOpts.url.indexOf('{TileRow}') > 0 || layerOpts.url.indexOf('{TileCol}') > 0) {
+                    sourceOpts.requestEncoding = 'REST';
+                } else {
+                    sourceOpts.requestEncoding = 'KVP';
+                }
+                constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
+                break;
+            case 'OSM':
+                this.logger.trace('ajout d\'une couche OSM');
+                constructorOpts.source = new ol.source.OSM({ url: layerOpts.url });
+                break;
+            default:
             }
-            if (layerOpts.outputFormat) {
-                params.FORMAT = layerOpts.outputFormat;
+            if (constructorOpts.hasOwnProperty('source')) {
+                if (layerOpts.hasOwnProperty('originators')) {
+                    constructorOpts.source._originators = layerOpts.originators;
+                }
+                var layer = null;
+                if (layerOpts.format.toUpperCase() == 'WMS' && (!layerOpts.hasOwnProperty('tiled') || layerOpts.tiled !== true)) {
+                    layer = new ol.layer.Image(constructorOpts);
+                } else {
+                    layer = new ol.layer.Tile(constructorOpts);
+                }
+                if (constructorOpts.hasOwnProperty('zIndex') && constructorOpts.zIndex === 0) {
+                    layer._forceNullzIndex = true;
+                }
+                var gpLayer = {
+                    id: layerId,
+                    obj: layer,
+                    options: layerOpts
+                };
+                if (layerOpts.hasOwnProperty('grayScaled') && layerOpts.grayScaled) {
+                    this._colorGrayscaleLayerSwitch(gpLayer, true);
+                }
+                this._layers.push(gpLayer);
+                this.libMap.addLayer(gpLayer.obj);
+                this._addLayerConfToLayerSwitcher(gpLayer.obj, layerOpts);
             }
-            if (layerOpts.backgroundColor) {
-                params.BGCOLOR = layerOpts.backgroundColor;
-                params.TRANSPARENT = 'FALSE';
-            } else {
-                params.TRANSPARENT = 'TRUE';
-            }
-            var sourceOpts = {
-                url: layerOpts.url,
-                params: params
-            };
-            if (layerOpts.hasOwnProperty('projection')) {
-                sourceOpts.projection = layerOpts.projection;
-            }
-            if (layerOpts.hasOwnProperty('tiled') && layerOpts.tiled === true) {
-                constructorOpts.source = new ol.source.TileWMS(sourceOpts);
-            } else {
-                constructorOpts.source = new ol.source.ImageWMS(sourceOpts);
-            }
-            break;
-        case 'WMTS':
-            this.logger.trace('ajout d\'une couche WMTS');
-            var lOpts = this._getWMTSDefaultOpts();
-            for (var opt in layerOpts) {
-                lOpts[opt] = layerOpts[opt];
-            }
-            layerOpts = lOpts;
-            var sourceOpts = {
-                url: layerOpts.url,
-                layer: layerOpts.layer,
-                matrixSet: layerOpts.tileMatrixSet,
-                format: layerOpts.outputFormat,
-                version: layerOpts.version,
-                style: layerOpts.styleName,
-                tileGrid: new ol.tilegrid.WMTS({
-                    origin: [
-                        layerOpts.topLeftCorner.x,
-                        layerOpts.topLeftCorner.y
-                    ],
-                    resolutions: layerOpts.resolutions,
-                    matrixIds: layerOpts.matrixIds
-                })
-            };
-            if (layerOpts.url.indexOf('{TileMatrixSet}') > 0 || layerOpts.url.indexOf('{TileRow}') > 0 || layerOpts.url.indexOf('{TileCol}') > 0) {
-                sourceOpts.requestEncoding = 'REST';
-            } else {
-                sourceOpts.requestEncoding = 'KVP';
-            }
-            constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
-            break;
-        case 'OSM':
-            this.logger.trace('ajout d\'une couche OSM');
-            constructorOpts.source = new ol.source.OSM({ url: layerOpts.url });
-            break;
-        default:
-        }
-        if (constructorOpts.hasOwnProperty('source')) {
-            if (layerOpts.hasOwnProperty('originators')) {
-                constructorOpts.source._originators = layerOpts.originators;
-            }
-            var layer = null;
-            if (layerOpts.format.toUpperCase() == 'WMS' && (!layerOpts.hasOwnProperty('tiled') || layerOpts.tiled !== true)) {
-                layer = new ol.layer.Image(constructorOpts);
-            } else {
-                layer = new ol.layer.Tile(constructorOpts);
-            }
-            if (constructorOpts.hasOwnProperty('zIndex') && constructorOpts.zIndex === 0) {
-                layer._forceNullzIndex = true;
-            }
-            var gpLayer = {
+        } else {
+            var elevationLayer = {
                 id: layerId,
-                obj: layer,
+                obj: '3D-only-layer',
                 options: layerOpts
             };
-            if (layerOpts.hasOwnProperty('grayScaled') && layerOpts.grayScaled) {
-                this._colorGrayscaleLayerSwitch(gpLayer, true);
+            if (!this._3Dlayers) {
+                this._3Dlayers = [];
             }
-            this._layers.push(gpLayer);
-            this.libMap.addLayer(gpLayer.obj);
-            this._addLayerConfToLayerSwitcher(gpLayer.obj, layerOpts);
+            this._3Dlayers.push(elevationLayer);
         }
     };
     OL3.prototype._addVectorLayer = function (layerObj) {
@@ -59656,19 +60011,6 @@ ol3OL3 = function (Logger, ol, plugins, IMap) {
         }
         source.refresh();
     };
-    OL3.prototype._manageLayerChangedEvent = function () {
-        if (this._events.hasOwnProperty('layerChanged')) {
-            var layerChangedArray = [];
-            this._events['layerChanged'].forEach(function (eventObj) {
-                layerChangedArray.push(eventObj);
-            }, this);
-            layerChangedArray.forEach(function (eventObj) {
-                this.forget('layerChanged', eventObj.action);
-                this.listen('layerChanged', eventObj.action, eventObj.context);
-            }, this);
-            layerChangedArray = null;
-        }
-    };
     return OL3;
 }(UtilsLoggerByDefault, ol, gp, IMap);
 Map = function (Logger, require) {
@@ -59691,13 +60033,9 @@ Map = function (Logger, require) {
                 mapOptions.library = 'ol3';
             }
             var OL3 = null;
-            var VG = null;
             var IT = null;
             if (this.__classOl !== null && typeof this.__classOl === 'function') {
                 OL3 = this.__classOl;
-            }
-            if (this.__classVg !== null && typeof this.__classVg === 'function') {
-                VG = this.__classVg;
             }
             if (this.__classItowns !== null && typeof this.__classItowns === 'function') {
                 IT = this.__classItowns;
@@ -59711,16 +60049,6 @@ Map = function (Logger, require) {
                     throw new Error('library ol is not loaded !');
                 }
                 objMap = new OL3({
-                    div: div,
-                    mapOptions: mapOptions
-                });
-                break;
-            case 'vg':
-                logger.trace('construction du globe virtualGeo 3D');
-                if (VG === null || typeof VG !== 'function') {
-                    throw new Error('library vg is not loaded !');
-                }
-                objMap = new VG({
                     div: div,
                     mapOptions: mapOptions
                 });
@@ -59747,6 +60075,7 @@ Map = function (Logger, require) {
     var centerChangedEvent = {};
     var zoomChangedEvent = {};
     var azimuthChangedEvent = {};
+    var tiltChangedEvent = {};
     var layerChangedEvent = {};
     var geolocatedEvent = {};
     var locatedEvent = {};
@@ -59764,12 +60093,7 @@ AHN = function (Map, require) {
     var scope = typeof window !== 'undefined' ? window : {};
     var Gp = scope.Gp || {};
     Gp.Map = Map;
-    if (typeof ol3OL3 !== 'undefined' && typeof virtualVG !== 'undefined') {
-        console.log('Lib. ol3 et virtualgeo détectées !');
-        Gp.Map.__classOl = ol3OL3;
-        Gp.Map.__classVg = virtualVG;
-        Gp.Map._class = Gp.Map.__classOl.prototype;
-    } else if (typeof ol3OL3 !== 'undefined' && typeof it2IT !== 'undefined') {
+    if (typeof ol3OL3 !== 'undefined' && typeof it2IT !== 'undefined') {
         console.log('Lib. ol3 et itowns détectées !');
         Gp.Map.__classOl = ol3OL3;
         Gp.Map.__classItowns = it2IT;
@@ -59778,10 +60102,6 @@ AHN = function (Map, require) {
         console.log('Lib. ol3 détectée !');
         Gp.Map.__classOl = ol3OL3;
         Gp.Map._class = Gp.Map.__classOl.prototype;
-    } else if (typeof virtualVG !== 'undefined') {
-        console.log('Lib. virtualgeo détectée !');
-        Gp.Map.__classVg = virtualVG;
-        Gp.Map._class = Gp.Map.__classVg.prototype;
     } else if (typeof it2IT !== 'undefined') {
         console.log('Lib. itowns détectée !');
         Gp.Map.__classItowns = it2IT;
@@ -59789,8 +60109,8 @@ AHN = function (Map, require) {
     } else {
         console.log('Aucune lib. détectée !?');
     }
-    Gp.sdkVersion = '1.0.0';
-    Gp.sdkDate = '2018-04-09';
+    Gp.sdkVersion = '1.1.0';
+    Gp.sdkDate = '2018-04-10';
     scope.Gp = Gp;
     return scope.Gp;
 }(Map, {});

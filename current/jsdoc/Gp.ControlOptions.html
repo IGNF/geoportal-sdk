@@ -619,6 +619,8 @@
             
                 <div class="l3 itemMembers" data-name="Gp.Map#getResolution"> <a href="Gp.Map.html#getResolution">getResolution</a> </div>
             
+                <div class="l3 itemMembers" data-name="Gp.Map#getTilt"> <a href="Gp.Map.html#getTilt">getTilt</a> </div>
+            
                 <div class="l3 itemMembers" data-name="Gp.Map#getViewExtent"> <a href="Gp.Map.html#getViewExtent">getViewExtent</a> </div>
             
                 <div class="l3 itemMembers" data-name="Gp.Map#getZoom"> <a href="Gp.Map.html#getZoom">getZoom</a> </div>
@@ -639,7 +641,11 @@
             
                 <div class="l3 itemMembers" data-name="Gp.Map#setResolution"> <a href="Gp.Map.html#setResolution">setResolution</a> </div>
             
+                <div class="l3 itemMembers" data-name="Gp.Map#setTilt"> <a href="Gp.Map.html#setTilt">setTilt</a> </div>
+            
                 <div class="l3 itemMembers" data-name="Gp.Map#setZoom"> <a href="Gp.Map.html#setZoom">setZoom</a> </div>
+            
+                <div class="l3 itemMembers" data-name="Gp.Map#switchToLibITOL3"> <a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a> </div>
             
                 <div class="l3 itemMembers" data-name="Gp.Map#zoomIn"> <a href="Gp.Map.html#zoomIn">zoomIn</a> </div>
             
@@ -675,6 +681,8 @@
             
                 <li data-name="getResolution"><a href="Gp.Map.html#getResolution">getResolution</a></li>
             
+                <li data-name="getTilt"><a href="Gp.Map.html#getTilt">getTilt</a></li>
+            
                 <li data-name="getViewExtent"><a href="Gp.Map.html#getViewExtent">getViewExtent</a></li>
             
                 <li data-name="getZoom"><a href="Gp.Map.html#getZoom">getZoom</a></li>
@@ -695,7 +703,11 @@
             
                 <li data-name="setResolution"><a href="Gp.Map.html#setResolution">setResolution</a></li>
             
+                <li data-name="setTilt"><a href="Gp.Map.html#setTilt">setTilt</a></li>
+            
                 <li data-name="setZoom"><a href="Gp.Map.html#setZoom">setZoom</a></li>
+            
+                <li data-name="switchToLibITOL3"><a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a></li>
             
                 <li data-name="zoomIn"><a href="Gp.Map.html#zoomIn">zoomIn</a></li>
             
@@ -1025,6 +1037,56 @@
 -->
     
 <!--
+        <li class="item" data-alias= "Gp.TiltChangedEvent" data-name="TiltChangedEvent">
+-->
+        <li class="l1 item" data-alias= "Gp.TiltChangedEvent" data-name="TiltChangedEvent">
+                <a href="Gp.TiltChangedEvent.html">Gp.TiltChangedEvent</a>
+                
+<!--
+            <span class="title">
+                <a href="Gp.TiltChangedEvent.html">Gp.TiltChangedEvent</a>
+                
+            </span>
+-->
+
+            
+
+
+<!--
+            <ul class="members itemMembers">
+            
+            </ul>
+-->
+
+            
+
+
+<!--
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+-->
+            
+
+<!--
+            <ul class="methods itemMembers">
+            
+            </ul>
+-->
+
+            
+
+<!--
+            <ul class="events itemMembers">
+            
+            </ul>
+-->
+       </li>
+<!--
+        </li>
+-->
+    
+<!--
         <li class="item" data-alias= "Gp.ZoomChangedEvent" data-name="ZoomChangedEvent">
 -->
         <li class="l1 item" data-alias= "Gp.ZoomChangedEvent" data-name="ZoomChangedEvent">
@@ -1110,7 +1172,8 @@
 <p>Holds options for a specific control present on the map. May be used for map creation (See <strong>controlsOptions</strong> property of <a href="Gp.MapOptions.html">Gp.MapOptions</a> object used as a parameter of <a href="module-Map.html">Gp.Map.load()</a> function) or for map modification (See <a href="Gp.Map.html#addControls">Gp.Map.addControls()</a> or <a href="Gp.Map.html#modifyControls">Gp.Map.modifyControls()</a>).</p>
 <p>Given a specific control, availables options are the following :</p>
 <p><a id="zoom"></a></p>
-<h3>Options for &quot;zoom&quot; control</h3><table>
+<h3>Options for &quot;zoom&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1127,7 +1190,8 @@
 </tbody>
 </table>
 <p><a id="overview"></a></p>
-<h3>Options for &quot;overview&quot; control</h3><table>
+<h3>Options for &quot;overview&quot; control</h3><p><strong>Common 2D/3D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1141,6 +1205,23 @@
 <td>String / DOMElement</td>
 <td>Target HTML element container or its id. Default is chosen by map implementation.</td>
 </tr>
+<tr>
+<td>maximised</td>
+<td>Boolean</td>
+<td>If the control has to be opened or not.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Specific 2D options</strong></p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>layers</td>
 <td>Array(String)</td>
@@ -1163,8 +1244,46 @@
 </tr>
 </tbody>
 </table>
+<p><strong>Specific 3D options</strong></p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>position</td>
+<td>String</td>
+<td>The type of positionment of the overview element inside its container. Can be &quot;absolute&quot; or &quot;relative&quot; (&quot;absolute&quot; by default)</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Number</td>
+<td>The width of the minimap (100px by default)</td>
+</tr>
+<tr>
+<td>heigth</td>
+<td>Number</td>
+<td>The height of the minimap (100px by default)</td>
+</tr>
+<tr>
+<td>x</td>
+<td>Number</td>
+<td>The position of the minimap from the left of the container div (20px by default)</td>
+</tr>
+<tr>
+<td>y</td>
+<td>Number</td>
+<td>The position of the minimap from the bottom of the container div (20px by default)</td>
+</tr>
+</tbody>
+</table>
 <p><a id="orientation"></a></p>
-<h3>Options for &quot;orientation&quot; control</h3><table>
+<h3>Options for &quot;orientation&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1186,7 +1305,8 @@
 </tbody>
 </table>
 <p><a id="graphicscale"></a></p>
-<h3>Options for &quot;graphicscale&quot; control</h3><table>
+<h3>Options for &quot;graphicscale&quot; control</h3><p><strong>Common 2D/3D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1200,6 +1320,18 @@
 <td>String / DOMElement</td>
 <td>Target HTML element container or its id. Default is chosen by map implementation.</td>
 </tr>
+</tbody>
+</table>
+<p><strong>Specific 2D options</strong></p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>units</td>
 <td>String</td>
@@ -1212,8 +1344,36 @@
 </tr>
 </tbody>
 </table>
+<p><strong>Specific 3D options</strong></p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>maximised</td>
+<td>Boolean</td>
+<td>Display or not the control</td>
+</tr>
+<tr>
+<td>x</td>
+<td>Number</td>
+<td>The position of the minimap from the left of the container div (20px by default)</td>
+</tr>
+<tr>
+<td>y</td>
+<td>Number</td>
+<td>The position of the minimap from the bottom of the container div (20px by default)</td>
+</tr>
+</tbody>
+</table>
 <p><a id="mouseposition"></a></p>
-<h3>Options for &quot;mouseposition&quot; control</h3><table>
+<h3>Options for &quot;mouseposition&quot; control</h3><p><strong>Common 2D/3D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1272,6 +1432,18 @@
 <td>Object</td>
 <td>altitude interaction specific configuration. Implementation specific.</td>
 </tr>
+</tbody>
+</table>
+<p><strong>Specific 2D options</strong></p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>editCoordinates</td>
 <td>Boolean</td>
@@ -1300,7 +1472,8 @@
 </tbody>
 </table>
 <p><a id="route"></a></p>
-<h3>Options for &quot;route&quot; control</h3><table>
+<h3>Options for &quot;route&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1372,7 +1545,8 @@
 </tbody>
 </table>
 <p><a id="isocurve"></a></p>
-<h3>Options for &quot;isocurve&quot; control</h3><table>
+<h3>Options for &quot;isocurve&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1449,7 +1623,8 @@
 </tbody>
 </table>
 <p><a id="graticule"></a></p>
-<h3>Options for &quot;graticule&quot; control</h3><table>
+<h3>Options for &quot;graticule&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1481,7 +1656,8 @@
 </tbody>
 </table>
 <p><a id="layerswitcher"></a></p>
-<h3>Options for &quot;layerswitcher&quot; control</h3><table>
+<h3>Options for &quot;layerswitcher&quot; control</h3><p><strong>Common 2D/3D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1503,7 +1679,8 @@
 </tbody>
 </table>
 <p><a id="getfeatureinfo"></a></p>
-<h3>Options for &quot;getfeatureinfo&quot; control</h3><table>
+<h3>Options for &quot;getfeatureinfo&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>Property</th>
@@ -1587,7 +1764,8 @@
 </tbody>
 </table>
 <p><a id="layerimport"></a></p>
-<h3>Options for &quot;layerimport&quot; control</h3><table>
+<h3>Options for &quot;layerimport&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1759,7 +1937,8 @@
 </tbody>
 </table>
 <p><a id="length"></a></p>
-<h3>Options for &quot;length&quot; control</h3><table>
+<h3>Options for &quot;length&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1851,7 +2030,8 @@
 </tbody>
 </table>
 <p><a id="area"></a></p>
-<h3>Options for &quot;area&quot; control</h3><table>
+<h3>Options for &quot;area&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -1953,7 +2133,8 @@
 </tbody>
 </table>
 <p><a id="azimuth"></a></p>
-<h3>Options for &quot;azimuth&quot; control</h3><table>
+<h3>Options for &quot;azimuth&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2045,7 +2226,8 @@
 </tbody>
 </table>
 <p><a id="elevationpath"></a></p>
-<h3>Options for &quot;elevationpath&quot; control</h3><table>
+<h3>Options for &quot;elevationpath&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2182,7 +2364,8 @@
 </tbody>
 </table>
 <p><a id="searchctrl"></a></p>
-<h3>Options for &quot;search&quot; control</h3><table>
+<h3>Options for &quot;search&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2239,7 +2422,8 @@
 </tbody>
 </table>
 <p><a id="reversesearch"></a></p>
-<h3>Options for &quot;reversesearch&quot; control</h3><table>
+<h3>Options for &quot;reversesearch&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2281,7 +2465,8 @@
 </tbody>
 </table>
 <p><a id="drawing"></a></p>
-<h3>Options for &quot;drawing&quot; control</h3><table>
+<h3>Options for &quot;drawing&quot; control</h3><p><strong>Specific 2D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2518,7 +2703,8 @@
 </tbody>
 </table>
 <p><a id="attributions"></a></p>
-<h3>Options for &quot;attributions&quot; control</h3><table>
+<h3>Options for &quot;attributions&quot; control</h3><p><strong> Common 2D/3D options</strong></p>
+<table>
 <thead>
 <tr>
 <th>property</th>
@@ -2604,7 +2790,7 @@
     <footer>
         Copyright (c) IGN, released under the CECILL-B license 
         </br>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Apr 09 2018 17:38:55 GMT+0000 (UTC)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 10 2018 17:21:56 GMT+0000 (UTC)
     </footer>
 
 
