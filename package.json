@@ -38,10 +38,11 @@
     "url": "https://github.com/IGNF/geoportal-sdk/issues"
   },
   "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "geoportal-extensions-openlayers": "^1.0.0",
-    "geoportal-extensions-itowns": "^1.0.0",
+    "geoportal-extensions-itowns": "^1.0.0"
+  },
+  "devDependencies": {
     "amdclean": "^2.7.0",
     "glob": "^7.0.3",
     "groundskeeper": "^0.1.12",
