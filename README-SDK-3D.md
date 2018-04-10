@@ -289,6 +289,8 @@ Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage
 
 Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
+Pour afficher un MNT IGN dans un contexte 3D, il suffit de renseigner le paramètre "isElevation" à true.
+
 **Exemple 1** : ajout des couches WMTS Photographies aériennes et cartes avec une opacité de 30%.
 
 ``` javascript
@@ -332,6 +334,29 @@ var map = Gp.Map.load(
 
 **Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/w4Lfxmtv/embedded/result,js,css,html/)**
 
+**Exemple 3** : ajout d'une couche WMTS d'élévation avec la couche WMTS Photographies aériennes
+
+``` javascript
+var map = Gp.Map.load(
+    "mapDiv",   // identifiant du conteneur HTML
+    // options d'affichage de la carte (Gp.MapOptions)
+    {
+         ...
+         // Couches à afficher
+         layersOptions : {
+             // Couche photographies aériennes
+             "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+             // Couche MNT IGN
+             "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
+                 isElevation : true
+             }
+         }
+         ...
+    }    
+) ;
+```
+
+**Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/avb5c6ge/embedded/result,js,css,html/)**
 
 
 #### Affichage des couches "externes"
