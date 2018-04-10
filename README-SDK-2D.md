@@ -220,7 +220,7 @@ Plus d'informations sur le paramétrage des projections [ici](#projections).
 
 #### Centrage en utilisant le service de géocodage du Géoportail
 
-La propriété **location** permet de préciser le lieu à géocoder et la propriété **locationType** permet de préciser le type de Géocodage à appliquer, selon la terminologie suivante (rendez vous [ici](http://api.ign.fr/tech-docs-js/fr/developpeur/search.html) pour plus d'informations sur le service de Géocodage du Géoportail...) :
+La propriété **location** permet de préciser le lieu à géocoder et la propriété **locationType** permet de préciser le type de Géocodage à appliquer, selon la terminologie suivante (rendez vous [ici](https://geoservices.ign.fr/documentation/geoservices/geocodage.html) pour plus d'informations sur le service de Géocodage du Géoportail...) :
 
 * "PositionOfInterest" : géocodage par noms de lieux
 
