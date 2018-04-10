@@ -58303,7 +58303,7 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
         var layerId = Object.keys(layerObj)[0];
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDeaultFormat();
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat();
             if (layerObj[layerId].format === 'WMS') {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
                 layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
