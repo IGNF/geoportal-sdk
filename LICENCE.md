@@ -33,9 +33,9 @@ THIS SOFTWARE IS PROVIDED BY OPENLAYERS CONTRIBUTORS ``AS IS'' AND ANY EXPRESS O
 The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of OpenLayers Contributors.
 
 
-### Geoportal extension for OpenLayers
+### Geoportal extension for OpenLayers and Geoportal extension for iTowns
 
-This software is released under the licence CeCILL-B (Free BSD compatible)
+These softwares are released under the licence CeCILL-B (Free BSD compatible)
 
 You may obtain a copy of the License at :
 
@@ -48,5 +48,7 @@ see http://www.cecill.info/
 Copyright (c) 2016 IGN
 
 See [Geoportal Extensions third party code licences](https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md)
+
+
 
 

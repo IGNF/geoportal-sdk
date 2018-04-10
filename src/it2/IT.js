@@ -54,7 +54,7 @@ function (
     };
 
     /**
-     * Association controlId <-> classe VirtualGeo d'implemenation
+     * Association controlId <-> classe iTowns d'implemenation
      */
     IT.CONTROLSCLASSES = {
         mouseposition  : "itowns.control.MousePosition",
@@ -97,8 +97,8 @@ function (
 
                 // position à l'initialisation
                 var positionOnGlobe = {
-                    longitude  : this.mapOptions.center.x,
-                    latitude  : this.mapOptions.center.y,
+                    longitude  : this.mapOptions.center.x || 2,
+                    latitude  : this.mapOptions.center.y || 48,
                     altitude  : 25000000
                 };
 
@@ -112,7 +112,7 @@ function (
 
                 var self = this;
                 // when globe is loaded, we set the user map parameters
-                this.libMap.addEventListener(Itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function () {
+                this.libMap.listen(Itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
                     // we show the div when globe is loaded
                     window.setTimeout(function () {
                         self.div.style.visibility = "";
@@ -175,12 +175,16 @@ function (
 
     /**
      * Action triggered when map is clicked
+     *
+     * @param {Object} evt - evenement sent on map click
+     *
+     * @private
      */
     IT.prototype._onMapClick = function (evt) {
         this.logger.trace("[IT] : _onMapClick...") ;
         this._removeInfoDivs();
 
-        var visibleFeatures = this.libMap.getFeaturesAtPixel(evt);
+        var visibleFeatures = this.libMap.getFeaturesAtMousePosition(evt);
 
         if (visibleFeatures.length == 0) {
             // no visible features
@@ -199,6 +203,7 @@ function (
     /**
     * Remove all the feature info PopUp displayed on the map.
     *
+    * @private
     */
     IT.prototype._removeInfoDivs = function () {
         var featureInfoDivs = document.getElementsByClassName("gp-feature-info-div-it");
@@ -214,6 +219,8 @@ function (
      *
      * @param {Array} features - itowns features Array
      * @returns {String} HTML content.
+     *
+     * @private
      */
     IT.prototype._features2html = function (features) {
         this.logger.trace("[IT] : _features2html...") ;
@@ -285,6 +292,8 @@ function (
      *
      * @param {Object} position - position on the screen where to display the popUp
      * @param {HTMLElement} content - content to display
+     *
+     * @private
      */
     IT.prototype._displayInfo = function (position, content) {
         this.logger.trace("[IT] : _displayInfo...") ;
@@ -326,7 +335,7 @@ function (
     } ;
 
     /**
-     * Add a vector Layer to the map
+     * Adds a vector Layer to the map
      *
      * @param {Object} layerObj - geoportalLayer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -425,7 +434,7 @@ function (
     } ;
 
     /**
-     * Add a Raster Layer to the map
+     * Adds a Raster Layer to the map
      *
      * @param {Object} layerObj - raster layer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -639,7 +648,7 @@ function (
     } ;
 
     /**
-     * Add a geoportal Layer to the map
+     * Adds a geoportal Layer to the map
      *
      * @param {Object} layerObj - geoportalLayer to add.
      * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -649,30 +658,30 @@ function (
     IT.prototype._addGeoportalLayer = function (layerObj, layerConf) {
         // FIXME à faire ailleurs
         var layerId = Object.keys(layerObj)[0] ;
-        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques VG
+        // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
-            // Paramètres spécifiques aux couches WMS pour ajout avec VG
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDeaultFormat() ;
+            // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMS") {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
                 layerObj[layerId].stylesName = layerObj[layerId].stylesName || layerConf.styles;
             }
-            // Paramètres spécifiques aux couches WMTS pour ajout avec VG
+            // Paramètres spécifiques aux couches WMTS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMTS") {
                 layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID() ;
-                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimit;
+                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimits;
                 layerObj[layerId].layer = layerId || layerConf.getName() ;
                 layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name ;
             }
 
         }
-        // Ajout de la couche avec VirtualGeo
+        // Ajout de la couche avec iTowns via l'interface du SDK
         this._addRasterLayer(layerObj);
     } ;
 
     /**
-     * center Map on a given point
+     * Centers the map on the given coordinates at the specified zoom
      *
      * @param {Object} point - center point
      * @param {Float} point.x - x coordinates for center
@@ -685,6 +694,10 @@ function (
         if ( !point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
             console.log("no valid coordinates for map center") ;
             return ;
+        }
+        if (point.location && point.location.trim().length > 0 ) {
+            console.log("point object has location property to center on...") ;
+            return;
         }
         if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
             var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
@@ -711,7 +724,7 @@ function (
     };
 
     /**
-     * center Map on a given point in case of auto centering
+     * Centers the map on the given coordinates at the specified zoom, with a 45 degrees tilt (autocenter 3D)
      *
      * @param {Object} point - center point
      * @param {Float} point.x - x coordinates for center
@@ -748,19 +761,25 @@ function (
             position.zoom = zoom;
         }
         // set the camera aimed point on the specified coords
-        this.libMap.setCameraTargetGeoPosition(position);
+        this.libMap.onCameraMoveStop((function () { 
+            this.libMap.setCameraTargetGeoPosition(position); 
+        }).bind(this));
         this.logger.trace("[IT] - setAutoCenter(" + point.x + "," + point.y + ")") ;
     };
 
     /**
-    * retourne les coordonnées courantes du centre de la carte
-    */
+     * Returns the coordinates of the current map center
+     *
+     * @returns {Object} - Coordinates of the map center
+     */
     IT.prototype.getCenter = function () {
         return this.libMap.getCenter();
     };
 
     /**
-     * retourne le zoom Géoportail de la carte à partir de l'echelle courante de la carte
+     * Returns the geoportal zoom level of the map calculated with the current map scale
+     *
+     * @returns {Number} - ZoomLevel of the map
      */
     IT.prototype.getZoom = function () {
         // -1 pour se baser sur les zooms Gp
@@ -769,7 +788,9 @@ function (
     };
 
     /**
-     * Définit le niveau de zoom de la carte
+     * Sets the zoom Level of the map
+     *
+     * @param {Number} zoom - ZoomLevel
      */
     IT.prototype.setZoom = function (zoom) {
         if ((parseFloat(zoom) !== parseInt(zoom, 10)) || isNaN(zoom)) {
@@ -783,7 +804,7 @@ function (
     };
 
     /**
-     * Incrémente le niveau de zoom de la carte de 1.
+     * Increments the zoom level of the map by 1
      */
     IT.prototype.zoomIn = function () {
         var zoom = this.getZoom();
@@ -795,7 +816,7 @@ function (
     };
 
     /**
-     * Décrémente le niveau de zoom de la carte de 1.
+     * Decrements the zoom level of the map by 1
      */
     IT.prototype.zoomOut = function () {
         var zoom = this.getZoom();
@@ -807,14 +828,18 @@ function (
     };
 
     /**
-    * retourne l'azimut courant de la carte
-    */
+     * Returns the current azimuth of the map
+     *
+     * @returns {Number} azimuth - orientation of the map
+     */
     IT.prototype.getAzimuth = function () {
         return this.libMap.getAzimuth();
     };
 
     /**
-     * définit le niveau de zoom de la carte
+     * Sets the orientation of the map
+     *
+     * @param {Number} azimuth - Azimuth of the map
      */
     IT.prototype.setAzimuth = function (azimuth) {
         if (isNaN(azimuth)) {
@@ -827,14 +852,18 @@ function (
     };
 
     /**
-    * retourne l'inclinaison courante de la carte
-    */
+     * Returns the current tilt of the map
+     *
+     * @returns {Number} tilt - tilt of the map
+     */
     IT.prototype.getTilt = function () {
         return this.libMap.getTilt();
     };
 
     /**
-     * définit l'inclinaison de la caméra
+     * Sets the tilt of the map
+     *
+     * @param {Number} tilt - Tilt of the map
      */
     IT.prototype.setTilt = function (tilt) {
         tilt = parseFloat(tilt);
@@ -861,6 +890,8 @@ function (
      * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
      * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
      * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
+     *
+     * @returns {Object} control - mousePosition control
      */
     IT.prototype.addMousePositionControl = function (controlOpts) {
         var mpOpts = {} ;
@@ -911,6 +942,8 @@ function (
      * @param {Object} controlOpts - control options
      * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
      * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+     *
+     * @returns {Object} control - layerSwitcher control
      */
     IT.prototype.addLayerSwitcherControl = function (controlOpts) {
         this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
@@ -978,6 +1011,8 @@ function (
      * @param {Number} controlOpts.height - The height of the minimap (100px by default)
      * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+     *
+     * @returns {Object} control - overview control
      */
     IT.prototype.addOverviewControl = function (controlOpts) {
         this.logger.trace("[IT] addOverviewControl : ... ") ;
@@ -1028,13 +1063,15 @@ function (
     } ;
 
     /**
-     * Ajoute l'echelle graphique sur la carte
+     * Adds the graphic scale control to the map
      *
-     * @param {Object} controlOpts - options du controle
+     * @param {Object} controlOpts - control options
      * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
      * @param {Boolean} controlOpts.maximised - Display or not the control
      * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
      * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+     *
+     * @returns {Object} control - graphic scale control
      */
     IT.prototype.addGraphicScaleControl = function (controlOpts) {
         this.logger.trace("[IT] addGraphicScaleControl...") ;
@@ -1068,9 +1105,11 @@ function (
     } ;
 
     /**
-     * Ajoute l'outil d'attributions
+     * Adds the attributions control to to the map
      *
-     * @param {Object} controlOpts - options du controle
+     * @param {Object} controlOpts - control options
+     *
+     * @returns {Object} control - attributions control
      */
     IT.prototype.addAttributionsControl = function (controlOpts) {
         var attOpts = {} ;
@@ -1085,7 +1124,7 @@ function (
     } ;
 
     /**
-     * Remove the controls listed to the map.
+     * Removes the listed controls of the map.
      *
      * @param {Array.<String>} controlIds - A list of control's id or null.
      */
@@ -1158,7 +1197,7 @@ function (
     } ;
 
     /**
-     * Remove of the map the layers given as parameters
+     * Removes of the map the layers given as parameters
      *
      * @param {Array.<String>} layerIds - A list of layer's id or null.
      */
@@ -1182,7 +1221,7 @@ function (
     } ;
 
     /**
-     * Modify the layers'options listed to the map
+     * Modifies the listed layers'options of the map
      *
      * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}).
      */
@@ -1226,7 +1265,7 @@ function (
     } ;
 
     /**
-     * get layer params from IT layer params
+     * Gets layer parameterss from IT layer params
      * opacity, visibility, sequence
      *
      * @param {Object} itlayerOpts - options of the layer
@@ -1254,7 +1293,7 @@ function (
     } ;
 
     /**
-     * Apply params common to all kind of layers  :
+     * Applies params common to all kind of layers  :
      * opacity, visibility, minZoom, maxZoom
      *
      * @param {Gp.LayerOptions} layerOpts - options of the layer
@@ -1327,16 +1366,13 @@ function (
         }
         context = context || this ;
         var map = this ;
+        var key = null;
         switch (eventId) {
-            case "mapLoaded"  :
             case "mapFailure"  :
-                break ;
+                break;
+            case "mapLoaded"  :
             case "located"  :
-                // handled in IMap
-                break ;
             case "geolocated"  :
-                // handled in IMap
-                break ;
             case "configured"  :
                 // handled in IMap
                 break ;
@@ -1366,11 +1402,7 @@ function (
                     }
                     action.call(context,centerChangedEvt) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callBackCenterChanged,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "camera-target-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callBackCenterChanged, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
                 break ;
             case "zoomChanged"  :
                 var oldZoom = context.getZoom();
@@ -1391,19 +1423,13 @@ function (
                     // update the oldZoom vale
                     oldZoom = newZoom;
                 };
-
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackZoomchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "range-changed";
-                // on écoute le range (et non le zoom, non implémenté côté itowns)
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackZoomchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
                 break ;
             case "azimuthChanged"  :
                 /**
                 * azimuthChanged callback
                 */
-                var callbackAzimuthchange = function (itEvent) {
+                var callbackAzimuthChange = function (itEvent) {
                     if (itEvent.new.heading === itEvent.previous.heading) {
                         return;
                     }
@@ -1412,17 +1438,13 @@ function (
                         newAzimuth  : itEvent.new.heading
                     }) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackAzimuthchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "orientation-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackAzimuthchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
                 break ;
             case "tiltChanged"  :
                 /**
                 * tiltChanged callback
                 */
-                var callbackTiltchange = function (itEvent) {
+                var callbackTiltChange = function (itEvent) {
                     if (itEvent.new.tilt === itEvent.previous.tilt) {
                         return;
                     }
@@ -1431,11 +1453,7 @@ function (
                         newTilt  : itEvent.new.tilt
                     }) ;
                 };
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackTiltchange,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView().controls;
-                registredEvent.eventType = "orientation-changed";
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackTiltchange, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
                 break ;
             case "projectionChanged"  :
                 // TODO  : interet ?
@@ -1467,12 +1485,8 @@ function (
                         position  : layerIndex
                     }) ;
                 } ;
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackLayerAdded,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
-                registredEvent.eventType = "layer-added";
-                // abonnement à un ajout de couche
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerAdded, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
+                map._registerEvent(key,eventId,action,context) ;
 
                 /**
                 * layerRemoved callback
@@ -1484,27 +1498,23 @@ function (
                         layerRemoved  : layerOpts
                     }) ;
                 };
-
-                // ajout de l'evenement au tableau des événements
-                var registredEvent = this._registerEvent(callbackLayerRemoved,eventId,action,context) ;
-                registredEvent.eventOrigin = this.libMap.getGlobeView();
-                registredEvent.eventType = "layer-removed";
-                // abonnement à un retrait de couche
-                registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerRemoved, this) ;
+                key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
+                map._registerEvent(key,eventId,action,context) ;
 
                 // abonnement à un changement de propriete sur chaque couche
                 for (var obsProperty in IT.LAYERPROPERTIES) {
-                    this.libMap.getColorLayers().forEach(function (itLayer) {
+                    map.libMap.getColorLayers().forEach(function (itLayer) {
                         var layerOpts = map._getLayerOpts(itLayer.id) ;
 
                         /** callbackLayerChanged */
                         var callbackLayerChanged = function (itevt) {
-                            var key = itevt.type.replace("-property-changed","");
+                            var layerEvtinfos = map.libMap.getLayerEventInfos(itevt);
+                            var key = layerEvtinfos.propertyName;
                             var oldItObj = {} ;
-                            oldItObj[key] = itevt.previous[key] ;
+                            oldItObj[key] = layerEvtinfos.previousValue;
                             var oldCommonProp = map._getCommonLayerParams(oldItObj) ;
                             var newItObj = {} ;
-                            newItObj[key] = itevt.new[key] ;
+                            newItObj[key] = layerEvtinfos.newValue;
                             var newCommonProp = map._getCommonLayerParams(newItObj) ;
 
                             action.call(context,{
@@ -1515,20 +1525,25 @@ function (
                             }) ;
                         };
 
-                        // ajout de l'evenement au tableau des événements
-                        var registredEvent = map._registerEvent(callbackLayerChanged,eventId,action,context) ;
-                        registredEvent.eventOrigin = itLayer;
-                        registredEvent.eventType = obsProperty + "-property-changed";
-                        registredEvent.eventOrigin.addEventListener(registredEvent.eventType, callbackLayerChanged, this) ;
+                        var type =  ( obsProperty === "visible" ) ? Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED :
+                                    ( obsProperty === "opacity" ) ? Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED :
+                                    Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED ;
+
+                        key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
+                        map._registerEvent(key, eventId, action, context) ;
+                        key = null;
                     });
                 };
-
                 break ;
             case "controlChanged"  :
                 break ;
             default  :
                 console.log("unhandled event  : " + eventId ) ;
         } ;
+        if ( key ) {
+            // ajout de l'evenement au tableau des événements
+            this._registerEvent(key,eventId,action,context) ;
+        }
         return true ;
     } ;
 
@@ -1556,23 +1571,44 @@ function (
       */
     IT.prototype.forget = function (eventId, action) {
         this.logger.trace("[IT]  : forget...") ;
+
         // verifications de base de la classe mère
         if (!IMap.prototype.forget.apply(this,arguments)) {
             return false ;
         }
+
+        // on cherche l'enregistrement de l'evenement
+        var rEvents = this._events[eventId] ;
+        if (!rEvents) {
+            console.log("nothing to forget for : " + eventId) ;
+            return false ;
+        }
+        var evKey = null ;
+        for (var i = rEvents.length - 1 ; i >= 0 ; i --) {
+            if (rEvents[i].action == action) {
+                evKey = rEvents[i].key;
+                rEvents.splice(i,1) ;
+                this.logger.trace("[IT] : forgetting : " + eventId + " (" + evKey + ")") ;
+                this.libMap.forgetByKey(evKey) ;
+            }
+        }
+
     } ;
 
     /**
-     * retourne l'objet Itowns.GlobeView
+     * returns the Itowns.GlobeView object
      */
     IT.prototype.getLibMap = function () {
         return this.libMap;
     };
 
     /**
-     * Trouve l'objet layerOpts correspondant au layer IT
+     * Finds the layerOpts object corresponding to the IT layer
      *
      * @param {String} layerId - layer id
+     * @returns {Object} layerOpts - layer options
+     *
+     * @private
      */
     IT.prototype._getLayerOpts = function ( layerId, layersStack ) {
         var layerOpts = null ;
@@ -1625,6 +1661,8 @@ function (
      *
      * @param {Object} layerObj -  IT layer
      * @returns {Object} - new layer index in this._layers
+     *
+     * @private
      */
     IT.prototype._registerUnknownLayer = function ( layerObj ) {
         // couches de résultat (itineraire, isochrone)
@@ -1648,8 +1686,12 @@ function (
     } ;
 
     /**
-      * retrieve max TMSLimits
+      * Retrieves max TMSLimits with its id
       *
+      * @param {String} TMSID - Id of the tileMatrixSet
+      * @returns {Object} TMSLimits - limits of the tileMatrixSet
+      *
+      * @private
       */
     IT.prototype._getTMSLimits = function (TMSID) {
         var TMSlimits;

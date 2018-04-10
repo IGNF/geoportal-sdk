@@ -678,7 +678,8 @@ define([
 
             /**
              * Returns the current map's projection code (EPSG or IGNF).
-             *
+             * 
+             * @summary Specific 2D function
              * @returns {String} The current map's projection.
              */
             getProjection : function () {
@@ -697,18 +698,20 @@ define([
             /**
              * Returns the current bounding box of the map in the current projection.
              *
+             * @summary Specific 2D function
              * @param {String} [projection=map projection] - Coordinate Reference System of returned extent.
              * @returns {Gp.BBox} - The current map's extent.
+             * 
              */
             getViewExtent : function () {
                 return {} ;
             },
 
             /**
-             * Returns the current camera's tilt (3D only).
-             *
+             * Returns the current camera's tilt.
+             * 
+             * @summary Specific 3D function
              * @returns {Number} - The current camera's tilt.
-             * @private
              */
             getTilt : function () {
                 return 0 ;
@@ -735,6 +738,7 @@ define([
             /**
              * Returns the current map's resolution.
              *
+             * @summary Specific 2D function
              * @returns {Number} - The current map's resolution (in meter per pixel).
              */
             getResolution : function () {
@@ -836,8 +840,10 @@ define([
             },
 
             /**
-             * Returns underlying implementation of the control identified by controlId (ie : an [ol.control.Control](http://openlayers.org/en/latest/apidoc/ol.control.Control.html) subclass with current OpenLayers 3 implementation).
-             *
+             * Returns underlying implementation of the control identified by controlId. Can be :
+             * - an [ol.control.Control](http://openlayers.org/en/latest/apidoc/ol.control.Control.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
+             * - an [itowns.control.Widget](https://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/itowns.control.Widget.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
+             * 
              * @param {String} controlId - identifier of the control
              * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
              */
@@ -848,7 +854,9 @@ define([
             },
 
             /**
-             * Returns wrapped map object implemented by the underlying library (ie : an [ol.Map](http://openlayers.org/en/latest/apidoc/ol.Map.html) object with current OpenLayers 3 implementation).
+             * Returns wrapped map object implemented by the underlying library. Can be : 
+             * - an [ol.Map](http://openlayers.org/en/latest/apidoc/ol.Map.html) object with current OpenLayers 3 implementation if the current map is in 2D.
+             * - an [Itowns.GlobeView](https://www.itowns-project.org/itowns/API_Doc/GlobeView.html) object, ie the iTowns GlobeView object overloaded by Geoportal Extension for iTowns, if the current map is in 3D.
              *
              * @returns {Object} wrapped map object.
              */
@@ -926,8 +934,8 @@ define([
             /**
              * Sets a new camera's tilt (3D only).
              *
+             * @summary Specific 3D function
              * @param {Float} tilt - The camera's tilt.
-             * @private
              */
             setTilt : function (tilt) {
             },
@@ -951,6 +959,7 @@ define([
             /**
              * Sets a new map's resolution.
              *
+             * @summary Specific 2D function
              * @param {Float} resolution - The new map's resolution (in meter per pixel).
              */
             setResolution : function (resolution) {
@@ -971,91 +980,11 @@ define([
             },
 
             /**
-             * Reloads the map with a new cartographic library. The current parameters will be conserved.
-             * FIXME : le fait-on ???
+             * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
+             * This function only works with the GpOL3Itowns bundle (run the "build:mix" npm task to generate it)
+             * 
+             * @param {Integer} library - The cartographic library to use. "ol3" (for a 2D map) or "itowns" (for a 3D map).
              *
-             * @param {Integer} library - The cartographic library to use.
-             * @private
-             */
-            switchToLib : function (library) {
-                var oldMap = {};
-                oldMap.projection = this.getProjection();
-                oldMap.center = this.getCenter();
-                oldMap.azimuth = this.getAzimuth();
-                oldMap.tilt = this.getTilt();
-                oldMap.zoom = this.getZoom();
-                oldMap.layersOptions = this.getLayersOptions();
-                oldMap.controlsOptions = this.getControlsOptions();
-                oldMap.mapDiv = this.div.id;
-                oldMap.apiKey = this.apiKey;
-                oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
-
-                // remove old controls and associated listeners
-                for (var controlId in oldMap.controlsOptions) {
-                    this.removeControls(controlId);
-                }
-                if (library === "vg") {
-                    oldMap.center = [oldMap.center.x, oldMap.center.y];
-                    // transformation des coordonnées de planes en géographiques
-                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-                    var lonlat = ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
-                    oldMap.center = {
-                        x : lonlat[0],
-                        y : lonlat[1]
-                    };
-
-                    this.libMap.setTarget(null);
-                } else if (library === "ol3") {
-                    oldMap.center = [oldMap.center.lon, oldMap.center.lat];
-                    // transformation des coordonnées de géographiques en planes
-                    // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-                    var xy = ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
-                    oldMap.center = {
-                        x : xy[0],
-                        y : xy[1]
-                    };
-                    this.libMap.dispose();
-                } else {
-                    console.log("Unknown Library");
-                    return;
-                }
-                // this.libMap = null;
-                var newMap = Gp.Map.load(
-                    // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
-                    // this.libMap.getApiKeys(),
-                    // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
-                    // this.libMap.getDiv(),
-                    oldMap.mapDiv,
-                    // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
-                    {
-                        apiKey : oldMap.apiKey,
-                        enginePath3d : oldMap.enginePath3d || null,
-                        projection : oldMap.projection,
-                        center : oldMap.center,
-                        azimuth : oldMap.azimuth,
-                        tilt : oldMap.tilt,
-                        zoom : oldMap.zoom,
-                        // maxZoom : this.
-                        // minZoom : this.
-                        // markerOptions :
-                        library : library,
-                        // proxyUrl
-                        // noProxyDomains
-                        // reloadConfig
-                        // autoconfUrl
-                        layersOptions : oldMap.layersOptions,
-                        controlsOptions : oldMap.controlsOptions
-                        // mapEventsOptions :
-                    }
-                );
-                return newMap;
-            },
-
-            /**
-             * Reloads the map with a new cartographic library. The current parameters will be conserved.
-             *
-             * @param {Integer} library - The cartographic library to use.
-             * @private
              */
             switchToLibITOL3 : function (library) {
                 var oldMap = {};
@@ -1075,6 +1004,10 @@ define([
                     this.removeControls(controlId);
                 }
                 if (library === "itowns") {
+                    // récupération des couches 3D qui n'étaient pas affichées en 2D
+                    for (var l = 0; l < this._3Dlayers.length; l++ ) {
+                        oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                    }
                     oldMap.center = [oldMap.center.x, oldMap.center.y];
                     // transformation des coordonnées de planes en géographiques
                     // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
@@ -1083,7 +1016,7 @@ define([
                         x : lonlat[0],
                         y : lonlat[1]
                     };
-                    oldMap.azimuth = this.getAzimuth() + 90;
+                    oldMap.azimuth = this.getAzimuth();
                     this.libMap.setTarget(null);
                 } else if (library === "ol3") {
                     oldMap.center = [oldMap.center.lon, oldMap.center.lat];
@@ -1156,7 +1089,7 @@ define([
 
             /**
              * Adds a list of layers to the map.<br/>
-             * the **layersOptions** parameter is an associative array mapping ids of layers to display and their properties.<br/>
+             * The **layersOptions** parameter is an associative array mapping ids of layers to display and their properties.<br/>
              * For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given [apiKey used to initialize the map](Gp.MapOptions.html) or an id of your choice for external resources.<br/>
              * The properties associated to each ID are given as {@link Gp.LayerOptions} objects.<br/>
              * For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} object with properties you want to overide or an empty object if you don't want to overide anything.
@@ -1222,7 +1155,6 @@ define([
                         switch (format) {
                             case "WMTS" :
                             case "WMS" :
-                                // FIXME on passe layerConf pour VG uniquement (ajout des params spécifiques VG)
                                 this._addGeoportalLayer(addLayerParam, layerConf) ;
                                 continue ;
                             default :
@@ -1258,7 +1190,6 @@ define([
                         case "WMS":
                         case "WMTS":
                         case "OSM":
-                        case "VIRTUALGEO":
                             this._addRasterLayer(addLayerParam) ;
                             break;
                         default:
@@ -1428,17 +1359,27 @@ define([
              *
              * @param {Object} controlsOptions - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}).
              *
-             * Possible keys :
-             *
+             * 
+             * **Common 2D/3D controls :**
+             * 
              * | Key | Control Description |
              * |-|-|
-             * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction. |
+             * | 'layerswitcher' | Adds layers selector widget to the map. See [options availables](./Gp.ControlOptions.html#layerswitcher) |
+             * | 'graphicscale' | Adds scale line widget to the map. See [options availables](./Gp.ControlOptions.html#graphicscale) |
+             * | 'mouseposition' | Adds mouse position widget to the map. See [options availables](./Gp.ControlOptions.html#mouseposition) |
+             * | 'overview' | Adds mini overview map to the map. See [options availables](./Gp.ControlOptions.html#overview) |
+             * | 'attributions' | Adds layers originators display to the map. See [options availables](./Gp.ControlOptions.html#attributions) |
+             * 
+             * **Specific 2D controls :**
+             * 
+             * | Key | Control Description |
+             * |-|-|
+             * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction.|
              * | 'keyboard' | Enable (true) / disable (false) map dragging/zoomming by keybord interaction. |
-             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. [**DEPRECATED**] : use ['getfeatureinfo'](./Gp.ControlOptions.html#getfeatureinfo) control instead to allow users to interact with features. |
+             * | 'selectable' | Enable (true) / disable (false) feature selection on the map. [**DEPRECATED**] : use ['getfeatureinfo'](./Gp.ControlOptions.html#getfeatureinfo) control instead to allow users to interact with features.|
              * | 'zoom' | Adds Zoom widget to the map. See [options availables](./Gp.ControlOptions.html#zoom) |
              * | 'orientation' | Adds orientation widget to the map. See [options availables](./Gp.ControlOptions.html#orientation) |
-             * | 'layerswitcher' | Adds layers selector widget to the map. See [options availables](./Gp.ControlOptions.html#layerswitcher) |
-             * | 'length' | Adds length measurement widget to the map. See [options availables](./Gp.ControlOptions.html#length) |
+             * | 'length' | Adds length measurement widget to the map. See [options availables](./Gp.ControlOptions.html#length).|
              * | 'area' | Adds area measurment widget to the map. See [options availables](./Gp.ControlOptions.html#area) |
              * | 'azimuth' | Adds azimuth measurment to the map. See [options availables](./Gp.ControlOptions.html#azimuth) |
              * | 'elevationpath' | Adds elevationpath computation widget to the map. See [options availables](./Gp.ControlOptions.html#elevationpath) |
@@ -1446,14 +1387,11 @@ define([
              * | 'reversesearch' | Adds reverse search widget to the map. See [options availables](./Gp.ControlOptions.html#reversesearch) |
              * | 'layerimport' | Adds layer import widget to the map. See [options availables](./Gp.ControlOptions.html#layerimport) |
              * | 'drawing' | Adds drawing tools widget to the map. See [options availables](./Gp.ControlOptions.html#drawing) |
-             * | 'graphicscale' | Adds scale line widget to the map. See [options availables](./Gp.ControlOptions.html#graphicscale) |
-             * | 'mouseposition' | Adds mouse position widget to the map. See [options availables](./Gp.ControlOptions.html#mouseposition) |
              * | 'route' | Adds route control to the map. See [options availables](./Gp.ControlOptions.html#route) |
              * | 'isocurve' | Adds isocurve control to the map. See [options availables](./Gp.ControlOptions.html#isocurve) |
-             * | 'overview' | Adds mini overview map to the map. See [options availables](./Gp.ControlOptions.html#overview) |
              * | 'graticule' | Adds graticule control to the map. See [options availables](./Gp.ControlOptions.html#graticule) |
-             * | 'attributions' | Adds layers originators display to the map. See [options availables](./Gp.ControlOptions.html#attributions) |
              * | 'getfeatureinfo' | Adds capability to retrieve and display information about layer features. See [options availables](./Gp.ControlOptions.html#getfeatureinfo) |
+             *
              */
             addControls : function (controlsOptions) {
                 this.logger.trace("[IMap] addControls") ;
@@ -1556,15 +1494,17 @@ define([
                             break ;
                         default :
                             console.log("Controle " + controlId + "inconnu.") ;
-                    }
-                    if (controlObj) {
-                        this.logger.trace("[IMap] addControls : registering : [" + controlId + "]") ;
-                        this._controls.push({
-                            obj : controlObj,
-                            id : controlId.toLowerCase(),
-                            options : controlOpts
-                        }) ;
-                    }
+                            // if the controlId is not recognized, we skip it
+                            continue;
+                    }                    
+                    this.logger.trace("[IMap] addControls : registering : [" + controlId + "]") ;
+                    // if the control is not implemented in 3D, controlObj doesn't exist
+                    // then we register it as "2D-only-control", to re-add it in case of switch 3D->2D
+                    this._controls.push({
+                        obj : controlObj || "2D-only-control",
+                        id : controlId.toLowerCase(),
+                        options : controlOpts
+                    }) ;
                 }
             },
 
@@ -1960,7 +1900,6 @@ define([
 
             /**
              * Ecouteur de changements sur les couches pour gerer le tableau this._layers.
-             * écrasé avec VG
              *
              * @param {Gp.LayerChangedEvent} evt - evenement de changement sur les couches
              * @private
@@ -2092,18 +2031,28 @@ define([
              * Associate a function to trigger when an event is received.
              *
              * @param {String} eventId - The map's event listened. Possible values are :
+             * 
              *
+             * ** Common 2D/3D events **
+             * 
              * | eventId  | description |
              * |-|-|
-             * | mapLoaded | fired when map has finished loading |
-             * | geolocated | fired when map has finished centering by geolocation. Callback function handles a {@link Gp.GeolocatedEvent} object |
-             * | located | fired when map has finished centering by geocoding at startup. Callback function handles a {@link Gp.LocatedEvent} object |
+             * | mapLoaded | fired when map has finished loading.  |
+             * | geolocated | fired when map has finished centering by geolocation. Callback function handles a {@link Gp.GeolocatedEvent} object.|
+             * | located | fired when map has finished centering by geocoding. Callback function handles a {@link Gp.LocatedEvent} object. |
              * | configured | fired when map has finished loading geoportal configuration. Callback function handles a {@link Gp.ConfiguredEvent} object |
              * | centerChanged | fired when map center has changed. Callback function handles a {@link Gp.CenterChangedEvent} object |
              * | zoomChanged | fired when map zoom has changed. Callback function handles a {@link Gp.ZoomChangedEvent} object |
              * | azimuthChanged | fired when map orientation has changed. Callback function handles a {@link Gp.AzimuthChangedEvent} object |
              * | layerChanged | fired when map's layer(s) has changed someway. Callback function handles a {@link Gp.LayerChangedEvent} object |
-             *
+             * 
+             * ** Specific 3D events **
+             * 
+             * | eventId  | description |
+             * |-|-|
+             * | tiltChanged | fired when map tilt has changed. Callback function handles a {@link Gp.TiltChangedEvent} object |
+             * 
+             * 
              * @param {Function} action - The function to execute when the event occures.
              * @param {Object} context - The object that will be used as "this" in the action function
              */
@@ -2157,6 +2106,8 @@ define([
              *
              * @param {String} eventId - The map's event to forget. Possible values are :
              *
+             * ** Common 2D/3D events **
+             * 
              * | eventId  | description |
              * |-|-|
              * | mapLoaded | fired when map has finished loading |
@@ -2167,7 +2118,12 @@ define([
              * | zoomChanged | fired when map zoom has changed |
              * | azimuthChanged | fired when map orientation has changed |
              * | layerChanged | fired when map's layer(s) has changed someway |
-             *
+             * 
+             * ** Specific 3D events **
+             * 
+             * | eventId  | description |
+             * |-|-|
+             * | tiltChanged | fired when map tilt has changed |
              * @param {Function} action - The function associated to the event.
              */
             forget : function (eventId, action) {
