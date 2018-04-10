@@ -1004,6 +1004,10 @@ define([
                     this.removeControls(controlId);
                 }
                 if (library === "itowns") {
+                    // récupération des couches 3D qui n'étaient pas affichées en 2D
+                    for (var l = 0; l < this._3Dlayers.length; l++ ) {
+                        oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                    }
                     oldMap.center = [oldMap.center.x, oldMap.center.y];
                     // transformation des coordonnées de planes en géographiques
                     // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !

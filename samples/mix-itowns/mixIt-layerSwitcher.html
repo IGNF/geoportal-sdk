@@ -16,11 +16,17 @@
     <body>
         <h1>Test de l'ajout du control LayerSwitcher</h1>
         <p>Ajout du control à la carte avec les couches MAPS et ORTHOPHOTOS</p>
+        <div id="BoutonSwitchToItowns" hidden>
+            <input type="button" name="switch" onclick="switchToIT();" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl3">
+            <input type="button" name="switch" onclick="switchToOL3();" value="Switch from 3D to 2D"/><br/>
+        </div>
         <div id="viewerDiv"></div>
 
         <script type="text/javascript">
         var map = Gp.Map.load("viewerDiv",{
-            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            apiKey : "ptlp78g6fvz9daz5mg2fztvr",
             library : "itowns",
             enginePath3d : "../../dist/mixIt/",
             controlsOptions : {
@@ -38,7 +44,11 @@
                     ]
                 }
             },
-            layersOptions : {
+            layersOptions : {                
+                "ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3" : {
+                    isElevation : true,
+                    outputFormat : "image/x-bil;bits=32"
+                },
                 "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
                     isElevation : true,
                     title : "MNT IGN",
@@ -46,7 +56,7 @@
                     format : "wmts",
                     outputFormat : "image/x-bil;bits=32",
                     noDataValue : -99999,
-                    url : "http://wxs.ign.fr/j2bfkv9whnqpq04zpzlfz2ge/geoportail/wmts",
+                    url : "http://wxs.ign.fr/ptlp78g6fvz9daz5mg2fztvr/geoportail/wmts",
                     layer : "ELEVATION.ELEVATIONGRIDCOVERAGE",
                     styleName : "normal",
                     tileMatrixSet : "WGS84G",
@@ -345,6 +355,19 @@
             },
             zoom : 14
         });
+
+
+        function switchToIT() {
+            map = map.switchToLibITOL3("itowns");
+            document.getElementById("BoutonSwitchToOl3").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        function switchToOL3() {
+            map = map.switchToLibITOL3("ol3");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl3").style.display = "none";
+        };
 
         </script>
     </body>

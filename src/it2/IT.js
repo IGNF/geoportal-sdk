@@ -661,7 +661,7 @@ function (
         // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDeaultFormat() ;
             // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMS") {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
@@ -670,7 +670,7 @@ function (
             // Paramètres spécifiques aux couches WMTS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMTS") {
                 layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID() ;
-                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimit;
+                layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimits;
                 layerObj[layerId].layer = layerId || layerConf.getName() ;
                 layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name ;
             }
