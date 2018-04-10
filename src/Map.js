@@ -314,7 +314,7 @@ define([
          * | property | Type | Argument | Default | Description |
          * | - | - | - | - | - |
          * | apiKey | String / Array.<String> | | | access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats) |
-         * | library | String | optional | "ol3" | Library to load the map with. "ol3" by default (2D) or "itowns" (3D). Use : <ul> <li>GpOL3 bundle to load the map only with openLayers (2D). </li> <li>GpItowns bundle to load the map only with iTowns (3D).</li><li>GpOL3Itowns bundle to be able to switch between ol3 and iTowns views (see {@link Gp.Map#switchToLibITOL3 Gp.Map.switchToLibITOL3()}).</li></ul> |
+         * | library | String | optional | "ol3" | Library to load the map with. Values are : <ul> <li> "ol3" (default) to load the map with OpenLayers (2D) </li> <li>"itowns" to be able to use 2D (OpenLayers) and 3D (iTowns) views. In this case, you have to use GpOl3Itowns.js file (instead of GpOl3.js)</li></ul> |
          * | center | {@link Gp.Center Gp.Center} | optional | | Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization. |
          * | azimuth | Float | optional | 0 | Map orientation in decimal degrees clockwise to the north. |
          * | zoom | Integer / Float | optional | 10 | Zoom level, between 0 (world wide zoom) and 21 (street wide zoom). |

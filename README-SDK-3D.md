@@ -81,7 +81,7 @@ Le chargement du SDK vous donne accès à son [interface de programmation](https
 
 La création et l'affichage d'une carte se fait à l'aide de la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html). Elle prend deux paramètres en entrée :
 
-* l'identifiant du container HTML (typiquement un élément <div>) dans lequel on veut qu'elle s'affiche.
+* l'identifiant du container HTML (typiquement un élément ```<div>```) dans lequel on veut qu'elle s'affiche.
 
 * un objet javascript, de type [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html) contenant le paramétrage de la carte.
 
