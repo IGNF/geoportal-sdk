@@ -538,6 +538,8 @@ var map = Gp.Map.load(
 
 Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
 
+**Voir un exemple de bascule sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/fsgxk3ov/embedded/result,js,html,css/)**
+
 <a id="others"/>
 
 ### Autres possibilités de paramétrage
