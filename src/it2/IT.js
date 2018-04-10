@@ -661,7 +661,7 @@ function (
         // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
         if (layerConf) {
             layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]) ;
-            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDeaultFormat() ;
+            layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat() ;
             // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
             if (layerObj[layerId].format === "WMS") {
                 layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;
