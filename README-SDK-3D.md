@@ -57,6 +57,17 @@ npm i geoportal-sdk
 
 L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/mixIt/` de votre projet.
 
+#### Accès direct
+
+Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
+Par exemple sur Github Pages :
+```
+http://ignf.github.io/geoportal-sdk/latest/dist/GpOl3Itowns.js
+http://ignf.github.io/geoportal-sdk/latest/dist/GpOl3Itowns.css
+http://ignf.github.io/geoportal-sdk/latest/dist/GpOl3Itowns-src.js
+http://ignf.github.io/geoportal-sdk/latest/dist/GpOl3Itowns-src.css
+```
+
 
 ### Intégration dans une page web
 
