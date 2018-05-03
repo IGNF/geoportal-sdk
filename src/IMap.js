@@ -432,7 +432,7 @@ define([
 
                 // ajout des couches
                 this.addLayers(this.mapOptions.layersOptions) ;
-                
+
                 // ajout des controles
                 // ... par defaut
                 this.addControls(this._getDefaultControls()) ;
@@ -678,7 +678,7 @@ define([
 
             /**
              * Returns the current map's projection code (EPSG or IGNF).
-             * 
+             *
              * @summary Specific 2D function
              * @returns {String} The current map's projection.
              */
@@ -701,7 +701,7 @@ define([
              * @summary Specific 2D function
              * @param {String} [projection=map projection] - Coordinate Reference System of returned extent.
              * @returns {Gp.BBox} - The current map's extent.
-             * 
+             *
              */
             getViewExtent : function () {
                 return {} ;
@@ -709,7 +709,7 @@ define([
 
             /**
              * Returns the current camera's tilt.
-             * 
+             *
              * @summary Specific 3D function
              * @returns {Number} - The current camera's tilt.
              */
@@ -843,7 +843,7 @@ define([
              * Returns underlying implementation of the control identified by controlId. Can be :
              * - an [ol.control.Control](http://openlayers.org/en/latest/apidoc/ol.control.Control.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
              * - an [itowns.control.Widget](https://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/itowns.control.Widget.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
-             * 
+             *
              * @param {String} controlId - identifier of the control
              * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
              */
@@ -854,7 +854,7 @@ define([
             },
 
             /**
-             * Returns wrapped map object implemented by the underlying library. Can be : 
+             * Returns wrapped map object implemented by the underlying library. Can be :
              * - an [ol.Map](http://openlayers.org/en/latest/apidoc/ol.Map.html) object with current OpenLayers 3 implementation if the current map is in 2D.
              * - an [Itowns.GlobeView](https://www.itowns-project.org/itowns/API_Doc/GlobeView.html) object, ie the iTowns GlobeView object overloaded by Geoportal Extension for iTowns, if the current map is in 3D.
              *
@@ -982,7 +982,7 @@ define([
             /**
              * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
              * This function only works with the GpOL3Itowns bundle (run the "build:mix" npm task to generate it)
-             * 
+             *
              * @param {Integer} library - The cartographic library to use. "ol3" (for a 2D map) or "itowns" (for a 3D map).
              *
              */
@@ -1005,8 +1005,10 @@ define([
                 }
                 if (library === "itowns") {
                     // récupération des couches 3D qui n'étaient pas affichées en 2D
-                    for (var l = 0; l < this._3Dlayers.length; l++ ) {
-                        oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                    if ( this._3Dlayers ) {
+                        for (var l = 0; l < this._3Dlayers.length; l++ ) {
+                            oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+                        }
                     }
                     oldMap.center = [oldMap.center.x, oldMap.center.y];
                     // transformation des coordonnées de planes en géographiques
@@ -1359,9 +1361,9 @@ define([
              *
              * @param {Object} controlsOptions - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}).
              *
-             * 
+             *
              * **Common 2D/3D controls :**
-             * 
+             *
              * | Key | Control Description |
              * |-|-|
              * | 'layerswitcher' | Adds layers selector widget to the map. See [options availables](./Gp.ControlOptions.html#layerswitcher) |
@@ -1369,9 +1371,9 @@ define([
              * | 'mouseposition' | Adds mouse position widget to the map. See [options availables](./Gp.ControlOptions.html#mouseposition) |
              * | 'overview' | Adds mini overview map to the map. See [options availables](./Gp.ControlOptions.html#overview) |
              * | 'attributions' | Adds layers originators display to the map. See [options availables](./Gp.ControlOptions.html#attributions) |
-             * 
+             *
              * **Specific 2D controls :**
-             * 
+             *
              * | Key | Control Description |
              * |-|-|
              * | 'draggable' | Enable (true) / disable (false) map dragging/zoomming by mouse or pointer interaction.|
@@ -1496,7 +1498,7 @@ define([
                             console.log("Controle " + controlId + "inconnu.") ;
                             // if the controlId is not recognized, we skip it
                             continue;
-                    }                    
+                    }
                     this.logger.trace("[IMap] addControls : registering : [" + controlId + "]") ;
                     // if the control is not implemented in 3D, controlObj doesn't exist
                     // then we register it as "2D-only-control", to re-add it in case of switch 3D->2D
@@ -2031,10 +2033,10 @@ define([
              * Associate a function to trigger when an event is received.
              *
              * @param {String} eventId - The map's event listened. Possible values are :
-             * 
+             *
              *
              * ** Common 2D/3D events **
-             * 
+             *
              * | eventId  | description |
              * |-|-|
              * | mapLoaded | fired when map has finished loading.  |
@@ -2045,14 +2047,14 @@ define([
              * | zoomChanged | fired when map zoom has changed. Callback function handles a {@link Gp.ZoomChangedEvent} object |
              * | azimuthChanged | fired when map orientation has changed. Callback function handles a {@link Gp.AzimuthChangedEvent} object |
              * | layerChanged | fired when map's layer(s) has changed someway. Callback function handles a {@link Gp.LayerChangedEvent} object |
-             * 
+             *
              * ** Specific 3D events **
-             * 
+             *
              * | eventId  | description |
              * |-|-|
              * | tiltChanged | fired when map tilt has changed. Callback function handles a {@link Gp.TiltChangedEvent} object |
-             * 
-             * 
+             *
+             *
              * @param {Function} action - The function to execute when the event occures.
              * @param {Object} context - The object that will be used as "this" in the action function
              */
@@ -2107,7 +2109,7 @@ define([
              * @param {String} eventId - The map's event to forget. Possible values are :
              *
              * ** Common 2D/3D events **
-             * 
+             *
              * | eventId  | description |
              * |-|-|
              * | mapLoaded | fired when map has finished loading |
@@ -2118,9 +2120,9 @@ define([
              * | zoomChanged | fired when map zoom has changed |
              * | azimuthChanged | fired when map orientation has changed |
              * | layerChanged | fired when map's layer(s) has changed someway |
-             * 
+             *
              * ** Specific 3D events **
-             * 
+             *
              * | eventId  | description |
              * |-|-|
              * | tiltChanged | fired when map tilt has changed |
