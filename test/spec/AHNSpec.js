@@ -1,6 +1,6 @@
 /* global describe, it */
 
-define(['chai', 'ol', 'VirtualGeo'], function (chai, ol, VirtualGeo) {
+define(['chai', 'ol'], function (chai, ol) {
 
     var assert = chai.assert;
     var expect = chai.expect;
@@ -40,17 +40,6 @@ define(['chai', 'ol', 'VirtualGeo'], function (chai, ol, VirtualGeo) {
                 ol.source.should.have.property('GeoportalWMS');
             });
         }) ;
-
-        describe("-- Namespace VirtualGeo --", function() {
-
-            it('VirtualGeo exists and is integrated', function () {
-                // console.log(VirtualGeo);
-                // expect(VirtualGeo).to.exist ;
-                // integration VirtualGeo
-                // VirtualGeo.should.have.property('source');
-                // integration extension géoportail VirtualGeo
-                // VirtualGeo.source.should.have.property('GeoportalWMS');
-            });
-        }) ;
+        
     });
 });

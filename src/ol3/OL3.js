@@ -293,6 +293,11 @@ define([
          * Ajoute l'echelle graphique sur la carte
          *
          * @param {Object} controlOpts - options du controle
+         * @param {String} controlOpts.div - Target HTML element container or its id. Default is chosen by map implementation.
+         * @param {String} controlOpts.units - Units to display : "deg" (degrees) or "m" (metric values).
+         * @param {Number} controlOpts.minWidth - Minimum width in pixels. Default is 64.
+         * 
+         * @returns {Object} Overview control
          */
         OL3.prototype.addGraphicScaleControl = function (controlOpts) {
             var ol3units = controlOpts.units ;
@@ -1645,126 +1650,141 @@ define([
         OL3.prototype._addRasterLayer = function (layerObj) {
             var layerId = Object.keys(layerObj)[0] ;
             var layerOpts = layerObj[layerId] ;
-            var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
-            switch (layerOpts.format.toUpperCase()) {
-                case "WMS":
-                    this.logger.trace("ajout d'une couche WMS");
-                    var params = {};
-                    params.LAYERS = layerOpts.layers.join(",");
-
-                    if (layerOpts.version) {
-                        params.VERSION = layerOpts.version;
-                    }
-                    // au cas ou maintien de l'ancien nom de paramètre :
-                    // layerOpts.styleName (sans "s")
-                    layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName ;
-                    if ( layerOpts.stylesNames ) {
-                        if ( Array.isArray(layerOpts.stylesNames) ) {
-                            params.STYLES = layerOpts.stylesNames.join();
-                        } else {
-                            console.log("'stylesNames' parameter should be an array of style names (string)");
+            // au cas où la couche ajoutée est un MNT, on essaye pas de l'ajouter en 2D
+            if (layerOpts.isElevation !== true) {
+                var constructorOpts = this._applyCommonLayerParams(layerOpts) ;
+                switch (layerOpts.format.toUpperCase()) {
+                    case "WMS":
+                        this.logger.trace("ajout d'une couche WMS");
+                        var params = {};
+                        params.LAYERS = layerOpts.layers.join(",");
+    
+                        if (layerOpts.version) {
+                            params.VERSION = layerOpts.version;
                         }
-                    }
-                    if (layerOpts.outputFormat) {
-                        params.FORMAT = layerOpts.outputFormat;
-                    }
-                    if (layerOpts.backgroundColor) {
-                        params.BGCOLOR = layerOpts.backgroundColor;
-                        params.TRANSPARENT = "FALSE";
-                    } else {
-                        params.TRANSPARENT = "TRUE";
-                    }
-                    var sourceOpts = {
-                        url : layerOpts.url,
-                        params : params
-                    } ;
-                    if (layerOpts.hasOwnProperty("projection")) {
-                        sourceOpts.projection = layerOpts.projection ;
-                    }
-                    if (layerOpts.hasOwnProperty("tiled") && layerOpts.tiled === true) {
-                        constructorOpts.source = new ol.source.TileWMS(sourceOpts) ;
-                    } else {
-                        constructorOpts.source = new ol.source.ImageWMS(sourceOpts) ;
-                    }
-                    break;
-                case "WMTS":
-                    this.logger.trace("ajout d'une couche WMTS");
-                    // chargement des options par defaut
-                    var lOpts = this._getWMTSDefaultOpts() ;
-                    // surcharge avec les options utilisateurs
-                    for (var opt in layerOpts) {
-                        lOpts[opt] = layerOpts[opt];
-                    }
-                    layerOpts = lOpts ;
-                    var sourceOpts = {
-                        url : layerOpts.url,
-                        layer : layerOpts.layer,
-                        matrixSet : layerOpts.tileMatrixSet,
-                        format : layerOpts.outputFormat,
-                        version : layerOpts.version,
-                        style : layerOpts.styleName,
-                        tileGrid : new ol.tilegrid.WMTS({
-                            origin : [
-                                layerOpts.topLeftCorner.x,
-                                layerOpts.topLeftCorner.y
-                            ],
-                            resolutions : layerOpts.resolutions,
-                            matrixIds : layerOpts.matrixIds
-                        })
-                    } ;
-                    // RESTFul or KVP encoding ?
-                    if (layerOpts.url.indexOf("{TileMatrixSet}") > 0 ||
-                        layerOpts.url.indexOf("{TileRow}") > 0 ||
-                        layerOpts.url.indexOf("{TileCol}") > 0   ) {
-                        // its an url template => RESTFul
-                        sourceOpts.requestEncoding = "REST" ;
-                    } else {
-                        sourceOpts.requestEncoding = "KVP" ;
-                    }
-                    constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
-                    break;
-                case "OSM":
-                    this.logger.trace("ajout d'une couche OSM");
-                    constructorOpts.source = new ol.source.OSM({
-                        url : layerOpts.url
-                    });
-                    break;
-                default:
-            }
-            if (constructorOpts.hasOwnProperty("source")) {
-                // le controle geoportalAttribution exploite la propriete _originators
-                if (layerOpts.hasOwnProperty("originators")) {
-                    constructorOpts.source._originators = layerOpts.originators ;
+                        // au cas ou maintien de l'ancien nom de paramètre :
+                        // layerOpts.styleName (sans "s")
+                        layerOpts.stylesNames = layerOpts.stylesNames || layerOpts.stylesName ;
+                        if ( layerOpts.stylesNames ) {
+                            if ( Array.isArray(layerOpts.stylesNames) ) {
+                                params.STYLES = layerOpts.stylesNames.join();
+                            } else {
+                                console.log("'stylesNames' parameter should be an array of style names (string)");
+                            }
+                        }
+                        if (layerOpts.outputFormat) {
+                            params.FORMAT = layerOpts.outputFormat;
+                        }
+                        if (layerOpts.backgroundColor) {
+                            params.BGCOLOR = layerOpts.backgroundColor;
+                            params.TRANSPARENT = "FALSE";
+                        } else {
+                            params.TRANSPARENT = "TRUE";
+                        }
+                        var sourceOpts = {
+                            url : layerOpts.url,
+                            params : params
+                        } ;
+                        if (layerOpts.hasOwnProperty("projection")) {
+                            sourceOpts.projection = layerOpts.projection ;
+                        }
+                        if (layerOpts.hasOwnProperty("tiled") && layerOpts.tiled === true) {
+                            constructorOpts.source = new ol.source.TileWMS(sourceOpts) ;
+                        } else {
+                            constructorOpts.source = new ol.source.ImageWMS(sourceOpts) ;
+                        }
+                        break;
+                    case "WMTS":
+                        this.logger.trace("ajout d'une couche WMTS");
+                        // chargement des options par defaut
+                        var lOpts = this._getWMTSDefaultOpts() ;
+                        // surcharge avec les options utilisateurs
+                        for (var opt in layerOpts) {
+                            lOpts[opt] = layerOpts[opt];
+                        }
+                        layerOpts = lOpts ;
+                        var sourceOpts = {
+                            url : layerOpts.url,
+                            layer : layerOpts.layer,
+                            matrixSet : layerOpts.tileMatrixSet,
+                            format : layerOpts.outputFormat,
+                            version : layerOpts.version,
+                            style : layerOpts.styleName,
+                            tileGrid : new ol.tilegrid.WMTS({
+                                origin : [
+                                    layerOpts.topLeftCorner.x,
+                                    layerOpts.topLeftCorner.y
+                                ],
+                                resolutions : layerOpts.resolutions,
+                                matrixIds : layerOpts.matrixIds
+                            })
+                        } ;
+                        // RESTFul or KVP encoding ?
+                        if (layerOpts.url.indexOf("{TileMatrixSet}") > 0 ||
+                            layerOpts.url.indexOf("{TileRow}") > 0 ||
+                            layerOpts.url.indexOf("{TileCol}") > 0   ) {
+                            // its an url template => RESTFul
+                            sourceOpts.requestEncoding = "REST" ;
+                        } else {
+                            sourceOpts.requestEncoding = "KVP" ;
+                        }
+                        constructorOpts.source = new ol.source.WMTSExtended(sourceOpts);
+                        break;
+                    case "OSM":
+                        this.logger.trace("ajout d'une couche OSM");
+                        constructorOpts.source = new ol.source.OSM({
+                            url : layerOpts.url
+                        });
+                        break;
+                    default:
                 }
-                var layer = null ;
-                if ( layerOpts.format.toUpperCase() == "WMS" &&
-                     (
-                       !layerOpts.hasOwnProperty("tiled") ||
-                       layerOpts.tiled !== true
-                     )
-                   ) {
-                    layer = new ol.layer.Image(constructorOpts) ;
-                } else {
-                    layer = new ol.layer.Tile(constructorOpts) ;
+                if (constructorOpts.hasOwnProperty("source")) {
+                    // le controle geoportalAttribution exploite la propriete _originators
+                    if (layerOpts.hasOwnProperty("originators")) {
+                        constructorOpts.source._originators = layerOpts.originators ;
+                    }
+                    var layer = null ;
+                    if ( layerOpts.format.toUpperCase() == "WMS" &&
+                         (
+                           !layerOpts.hasOwnProperty("tiled") ||
+                           layerOpts.tiled !== true
+                         )
+                       ) {
+                        layer = new ol.layer.Image(constructorOpts) ;
+                    } else {
+                        layer = new ol.layer.Tile(constructorOpts) ;
+                    }
+                    // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
+                    if ( constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0 ) {
+                        layer._forceNullzIndex = true;
+                    }
+                    var gpLayer = {
+                        id : layerId,
+                        obj : layer,
+                        options : layerOpts
+                    };
+    
+                    if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
+                        this._colorGrayscaleLayerSwitch(gpLayer,true);
+                    }
+    
+                    this._layers.push(gpLayer) ;
+                    this.libMap.addLayer(gpLayer.obj) ;
+                    this._addLayerConfToLayerSwitcher(gpLayer.obj,layerOpts) ;
                 }
-                // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL3) (cf. issue #12)
-                if ( constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0 ) {
-                    layer._forceNullzIndex = true;
-                }
-                var gpLayer = {
+            } else {
+                // dans ce cas, on est sur une couche d'élévation
+                // on la sauvegarde dans le tableau 3Dlayers pour l'ajouter si on passe en contexte 3D
+                var elevationLayer = {
                     id : layerId,
-                    obj : layer,
+                    obj : "3D-only-layer",
                     options : layerOpts
                 };
-
-                if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
-                    this._colorGrayscaleLayerSwitch(gpLayer,true);
-                }
-
-                this._layers.push(gpLayer) ;
-                this.libMap.addLayer(gpLayer.obj) ;
-                this._addLayerConfToLayerSwitcher(gpLayer.obj,layerOpts) ;
-            }
+                if (!this._3Dlayers) {
+                    this._3Dlayers = [];
+                } 
+                this._3Dlayers.push(elevationLayer);
+            }            
         } ;
 
         /**
@@ -2780,32 +2800,6 @@ define([
 
             // maj du cache
             source.refresh();
-        };
-
-        /**
-         *  Remove and re-initialize layerChanged event
-         *
-         * @private
-         */
-        OL3.prototype._manageLayerChangedEvent = function () {
-            // re-abonnement à l'evenement layerChanged
-            // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
-            if (this._events.hasOwnProperty("layerChanged")) {
-                var layerChangedArray = [] ;
-                // on recopie le tableau
-                this._events["layerChanged"].forEach(function (eventObj) {
-                    layerChangedArray.push(eventObj) ;
-                },
-                this) ;
-                layerChangedArray.forEach(function (eventObj) {
-                    // on oublie ...
-                    this.forget("layerChanged", eventObj.action) ;
-                    // ... pour mieux se souvenir
-                    this.listen("layerChanged", eventObj.action , eventObj.context) ;
-                },
-                this) ;
-                layerChangedArray = null ;
-            }
         };
 
         return OL3;

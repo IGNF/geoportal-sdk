@@ -1,7 +1,37 @@
+language: node_js
+node_js:
+  - "6"
+stages:
+  - name: deploy
+    # require the branch name to be master
+    if: branch = master
 before_script:
   - npm install
-script: ./node_modules/.bin/gulp build-ol3
+script:
+  ./build.sh -a
 cache:
   directories:
     - node_modules
-dist: trusty
+before_deploy:
+    - git clone https://github.com/IGNF/geoportal-sdk --branch gh-pages deploy/
+    - mkdir -p deploy/current/
+    - mkdir -p deploy/current/SDK-3D/
+    - mkdir -p deploy/current/SDK-2D/
+    - cp -r dist/mixIt deploy/current/SDK-3D/
+    - cp -r dist/ol3 deploy/current/SDK-2D/
+    - mkdir -p deploy/current/jsdoc/
+    - cp -r target/doc/. deploy/current/jsdoc/
+deploy:
+  # fix : https://github.com/travis-ci/travis-ci/issues/9312
+  # ...wait for v1.9.1
+  edge:
+    branch: v1.8.47
+  provider: pages
+  skip-cleanup: true
+  github-token: $ghkey  # Set in travis-ci.org dashboard, marked secure
+  local_dir: deploy/
+  keep-history: true
+  on:
+    branch: master
+  after_deploy:
+    - rm -rf deploy/
