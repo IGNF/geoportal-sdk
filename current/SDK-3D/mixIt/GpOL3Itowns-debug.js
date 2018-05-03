@@ -14,14 +14,24 @@
  *
  */
 /*!
- * OpenLayers 3. See http://openlayers.org/
+ * OpenLayers. See http://openlayers.org/
  * License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
- * Version: v4.0.1
+ * Version: 4.6.5
  */
 /*!
- * Geoportal Extension for OpenLayers 3. See https://github.com/IGNF/geoportal-extensions
+ * Geoportal Extension for OpenLayers. See https://github.com/IGNF/geoportal-extensions
  * License: https://raw.githubusercontent.com/IGNF/geoportal-extensions/master/LICENCE.md
- * Version: v0.11.0
+ * Version: 1.1.0
+ */
+ /*!
+ * iTowns. See http://www.itowns-project.org/
+ * License: https://github.com/iTowns/itowns/blob/master/LICENSE.md
+ * Version: 2.3.0
+ */
+/*!
+ * Geoportal Extension for iTowns. See https://github.com/IGNF/geoportal-extensions
+ * License: https://raw.githubusercontent.com/IGNF/geoportal-extensions/master/LICENCE.md
+ * Version: 1.1.0
  */
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
