@@ -40,7 +40,9 @@
   "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
   "dependencies": {
     "geoportal-extensions-openlayers": "^1.1.0",
-    "geoportal-extensions-itowns": "^1.1.0"
+    "geoportal-extensions-itowns": "^1.1.0",
+    "itowns": "2.3.0",
+    "openlayers": "^4.0.1"
   },
   "devDependencies": {
     "amdclean": "^2.7.0",
@@ -72,8 +74,6 @@
     "gulp-util": "~2.2.14",
     "gulp-watch": "~0.5.3",
     "minimist": "^1.1.1",
-    "itowns": "2.3.0",
-    "openlayers": "^4.0.1",
     "open": "0.0.5",
     "requirejs": "^2.1.20",
     "shelljs": "~0.2.6",
