@@ -1776,9 +1776,9 @@ define([
                 // dans ce cas, on est sur une couche d'élévation
                 // on la sauvegarde dans le tableau 3Dlayers pour l'ajouter si on passe en contexte 3D
                 var elevationLayer = {
-                    id: layerId,
-                    obj: "3D-only-layer",
-                    options: layerOpts
+                    id : layerId,
+                    obj : "3D-only-layer",
+                    options : layerOpts
                 };
                 if (!this._3Dlayers) {
                     this._3Dlayers = [];
