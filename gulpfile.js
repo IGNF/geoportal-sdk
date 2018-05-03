@@ -87,6 +87,12 @@
     var npmConf = require("./package.json") ;
     var buildDate = new Date().toISOString().split("T")[0];
 
+    // conf of lib dependencies for auto-generation of licence
+    var olConf = require("./node_modules/openlayers/package.json");
+    var itownsConf = require("./node_modules/itowns/package.json");
+    var gpExtOlConf = require("./node_modules/geoportal-extensions-openlayers/package.json");
+    var gpExtItownsConf = require("./node_modules/geoportal-extensions-itowns/package.json");
+
     // |**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // | ✓ jsonlint
     // | > Validation JSON (fichiers de configuration)
@@ -350,7 +356,11 @@
         return gulp.src([ path.join(build.umd, (isDebug ? getDistFileNameDebug() : getDistFileName())) ])
                 .pipe($.header(fs.readFileSync(licence, "utf8"), {
                     date : buildDate,
-                    version : npmConf.version
+                    version : npmConf.version,
+                    olVersion : olConf.version,
+                    itownsVersion : itownsConf.version,
+                    GpExtOpenlayersVersion : gpExtOlConf.version,
+                    GpExtItownsVersion : gpExtItownsConf.version
                 }))
                 .pipe(gulp.dest( path.join(build.dist, getDistDirName())) )
                 .pipe($.plumber())
@@ -529,7 +539,11 @@
             // licence
             .pipe(header(fs.readFileSync(licence, "utf8"), {
                 date : buildDate,
-                version : npmConf.version
+                version : npmConf.version,
+                olVersion : olConf.version,
+                itownsVersion : itownsConf.version,
+                GpExtOpenlayersVersion : gpExtOlConf.version,
+                GpExtItownsVersion : gpExtItownsConf.version
             }))
             .pipe(gulp.dest(builddir))
             .pipe($.plumber())
