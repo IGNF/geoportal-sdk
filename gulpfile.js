@@ -220,7 +220,6 @@
             _includes.push("ol3/OL3");
             _globalModules.push("ol");
         }
-
         // param bundle itowns
         else if (isItowns) {
             _deps.itowns = "empty:";
@@ -228,9 +227,9 @@
            _deps["Gp"] = pluginsDir + "GpPluginItowns-src";
            _includes.push("it2/IT");
         } else if (isMixIt) {
-            _deps.ol = "../lib/external/ol3/ol";
+            _deps.ol = "../../node_modules/openlayers/dist/ol";
              _deps.itowns = "empty:";
-            pluginsDir = "../lib/external/geoportail/plugins-mixIt/";
+            pluginsDir = "../../node_modules/geoportal-extensions-openlayers-itowns/dist/";
             _deps["Gp"] = pluginsDir + "GpPluginOlItowns-src";
             _includes.push("it2/IT");
             _includes.push("ol3/OL3");
@@ -457,8 +456,8 @@
         } else if (isItowns) {
             srcdir.push(path.join(_.node_modules, "geoportal-extensions-itowns", "dist", "**", "*.png"));
         } else if (isMixIt) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.png"));
-            svgdir = path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*.svg");
+            srcdir.push(path.join(_.node_modules, "geoportal-extensions-openlayers-itowns", "dist", "**", "*.png"));
+            svgdir = path.join(_.node_modules, "geoportal-extensions-openlayers-itowns", "dist", "**", "*.svg");
         } else {
             $.util.log("Exception !");
         }
@@ -527,7 +526,7 @@
             srcdir.push(path.join(_.node_modules, "geoportal-extensions-itowns", "dist", "**", "*-src.css"));
             srcdir.push(path.join(_.res, "it2", "*.css"));
         } else if (isMixIt) {
-            srcdir.push(path.join(_.lib, "external", "geoportail", "plugins-mixIt", "**", "*-src.css"));
+            srcdir.push(path.join(_.node_modules, "geoportal-extensions-openlayers-itowns", "dist", "**", "*-src.css"));
             srcdir.push(path.join(_.node_modules, "openlayers", "dist", "*.css"));
             srcdir.push(path.join(_.res, "ol3", "*.css"));
             srcdir.push(path.join(_.res, "it2", "*.css"));
