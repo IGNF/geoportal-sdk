@@ -1,7 +1,9 @@
 {
   "name": "geoportal-sdk",
-  "version": "1.1.0",
-  "description": "French Geoportal SDK",
+  "version": "1.2.0",
+  "SDK2DVersion": "1.2.0",
+  "SDK3DVersion": "1.2.0",
+  "description": "French Geoportal SDK for OpenLayers and iTowns libraries",
   "main": "dist/ol3/GpOl3.js, dist/mixIt/GpOl3Itowns.js",
   "scripts": {
     "setup": "npm install",
