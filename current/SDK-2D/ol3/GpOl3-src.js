@@ -9,7 +9,7 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 1.1.0
+ * @version 1.2.0
  * @date 2018-05-07
  *
  */
@@ -62156,7 +62156,7 @@ AHN = function (Map, require) {
     } else {
         console.log('Aucune lib. détectée !?');
     }
-    Gp.sdkVersion = '1.1.0';
+    Gp.sdkVersion = '1.2.0';
     Gp.sdkDate = '2018-05-07';
     scope.Gp = Gp;
     return scope.Gp;
