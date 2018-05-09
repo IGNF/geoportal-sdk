@@ -30,8 +30,6 @@ Il contient l'arborescence suivante :
             (version non minifiée des css pour une utilisation en développement)
         itowns.js
             (version minifiée de la librairie iTowns compatible avec le SDK 3D)
-        img/
-            (resources images utilisées par les fichiers CSS)
 
 
 <a id="download-direct"/>

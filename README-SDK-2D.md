@@ -28,8 +28,6 @@ Il contient l'arborescence suivante :
             (version non minifiée du code javascript pour une utilisation en développement)
         GpOl3-src.css
             (version non minifiée des css pour une utilisation en développement)
-        img/
-            (resources images utilisées par les fichiers CSS)
 
 
 <a id="download-direct"/>
