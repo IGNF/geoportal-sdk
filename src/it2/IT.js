@@ -711,8 +711,8 @@ function (
             console.log("point object has location property to center on...") ;
             return;
         }
-        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
-            var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+        if ( point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
+            var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
             point = {
                 x : wgs84Coords[0],
                 y : wgs84Coords[1]
