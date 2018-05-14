@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 1.2.0
- * @date 2018-05-09
+ * @date 2018-05-14
  *
  */
 /*!
@@ -66044,8 +66044,8 @@ it2IT = function (Logger, Loader, Plugins, Itowns, IMap) {
             console.log('point object has location property to center on...');
             return;
         }
-        if (point.hasOwnProperty('projection') && point.projection !== 'EPSG:4326' && proj4.defs(point.projection)) {
-            var wgs84Coords = proj4(point.projection, 'EPSG:4326', [
+        if (point.hasOwnProperty('projection') && point.projection !== 'EPSG:4326' && Itowns.proj4.defs(point.projection)) {
+            var wgs84Coords = Itowns.proj4(point.projection, 'EPSG:4326', [
                 point.x,
                 point.y
             ]);
@@ -68791,7 +68791,7 @@ AHN = function (Map, require) {
         console.log('Aucune lib. détectée !?');
     }
     Gp.sdkVersion = '1.2.0';
-    Gp.sdkDate = '2018-05-09';
+    Gp.sdkDate = '2018-05-14';
     scope.Gp = Gp;
     return scope.Gp;
 }(Map, {});
