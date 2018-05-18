@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Itowns - 3d-tiles example</title>
+
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                overflow:hidden;
+                height:100%;
+            }
+
+
+            #batchInformationDiv {
+                position: absolute;
+                z-index: 0;
+                top: 0;
+                right: 0;
+                color: white;
+                color: #eee;
+                font: 11px 'Lucida Grande',sans-serif;
+                line-height: normal;
+                text-shadow: 0 -1px 0 #111;
+                padding: 0 1rem;
+                background: #1a1a1a;
+                border: 1px solid #2c2c2c;
+                opacity: 0.8;
+            }
+
+            #batchInformationDiv > p {
+                margin: 0.5rem 0;
+            }
+
+            #batchInformationDiv > ul {
+                padding: 0 1rem;
+            }
+
+            @media (max-width: 600px) {
+                #batchInformationDiv {
+                    display: none;
+                }
+            }
+            #menuDiv {
+                margin : auto auto;
+                width: 100%;
+                padding: 0;
+                height: 100%;
+
+                position: absolute;
+                top:0px;
+                margin-left: 0px;
+            }
+            @media (max-width: 600px) {
+                #menuDiv {
+                    display: none;
+                }
+            }
+
+            #viewerDiv {
+                margin : auto auto;
+                width: 100%;
+                padding: 0;
+                height: 100%;
+            }
+            #viewerDiv > canvas {
+                display: block;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="GUI/dat.gui/dat.gui.min.js"></script>
+    </head>
+    <body>
+        <div id="viewerDiv"></div>
+        <script src="GUI/GuiTools.js"></script>
+        <script src="../dist/itowns.js"></script>
+        <script src="../dist/debug.js"></script>
+        <script type="text/javascript">
+            /* global itowns,document,GuiTools*/
+            var positionOnGlobe = { longitude: -75.61, latitude: 40.04, altitude: 50000 }
+            // iTowns namespace defined here
+            var viewerDiv = document.getElementById('viewerDiv');
+
+            var view = new itowns.GlobeView(viewerDiv, positionOnGlobe);
+            var menuGlobe = new GuiTools('menuDiv', view, 300);
+
+            itowns.Fetcher.json('layers/JSONLayers/Ortho.json').then(function (result) { return view.addLayer(result) });
+
+            // function use :
+            // For preupdate Layer geomtry :
+            var preUpdateGeo = itowns.pre3dTilesUpdate;
+
+            // Create a new Layer 3d-tiles For DiscreteLOD
+            // -------------------------------------------
+            var $3dTilesLayerDiscreteLOD = new itowns.GeometryLayer('3d-tiles-discrete-lod', new itowns.THREE.Group());
+
+            $3dTilesLayerDiscreteLOD.preUpdate = preUpdateGeo;
+            $3dTilesLayerDiscreteLOD.update = itowns.process3dTilesNode(
+                itowns.$3dTilesCulling,
+                itowns.$3dTilesSubdivisionControl
+            );
+            $3dTilesLayerDiscreteLOD.name = 'DiscreteLOD';
+            $3dTilesLayerDiscreteLOD.url = 'https://raw.githubusercontent.com/AnalyticalGraphicsInc/3d-tiles-samples/master/tilesets/TilesetWithDiscreteLOD/tileset.json';
+            $3dTilesLayerDiscreteLOD.protocol = '3d-tiles'
+            $3dTilesLayerDiscreteLOD.overrideMaterials = true;  // custom cesium shaders are not functional
+            $3dTilesLayerDiscreteLOD.type = 'geometry';
+            $3dTilesLayerDiscreteLOD.visible = true;
+
+            itowns.View.prototype.addLayer.call(view, $3dTilesLayerDiscreteLOD);
+
+            // Create a new Layer 3d-tiles For Viewer Request Volume
+            // -----------------------------------------------------
+
+            var $3dTilesLayerRequestVolume = new itowns.GeometryLayer('3d-tiles-request-volume', new itowns.THREE.Group());
+
+            $3dTilesLayerRequestVolume.preUpdate = preUpdateGeo;
+            $3dTilesLayerRequestVolume.update = itowns.process3dTilesNode(
+                itowns.$3dTilesCulling,
+                itowns.$3dTilesSubdivisionControl
+            );
+
+            $3dTilesLayerRequestVolume.name = 'RequestVolume';
+            $3dTilesLayerRequestVolume.url = 'https://raw.githubusercontent.com/AnalyticalGraphicsInc/3d-tiles-samples/master/tilesets/TilesetWithRequestVolume/tileset.json';
+            $3dTilesLayerRequestVolume.protocol = '3d-tiles'
+            $3dTilesLayerRequestVolume.overrideMaterials = true;  // custom cesium shaders are not functional
+            $3dTilesLayerRequestVolume.type = 'geometry';
+            $3dTilesLayerRequestVolume.visible = true;
+            $3dTilesLayerRequestVolume.sseThreshold = 1;
+            // add an event for have information when you move your mouse on a building
+            itowns.View.prototype.addLayer.call(view, $3dTilesLayerRequestVolume).then(function _() { window.addEventListener('mousemove', picking, false); })
+
+            // Add the UI Debug
+            var d = new debug.Debug(view, menuGlobe.gui);
+            debug.createTileDebugUI(menuGlobe.gui, view, view.wgs84TileLayer, d);
+            debug.create3dTilesDebugUI(menuGlobe.gui, view, $3dTilesLayerDiscreteLOD, d);
+            debug.create3dTilesDebugUI(menuGlobe.gui, view, $3dTilesLayerRequestVolume, d);
+
+
+// Picking example - - - - - - - - - - -- - - - -- - - - -- - - - -- - - - -- - - - -- - - - -
+            function findBatchTableParent(object) {
+                if (object.batchTable) {
+                    return object.batchTable;
+                }
+                else if (object.parent) {
+                    return findBatchTableParent(object.parent);
+                } else {
+                    return undefined;
+                }
+            }
+            function picking(event) {
+                // Pick an object with batch id
+                var mouse = globe.eventToNormalizedCoords(event);
+                var raycaster = new itowns.THREE.Raycaster();
+                var htmlInfo = document.getElementById('info');
+                htmlInfo.innerHTML = ' ';
+
+                raycaster.setFromCamera(mouse, globe.camera.camera3D);
+                // calculate objects intersecting the picking ray
+                var intersects = raycaster.intersectObjects($3dTilesLayerRequestVolume.object3d.children, true);
+
+                for (var i = 0; i < intersects.length; i++) {
+                    var interAttributes = intersects[i].object.geometry.attributes;
+                    if (interAttributes) {
+                        if (interAttributes._BATCHID) {
+                            var face = intersects[i].face.a;
+                            var batchID = interAttributes._BATCHID.array[face];
+                            var batchTable = findBatchTableParent(intersects[i].object);
+
+                            htmlInfo.innerHTML +='<li><b> Batch id: </b>'+ batchID +'</li>';
+                            Object.keys(batchTable).map(function(objectKey) {
+                                var value = batchTable[objectKey][batchID];
+                                // if the value is a integer or not
+                                var info = Number.isInteger(value) ? value.toString() : value.toFixed(3).toString();
+                                htmlInfo.innerHTML +='<li><b>' + objectKey.toString() + ': </b>'+ info +'</li>';
+                                return true;
+                            });
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+        </script>
+        <div id="batchInformationDiv">
+            <p><b>Information Batch Table: </b></p>
+            <ul id="info">
+            </ul>
+        </div>
+    </body>
+</html>

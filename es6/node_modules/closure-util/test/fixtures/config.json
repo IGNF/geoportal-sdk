@@ -1,0 +1,36 @@
+{
+  "lib": [
+    "test/fixtures/basic/**.js"
+  ],
+  "compile": {
+    "closure_entry_point": "basic.one",
+    "externs": [
+    ],
+    "define": [
+      "goog.array.ASSUME_NATIVE_FUNCTIONS=true",
+      "goog.dom.ASSUME_STANDARDS_MODE=true",
+      "goog.json.USE_NATIVE_JSON=true",
+      "goog.DEBUG=false"
+    ],
+    "js": [
+    ],
+    "jscomp_error": [
+      "*"
+    ],
+    "jscomp_off": [
+      "unknownDefines",
+      "lintChecks",
+      "analyzerChecks"
+    ],
+    "extra_annotation_name": [
+      "api", "observable"
+    ],
+    "compilation_level": "ADVANCED",
+    "warning_level": "VERBOSE",
+    "isolation_mode": "IIFE",
+    "use_types_for_optimization": true
+  },
+  "serve": {
+    "port": 3001
+  }
+}

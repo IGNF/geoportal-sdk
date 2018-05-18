@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/openlayers/GpOl-src.css" type="text/css">
+        <style>
+          #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+          }
+          #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+          }
+          #geoportalMap3 {
+            height: 400px;
+            width: 600px;
+          }
+        </style>
+        <script src="../../dist/openlayers/GpOl-src.js"></script>
+    </head>
+    <body>
+        <h1>Paramètre geolocate</h1>
+        <h2>Centrage de la carte sur la position de l'internaute.</h2>
+        <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur Paris (centrage par default).</p>
+        <div id="geoportalMap1"></div>
+        <h2>Centrage sur la position de l'internaute, ou sur une adresse en cas de problème avec la géolocalisation.</h2>
+        <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur les coordonnées fournies : le Finistère.</p>
+        <div id="geoportalMap2"></div>
+        <h2>Centrage sur la position de l'internaute, ou sur une adresse en cas de problème avec la géolocalisation.</h2>
+        <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur Nîmes.</p>
+        <div id="geoportalMap3"></div>
+
+        <script type="text/javascript">
+            Gp.Map.load('geoportalMap1', {
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                center : {
+                    geolocate : true
+                }
+            });
+            Gp.Map.load('geoportalMap2', {
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                center : {
+                    geolocate : true,
+                    x : -511270,
+                    y : 6151620
+                }
+            });
+
+            Gp.Map.load('geoportalMap3', {
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+                center : {
+                    geolocate : true,
+                    location : "Nimes",
+                    locationType : ["PositionOfInterest"]
+                }
+            });
+        </script>
+    </body>
+</html>
