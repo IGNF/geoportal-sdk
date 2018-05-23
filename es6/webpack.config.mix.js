@@ -27,8 +27,6 @@ module.exports = env => {
         entry : [
             path.join(__dirname, "node_modules", "openlayers", "dist", "ol.css"),
             path.join(__dirname, "node_modules", "geoportal-extensions-openlayers-itowns", "dist", "GpPluginOlItowns-src.css"),
-            path.join(__dirname, "res", "Itowns", "IT.css"),
-            path.join(__dirname, "res", "OpenLayers", "OL.css"),
             path.join(__dirname, "src", "AHNmix")
         ],
         output : {

@@ -1,6 +1,7 @@
 import Logger from "../Utils/LoggerByDefault";
 import IMap from "../IMap";
-import Gp, {olExtended as Ol} from "gp";
+import * as Gp from "gp";
+var Ol = Gp.olExtended;
 
 /**
  * OL IMap implementation class.

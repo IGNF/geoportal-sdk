@@ -1,5 +1,6 @@
 import Map from "./Map";
 import OlMap from "./OpenLayers/OL";
+import "../res/OpenLayers/OL.css";
 
 export * from "gp";
 

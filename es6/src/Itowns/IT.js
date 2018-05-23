@@ -1,8 +1,8 @@
 import Loader from "../Utils/Loader";
-import * as Itowns from "itowns";
 import IMap from "../IMap";
 import Logger from "../Utils/LoggerByDefault";
-import require from "require";
+import * as Gp from "gp";
+var Itowns = Gp.itownsExtended;
 
 /**
 * @param {Object} opts - map options
@@ -63,8 +63,6 @@ IT.prototype._initMap = function () {
     this.logger.trace("[IT]  : _initMap");
 
     var _enginePath3d = Loader.getEnginePath(this.mapOptions.enginePath3d);
-
-    var itt = require(this.mapOptions.enginePath3d + "/itowns.js");
 
     Loader.loadEngine(_enginePath3d,
         function (itowns) {

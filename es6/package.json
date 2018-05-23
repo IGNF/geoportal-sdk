@@ -9,8 +9,9 @@
         "setup": "npm install",
         "clean": "echo \"Warning: target not yet implemented!\" && exit 0",
         "doc": "echo \"Warning: target not yet implemented!\" && exit 0",
-        "build:itowns": "webpack --config webpack.config.itowns",
-        "build:itowns:prod": "webpack --config webpack.config.itowns --env.production",
+        "build:dev": "npm run build:ol; npm run build:mix",
+        "build:prod": "npm run build:ol:prod; npm run build:mix:prod",
+        "build": "npm run build:dev; npm run build:prod",
         "build:mix": "webpack --config webpack.config.mix",
         "build:mix:prod": "webpack --config webpack.config.mix --env.production",
         "build:ol": "webpack --config webpack.config.openlayers",
@@ -42,8 +43,8 @@
         "require": "^2.4.20"
     },
     "devDependencies": {
-        "babel-core": "^6.26.0",
-        "babel-loader": "^7.1.2",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
         "babel-preset-env": "^1.6.1",
         "css-loader": "^0.28.11",
         "eslint": "^4.18.2",
