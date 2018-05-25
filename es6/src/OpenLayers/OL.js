@@ -1,7 +1,6 @@
 import Logger from "../Utils/LoggerByDefault";
 import IMap from "../IMap";
-import * as Gp from "gp";
-var Ol = Gp.olExtended;
+import {Protocols, olExtended as Ol} from "gp";
 
 /**
  * OL IMap implementation class.
@@ -1888,7 +1887,7 @@ OL.prototype._addVectorLayer = function (layerObj) {
                 features : new Ol.Collection(),
                 // features loader
                 loader : function (extent, resolution, projectionFeature) {
-                    Gp.Protocols.XHR.call({
+                    Protocols.XHR.call({
                         url : urlKml,
                         method : "GET",
                         timeOut : 15000,

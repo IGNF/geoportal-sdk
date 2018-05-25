@@ -1,8 +1,7 @@
 import Loader from "../Utils/Loader";
 import IMap from "../IMap";
 import Logger from "../Utils/LoggerByDefault";
-import * as Gp from "gp";
-var Itowns = Gp.itownsExtended;
+import {itownsExtended as Itowns} from "gp";
 
 /**
 * @param {Object} opts - map options
