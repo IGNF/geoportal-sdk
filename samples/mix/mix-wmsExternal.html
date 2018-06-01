@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="stylesheet" href="../../dist/mix/GpOlItowns-src.css" type="text/css">
+        <style>
+          #viewerDiv {
+            height: 600px;
+            width: 1200px;
+            position : "relative";
+          }
+        </style>
+        <script src="../../dist/mix/GpOlItowns-src.js"></script>
+    </head>
+    <body>
+        <h1>Test itowns</h1>
+        <h2>Carte 3D.</h2>
+        <div id="BoutonSwitchToItowns" hidden>
+            <input type="button" name="switch" onclick="switchToIT();" value="Switch from 2D to 3D"/><br/>
+        </div>
+        <div id="BoutonSwitchToOl">
+            <input type="button" name="switch" onclick="switchToOL();" value="Switch from 3D to 2D"/><br/>
+        </div>
+        <div id="viewerDiv"></div>
+
+        <script type="text/javascript">
+        var map = Gp.Map.load("viewerDiv",{
+            apiKey : "an7nvfzojv5wa96dsga5nk8w",
+            library : "itowns",
+            enginePath3d : "../../node_modules/itowns/dist/",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+                "avalanches" : {
+                    layers : ["IRSTEA_CLPA.INTER"],
+                    format : "wms",
+                    url : "http://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/proxy/",
+                    outputFormat : "image/png",
+                    projection : "EPSG:3857"
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+
+        /**
+          * fonction de bascule vers 3D
+          */
+        function switchToIT () {
+            map = map.switchToLibITOL("itowns");
+            document.getElementById("BoutonSwitchToOl").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        /**
+          * fonction de bascule vers 2D
+          */
+        function switchToOL () {
+            map = map.switchToLibITOL("ol");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl").style.display = "none";
+        };
+
+        </script>
+    </body>
+</html>
