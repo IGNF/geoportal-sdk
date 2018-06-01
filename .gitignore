@@ -45,6 +45,4 @@
 /test/node_modules/
 /lib/external/virtual/
 /dist/
-
-/es6/dist/
-/es6/node_modules/
+/jsdoc/
