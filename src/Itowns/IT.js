@@ -100,7 +100,10 @@ IT.prototype._initMap = function () {
 
             var self = this;
             // when globe is loaded, we set the user map parameters
-            this.libMap.listen(Itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
+            var key = this.libMap.listen(Itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function () {
+                // because itowns dispatch this event at each layer adding
+                self.libMap.forgetByKey(key);
+
                 // we show the div when globe is loaded
                 window.setTimeout(function () {
                     self.div.style.visibility = "";
