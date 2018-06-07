@@ -5,18 +5,19 @@
     "plugins": ["plugins/markdown"],
     "source": {
         "include": [
-            "./src/OpenLayers",
+            "./src/",
+            "./doc/images/",
             "./doc/README"
         ]
     },
     "templates": {
         "cleverLinks"           : false,
-        "applicationName"       : "Geoportal SDK 2D",
+        "applicationName"       : "Geoportal SDK 2D/3D",
         "monospaceLinks"        : false,
         "dateFormat"            : "ddd MMM Do YYYY",
         "outputSourceFiles"     : true,
         "outputSourcePath"      : true,
-        "systemName"            : "Geoportal SDK 2D",
+        "systemName"            : "Geoportal SDK 2D/3D",
         "footer"                : "API SDK version 1.1.0",
         "copyright"             : "Geoportail - Copyright (c) IGN, released under the CECILL-B license",
         "navType"               : "inline",
@@ -34,7 +35,7 @@
     "opts": {
         "template" : "./doc/jaguarjs-jsdoc",
         "encoding" : "utf8",
-        "destination": "./jsdoc/openlayers",
+        "destination": "./jsdoc/",
         "recurse": true,
         "lenient": true,
         "verbose": true

@@ -12,7 +12,7 @@ describe("-- Test Integration composants Gp,ol --", function () {
             expect(AHN).to.exist ;
             // integration bibliotheque d'acces
             AHN.should.have.property('servicesVersion');
-            // integration extension ol3
+            // integration extension ol
             AHN.should.have.property('olExtVersion');
             // integration Map
             AHN.should.have.property('Map');
@@ -23,9 +23,9 @@ describe("-- Test Integration composants Gp,ol --", function () {
 
         it('ol exists and is integrated', function () {
             expect(ol).to.exist ;
-            // integration ol3
+            // integration ol
             ol.should.have.property('source');
-            // integration extension géoportail ol3
+            // integration extension géoportail ol
             ol.source.should.have.property('GeoportalWMS');
         });
     });

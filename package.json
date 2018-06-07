@@ -8,8 +8,8 @@
     "scripts": {
         "setup": "npm install",
         "clean": "echo \"Warning: target not yet implemented!\" && exit 0",
-        "test:serve": "cd test && webpack-dev-server --hot --config webpack.test.serve.js",
-        "doc": "echo \"Warning: target not yet implemented!\" && exit 0",
+        "test": "cd test && webpack-dev-server --hot --config webpack.test.serve.js",
+        "doc:serve": "webpack-dev-server --config webpack.config.mix --contentBase jsdoc/ --port 9001 --open",
         "build:dev": "npm run build:ol; npm run build:mix",
         "build:prod": "npm run build:ol:prod; npm run build:mix:prod",
         "build": "npm run build:dev; npm run build:prod",

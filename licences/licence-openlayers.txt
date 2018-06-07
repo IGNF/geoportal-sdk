@@ -1,4 +1,4 @@
 /*!
  * OpenLayers. See http://openlayers.org/
- * License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
+ * License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
  */
