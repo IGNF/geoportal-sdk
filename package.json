@@ -4,19 +4,19 @@
     "SDK2DVersion": "1.2.0",
     "SDK3DVersion": "1.2.0",
     "description": "French Geoportal SDK for OpenLayers and iTowns libraries",
-    "main": "dist/openlayers/GpOl.js, dist/mix/GpOlItowns.js",
+    "main": "dist/2d/GpSDK2D.js, dist/3d/GpSDK3d.js",
     "scripts": {
         "setup": "npm install",
         "clean": "echo \"Warning: target not yet implemented!\" && exit 0",
         "test": "cd test && webpack-dev-server --hot --config webpack.test.serve.js",
-        "doc:serve": "webpack-dev-server --config webpack.config.mix --contentBase jsdoc/ --port 9001 --open",
-        "build:dev": "npm run build:ol; npm run build:mix",
-        "build:prod": "npm run build:ol:prod; npm run build:mix:prod",
+        "doc:serve": "webpack-dev-server --config webpack.config.3d --contentBase jsdoc/ --port 9001 --open",
+        "build:dev": "npm run build:2d; npm run build:3d",
+        "build:prod": "npm run build:2d:prod; npm run build:3d:prod",
         "build": "npm run build:dev; npm run build:prod",
-        "build:mix": "webpack --config webpack.config.mix",
-        "build:mix:prod": "webpack --config webpack.config.mix --env.production",
-        "build:ol": "webpack --config webpack.config.openlayers",
-        "build:ol:prod": "webpack --config webpack.config.openlayers --env.production"
+        "build:3d": "webpack --config webpack.config.3d",
+        "build:3d:prod": "webpack --config webpack.config.3d --env.production",
+        "build:2d": "webpack --config webpack.config.2d",
+        "build:2d:prod": "webpack --config webpack.config.2d --env.production"
     },
     "repository": {
         "type": "git",

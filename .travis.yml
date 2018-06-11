@@ -18,8 +18,8 @@ before_deploy:
     - mkdir -p deploy/current/
     - mkdir -p deploy/current/SDK-3D/
     - mkdir -p deploy/current/SDK-2D/
-    - cp -r dist/mix deploy/current/SDK-3D/
-    - cp -r dist/openlayers deploy/current/SDK-2D/
+    - cp -r dist/3d deploy/current/SDK-3D/
+    - cp -r dist/2d deploy/current/SDK-2D/
     - mkdir -p deploy/current/jsdoc/
     - cp -r target/doc/. deploy/current/jsdoc/
 deploy:

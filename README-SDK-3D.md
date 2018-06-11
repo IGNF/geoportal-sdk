@@ -20,13 +20,13 @@ Vous pouvez récupérer le Kit de Développement Géoportail soit par [télécha
 Il contient l'arborescence suivante :
 
     <Kit de Développement Géoportail>/
-        GpOlItowns.js
+        GpSDK3D.js
             (version minifiée du code javascript pour une utilisation en production)
-        GpOlItowns.css
+        GpSDK3D.css
             (version minifiée des css pour une utilisation en production)
-        GpOlItowns-src.js
+        GpSDK3D-src.js
             (version non minifiée du code javascript pour une utilisation en développement)
-        GpOlItowns-src.css
+        GpSDK3D-src.css
             (version non minifiée des css pour une utilisation en développement)
         itowns.js
             (version minifiée de la librairie iTowns compatible avec le SDK 3D)
@@ -53,17 +53,17 @@ Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) i
 npm i geoportal-sdk
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/mix/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/3d/` de votre projet.
 
 #### Accès direct
 
 Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
 Par exemple sur Github Pages :
 ```
-http://ignf.github.io/geoportal-sdk/latest/dist/mix/GpOlItowns.js
-http://ignf.github.io/geoportal-sdk/latest/dist/mix/GpOlItowns.css
-http://ignf.github.io/geoportal-sdk/latest/dist/mix/GpOlItowns-src.js
-http://ignf.github.io/geoportal-sdk/latest/dist/mix/GpOlItowns-src.css
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.js
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.css
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.js
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.css
 ```
 
 
@@ -75,8 +75,8 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 
 ``` html
 <!-- SDK Géoportail -->
-<script src="chemin/vers/GpOlItowns.js"></script>
-<link rel="stylesheet" href="chemin/vers/GpOlItowns.css" />
+<script src="chemin/vers/GpSDK3D.js"></script>
+<link rel="stylesheet" href="chemin/vers/GpSDK3D.css" />
 ```
 
 
@@ -497,7 +497,7 @@ Les outils disponibles en 2D uniquement sont les suivants :
 
 <a id="switch_tools"/>
 
-*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switchToLibITOL()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
+*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
 
 
 <a id="events"/>
@@ -545,7 +545,7 @@ var map = Gp.Map.load(
 
 ### Bascule entre 2D et 3D
 
-Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switchToLibITOL()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
+Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
 
 **Voir un exemple de bascule sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/fsgxk3ov/embedded/result,js,html,css/)**
 

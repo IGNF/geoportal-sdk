@@ -25,7 +25,7 @@ function OL (opts) {
 };
 
 /**
- * Proprietes observables des couches pour l'AHN
+ * Proprietes observables des couches pour le SDK
  */
 OL.LAYERPROPERTIES = {
     visible : "visibility",
@@ -42,7 +42,7 @@ OL.LAYERPROPERTIES = {
 OL.CONTROLPROPERTIES = {
     maximised : "collapsed"
 
-    // TODO : rajouter mapping property AHN <-> property OL au fur et à mesure de l'ajout des controles.
+    // TODO : rajouter mapping property SDK <-> property OL au fur et à mesure de l'ajout des controles.
 
 };
 

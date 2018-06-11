@@ -25,7 +25,7 @@ function IT (opts) {
 }
 
 /**
- * Proprietes observables des couches pour l'AHN
+ * Proprietes observables des couches pour le SDK
  */
 IT.LAYERPROPERTIES = {
     visible : "visibility",

@@ -55,8 +55,8 @@ var Map = {
         }
 
         // lib. by default
-        if (!mapOptions.hasOwnProperty("library")) {
-            mapOptions.library = "ol";
+        if (!mapOptions.hasOwnProperty("viewMode")) {
+            mapOptions.viewMode = "2d";
         }
 
         // auto detect lib. loaded
@@ -76,10 +76,10 @@ var Map = {
         // creating the library map instance
         var objMap = null;
 
-        var library = mapOptions.library;
-        switch (library) {
-            case "ol":
-                logger.trace("construction de la carte OpenLayers3");
+        var viewMode = mapOptions.viewMode;
+        switch (viewMode) {
+            case "2d":
+                logger.trace("construction de la carte 2D");
                 if (OL === null || typeof OL !== "function") {
                     throw new Error("library ol is not loaded !");
                 }
@@ -90,8 +90,8 @@ var Map = {
                 });
 
                 break;
-            case "itowns":
-                logger.trace("construction du globe iTowns 3D");
+            case "3d":
+                logger.trace("construction du globe 3D");
                 if (IT === null || typeof IT !== "function") {
                     throw new Error("library itowns is not loaded !");
                 }
@@ -103,7 +103,7 @@ var Map = {
 
                 break;
             default:
-                throw new Error("not supported library");
+                throw new Error("not supported view mode");
         }
 
         this._prototype = Object.getPrototypeOf(objMap); // IMap !
@@ -297,7 +297,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | apiKey | String / Array.<String> | | | access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats) |
- * | library | String | optional | "ol" | Library to load the map with. Values are : <ul> <li> "ol" (default) to load the map with OpenLayers (2D) </li> <li>"itowns" to be able to use 2D (OpenLayers) and 3D (iTowns) views. In this case, you have to use GpOlItowns.js file (instead of GpOl.js)</li></ul> |
+ * | viewMode | String | optional | "2d" | Library to load the map with. Values are : <ul> <li> "2d" (default) to load the map with OpenLayers (2D) </li> <li>"3d" to be able to use 2D (OpenLayers) and 3D (iTowns) views. In this case, you have to use GpSDK3D.js file (instead of GpSDK2D.js)</li></ul> |
  * | center | {@link Gp.Center Gp.Center} | optional | | Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization. |
  * | azimuth | Float | optional | 0 | Map orientation in decimal degrees clockwise to the north. |
  * | zoom | Integer / Float | optional | 10 | Zoom level, between 0 (world wide zoom) and 21 (street wide zoom). |

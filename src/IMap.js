@@ -23,7 +23,7 @@ function IMap (opts) {
     this.logger.trace("[Constructeur IMap (options)]");
 
     /**
-     * Couches enregistrées par l'AHN
+     * Couches enregistrées par le SDK
      * Structure des objets stockés :
      * {
      *     id : layerId
@@ -34,7 +34,7 @@ function IMap (opts) {
     this._layers = [];
 
     /**
-     * Couches enregistrées par l'AHN et supprimées
+     * Couches enregistrées par le SDK et supprimées
      * Structure des objets stockés :
      * {
      *     id : layerId
@@ -45,7 +45,7 @@ function IMap (opts) {
     this._layersRemoved = [];
 
     /**
-     * Controlss enregistrés par l'AHN
+     * Controlss enregistrés par le SDK
      * Structure des objets stockés :
      * {
      *     id : controlId
@@ -989,13 +989,13 @@ IMap.prototype = {
 
     /**
      * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
-     * This function only works with the GpOlItowns bundle (run the "build:mix" npm task to generate it)
+     * This function only works with the GpSDK3D bundle (run the "build:3d" npm task to generate it)
      *
-     * @param {Integer} library - The cartographic library to use. "ol" (for a 2D map) or "itowns" (for a 3D map).
+     * @param {Integer} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
      *
      * @return {Object} the new map
      */
-    switchToLibITOL : function (library) {
+    switch2D3D : function (viewMode) {
         var oldMap = {};
         oldMap.projection = this.getProjection();
         oldMap.center = this.getCenter();
@@ -1012,7 +1012,7 @@ IMap.prototype = {
         for (var controlId in oldMap.controlsOptions) {
             this.removeControls(controlId);
         }
-        if (library === "itowns") {
+        if (viewMode === "3d") {
             // récupération des couches 3D qui n'étaient pas affichées en 2D
             if (this._3Dlayers) {
                 for (var l = 0; l < this._3Dlayers.length; l++) {
@@ -1029,7 +1029,7 @@ IMap.prototype = {
             };
             oldMap.azimuth = this.getAzimuth();
             this.libMap.setTarget(null);
-        } else if (library === "ol") {
+        } else if (viewMode === "2d") {
             oldMap.center = [oldMap.center.lon, oldMap.center.lat];
             // transformation des coordonnées de géographiques en planes
             // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
@@ -1074,7 +1074,7 @@ IMap.prototype = {
                 // maxZoom : this.
                 // minZoom : this.
                 // markerOptions :
-                library : library,
+                viewMode : viewMode,
                 // proxyUrl
                 // noProxyDomains
                 // reloadConfig
@@ -2016,7 +2016,7 @@ IMap.prototype = {
      * enregistre un evenement avec sa clef, sa fonction et sonID
      *
      * @param {Object} eventKey - ol layer
-     * @param {String} eventId - id evenement pour l'AHN
+     * @param {String} eventId - id evenement pour le SDK
      * @param {Function} action - fonction associée à l'evt
      * @param {Object} context - contexte d'execution de l'action (context == this)
      *

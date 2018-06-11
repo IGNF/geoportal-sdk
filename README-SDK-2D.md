@@ -20,13 +20,13 @@ Vous pouvez récupérer le Kit de Développement Géoportail soit par [télécha
 Il contient l'arborescence suivante :
 
     <Kit de Développement Géoportail>/
-        GpOl.js
+        GpSDK2D.js
             (version minifiée du code javascript pour une utilisation en production)
-        GpOl.css
+        GpSDK2D.css
             (version minifiée des css pour une utilisation en production)
-        GpOl-src.js
+        GpSDK2D-src.js
             (version non minifiée du code javascript pour une utilisation en développement)
-        GpOl-src.css
+        GpSDK2D-src.css
             (version non minifiée des css pour une utilisation en développement)
 
 
@@ -51,17 +51,17 @@ Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) i
 npm i geoportal-sdk
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/openlayers/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/2d/` de votre projet.
 
 #### Accès direct
 
 Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
 Par exemple sur Github Pages :
 ```
-http://ignf.github.io/geoportal-sdk/latest/dist/openlayers/GpOl.js
-http://ignf.github.io/geoportal-sdk/latest/dist/openlayers/GpOl.css
-http://ignf.github.io/geoportal-sdk/latest/dist/openlayers/GpOl-src.js
-http://ignf.github.io/geoportal-sdk/latest/dist/openlayers/GpOl-src.css
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.js
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.css
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.js
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.css
 ```
 
 ### Intégration dans une page web
@@ -72,8 +72,8 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 
 ``` html
 <!-- SDK Géoportail -->
-<script src="chemin/vers/GpOl.js"></script>
-<link rel="stylesheet" href="chemin/vers/GpOl.css" />
+<script src="chemin/vers/GpSDK2D.js"></script>
+<link rel="stylesheet" href="chemin/vers/GpSDK2D.css" />
 ```
 
 

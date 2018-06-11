@@ -70,7 +70,7 @@ Liste des targets disponibles :
 
     npm run <target>
         target : (clean), setup,
-                 build[:dev|:prod|:ol[:prod]|:mix[:prod],
+                 build[:dev|:prod|:2d[:prod]|:3d[:prod],
                  doc:serve,
                  test
 
@@ -107,18 +107,18 @@ Upgrade de version :
 
 ### Compilation
 
-**ouvrir une console (ex. avec openlayers) :**
+**ouvrir une console (ex. avec le SDK 2D) :**
 
-    npm run build:ol
-    ou npm run build:ol:prod
-    ou npm run build:ol -- --env.production
+    npm run build:2d
+    ou npm run build:2d:prod
+    ou npm run build:2d -- --env.production
 
 Les *bundles* sont disponibles dans le répertoire :
 
-	dist/openlayers/GpOl.js
-    dist/openlayers/GpOl.css
-	dist/openlayers/GpOl-src.js
-	dist/openlayers/GpOl-src.css
+	dist/2d/GpSDK2D.js
+    dist/2d/GpSDK2D.css
+	dist/2d/GpSDK2D-src.js
+	dist/2d/GpSDK2D-src.css
     (...)
 
 Les sources sont validées (jshint, jscs et/ou eslint).
