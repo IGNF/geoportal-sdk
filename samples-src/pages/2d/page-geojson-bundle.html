@@ -1,0 +1,54 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D GeoJSON</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte avec une couche GeoJSON</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center : {
+                x : -8181208,
+                y : 5097147
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                 "getfeatureinfo" : {
+                     options : {
+                         auto : true,
+                         hidden : true
+                     }
+                 }
+            },
+            layersOptions : {
+                macoucheGeoJSON : {
+                    format : "geojson",
+                    url : "http://openlayers.org/en/v3.12.1/examples/data/geojson/line-samples.geojson",
+                    opacity : 0.7,
+                    minZoom : 5,
+                    maxZoom : 10,
+                    visibility : true,
+                    zoomToExtent : true
+                }
+            },
+            zoom : 8
+        });
+    </script>
+{{/content}}
+{{/extend}}

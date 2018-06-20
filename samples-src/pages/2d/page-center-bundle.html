@@ -1,0 +1,59 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Center</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+        }
+        #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+        }
+        #geoportalMap3 {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Centrage de la carte par coordonnées</h1>
+    <h2>Centrage par défaut</h2>
+    <p>La carte est centrée sur Paris.</p>
+    <div id="geoportalMap1"></div>
+    <h2>Centrage par coordonnées dans le système de la carte.</h2>
+    <p>La carte est centrée sur le Finistère.</p>
+    <div id="geoportalMap2"></div>
+    <h2>Centrage dans une projection différente de celle de la carte.</h2>
+    <p>La carte est centrée sur le Finistère.</p>
+    <div id="geoportalMap3"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1',{
+            apiKey : "{{apikey}}",
+        });
+        Gp.Map.load('geoportalMap2', {
+            apiKey : "{{apikey}}",
+            center : {
+                x : -511270,
+                y : 6151620
+            }
+        });
+        Gp.Map.load('geoportalMap3', {
+            apiKey : "{{apikey}}",
+            center : {
+                x : -4.620391,
+                y : 48.268698,
+                projection : "CRS:84"
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

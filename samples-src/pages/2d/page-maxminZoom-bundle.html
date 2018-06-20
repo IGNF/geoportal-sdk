@@ -1,0 +1,49 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D max/min Zoom</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap2 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre maxZoom et minZoom</h1>
+    <h2>CAS 1 : l'utilisateur souhaite bloquer le zoom au-delà du niveau 15.</h2>
+    <p>On ne peut zoomer sur la carte que 5 fois.</p>
+    <div id="geoportalMap1"></div>
+    <h2>CAS 2 : l'utilisateur souhaite bloquer le zoom en-deçà du niveau 5.</h2>
+    <p>On ne peut dézoomer sur la carte que 5 fois.</p>
+    <div id="geoportalMap2"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1', {
+            apiKey : "{{apikey}}",
+            maxZoom : 15,
+            controlsOptions:{
+                'zoom':{}
+            }
+        });
+
+        Gp.Map.load('geoportalMap2', {
+            apiKey : "{{apikey}}",
+            minZoom : 5,
+            controlsOptions:{
+                'zoom':{}
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

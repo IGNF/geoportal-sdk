@@ -1,0 +1,36 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Local Config</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+          height: 600px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre configUrl</h1>
+    <p>La carte s'initialise à l'aide d'un fichier d'autoconfiguration local.</p>
+    <div id="geoportalMap1"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1', {
+            configUrl : "{{resources}}/autoconf.js",
+            controlsOptions : {
+                route : {},
+                isocurve : {},
+                mouseposition : {},
+                layerswitcher : {},
+                drawing : {}
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

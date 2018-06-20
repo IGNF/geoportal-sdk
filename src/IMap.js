@@ -1,6 +1,7 @@
-/* globals Gp: true */
 import Logger from "./Utils/LoggerByDefault";
 import * as Ol from "openlayers";
+import {Services, ProxyUtils} from "gp";
+import Map from "./Map";
 
 /**
  * Map Object. Returned by {@link module:Map Gp.Map.load()} function. Provides methods to interact with map view.
@@ -329,6 +330,10 @@ IMap.prototype = {
         // centrage avec les coordonnées x, y (s'il y en a)
         this.setXYCenter(this.mapOptions.center);
 
+        // FIXME Config est créé en runtime dans la variable globale Gp
+        var scope = typeof window !== "undefined" ? window : {};
+        var Config = scope.Gp ? scope.Gp.Config : undefined;
+
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
         if (this.apiKey ||
@@ -338,13 +343,13 @@ IMap.prototype = {
             // ou si aucun n'appel d'autoocnf n'a ete fait pour cette cle
             // TODO : this.apiKey.length > 1
             needsGetConfig = (this._opts.reloadConfig ||
-                              !Gp.Config ||
-                              !Gp.Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
+                              !Config ||
+                              !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
         } else { // une clef n'est pas fournie
             // on essaye de trouver une configuration existante
-            if (Gp.Config) {
-                this.apiKey = Object.keys(Gp.Config.generalOptions.apiKeys);
+            if (Config) {
+                this.apiKey = Object.keys(Config.generalOptions.apiKeys);
             }
         }
 
@@ -360,7 +365,7 @@ IMap.prototype = {
                 callbackSuffix = callbackSuffix || "";
             }
             var map = this;
-            Gp.Services.getConfig({
+            Services.getConfig({
                 apiKey : this.apiKey,
                 serverUrl : this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl,
                 callbackSuffix : callbackSuffix,
@@ -375,7 +380,7 @@ IMap.prototype = {
                 }
             });
         } else {
-            this._afterGetConfig(Gp.Config);
+            this._afterGetConfig(Config);
         }
     },
 
@@ -567,14 +572,18 @@ IMap.prototype = {
      * @private
      */
     centerGeocode : function (opts) {
+        // FIXME Config est créé en runtime dans la variable globale Gp
+        var scope = typeof window !== "undefined" ? window : {};
+        var Config = scope.Gp ? scope.Gp.Config : undefined;
+
         // le centrage par geocodage n'est possible que si l'utilisateur a les
         // droits sur le service.
-        if (!Gp.Config || !this.apiKey) {
+        if (!Config || !this.apiKey) {
             this.logger.info("no rights for geocoding services");
             return;
         }
         // On cherche les types de géocodage disponibles
-        var layersIds = Gp.Config.getLayersId(this.apiKey);
+        var layersIds = Config.getLayersId(this.apiKey);
         var locTypes = opts.locationType || ["StreetAddress", "PositionOfInterest"];
         var fo = {};
         fo.type = [];
@@ -591,7 +600,7 @@ IMap.prototype = {
             return;
         }
         var map = this;
-        Gp.Services.geocode({
+        Services.geocode({
             apiKey : this.apiKey,
             location : opts.location,
             filterOptions : fo,
@@ -681,7 +690,7 @@ IMap.prototype = {
      * @private
      */
     setProxy : function (url) {
-        return Gp.ProxyUtils.proxifyUrl(url, this.mapOptions);
+        return ProxyUtils.proxifyUrl(url, this.mapOptions);
     },
 
     /**
@@ -1056,7 +1065,7 @@ IMap.prototype = {
             return;
         }
         // this.libMap = null;
-        var newMap = Gp.Map.load(
+        var newMap = Map.load(
             // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
             // this.libMap.getApiKeys(),
             // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
@@ -1119,16 +1128,21 @@ IMap.prototype = {
             // on ne peut pas rajouter la même couche avec le même identifiant
             if (this._getLayersObj([layerId]).length > 0) {
                 this.logger.info("Layer [" + layerId + "] already added to map.");
-                return;
+                continue;
             }
             this.logger.trace("[IMap] addLayers : adding : [" + layerId + "]");
             var layerOpts = layersOptions[layerId];
             // parametre pour l'ajout individuel de couche
             var addLayerParam = {};
             addLayerParam[layerId] = layerOpts;
+
+            // FIXME Config est créé en runtime dans la variable globale Gp
+            var scope = typeof window !== "undefined" ? window : {};
+            var Config = scope.Gp ? scope.Gp.Config : undefined;
+
             // Est-ce un layer Geoportail ?
             // si on a donné une URL, on ne cherche pas à découvrir la couche Géoportail
-            if (!layerOpts.hasOwnProperty("url") && Gp.Config) {
+            if (!layerOpts.hasOwnProperty("url") && Config) {
                 var format = null;
                 if (layerOpts && layerOpts.format) {
                     format = layerOpts.format;
@@ -1136,19 +1150,19 @@ IMap.prototype = {
                 var layerConf = null;
                 // on essaye d'abord WMTS
                 if (format == null || format.toUpperCase() === "WMTS") {
-                    layerConf = Gp.Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMTS");
+                    layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMTS");
                     if (layerConf) {
                         format = "WMTS";
                     }
                 }
                 // ... puis WMS GEOPORTAIL
                 if (format == null || format.toUpperCase() === "WMS") {
-                    layerConf = Gp.Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMS");
+                    layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMS");
                     if (layerConf) {
                         format = "WMS";
                     } else {
                         // ... puis WMS INSPIRE
-                        layerConf = Gp.Config.getLayerConf(layerId + "$INSPIRE:OGC:WMS");
+                        layerConf = Config.getLayerConf(layerId + "$INSPIRE:OGC:WMS");
                         if (layerConf) {
                             format = "WMS";
                         }

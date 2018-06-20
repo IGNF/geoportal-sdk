@@ -1486,7 +1486,7 @@ OL.prototype._addMarkers = function (markersOptions) {
         if (!mo.hasOwnProperty("offset")) {
             mo.offset = Ol.control.DefaultMarkers["defaultOffset"];
         }
-        this.logger.trace("[OL] : _addMarkers : offset [" + mo.offset[0] + ", " + mo.offset[1] + "]");
+        this.logger.trace("[OL] : _addMarkers : offset [" + mo.offset[0] + "," + mo.offset[1] + "]");
         // popup offset (from mouse click)
         if (!mo.hasOwnProperty("ppoffset")) {
             // default popup has a 15px of y offset (see .gp-feature-info-div::before css class)
@@ -1684,7 +1684,7 @@ OL.prototype._addRasterLayer = function (layerObj) {
             {
                 this.logger.trace("ajout d'une couche WMS");
                 var params = {};
-                params.LAYERS = layerOpts.layers.join(", ");
+                params.LAYERS = layerOpts.layers.join(",");
 
                 if (layerOpts.version) {
                     params.VERSION = layerOpts.version;
@@ -1986,7 +1986,7 @@ OL.prototype._addVectorLayer = function (layerObj) {
                     return layerUrl + "?service=WFS&request=GetFeature" +
                     "&version=" + layerOpts.version + "&typename=" + layerOpts.typeNames +
                     "&outputFormat=" + layerOpts.outputFormat + "&srsname=" + projection.getCode() +
-                    "&bbox=" + extent.join(", ") + ", " + projection.getCode() + maxFeatures + sld;
+                    "&bbox=" + extent.join(",") + "," + projection.getCode() + maxFeatures + sld;
                 },
                 strategy : Ol.loadingstrategy.bbox
             });
@@ -2300,7 +2300,7 @@ OL.prototype.setXYCenter = function (point) {
         center = Ol.proj.transform(center, point.projection, mapProj);
     }
     this.libMap.getView().setCenter(center);
-    this.logger.trace("[OL] - setXYCenter(" + point.x + ", " + point.y + "), projection Map : " + mapProj);
+    this.logger.trace("[OL] - setXYCenter(" + point.x + "," + point.y + "), projection Map : " + mapProj);
 
     // FIXME : markerFeature
     // if (this.markerFeature)

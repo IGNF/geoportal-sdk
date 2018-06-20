@@ -1,0 +1,38 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D GPP Layer</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant des couches Géoportail</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {},
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS' :{
+                    opacity :0.3
+                },
+                'CADASTRALPARCELS.PARCELS' : {
+                    visibility:false
+                }
+            },
+            zoom : 10
+        });
+    </script>
+{{/content}}
+{{/extend}}

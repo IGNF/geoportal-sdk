@@ -1,0 +1,56 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D WFS Geoportail</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Affichage couche WFS Géoportail</h1>
+    <p>En mode : "couche externe"</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center : {
+                x : -1.15,
+                y : 46.15,
+                projection : "EPSG:4326"
+            },
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+                maCoucheWFS : {
+                    format :"wfs",
+                    // TODO : changer la clef ?
+                    url : "https://wxs.ign.fr/{{apikey2}}/geoportail/wfs",
+                    typeNames : "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle",
+                    version : "2.0.0",
+                    // version : "1.1",
+                    outputFormat : "application/json",
+                    // outputFormat : "text/xml; subtype=gml/3.1.1",
+                    // outputFormat : "text/xml; subtype=gml/2.1.2",
+                    maxFeatures : 200,
+                    projection : "EPSG:4326",
+                    visibility : true,
+                    zoomToExtent : false
+                }
+            },
+            controlsOptions : {
+                "layerSwitcher" : {}
+            },
+            zoom : 16
+        });
+    </script>
+{{/content}}
+{{/extend}}

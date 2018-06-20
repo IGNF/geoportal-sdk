@@ -1,0 +1,45 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Graphic Scale</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une échelle graphique</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load(
+            'geoportalMap',
+            {
+                apiKey : "{{apikey}}",
+                center: {
+                    location : "73 avenue de Paris, Saint-Mandé"
+                },
+                controlsOptions : {
+                    "layerSwitcher" : {},
+                    "graphicscale" : {
+                        units : "m",
+                        minWidth : 100
+                    }
+                },
+                layersOptions : {
+                     "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {}
+                },
+                zoom : 13
+            }
+        );
+    </script>
+{{/content}}
+{{/extend}}
