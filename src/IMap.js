@@ -774,6 +774,16 @@ IMap.prototype = {
     },
 
     /**
+     * Returns the current viewing mode (either 2D or 3d).
+     *
+     * @returns {String} - The current viewing mode
+     * @private
+     */
+    getViewMode : function () {
+        return this.mapOptions.viewMode;
+    },
+
+    /**
      * Returns the layers Obj identified by layerIds
      *
      * @param {Array.<String>} layerIds - A list of layer's id.
