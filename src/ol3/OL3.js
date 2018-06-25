@@ -296,7 +296,7 @@ define([
          * @param {String} controlOpts.div - Target HTML element container or its id. Default is chosen by map implementation.
          * @param {String} controlOpts.units - Units to display : "deg" (degrees) or "m" (metric values).
          * @param {Number} controlOpts.minWidth - Minimum width in pixels. Default is 64.
-         * 
+         *
          * @returns {Object} Overview control
          */
         OL3.prototype.addGraphicScaleControl = function (controlOpts) {
@@ -1658,7 +1658,7 @@ define([
                         this.logger.trace("ajout d'une couche WMS");
                         var params = {};
                         params.LAYERS = layerOpts.layers.join(",");
-    
+
                         if (layerOpts.version) {
                             params.VERSION = layerOpts.version;
                         }
@@ -1763,11 +1763,11 @@ define([
                         obj : layer,
                         options : layerOpts
                     };
-    
+
                     if ( layerOpts.hasOwnProperty("grayScaled") && layerOpts.grayScaled ) {
                         this._colorGrayscaleLayerSwitch(gpLayer,true);
                     }
-    
+
                     this._layers.push(gpLayer) ;
                     this.libMap.addLayer(gpLayer.obj) ;
                     this._addLayerConfToLayerSwitcher(gpLayer.obj,layerOpts) ;
@@ -1782,9 +1782,9 @@ define([
                 };
                 if (!this._3Dlayers) {
                     this._3Dlayers = [];
-                } 
+                }
                 this._3Dlayers.push(elevationLayer);
-            }            
+            }
         } ;
 
         /**
@@ -1932,10 +1932,14 @@ define([
                     // FIXME : useless projection param ?
                     if (layerOpts.projection) {
                         // param for GeoJSON format
+                        // FIXME
+                        // cf. https://github.com/openlayers/openlayers/commit/cbaa9a7567ae32629241bab4721bc429940c942e#diff-2734579f56e71d2f13d47cd894a3fe68
+                        // defaultDataProjection to dataProjection version > 5.0.0 !
                         formatOptions["defaultDataProjection"] = layerOpts.projection ;
                         // param for GMLx format
                         formatOptions["srsName"] = layerOpts.projection ;
                     }
+                    // FIXME à revoir...
                     if (oflc.indexOf("gml") > 0 ||
                         oflc.indexOf("xml") > 0
                        ) {

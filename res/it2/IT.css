@@ -2,7 +2,7 @@
 
 .gp-feature-info-div-it {
   position: absolute;
-  z-index: : 10;
+  z-index: 10;
   overflow: auto;
   max-width: calc(100vw - 80px);
   min-height: 30px;
@@ -39,7 +39,7 @@
   border-top-right-radius: 10px;
   background-color: #FFF;
   background-repeat: no-repeat;
-  background-image: url("./img/close-emeraud.svg");
+  background-image: url("img/close-emeraud.svg");
   background-size: 14px 14px;
   background-position: center;
 }

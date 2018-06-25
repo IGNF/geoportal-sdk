@@ -10,7 +10,7 @@
             width: 600px;
         }
         </style>
-        <script src="../../dist/ol3/GpOl3-src.js"></script>
+        <script src="../../dist/ol3/GpOl3-debug.js"></script>
     </head>
     <body>
         <h1>Affichage couche WFS Géoportail</h1>
@@ -37,10 +37,12 @@
                         outputFormat : "application/json",
                         // outputFormat : "text/xml; subtype=gml/3.1.1",
                         // outputFormat : "text/xml; subtype=gml/2.1.2",
-                        maxFeatures : 200,
+                        // outputFormat : "text/xml; subtype=gml/3.2",
+                        // outputFormat : "gml2",
+                        // maxFeatures : 200,
                         projection : "EPSG:4326",
                         visibility : true,
-                        zoomToExtent : false
+                        zoomToExtent : false // ça marche !?
                     }
                 },
                 controlsOptions : {

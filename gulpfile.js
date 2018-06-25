@@ -215,7 +215,7 @@
             // pluginsDir = "../../node_modules/geoportal-extensions-openlayers/dist/";
             // Use lib external to test dev releases of geoportal-extensions
             pluginsDir = "../../node_modules/geoportal-extensions-openlayers/dist/",
-            _deps.ol =  "../../node_modules/openlayers/dist/ol";
+            _deps.ol =   (isDebug) ? "../../node_modules/openlayers/dist/ol-debug" : "../../node_modules/openlayers/dist/ol";
             _deps["Gp"] = pluginsDir + "GpPluginOpenLayers-src";
             _includes.push("ol3/OL3");
             _globalModules.push("ol");
@@ -455,8 +455,10 @@
             svgdir = path.join(_.node_modules, "geoportal-extensions-openlayers", "dist", "**", "*.svg");
         } else if (isItowns) {
             srcdir.push(path.join(_.node_modules, "geoportal-extensions-itowns", "dist", "**", "*.png"));
+            srcdir.push(path.join(_.res, "it2", "img", "**", "*"));
         } else if (isMixIt) {
             srcdir.push(path.join(_.node_modules, "geoportal-extensions-openlayers-itowns", "dist", "**", "*.png"));
+            srcdir.push(path.join(_.res, "it2", "img", "**", "*"));
             svgdir = path.join(_.node_modules, "geoportal-extensions-openlayers-itowns", "dist", "**", "*.svg");
         } else {
             $.util.log("Exception !");
