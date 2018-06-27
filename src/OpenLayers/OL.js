@@ -1319,8 +1319,17 @@ OL.prototype.addGetFeatureInfoControl = function (controlOpts) {
             var mapLayer = this._layers[i];
 
             if (gfiLayerId === mapLayer.id) {
-                if (!mapLayer.options.queryable) {
+                let format = mapLayer.options.format.toLowerCase();
+                if (!mapLayer.options.queryable &&
+                    format !== "kml" &&
+                    format !== "geojson" &&
+                    format !== "gpx" &&
+                    format !== "georss" &&
+                    format !== "wfs" &&
+                    format !== "drawing"
+                ) {
                     this.logger.info("GetFeatureInfo layer '" + gfiLayerId + "' has not been added to control because this layer is not queryable.");
+                    break;
                 } else {
                     var layerConf = {
                         obj : mapLayer.obj

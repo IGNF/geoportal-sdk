@@ -445,7 +445,7 @@ IMap.prototype = {
         // ceux demandés par l'utilisateur
         this.addControls(this.mapOptions.controlsOptions);
 
-        // declenchement de l'evenement "configured"
+        // declenchement de l'evenement "mapLoaded"
         var eMapLoaded = IMap.CustomEvent("mapLoaded", {
             detail : {
                 map : this

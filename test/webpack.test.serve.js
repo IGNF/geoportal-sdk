@@ -52,6 +52,11 @@ module.exports = {
                         loader : "css-loader"
                     }
                 })
+            },
+            {
+                test : /\.(png|jpg|gif|svg)$/,
+                loader : "url-loader",
+                exclude : /node_modules/
             }
         ]
     },

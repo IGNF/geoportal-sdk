@@ -39,7 +39,7 @@
                 "mousePosition" : {},
                 "getfeatureInfo" : {
                     options : {
-                        auto : true,
+                        auto : false,
                         active : false,
                         hidden: false,
                         defaultEvent : "singleclick",
@@ -52,6 +52,7 @@
                     },
                     layers : {
                         myVectorLayer : {},
+                        myVectorLayer2 : {},
                         'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
                             event : "contextmenu"
                         },
@@ -67,8 +68,12 @@
                 myVectorLayer : {
                     title : "myVectorLayer",
                     format : "kml",
-                    url : "{{resources}}/KML/S_TOP100.kml",
-                    queryable : true
+                    url : "{{resources}}/KML/S_TOP100.kml"
+                },
+                myVectorLayer2 : {
+                    title : "myVectorLayer2",
+                    format : "geojson",
+                    url : "../resources/GeoJSON/regions.geojson"
                 },
                 'UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE::GEOPORTAIL:OGC:WMS' : {
                     minZoom : 14,

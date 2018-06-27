@@ -32,6 +32,7 @@ function cleanContext() {
 }
 
 describe("-- Test OL --", function () {
+    this.timeout(10000);
 
     beforeEach(function () {
         initContext();
@@ -46,7 +47,6 @@ describe("-- Test OL --", function () {
     });
 
     describe("-- Events --", function() {
-        this.timeout(6000);
 
         it('Should correctly launch maploaded event', function (done) {
             map.listen("mapLoaded", function callback() {
@@ -155,7 +155,6 @@ describe("-- Test OL --", function () {
         });
 
         it('Should correctly add the route control to the map', function (done) {
-            this.timeout(6000);
 
             map.listen("mapLoaded", function callback() {
                 map.forget( "mapLoaded", callback);
@@ -169,7 +168,6 @@ describe("-- Test OL --", function () {
         });
 
         it('Should correctly add the isocurve control to the map', function (done) {
-            this.timeout(6000);
 
             map.listen("mapLoaded", function callback() {
                 map.forget( "mapLoaded", callback);
@@ -218,7 +216,6 @@ describe("-- Test OL --", function () {
         });
 
         it('Should correctly add the elevation path control to the map', function (done) {
-            this.timeout(6000);
 
             map.listen("mapLoaded", function callback() {
                 map.forget( "mapLoaded", callback);
@@ -239,7 +236,6 @@ describe("-- Test OL --", function () {
         });
 
         it('Should correctly add the reverse search control to the map', function (done) {
-            this.timeout(6000);
 
             map.listen("mapLoaded", function callback() {
                 map.forget( "mapLoaded", callback);
