@@ -18,6 +18,10 @@ var HandlebarsPlugin = require("./scripts/webpackPlugins/handlebars-plugin");
 var HandlebarsLayoutPlugin = require("handlebars-layouts");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 
+// -- performances
+var SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+var smp = new SpeedMeasurePlugin();
+
 // -- variables
 var date = new Date().toISOString().split("T")[0];
 var pkg = require(path.join(__dirname, "package.json"));
@@ -25,8 +29,11 @@ var pkg = require(path.join(__dirname, "package.json"));
 module.exports = env => {
     // environnement d'execution
     var production = (env) ? env.production : false;
+    var development = (env) ? env.development : false;
 
-    return {
+    var _mode = (production) ? "" : (development) ? "-map" : "-src";
+
+    return smp.wrap({
         // attention : importance de l'ordre des css pour que la surcharge se fasse correctement
         entry : [
             path.join(__dirname, "node_modules", "openlayers", "dist", (production) ? "ol.css" : "ol-debug.css"),
@@ -35,7 +42,7 @@ module.exports = env => {
         ],
         output : {
             path : path.join(__dirname, "dist", "2d"),
-            filename : (production) ? "GpSDK2D.js" : "GpSDK2D-src.js",
+            filename : "GpSDK2D" + _mode + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true
@@ -57,7 +64,7 @@ module.exports = env => {
                 amd : "require"
             }
         },
-        devtool : (production) ? false : "eval-source-map",
+        devtool : (development) ? "eval-source-map" : false,
         module : {
             rules : [
                 {
@@ -150,7 +157,7 @@ module.exports = env => {
                 conf : path.join(__dirname, "doc/jsdoc.json")
             }),
             /** CSS / IMAGES */
-            new ExtractTextWebPackPlugin((production) ? "GpSDK2D.css" : "GpSDK2D-src.css"),
+            new ExtractTextWebPackPlugin("GpSDK2D" + _mode + ".css"),
             /** HANDLEBARS TEMPLATES */
             new HandlebarsPlugin(
                 {
@@ -161,7 +168,7 @@ module.exports = env => {
                     output : {
                         path : path.join(__dirname, "samples", "2d"),
                         flatten : false,
-                        filename : (production) ? "[name].html" : "[name]-src.html"
+                        filename : "[name]" + _mode + ".html"
                     },
                     helpers : [
                         HandlebarsLayoutPlugin
@@ -174,7 +181,7 @@ module.exports = env => {
                     context : [
                         path.join(__dirname, "samples-src", "config-2d.json"),
                         {
-                            mode : (production) ? "" : "-src"
+                            mode : _mode
                         }
                     ]
                 }
@@ -185,7 +192,7 @@ module.exports = env => {
                     entry : path.join(__dirname, "samples-src", "pages", "index-2d.html"),
                     output : {
                         path : path.join(__dirname, "samples"),
-                        filename : (production) ? "[name].html" : "[name]-src.html"
+                        filename : "[name]" + _mode + ".html"
                     },
                     context : {
                         samples : () => {
@@ -196,7 +203,7 @@ module.exports = env => {
                                 var label = relativePath.replace("/", " -- ");
                                 var pathObj = path.parse(relativePath);
                                 return {
-                                    filePath : path.join("2d", pathObj.dir, pathObj.name.concat((production) ? "" : "-src").concat(pathObj.ext)),
+                                    filePath : path.join("2d", pathObj.dir, pathObj.name.concat(_mode).concat(pathObj.ext)),
                                     label : label
                                 };
                             });
@@ -257,5 +264,5 @@ module.exports = env => {
                 entryOnly : true
             })
         ])
-    };
+    });
 };

@@ -70,9 +70,12 @@ Liste des targets disponibles :
 
     npm run <target>
         target : (clean), setup,
-                 build[:dev|:prod|:2d[:prod]|:3d[:prod],
+                 build[:dev|:prod|:2d[:dev|:prod]|:3d[:dev|:prod]],
                  doc:serve,
-                 test
+                 test:serve
+        option : --env.production,
+                 --env.development,
+                 (--env.clean)
 
 ### Installation des dépendances
 
@@ -111,7 +114,9 @@ Upgrade de version :
 
     npm run build:2d
     ou npm run build:2d:prod
+    ou npm run build:2d:dev
     ou npm run build:2d -- --env.production
+    ou npm run build:2d -- --env.development
 
 Les *bundles* sont disponibles dans le répertoire :
 
@@ -119,18 +124,19 @@ Les *bundles* sont disponibles dans le répertoire :
     dist/2d/GpSDK2D.css
 	dist/2d/GpSDK2D-src.js
 	dist/2d/GpSDK2D-src.css
-    (...)
+    dist/2d/GpSDK2D-map.js
+	dist/2d/GpSDK2D-map.css
 
 Les sources sont validées (jshint, jscs et/ou eslint).
 La jsoc est générée.
 
 Il est possible de lancer la génération des bundles pour l'ensemble des extensions :
 
-    // génération des bundles en mode développement
+    // génération des bundles en mode développement (cad sourcemap)
     npm run build:dev
     // génération des bundles en mode production
     npm run build:prod
-    // génération des bundles dans les deux modes : développement et production
+    // génération des bundles en mode sources
     npm run build
 
 #### JSDOC
@@ -154,3 +160,22 @@ Sous *Windows*, il est possible que la *JSDoc* ne soit pas compilée correctemen
 
 Le navigateur s'ouvre sur la page de la JSDOC sur l'URL suivante :
 http://localhost:9001/
+
+## Carte des sources et des dépendances
+
+cf. https://github.com/webpack-contrib/webpack-bundle-analyzer
+
+**ouvrir une console :**
+
+    sudo npm install -g webpack-bundle-analyzer
+    webpack-bundle-analyzer map-2d.json
+
+Le navigateur s'ouvre  sur l'URL suivante :
+http://localhost:8888/
+
+## Analyse (The Official Analyse Tool)
+
+Aller sur l'URL suivante :
+http://webpack.github.io/analyse/
+
+puis, utiliser le fichier *map-[2d|3d].json*

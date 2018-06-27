@@ -8,8 +8,12 @@ stages:
 before_script:
   - npm install
 script:
-  - npm run build:dev
-  - npm run build:prod
+  - npm run build:2d
+  - npm run build:2d:dev
+  - npm run build:2d:prod
+  - npm run build:3d
+  - npm run build:3d:dev
+  - npm run build:3d:prod
 cache:
   directories:
     - node_modules
