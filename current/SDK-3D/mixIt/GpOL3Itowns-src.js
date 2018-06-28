@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 1.3.0
- * @date 2018-06-25
+ * @date 2018-06-28
  *
  */
 /*!
@@ -64496,7 +64496,7 @@ AHN = function (Map, require) {
         console.log('Aucune lib. détectée !?');
     }
     Gp.sdkVersion = '1.3.0';
-    Gp.sdkDate = '2018-06-25';
+    Gp.sdkDate = '2018-06-28';
     scope.Gp = Gp;
     return scope.Gp;
 }(Map, {});
