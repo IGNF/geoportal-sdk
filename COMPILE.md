@@ -161,6 +161,62 @@ Sous *Windows*, il est possible que la *JSDoc* ne soit pas compilée correctemen
 Le navigateur s'ouvre sur la page de la JSDOC sur l'URL suivante :
 http://localhost:9001/
 
+### Les exemples
+
+#### Construction des exemples
+
+Les exemples sont générées lors du build dans le répertoire *samples*.
+Mais il est aussi possible de les executer autrement :
+
+**ouvrir une console :**
+
+    npm run sample:(2d|3d):serve
+
+Le navigateur s'ouvre sur la page des exemples sur l'URL suivante :
+http://localhost:9001/
+
+### Les tests
+
+#### Fonctionnels
+
+**ouvrir une console :**
+
+    npm run test:serve
+
+Le navigateur s'ouvre sur la page des tests sur l'URL suivante :
+http://localhost:9001/
+
+**Note**
+> les tests unitaires sont disponibles aussi sur la page de Tests
+
+#### Tests de rendu
+
+**ouvrir une console :**
+
+    cd test_rendering
+    npm install
+    node server.js
+    npm run test[:ol|:it|:ll]
+
+## Carte des sources et des dépendances
+
+cf. https://github.com/webpack-contrib/webpack-bundle-analyzer
+
+**ouvrir une console :**
+
+    sudo npm install -g webpack-bundle-analyzer
+    webpack-bundle-analyzer map-ol.json
+
+Le navigateur s'ouvre  sur l'URL suivante :
+http://localhost:8888/
+
+## Analyse (The Official Analyse Tool)
+
+Aller sur l'URL suivante :
+http://webpack.github.io/analyse/
+
+puis, utiliser le fichier *map-[ol|it|mix|ll].json*
+
 ## Carte des sources et des dépendances
 
 cf. https://github.com/webpack-contrib/webpack-bundle-analyzer

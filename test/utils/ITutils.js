@@ -103,6 +103,7 @@ var ITutils = {
     cleanGlobalItowns : function cleanGlobalItowns() {
         var scope = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : {};
         scope.itowns = undefined;
+        if( scope._babelPolyfill ) scope._babelPolyfill = false;
     },
 
     cleanContext : function cleanContext(map, callback) {

@@ -9,7 +9,7 @@ var ExtractTextWebPackPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry : {
-        tests : path.join(__dirname)
+        tests : path.join(__dirname, "test")
     },
     output : {
         path : path.join(__dirname),
@@ -18,7 +18,7 @@ module.exports = {
     },
     resolve : {
         alias : {
-            gp : path.resolve(__dirname, "..", "node_modules", "geoportal-extensions-openlayers-itowns", "dist", "GpPluginOlItowns-src.js"),
+            gp : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers-itowns", "dist", "GpPluginOlItowns-src.js"),
         }
     },
     externals : ["request", "xmldom"],
@@ -43,7 +43,7 @@ module.exports = {
             // pour extraire les css
             {
                 test : /\.css$/,
-                include : path.resolve(__dirname, "..", "res"),
+                include : path.resolve(__dirname, "res"),
                 use : ExtractTextWebPackPlugin.extract({
                     fallback : {
                         loader : "style-loader"
