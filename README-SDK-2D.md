@@ -428,6 +428,8 @@ Les outils disponibles sont les suivants :
 
 * gestionnaire de couches (["layerswitcher"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#layerswitcher))
 
+* affichage des informations attributaires (["getfeatureinfo"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#getfeatureinfo))
+
 * barre de recherche (["search"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#searchctrl))
 
 * recherche inversée (["reversesearch"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#reversesearch))
