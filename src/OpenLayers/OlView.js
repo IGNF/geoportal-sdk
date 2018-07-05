@@ -1,0 +1,170 @@
+import {OL} from "./OlBase";
+import {olExtended as Ol} from "gp";
+
+/**
+ * retourne le code de la projection courante de la carte
+ * @return {String} projection code
+ */
+OL.prototype.getProjection = function () {
+    return this.libMap.getView().getProjection().getCode();
+};
+
+/**
+ * retourne les coordonnées courantes du centre de la carte
+ * @return {Object} center
+ */
+OL.prototype.getCenter = function () {
+    var center = {
+        x : this.libMap.getView().getCenter()[0],
+        y : this.libMap.getView().getCenter()[1]
+    };
+    return center;
+};
+
+/**
+ * Returns the current bounding box of the map in the current projection.
+ *
+ * @param {String} [projection=map projection] - Coordinate Reference System of returned extent.
+ * @returns {Gp.BBox} - The current map's extent.
+ */
+OL.prototype.getViewExtent = function (projection) {
+    var bbox = {};
+    if (this.libMap && this.libMap.getView()) {
+        var extent = this.libMap.getView().calculateExtent(this.libMap.getSize());
+        var mapProj = this.libMap.getView().getProjection().getCode();
+        if (projection &&
+             projection !== mapProj) {
+            extent = Ol.proj.transformExtent(extent, mapProj, projection);
+        }
+        // extent OL :
+        // [-136845.07118250668, 5803180.6192946555, -124691.58368516366, 5810852.986008779]
+        bbox.left = extent[0];
+        bbox.right = extent[2];
+        bbox.bottom = extent[1];
+        bbox.top = extent[3];
+    }
+    return bbox;
+};
+
+/**
+ * retourne l'azimut courant de la carte
+ * @return {Number} azimuth
+ */
+OL.prototype.getAzimuth = function () {
+    return this.libMap.getView().getRotation() * 180 / Math.PI;
+};
+
+/**
+ * retourne le zoom courant de la carte
+ * @return {Integer} zoom
+ */
+OL.prototype.getZoom = function () {
+    return this._getZoomFromResolution(this.getResolution());
+};
+
+/**
+ * retourne le zoom courant de la carte
+ * @return {Number} resolution
+ */
+OL.prototype.getResolution = function () {
+    return this.libMap.getView().getResolution();
+};
+
+/**
+ * définit la projection de la carte
+ * Si certaines couches ne sont pas compatibles avec la nouvelle projection, elles ne seront pas affichées.
+ * // TODO : vérifier que ça fonctionne : un view.setProjection semblerait plus adapte ?
+ * @param {String} projection - projection
+ */
+OL.prototype.setProjection = function (projection) {
+    var view = new Ol.View({
+        center : this.libMap.getView().getCenter(),
+        // minZoom : this.mapOptions.minZoom,
+        // maxZoom : this.mapOptions.maxZoom,
+        projection : projection,
+        rotation : this.libMap.getView().getRotation(),
+        zoom : this.getZoom()
+    });
+    this.libMap.setView(view);
+};
+
+/**
+ * center Map on a given point
+ *
+ * @param {Object} point - center point
+ * @param {Float} point.x - x coordinates for center
+ * @param {Float} point.y - y coordinates for center
+ * @param {String} point.projection - srs center coordinates
+ */
+OL.prototype.setXYCenter = function (point) {
+    this.logger.trace("[OL] - setXYCenter");
+    if (!point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
+        this.logger.info("no valid coordinates for map center");
+        return;
+    }
+
+    var center = [point.x, point.y];
+    var mapProj = this.libMap.getView().getProjection().getCode();
+    if (point.projection &&
+         point.projection !== mapProj) {
+        center = Ol.proj.transform(center, point.projection, mapProj);
+    }
+    this.libMap.getView().setCenter(center);
+    this.logger.trace("[OL] - setXYCenter(" + point.x + "," + point.y + "), projection Map : " + mapProj);
+
+    // FIXME : markerFeature
+    // if (this.markerFeature)
+    //    this.markerFeature.setGeometry(new ol.geom.Point(geocodeCenter));
+};
+
+/**
+ * center Map on a given point in case of auto centering
+ *
+ * @param {Object} point - center point
+ * @param {Float} point.x - x coordinates for center
+ * @param {Float} point.y - y coordinates for center
+ * @param {Number} zoom - zoom level (optional, used for geolocate)
+ *
+ */
+OL.prototype.setAutoCenter = function (point, zoom) {
+    this.logger.trace("[IT] - setAutoCenter");
+    this.setXYCenter(point, zoom);
+};
+
+/**
+ * définit l'azimut de la carte.
+ * @param {Number} azimuth - azimuth
+ */
+OL.prototype.setAzimuth = function (azimuth) {
+    this.libMap.getView().setRotation(azimuth * Math.PI / 180);
+};
+
+/**
+ * définit le niveau de zoom de la carte
+ * @param {Integer} zoom - zoom
+ */
+OL.prototype.setZoom = function (zoom) {
+    this.libMap.getView().setZoom(zoom);
+};
+
+/**
+ * Définit la résolution de la carte
+ * @param {Number} resolution - resolution
+ */
+OL.prototype.setResolution = function (resolution) {
+    this.libMap.getView().setResolution(resolution);
+};
+
+/**
+ * Incrémente le niveau de zoom de la carte de 1.
+ */
+OL.prototype.zoomIn = function () {
+    this.libMap.getView().setZoom(this.getZoom() + 1);
+};
+
+/**
+ * Décrémente le niveau de zoom de la carte de 1.
+ */
+OL.prototype.zoomOut = function () {
+    this.libMap.getView().setZoom(this.getZoom() - 1);
+};

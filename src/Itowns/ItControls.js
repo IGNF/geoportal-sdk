@@ -1,0 +1,364 @@
+import {IT} from "./ItBase";
+import {itownsExtended as Itowns} from "gp";
+
+/**
+ * Association controlId <-> classe iTowns d'implemenation
+ */
+IT.CONTROLSCLASSES = {
+    mouseposition : "itowns.control.MousePosition",
+    layerswitcher : "itowns.control.LayerSwitcher",
+    attributions : "itowns.control.Attributions",
+    overview : "itowns.control.MiniGlobe",
+    graphicscale : "itowns.control.Scale"
+
+};
+
+/**
+ * Adds mouse position control to the map.
+ *
+ * @param {Object} controlOpts - control options
+ * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
+ * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+ * @param {Array.<Object>} controlOpts.systems - List of coordinates systems available for display.
+ * @param {String} controlOpts.systems.crs - Coordinates system ID.
+ * @param {String} controlOpts.systems.label - label used to designate the CRS.
+ * @param {String} controlOpts.systems.type - "Geographical" or "Metric"
+ * @param {Array.<String>} controlOpts.units - units used for coordinates display ("m", "km" for Metric coordinates, "dec", "dms", "rad" or "gon" for geographical coordinates).
+ * @param {Boolean} controlOpts.displayAltitude - (de)activate altitude display
+ * @param {Boolean} controlOpts.displayCoordinates - (de)activate planimetric coorinates display.
+ * @param {Object} controlOpts.altitude - altitude interaction specific configuration. Implementation specific.
+ *
+ * @returns {Object} control - mousePosition control
+ */
+IT.prototype.addMousePositionControl = function (controlOpts) {
+    var mpOpts = {};
+    if (controlOpts.div) {
+        mpOpts.target = controlOpts.div;
+    }
+    mpOpts.collapsed = !controlOpts.maximised;
+    if (controlOpts.systems &&
+        Array.isArray(controlOpts.systems) &&
+        controlOpts.systems.length > 0) {
+        for (var i = 0; i < controlOpts.systems.length; i++) {
+            /*
+            if (!ol.proj.get(controlOpts.systems[i].crs)) {
+                // on retire les systèmes non définis
+                this.logger.trace("[IT] addMousePositionControl  : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
+                continue ;
+            } */
+            if (!mpOpts.systems) {
+                mpOpts.systems = [];
+            }
+            mpOpts.systems.push(controlOpts.systems[i]);
+        }
+    }
+    if (controlOpts.units &&
+        Array.isArray(controlOpts.units) &&
+        controlOpts.units.length > 0) {
+        mpOpts.units = [];
+        for (var j = 0; j < controlOpts.units.length; j++) {
+            if (typeof controlOpts.units[j] === "string") {
+                this.logger.trace("[IT] addMousePositionControl : adding unit   [" + controlOpts.units[j].toUpperCase());
+                mpOpts.units.push(controlOpts.units[j]);
+            }
+        }
+    }
+    mpOpts.displayAltitude = controlOpts.displayAltitude;
+    mpOpts.displayCoordinates = controlOpts.displayCoordinates;
+    if (controlOpts.altitude) {
+        mpOpts.altitude = controlOpts.altitude;
+    }
+    var control = new Itowns.control.MousePosition(mpOpts);
+    this.libMap.addWidget(control);
+    return control;
+};
+
+/**
+ * Adds LayerSwitcher control to the map.
+ *
+ * @param {Object} controlOpts - control options
+ * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
+ * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
+ *
+ * @returns {Object} control - layerSwitcher control
+ */
+IT.prototype.addLayerSwitcherControl = function (controlOpts) {
+    this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
+    // TODO  : parametrage des couches
+    var lsOpts = {
+        layers : controlOpts.layers || [],
+        options : {
+            collapsed : !(controlOpts && controlOpts.maximised)
+        }
+    };
+    if (controlOpts.div) {
+        lsOpts.options.target = controlOpts.div;
+    }
+    // application des configuration des couches  :
+    for (var i = 0; i < this._layers.length; i++) {
+        var layer = this._layers[i];
+        // Si la couche est un MNT, on ne l'ajoute pas au layerSwitcher
+        if (layer.obj.type !== "color") {
+            continue;
+        }
+        this.logger.trace("[IT]  : layerSwitcher  : configuring layer  : " + layer.id);
+        // INFO  : les couches Geoportail sont aussi configurées.
+        var layerConf = {
+            id : layer.id,
+            layer : layer.obj,
+            config : {}
+        };
+        if (layer.options.title) {
+            this.logger.trace("[IT]  : layerSwitcher  : setting title to [" + layer.options.title + "] for layer " + layer.id);
+            layerConf.config.title = layer.options.title;
+        }
+        if (layer.options.description) {
+            this.logger.trace("[IT  : layerSwitcher  : setting description to [" + layer.options.description + "] for layer " + layer.id);
+            layerConf.config.description = layer.options.description;
+        }
+        if (layer.options.quicklookUrl) {
+            this.logger.trace("[IT]  : layerSwitcher  : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id);
+            layerConf.config.quicklookUrl = layer.options.quicklookUrl;
+        }
+        if (layer.options.legends) {
+            this.logger.trace("[IT]  : layerSwitcher  : setting legends to [" + layer.options.legends + "] for layer " + layer.id);
+            layerConf.config.legends = layer.options.legends;
+        }
+        if (layer.options.metadata) {
+            this.logger.trace("[IT]  : layerSwitcher  : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id);
+            layerConf.config.metadata = layer.options.metadata;
+        }
+        lsOpts.layers.push(layerConf);
+    }
+
+    this.logger.trace("[IT]  : layerSwitcher Opts  : ... ");
+    var control = new Itowns.control.LayerSwitcher(lsOpts);
+    this.libMap.addWidget(control);
+    return control;
+};
+
+/**
+ * Adds overview map to the map.
+ *
+ * @param {Object} controlOpts - control options
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
+ * @param {Boolean} controlOpts.maximised - Display or not the control
+ * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
+ * @param {Number} controlOpts.width - The width of the minimap (100px by default)
+ * @param {Number} controlOpts.height - The height of the minimap (100px by default)
+ * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
+ * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+ *
+ * @returns {Object} control - overview control
+ */
+IT.prototype.addOverviewControl = function (controlOpts) {
+    this.logger.trace("[IT] addOverviewControl : ... ");
+    var ovControlOptions = {};
+    if (controlOpts.position) {
+        ovControlOptions.position = controlOpts.position;
+    } else {
+        ovControlOptions.position = "absolute";
+    }
+    if (controlOpts.div) {
+        ovControlOptions.target = controlOpts.div;
+    }
+    var control = new Itowns.control.MiniGlobe(ovControlOptions);
+    this.libMap.addWidget(control);
+    if (control.getElement()) {
+        // hide the div if maximised option = false
+        if (controlOpts.maximised === false) {
+            control.getElement().style.display = "none";
+        } else {
+            control.getElement().style.display = "inline";
+        }
+        // modify the size of the miniglobe if width or height is given as option
+        if (!isNaN(controlOpts.width)) {
+            control.getElement().style.width = controlOpts.width + "px";
+            control.getElement().getElementsByTagName("canvas")[0].style.width = controlOpts.width + "px";
+        }
+        if (!isNaN(controlOpts.height)) {
+            control.getElement().style.height = controlOpts.height + "px";
+            control.getElement().getElementsByTagName("canvas")[0].style.height = controlOpts.height + "px";
+        }
+        // modify the position of the miniglobe if x or y is given as option
+
+        if (!isNaN(controlOpts.x)) {
+            control.getElement().style.left = Number(controlOpts.x) + "px";
+        }
+        if (!isNaN(controlOpts.y)) {
+            control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        }
+
+        // update the canvas to fit with the overview element size
+        var elementSize = {};
+        elementSize.width = parseFloat(control.getElement().style.width) || 100;
+        elementSize.height = parseFloat(control.getElement().style.height) || 100;
+        control._globeObj.resize(elementSize.width, elementSize.height);
+    }
+
+    return control;
+};
+
+/**
+ * Adds the graphic scale control to the map
+ *
+ * @param {Object} controlOpts - control options
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {Boolean} controlOpts.maximised - Display or not the control
+ * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
+ * @param {Number} controlOpts.y - The position of the minimap from the bottom of the container div (20px by default)
+ *
+ * @returns {Object} control - graphic scale control
+ */
+IT.prototype.addGraphicScaleControl = function (controlOpts) {
+    this.logger.trace("[IT] addGraphicScaleControl...");
+    var scaleControlOptions = {};
+    if (controlOpts.position) {
+        scaleControlOptions.position = controlOpts.position;
+    } else {
+        scaleControlOptions.position = "absolute";
+    }
+    if (controlOpts.div) {
+        scaleControlOptions.target = controlOpts.div;
+    }
+    var control = new Itowns.control.Scale(scaleControlOptions);
+    this.libMap.addWidget(control);
+    if (control.getElement()) {
+        // hide the div if maximised option = false
+        if (controlOpts.maximised === false) {
+            control.getElement().style.display = "none";
+        } else {
+            control.getElement().style.display = "inline";
+        }
+        // modify the position of the scaleBar if x or y is given as option
+        if (!isNaN(controlOpts.x)) {
+            control.getElement().style.left = Number(controlOpts.x) + "px";
+        }
+        if (!isNaN(controlOpts.y)) {
+            control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        }
+    }
+    return control;
+};
+
+/**
+ * Adds the attributions control to to the map
+ *
+ * @param {Object} controlOpts - control options
+ *
+ * @returns {Object} control - attributions control
+ */
+IT.prototype.addAttributionsControl = function (controlOpts) {
+    var attOpts = {};
+    attOpts.options = {};
+    if (controlOpts.div) {
+        attOpts.options.target = controlOpts.div;
+    }
+    attOpts.options.collapsed = !controlOpts.maximised;
+    var control = new Itowns.control.Attributions(attOpts);
+    this.libMap.addWidget(control);
+    return control;
+};
+
+/**
+ * Removes the listed controls of the map.
+ *
+ * @param {Array.<String>} controlIds - A list of control's id or null.
+ */
+IT.prototype.removeControls = function (controlIds) {
+    this.logger.trace("[IT]  : removeControls ... ");
+    if (!controlIds || (Array.isArray(controlIds) && controlIds.length === 0)) {
+        this.logger.info("No control to remove.");
+        return;
+    }
+    if (!Array.isArray(controlIds)) {
+        controlIds = [controlIds];
+    }
+    var controlId = null;
+    for (var i = 0; i < controlIds.length; i++) {
+        controlId = controlIds[i];
+
+        var idx = this._findRegisteredControl(controlId);
+        if (idx >= 0) {
+            this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from register.");
+            this._controls.splice(idx, 1);
+        }
+
+        var itownsControl = this.getLibMapControl(controlId);
+
+        if (!itownsControl) {
+            this.logger.info("Impossible to remove control [" + controlId + "]  : not found or unhandled");
+            continue;
+        }
+
+        this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from Map.");
+        this.libMap.removeWidget(itownsControl);
+    }
+};
+
+/**
+ * Returns implementation of the control
+ *
+ * @param {String} controlId - identifier of the control
+ * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
+ */
+IT.prototype.getLibMapControl = function (controlId) {
+    var foundItControl = null;
+    // verifications de base  : controlId est bien gere.
+    if (!IT.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
+        !IT.CONTROLSCLASSES[controlId.toLowerCase()]) {
+        this.logger.trace("[IT] getLibMapControl  : control " + controlId + " non implémenté.");
+        return foundItControl;
+    }
+    // on regarde du cote des controles
+    var itControls = this.libMap.getWidgets();
+    if (!itControls || itControls.length === 0) {
+        this.logger.trace("[IT] getLibMapControl  : no control found on map");
+        return foundItControl;
+    }
+    for (var j = 0; j < itControls.length; j++) {
+        this.logger.trace("[IT] getLibMapControl  : analyzing  : " + controlId);
+        // test on control Name
+        if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
+            foundItControl = itControls[j];
+            this.logger.trace("[IT] getLibMapControl  : found GP Plugin Control ! ");
+            break;
+        }
+    }
+    if (!foundItControl) {
+        this.logger.trace("[IT] getLibMapControl  : control " + controlId + " not found ! ");
+    }
+
+    return foundItControl;
+};
+
+/**
+ * Gets Layer Container div ID for a given layerId.
+ *
+ * @param {String} layerId - layer identifier
+ * @returns {String} - Layer Container div Id in the LayerSwitcher
+ */
+IT.prototype.getLSLayerContainerDivId = function (layerId) {
+    var id = null;
+    var idxLS = this._findRegisteredControl("layerswitcher");
+    if (idxLS < 0) {
+        this.logger.trace("[IT] : getLSLayerContainerDivId : no layerswitcher on map !");
+        return id;
+    }
+    var itlayers = this._getLayersObj([layerId]);
+    if (itlayers.length > 0) {
+        var itLayerList = this._controls[idxLS].obj._layerListContainer;
+        var divId = itLayerList.id;
+        var uid = divId.substring(divId.indexOf("-"));
+        if (itLayerList && itLayerList.childNodes) {
+            for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
+                if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
+                    var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
+                    return foundId;
+                }
+            }
+        }
+    }
+    this.logger.trace("[IT] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !");
+    return id;
+};

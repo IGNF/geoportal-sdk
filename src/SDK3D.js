@@ -1,6 +1,6 @@
 import Map from "./Map";
-import OlMap from "./OpenLayers/OL";
-import ItMap from "./Itowns/IT";
+import {OlMap} from "./OpenLayers/OL";
+import {ItMap} from "./Itowns/IT";
 import Logger from "./Utils/LoggerByDefault";
 import "../res/Itowns/IT.css";
 import "../res/OpenLayers/OL.css";
