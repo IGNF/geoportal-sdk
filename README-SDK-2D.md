@@ -66,7 +66,7 @@ http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.css
 
 ### Intégration dans une page web
 
-Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
+Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript.
 
 Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
 
@@ -74,8 +74,20 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 <!-- SDK Géoportail -->
 <script src="chemin/vers/GpSDK2D.js"></script>
 <link rel="stylesheet" href="chemin/vers/GpSDK2D.css" />
+
 ```
 
+### Utilisation dans module ES6
+
+``` javascript
+import * as Gp from "@geoportal-sdk/2d";
+
+// votre utilisation du SDK
+var map = Gp.Map.load("myDivId",{
+    apiKey : "myApiKey",
+    ...
+});
+```
 
 ### Interfaces de programmation
 

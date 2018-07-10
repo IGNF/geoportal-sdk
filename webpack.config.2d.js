@@ -150,7 +150,8 @@ module.exports = env => {
             ),
             /** GESTION DU LOGGER */
             new DefineWebpackPlugin({
-                __PRODUCTION__ : JSON.stringify(production)
+                __PRODUCTION__ : JSON.stringify(production),
+                __SWITCH2D3D_ALLOWED__ : JSON.stringify(false)
             }),
             /** GENERATION DE LA JSDOC */
             new JsDocWebPackPlugin({

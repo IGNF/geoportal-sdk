@@ -1,7 +1,109 @@
+/* global __SWITCH_2D3D_ALLOWED__ */
+
 import Logger from "./Utils/LoggerByDefault";
 import * as Ol from "openlayers";
 import {Services, ProxyUtils} from "gp";
 import Map from "./Map";
+
+/**
+ * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
+ * This function only works with the GpSDK3D bundle (run the "build:3d" npm task to generate it)
+ *
+ * @param {Integer} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
+ *
+ * @return {Object} the new map
+ */
+var switch2D3D = function (viewMode) {
+    var oldMap = {};
+    oldMap.projection = this.getProjection();
+    oldMap.center = this.getCenter();
+    oldMap.tilt = this.getTilt();
+    oldMap.azimuth = this.getAzimuth();
+    oldMap.zoom = this.getZoom();
+    oldMap.layersOptions = this.getLayersOptions();
+    oldMap.controlsOptions = this.getControlsOptions();
+    oldMap.mapDiv = this.div.id;
+    oldMap.apiKey = this.apiKey;
+    oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
+
+    // remove old controls and associated listeners
+    for (var controlId in oldMap.controlsOptions) {
+        this.removeControls(controlId);
+    }
+    if (viewMode === "3d") {
+        // récupération des couches 3D qui n'étaient pas affichées en 2D
+        if (this._3Dlayers) {
+            for (var l = 0; l < this._3Dlayers.length; l++) {
+                oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
+            }
+        }
+        oldMap.center = [oldMap.center.x, oldMap.center.y];
+        // transformation des coordonnées de planes en géographiques
+        // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
+        var lonlat = Ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
+        oldMap.center = {
+            x : lonlat[0],
+            y : lonlat[1]
+        };
+        oldMap.azimuth = this.getAzimuth();
+        this.libMap.setTarget(null);
+    } else if (viewMode === "2d") {
+        oldMap.center = [oldMap.center.lon, oldMap.center.lat];
+        // transformation des coordonnées de géographiques en planes
+        // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
+        var xy = Ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
+        oldMap.center = {
+            x : xy[0],
+            y : xy[1]
+        };
+        // 1 - suppression de tous les listeners
+        for (var listeners in this._events) {
+            var keyIdx = 0;
+            var eventName = Object.keys(this._events)[keyIdx];
+            for (var i = 0; i < this._events[listeners].length; i++) {
+                this.forget(eventName, this._events[listeners][i].action);
+            }
+            keyIdx++;
+        }
+        // 2 - suppression de la div
+        while (this.div.firstChild) {
+            this.div.removeChild(this.div.firstChild);
+        }
+    } else {
+        this.logger.info("Unknown viewing mode");
+        return;
+    }
+    // this.libMap = null;
+    var newMap = Map.load(
+        // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
+        // this.libMap.getApiKeys(),
+        // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
+        // this.libMap.getDiv(),
+        oldMap.mapDiv,
+        // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
+        {
+            apiKey : oldMap.apiKey,
+            enginePath3d : oldMap.enginePath3d || null,
+            projection : oldMap.projection,
+            center : oldMap.center,
+            azimuth : oldMap.azimuth,
+            tilt : oldMap.tilt,
+            zoom : oldMap.zoom,
+            // maxZoom : this.
+            // minZoom : this.
+            // markerOptions :
+            viewMode : viewMode,
+            // proxyUrl
+            // noProxyDomains
+            // reloadConfig
+            // autoconfUrl
+            layersOptions : oldMap.layersOptions,
+            controlsOptions : oldMap.controlsOptions
+            // mapEventsOptions :
+        }
+    );
+    return newMap;
+};
 
 /**
  * Map Object. Returned by {@link module:Map Gp.Map.load()} function. Provides methods to interact with map view.
@@ -88,6 +190,10 @@ function IMap (opts) {
 
     // intialisation de la carte (à vide)
     this._initMap();
+
+    if (__SWITCH2D3D_ALLOWED__) {
+        this.switch2D3D = switch2D3D.bind(this);
+    }
 };
 
 /**
@@ -316,106 +422,6 @@ IMap.prototype = {
     getLibMap : function () {
         // TO BE OVERRIDDEN
         return {};
-    },
-
-    /**
-     * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
-     * This function only works with the GpSDK3D bundle (run the "build:3d" npm task to generate it)
-     *
-     * @param {Integer} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
-     *
-     * @return {Object} the new map
-     */
-    switch2D3D : function (viewMode) {
-        var oldMap = {};
-        oldMap.projection = this.getProjection();
-        oldMap.center = this.getCenter();
-        oldMap.tilt = this.getTilt();
-        oldMap.azimuth = this.getAzimuth();
-        oldMap.zoom = this.getZoom();
-        oldMap.layersOptions = this.getLayersOptions();
-        oldMap.controlsOptions = this.getControlsOptions();
-        oldMap.mapDiv = this.div.id;
-        oldMap.apiKey = this.apiKey;
-        oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
-
-        // remove old controls and associated listeners
-        for (var controlId in oldMap.controlsOptions) {
-            this.removeControls(controlId);
-        }
-        if (viewMode === "3d") {
-            // récupération des couches 3D qui n'étaient pas affichées en 2D
-            if (this._3Dlayers) {
-                for (var l = 0; l < this._3Dlayers.length; l++) {
-                    oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
-                }
-            }
-            oldMap.center = [oldMap.center.x, oldMap.center.y];
-            // transformation des coordonnées de planes en géographiques
-            // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-            var lonlat = Ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
-            oldMap.center = {
-                x : lonlat[0],
-                y : lonlat[1]
-            };
-            oldMap.azimuth = this.getAzimuth();
-            this.libMap.setTarget(null);
-        } else if (viewMode === "2d") {
-            oldMap.center = [oldMap.center.lon, oldMap.center.lat];
-            // transformation des coordonnées de géographiques en planes
-            // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-            var xy = Ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
-            oldMap.center = {
-                x : xy[0],
-                y : xy[1]
-            };
-            // 1 - suppression de tous les listeners
-            for (var listeners in this._events) {
-                var keyIdx = 0;
-                var eventName = Object.keys(this._events)[keyIdx];
-                for (var i = 0; i < this._events[listeners].length; i++) {
-                    this.forget(eventName, this._events[listeners][i].action);
-                }
-                keyIdx++;
-            }
-            // 2 - suppression de la div
-            while (this.div.firstChild) {
-                this.div.removeChild(this.div.firstChild);
-            }
-        } else {
-            this.logger.info("Unknown Library");
-            return;
-        }
-        // this.libMap = null;
-        var newMap = Map.load(
-            // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
-            // this.libMap.getApiKeys(),
-            // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
-            // this.libMap.getDiv(),
-            oldMap.mapDiv,
-            // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
-            {
-                apiKey : oldMap.apiKey,
-                enginePath3d : oldMap.enginePath3d || null,
-                projection : oldMap.projection,
-                center : oldMap.center,
-                azimuth : oldMap.azimuth,
-                tilt : oldMap.tilt,
-                zoom : oldMap.zoom,
-                // maxZoom : this.
-                // minZoom : this.
-                // markerOptions :
-                viewMode : viewMode,
-                // proxyUrl
-                // noProxyDomains
-                // reloadConfig
-                // autoconfUrl
-                layersOptions : oldMap.layersOptions,
-                controlsOptions : oldMap.controlsOptions
-                // mapEventsOptions :
-            }
-        );
-        return newMap;
     }
 };
 

@@ -79,6 +79,19 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 <link rel="stylesheet" href="chemin/vers/GpSDK3D.css" />
 ```
 
+### Utilisation dans module ES6
+
+``` javascript
+import * as Gp from "@geoportal-sdk/3d";
+
+// votre utilisation du SDK
+var map = Gp.Map.load("myDivId",{
+    apiKey : "myApiKey",
+    viewMode : "2d", // ou "3d"
+    ...
+});
+```
+
 
 ### Interfaces de programmation
 
