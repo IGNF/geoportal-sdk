@@ -297,17 +297,6 @@ IMap.prototype = {
     },
 
     /**
-     * Returns the current cartographic library used.
-     * (undocumented for the moment)
-     *
-     * @returns {String} - The current cartographic library used.
-     * @private
-     */
-    getLib : function () {
-        return this.mapOptions.library;
-    },
-
-    /**
      * Returns the current viewing mode (either 2D or 3d).
      *
      * @returns {String} - The current viewing mode
