@@ -263,22 +263,22 @@ OL.prototype._addVectorLayer = function (layerObj) {
         anchorYUnits : "pixels"
     });
     styleOptions.stroke = new Ol.style.Stroke({
-        color : IMap._hexToRgba(layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
+        color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
         width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
     });
     styleOptions.fill = new Ol.style.Fill({
-        color : IMap._hexToRgba(layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
+        color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
     });
     styleOptions.text = new Ol.style.Text({
         font : "16px Sans",
         textAlign : "left",
         fill : new Ol.style.Fill({
-            color : IMap._hexToRgba(layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
+            color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
         })
     });
     if (layerStyleOptions.textStrokeColor) {
         styleOptions.text.stroke = new Ol.style.Stroke({
-            color : IMap._hexToRgba(layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
+            color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
             width : 1
         });
     }

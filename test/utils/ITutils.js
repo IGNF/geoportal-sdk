@@ -1,4 +1,4 @@
-import IT from "../../src/Itowns/IT";
+import {IT} from "../../src/Itowns/IT";
 import {enginePath3d, apiKey, mapViewDivId as divId} from "../config";
 
 var ITutils = {
@@ -36,7 +36,7 @@ var ITutils = {
 
     createDiv : function createDiv() {
         var div = document.createElement("div");
-        //div.style.display = 'none';
+        // div.style.display = 'none';
         div.id = divId
         div.style.width = "500px";
         div.style.height = "500px";

@@ -3,4 +3,4 @@ import "./OlControls";
 import "./OlListeners";
 import "./OlView";
 
-export {OL as OlMap} from "./OlBase";
+export {OL} from "./OlBase";

@@ -3,7 +3,7 @@
 import Logger from "./Utils/LoggerByDefault";
 import * as Ol from "openlayers";
 import {Services, ProxyUtils} from "gp";
-import Map from "./Map";
+import {Map} from "./Map";
 
 /**
  * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.

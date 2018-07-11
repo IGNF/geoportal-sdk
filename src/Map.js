@@ -990,4 +990,4 @@ var controlOptions = {
 var styleOptions = {
 };
 
-export default Map;
+export {Map};

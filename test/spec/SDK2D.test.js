@@ -1,6 +1,6 @@
 import * as SDK from "../../dist/2d/GpSDK2D";
 
-import { assert, expect, should } from "chai";
+import {assert, expect, should} from "chai";
 
 describe("-- Test SDK 2D --", function () {
     describe("-- Test Integration composants SDK, ol --", function () {

@@ -1,6 +1,6 @@
-import Map from "./Map";
-import {OlMap} from "./OpenLayers/OL";
-import {ItMap} from "./Itowns/IT";
+import {Map} from "./Map";
+import {OL} from "./OpenLayers/OL";
+import {IT} from "./Itowns/IT";
 import Logger from "./Utils/LoggerByDefault";
 import "../res/Itowns/IT.css";
 import "../res/OpenLayers/OL.css";
@@ -11,19 +11,19 @@ export * from "gp";
 
 // on declare les ns dans root global
 // auto detection des lib. chargées
-if (typeof OlMap !== "undefined" &&
-     typeof ItMap !== "undefined") {
+if (typeof OL !== "undefined" &&
+     typeof IT !== "undefined") {
     logger.log("Lib. ol et itowns détectées !");
-    Map.__classOl = OlMap;
-    Map.__classItowns = ItMap;
+    Map.__classOl = OL;
+    Map.__classItowns = IT;
     Map._class = Map.__classOl.prototype; // IMap !
-} else if (typeof OlMap !== "undefined") {
+} else if (typeof OL !== "undefined") {
     logger.log("Lib. ol détectée !");
-    Map.__classOl = OlMap;
+    Map.__classOl = OL;
     Map._class = Map.__classOl.prototype; // IMap !
-} else if (typeof ItMap !== "undefined") {
+} else if (typeof IT !== "undefined") {
     logger.log("Lib. itowns détectée !");
-    Map.__classItowns = ItMap;
+    Map.__classItowns = IT;
     Map._class = Map.__classItowns.prototype; // IMap !
 } else {
     logger.log("Aucune lib. détectée !?");

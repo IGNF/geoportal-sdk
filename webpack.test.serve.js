@@ -63,7 +63,8 @@ module.exports = {
     plugins : [
         // on veut les logs !
         new DefineWebpackPlugin({
-            __PRODUCTION__ : JSON.stringify(false)
+            __PRODUCTION__ : JSON.stringify(false),
+            __SWITCH2D3D_ALLOWED__ : JSON.stringify(true)
         }),
         new HtmlWebpackPlugin({
             title : "Mocha Tests Units",

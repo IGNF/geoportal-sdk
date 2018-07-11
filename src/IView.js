@@ -1,4 +1,4 @@
-import {IMap} from "./IMap";
+import {IMap} from "./IBase";
 import {Services} from "gp";
 
 /**

@@ -1,10 +1,10 @@
-import Map from "./Map";
-import {OlMap} from "./OpenLayers/OL";
+import {Map} from "./Map";
+import {OL} from "./OpenLayers/OL";
 import "../res/OpenLayers/OL.css";
 
 export * from "gp";
 
-Map.__classOl = OlMap;
+Map.__classOl = OL;
 Map._class = Map.__classOl.prototype; // IMap !
 export {Map};
 

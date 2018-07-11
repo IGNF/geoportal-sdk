@@ -204,7 +204,7 @@ OL.prototype.addGraticuleControl = function (controlOpts) {
     options.strokeColor = options.strokeColor || "#000000";
     options.strokeOpacity = options.strokeOpacity || 0.2;
     options.strokeWidth = options.strokeWidth || 1;
-    var rgba = IMap._hexToRgba(options.strokeColor, options.strokeOpacity);
+    var rgba = IMap.prototype._hexToRgba.call(this, options.strokeColor, options.strokeOpacity);
     var graticule = new Ol.Graticule({
         strokeStyle : new Ol.style.Stroke({
             color : rgba,
@@ -473,13 +473,13 @@ OL.prototype.addLayerImportControl = function (controlOpts) {
             strokeOpacity = userKMLDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userKMLDefaultStyles.strokeColor || "#002A50";
             kmldefaultStyleOptions.stroke = new Ol.style.Stroke({
-                color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userKMLDefaultStyles.strokeWidth || 4
             });
             fillOpacity = userKMLDefaultStyles.polyFillOpacity || 0.5;
             fillColor = userKMLDefaultStyles.polyFillColor || "#00B798";
             kmldefaultStyleOptions.fill = new Ol.style.Fill({
-                color : IMap._hexToRgba(fillColor, fillOpacity)
+                color : IMap.prototype._hexToRgba.call(this, fillColor, fillOpacity)
             });
             var kmldefaultStyle = new Ol.style.Style(kmldefaultStyleOptions);
             importOpts.vectorStyleOptions.KML = {
@@ -499,7 +499,7 @@ OL.prototype.addLayerImportControl = function (controlOpts) {
             strokeOpacity = userGPXDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userGPXDefaultStyles.strokeColor || "#002A50";
             gpxdefaultStyleOptions.stroke = new Ol.style.Stroke({
-                color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userGPXDefaultStyles.strokeWidth || 4
             });
             var gpxdefaultStyle = new Ol.style.Style(gpxdefaultStyleOptions);
@@ -520,13 +520,13 @@ OL.prototype.addLayerImportControl = function (controlOpts) {
             strokeOpacity = userGeoJSONDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userGeoJSONDefaultStyles.strokeColor || "#002A50";
             geoJSONdefaultStyleOptions.stroke = new Ol.style.Stroke({
-                color : IMap._hexToRgba(strokeColor, strokeOpacity),
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userGeoJSONDefaultStyles.strokeWidth || 4
             });
             fillOpacity = userGeoJSONDefaultStyles.polyFillOpacity || 0.5;
             fillColor = userGeoJSONDefaultStyles.polyFillColor || "#00B798";
             geoJSONdefaultStyleOptions.fill = new Ol.style.Fill({
-                color : IMap._hexToRgba(strokeColor, strokeOpacity)
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity)
             });
             var geoJSONdefaultStyle = new Ol.style.Style(geoJSONdefaultStyleOptions);
             importOpts.vectorStyleOptions.GeoJSON = {

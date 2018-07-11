@@ -1,7 +1,7 @@
-import IT from "../../src/Itowns/IT";
+import {IT} from "../../src/Itowns/IT";
 import Utils from "../utils/ITutils"
 
-import { assert, expect, should } from "chai";
+import {assert, expect, should} from "chai";
 
 describe("-- Test IT --", function () {
     this.timeout(10000);

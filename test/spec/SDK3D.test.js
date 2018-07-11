@@ -2,7 +2,7 @@ import * as SDK from "../../dist/3d/GpSDK3D";
 import Utils from "../utils/ITutils";
 import {enginePath3d, apiKey} from "../config";
 
-import { assert, expect, should } from "chai";
+import {assert, expect, should} from "chai";
 
 
 describe("-- Test SDK 3D --", function () {

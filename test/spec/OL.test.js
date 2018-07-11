@@ -1,7 +1,7 @@
-import OL from "../../src/OpenLayers/OL.js";
+import {OL} from "../../src/OpenLayers/OL.js";
 import {apiKey} from "../config.js";
 
-import { assert, expect, should } from "chai";
+import {assert, expect, should} from "chai";
 
 
 var map = null;
