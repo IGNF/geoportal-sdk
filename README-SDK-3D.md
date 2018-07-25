@@ -123,10 +123,10 @@ var map = Gp.Map.load(
          viewMode : "3d",
 
          // localisation du fichier itowns.js pour le chargement du moteur 3d
-         // avec vX.X.X  la version d'itowns compatible (voir fichier DEPENDENCIES.md)
-         enginePath3d : "https://github.com/iTowns/itowns/releases/download/vX.X.X/",
+         // en ligne, en pointant vers la dernière version compatible disponible (voir fichier DEPENDENCIES.md)
+         enginePath3d : "https://github.com/iTowns/itowns/releases/download/v2.3.0/",
          // ou en local, exemple :
-         // enginePath3d : "node_modules/itowns/dist/",
+         // enginePath3d : "chemin/vers/le/dossier/contenant/itowns.js/",
 
          // centrage de la carte
          center : {
