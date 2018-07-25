@@ -28,9 +28,10 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.Map.load("viewerDiv",{
+        var map = Gp.LoadMap("viewerDiv",{
             apiKey : "{{apikey}}",
             viewMode : "3d",
+            enableRotation : false,
             enginePath3d : "{{baseurl}}/node_modules/itowns/dist/",
             center : {
                 x : 2.357,

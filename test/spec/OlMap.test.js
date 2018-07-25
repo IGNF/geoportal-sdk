@@ -1,4 +1,4 @@
-import {OL} from "../../src/OpenLayers/OL.js";
+import {OlMap} from "../../src/OpenLayers/OlMap.js";
 import {apiKey} from "../config.js";
 
 import {assert, expect, should} from "chai";
@@ -12,7 +12,7 @@ function initContext() {
     div.style.visibility = 'hidden';
     document.body.appendChild(div);
 
-    map = new OL({
+    map = new OlMap({
         div: div,
         mapOptions:{
             apiKey: apiKey
@@ -31,7 +31,7 @@ function cleanContext() {
     }
 }
 
-describe("-- Test OL --", function () {
+describe("-- Test OlMap --", function () {
     this.timeout(10000);
 
     beforeEach(function () {
@@ -42,8 +42,8 @@ describe("-- Test OL --", function () {
         cleanContext();
     });
 
-    it("OL exists", function () {
-        expect(OL).to.exist ;
+    it("OlMap exists", function () {
+        expect(OlMap).to.exist ;
     });
 
     describe("-- Events --", function() {
@@ -397,7 +397,7 @@ describe("-- Test OL --", function () {
             cleanContext();
 
             const projectionValue = "EPSG:4326";
-            var map = new OL({
+            var map = new OlMap({
                 div: document.createElement("div"),
                 mapOptions:{
                     projection: projectionValue
@@ -416,7 +416,7 @@ describe("-- Test OL --", function () {
                 y: 48
             };
 
-            var map = new OL({
+            var map = new OlMap({
                 div: document.createElement("div"),
                 mapOptions:{
                     center: centerValue

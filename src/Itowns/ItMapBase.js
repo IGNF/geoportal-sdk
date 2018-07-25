@@ -1,5 +1,5 @@
-import Loader from "../Utils/Loader";
-import {IMap} from "../IMap";
+import {Engine3DLoader} from "../Utils/Engine3DLoader";
+import {IMap} from "../Interface/IMap";
 import Logger from "../Utils/LoggerByDefault";
 import {itownsExtended as Itowns} from "gp";
 
@@ -7,42 +7,42 @@ import {itownsExtended as Itowns} from "gp";
 * @param {Object} opts - map options
 * Itowns IMap implementation class.
 */
-function IT (opts) {
-    if (!(this instanceof IT)) {
-        throw new TypeError("IT constructor cannot be called as a function.");
+function ItMap (opts) {
+    if (!(this instanceof ItMap)) {
+        throw new TypeError("ItMap constructor cannot be called as a function.");
     }
 
     /**
     * Nom de la classe (heritage)
     */
-    this.CLASSNAME = "IT";
+    this.CLASSNAME = "ItMap";
 
     // appel du constructeur par heritage,
     IMap.apply(this, arguments);
 
-    this.logger = Logger.getLogger("IT");
-    this.logger.trace("[Constructeur IT (options)]");
+    this.logger = Logger.getLogger("ItMap");
+    this.logger.trace("[Constructeur ItMap (options)]");
 }
 
 // heritage
-IT.prototype = Object.create(IMap.prototype, {
+ItMap.prototype = Object.create(IMap.prototype, {
     // getter/setter
 });
 
 /*
 * Constructeur (alias)
 */
-IT.prototype.constructor = IT;
+ItMap.prototype.constructor = ItMap;
 
 /**
  * Empty Map initialization
  */
-IT.prototype._initMap = function () {
-    this.logger.trace("[IT]  : _initMap");
+ItMap.prototype._initMap = function () {
+    this.logger.trace("[ItMap]  : _initMap");
 
-    var _enginePath3d = Loader.getEnginePath(this.mapOptions.enginePath3d);
+    var _enginePath3d = Engine3DLoader.getEnginePath(this.mapOptions.enginePath3d);
 
-    Loader.loadEngine(_enginePath3d,
+    Engine3DLoader.loadEngine(_enginePath3d,
         function (itowns) {
             this.logger.warn("Itowns engine, loaded...", itowns);
 
@@ -139,8 +139,8 @@ IT.prototype._initMap = function () {
  *
  * @return {Object} itowns globe
  */
-IT.prototype.getLibMap = function () {
+ItMap.prototype.getLibMap = function () {
     return this.libMap;
 };
 
-export {IT};
+export {ItMap};

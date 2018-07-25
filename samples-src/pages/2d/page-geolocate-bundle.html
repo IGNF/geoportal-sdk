@@ -36,13 +36,13 @@
 
 {{#content "js"}}
     <script>
-        Gp.Map.load('geoportalMap1', {
+        Gp.MapLoader.load('geoportalMap1', {
             apiKey : "{{apikey}}",
             center : {
                 geolocate : true
             }
         });
-        Gp.Map.load('geoportalMap2', {
+        Gp.MapLoader.load('geoportalMap2', {
             apiKey : "{{apikey}}",
             center : {
                 geolocate : true,
@@ -51,7 +51,7 @@
             }
         });
 
-        Gp.Map.load('geoportalMap3', {
+        Gp.MapLoader.load('geoportalMap3', {
             apiKey : "{{apikey}}",
             center : {
                 geolocate : true,

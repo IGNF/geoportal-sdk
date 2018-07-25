@@ -227,12 +227,17 @@ module.exports = env => {
                     }
                 }
             ),
-            /* RESOURCES COPY FOR SAMPLES */
             new CopyWebpackPlugin([
+                /* RESOURCES COPY FOR SAMPLES */
                 {
                     from : path.join(__dirname, "samples-src", "resources", "**/*"),
                     to : path.join(__dirname, "samples", "resources"),
                     context : path.join(__dirname, "samples-src", "resources")
+                },
+                /* COPY ITOWNS LIBRARY IN DIST DIR */
+                {
+                    from : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
+                    to : path.join(__dirname, "dist", "3d")
                 }
             ])
         ]

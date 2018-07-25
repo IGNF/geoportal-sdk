@@ -1,9 +1,9 @@
-import {Map} from "./Map";
-import {OL} from "./OpenLayers/OL";
-import {IT} from "./Itowns/IT";
+import {MapLoader} from "./Utils/MapLoader";
+import {OlMap} from "./OpenLayers/OlMap";
+import {ItMap} from "./Itowns/ItMap";
 import Logger from "./Utils/LoggerByDefault";
-import "../res/Itowns/IT.css";
-import "../res/OpenLayers/OL.css";
+import "../res/Itowns/ItMap.css";
+import "../res/OpenLayers/OlMap.css";
 
 var logger = Logger.getLogger("SDK3D");
 
@@ -11,25 +11,22 @@ export * from "gp";
 
 // on declare les ns dans root global
 // auto detection des lib. chargées
-if (typeof OL !== "undefined" &&
-     typeof IT !== "undefined") {
+if (typeof OlMap !== "undefined" &&
+     typeof ItMap !== "undefined") {
     logger.log("Lib. ol et itowns détectées !");
-    Map.__classOl = OL;
-    Map.__classItowns = IT;
-    Map._class = Map.__classOl.prototype; // IMap !
-} else if (typeof OL !== "undefined") {
+    MapLoader.__class2d = OlMap;
+    MapLoader.__class3d = ItMap;
+} else if (typeof OlMap !== "undefined") {
     logger.log("Lib. ol détectée !");
-    Map.__classOl = OL;
-    Map._class = Map.__classOl.prototype; // IMap !
-} else if (typeof IT !== "undefined") {
+    MapLoader.__class2d = OlMap;
+} else if (typeof ItMap !== "undefined") {
     logger.log("Lib. itowns détectée !");
-    Map.__classItowns = IT;
-    Map._class = Map.__classItowns.prototype; // IMap !
+    MapLoader.__class3d = ItMap;
 } else {
     logger.log("Aucune lib. détectée !?");
 }
 
-export {Map};
+export {MapLoader};
 
 export const sdkVersion = "__GPSDKVERSION__";
 export const sdkDate = "__GPDATE__";

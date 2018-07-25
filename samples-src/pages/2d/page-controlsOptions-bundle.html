@@ -19,7 +19,7 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Ajout d'une carte avec Gp.Map.load() et l'ensemble des options possibles de mapOptions </h1>
+    <h1>Ajout d'une carte avec Gp.MapLoader.load() et l'ensemble des options possibles de mapOptions </h1>
     <div id="extControlDiv"></div>
     <div id="geoportalMap"></div>
     <div id="idDiv">
@@ -31,7 +31,7 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.Map.load('geoportalMap',{
+        var map = Gp.MapLoader.load('geoportalMap',{
             apiKey : "{{apikey}}",
             azimuth : 45,
             zoom : 12,

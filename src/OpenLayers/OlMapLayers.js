@@ -1,11 +1,11 @@
-import {OL} from "./OlBase";
-import {IMap} from "../IMap";
+import {OlMap} from "./OlMapBase";
+import {IMap} from "../Interface/IMap";
 import {Protocols, olExtended as Ol} from "gp";
 
 /**
  * Proprietes observables des couches pour le SDK
  */
-OL.LAYERPROPERTIES = {
+OlMap.LAYERPROPERTIES = {
     visible : "visibility",
     opacity : "opacity",
     zIndex : "position",
@@ -19,7 +19,7 @@ OL.LAYERPROPERTIES = {
  *
  * @param {Array.<String>} layerIds - A list of layer's id or null.
  */
-OL.prototype.removeLayers = function (layerIds) {
+OlMap.prototype.removeLayers = function (layerIds) {
     if (!IMap.prototype.removeLayers.apply(this, arguments)) {
         return;
     }
@@ -36,7 +36,7 @@ OL.prototype.removeLayers = function (layerIds) {
  *
  * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}).
  */
-OL.prototype.modifyLayers = function (layersOptions) {
+OlMap.prototype.modifyLayers = function (layersOptions) {
     if (!IMap.prototype.modifyLayers.apply(this, arguments)) {
         return;
     }
@@ -45,7 +45,7 @@ OL.prototype.modifyLayers = function (layersOptions) {
     var _layerObjs = this._getLayersObj(layerIds);
     _layerObjs.forEach(function (_layerObj) {
         this.logger.trace("[IMap] modifyLayers : modifying : [" + _layerObj.id + "]");
-        // traduction options ahn => options OL
+        // traduction options ahn => options OlMap
         var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]);
         // application des options OL aux couches OL
         // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
@@ -93,7 +93,7 @@ OL.prototype.modifyLayers = function (layersOptions) {
  *
  * @private
  */
-OL.prototype._addRasterLayer = function (layerObj) {
+OlMap.prototype._addRasterLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     // au cas où la couche ajoutée est un MNT, on essaye pas de l'ajouter en 2D
@@ -242,7 +242,7 @@ OL.prototype._addRasterLayer = function (layerObj) {
  *
  * @private
  */
-OL.prototype._addVectorLayer = function (layerObj) {
+OlMap.prototype._addVectorLayer = function (layerObj) {
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
@@ -472,7 +472,7 @@ OL.prototype._addVectorLayer = function (layerObj) {
  *
  * @private
  */
-OL.prototype._addGeoportalLayer = function (layerObj) {
+OlMap.prototype._addGeoportalLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     // parametres additionnels eventuels
@@ -490,13 +490,13 @@ OL.prototype._addGeoportalLayer = function (layerObj) {
         layerOpts.minZoom >= 0 &&
         layerOpts.minZoom <= 28) {
         olParams.maxResolution = this._getResolutionFromZoomLevel(layerOpts.minZoom);
-        this.logger.trace("[OL] : apply MaxResolution : " + olParams.maxResolution);
+        this.logger.trace("[OlMap] : apply MaxResolution : " + olParams.maxResolution);
     }
     if (layerOpts.hasOwnProperty("maxZoom") &&
         layerOpts.maxZoom >= 0 &&
         layerOpts.maxZoom <= 28) {
         olParams.minResolution = this._getResolutionFromZoomLevel(layerOpts.maxZoom);
-        this.logger.trace("[OL] : apply minResolution : " + olParams.minResolution);
+        this.logger.trace("[OlMap] : apply minResolution : " + olParams.minResolution);
     }
     var LayerClass = null;
     switch (layerOpts.format.toUpperCase()) {
@@ -540,7 +540,7 @@ OL.prototype._addGeoportalLayer = function (layerObj) {
  *
  * @return {Object} layer options
  */
-OL.prototype._getLayerOpts = function (layerObj, layersStack) {
+OlMap.prototype._getLayerOpts = function (layerObj, layersStack) {
     var layerOpts = null;
     layersStack = layersStack || this._layers;
     for (var i = 0; i < layersStack.length; i++) {
@@ -560,7 +560,7 @@ OL.prototype._getLayerOpts = function (layerObj, layersStack) {
  * @param {Object} layerObj - ol layer
  * @returns {Object} - new layer index in this._layers
  */
-OL.prototype._registerUnknownLayer = function (layerObj) {
+OlMap.prototype._registerUnknownLayer = function (layerObj) {
     // couches de résultat (itineraire, isochrone)
     var layerId = "unknownLayer";
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
@@ -620,7 +620,7 @@ OL.prototype._registerUnknownLayer = function (layerObj) {
  *
  * @private
  */
-OL.prototype._checkLayerParams = function (layerOpts) {
+OlMap.prototype._checkLayerParams = function (layerOpts) {
     // verifications de base de la classe mère
     if (!IMap.prototype._checkLayerParams.apply(this, arguments)) {
         return false;
@@ -637,7 +637,7 @@ OL.prototype._checkLayerParams = function (layerOpts) {
  *
  * @private
  */
-OL.prototype._changeLayerColor = function (layerId, toGrayScale) {
+OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
     var layerIndex = this._getLayerIndexByLayerId(layerId);
     var gpLayer = this._layers[layerIndex];
 
@@ -646,7 +646,7 @@ OL.prototype._changeLayerColor = function (layerId, toGrayScale) {
         case "GPX":
         case "WFS":
         case "drawing":
-            this.logger.info("[OL.prototype._changeLayerColor] warning : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
+            this.logger.info("[OlMap.prototype._changeLayerColor] warning : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;
     }
 
@@ -675,7 +675,7 @@ OL.prototype._changeLayerColor = function (layerId, toGrayScale) {
  *
  * @private
  */
-OL.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
+OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
     // fonction de conversion d'une image en n/b
     function getGrayScaledDataUrl (img) {
         // patch pour safari
@@ -773,37 +773,37 @@ OL.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
  *
  * @private
  */
-OL.prototype._applyCommonLayerParams = function (layerOpts) {
+OlMap.prototype._applyCommonLayerParams = function (layerOpts) {
     var commonOpts = {};
-    this.logger.trace("[OL] : _applyCommonLayerParams ");
+    this.logger.trace("[OlMap] : _applyCommonLayerParams ");
     if (layerOpts.hasOwnProperty("opacity")) {
-        this.logger.trace("[OL] : _applyCommonLayerParams - opacity : " + layerOpts.opacity);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - opacity : " + layerOpts.opacity);
         commonOpts.opacity = layerOpts.opacity;
     }
     if (layerOpts.hasOwnProperty("visibility")) {
-        this.logger.trace("[OL] : _applyCommonLayerParams - visibility : " + layerOpts.visibility);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - visibility : " + layerOpts.visibility);
         commonOpts.visible = layerOpts.visibility;
     }
     if (layerOpts.hasOwnProperty("position")) {
-        this.logger.trace("[OL] : _applyCommonLayerParams - position : " + layerOpts.position);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - position : " + layerOpts.position);
         commonOpts.zIndex = layerOpts.position;
     }
     if (layerOpts.hasOwnProperty("maxZoom") &&
         layerOpts.maxZoom >= 0 &&
         layerOpts.maxZoom <= 20) {
         var minRes = this._getResolutionFromZoomLevel(layerOpts.maxZoom);
-        this.logger.trace("[OL] : _applyCommonLayerParams - minRes : " + minRes);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - minRes : " + minRes);
         commonOpts.minResolution = minRes;
     }
     if (layerOpts.hasOwnProperty("minZoom") &&
         layerOpts.minZoom >= 0 &&
         layerOpts.minZoom <= 20) {
         var maxRes = this._getResolutionFromZoomLevel(layerOpts.minZoom);
-        this.logger.trace("[OL] : _applyCommonLayerParams - maxRes : " + maxRes);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - maxRes : " + maxRes);
         commonOpts.maxResolution = maxRes;
     }
     if (layerOpts.hasOwnProperty("grayScaled")) {
-        this.logger.trace("[OL] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled);
+        this.logger.trace("[OlMap] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled);
         commonOpts.grayScaled = layerOpts.grayScaled;
     }
 

@@ -1,7 +1,7 @@
-import {IT} from "../../src/Itowns/IT";
+import {ItMap} from "../../src/Itowns/ItMap";
 import {enginePath3d, apiKey, mapViewDivId as divId} from "../config";
 
-var ITutils = {
+var ItUtils = {
 
     onMapInitialized : function onMapInitialized(map, callBack) {
         if( map.getLibMap().isInitialized() ) {
@@ -51,7 +51,7 @@ var ITutils = {
         mapOptions.apiKey = apiKey;
         mapOptions.enginePath3d = enginePath3d;
 
-        return new IT({
+        return new ItMap({
             div: div,
             mapOptions: mapOptions
         });
@@ -129,4 +129,4 @@ var ITutils = {
     }
 };
 
-export default ITutils;
+export default ItUtils;

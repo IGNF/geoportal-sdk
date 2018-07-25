@@ -23,7 +23,7 @@
 {{#content "js"}}
     <script type="module">
         import * as Gp from "{{ baseurl }}/dist/2d/GpSDK2D{{ mode }}.js";
-        self.Gp.Map.load('map', {
+        self.Gp.MapLoader.load('map', {
             apiKey : "{{apikey}}",
             azimuth : 45
         });

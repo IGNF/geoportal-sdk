@@ -1,4 +1,4 @@
-import {IT} from "./ItBase";
+import {ItMap} from "./ItMapBase";
 import {itownsExtended as Itowns} from "gp";
 
 /**
@@ -10,8 +10,8 @@ import {itownsExtended as Itowns} from "gp";
  * @param {Number} zoom - zoom level (optional, used for geolocate)
  *
  */
-IT.prototype.setXYCenter = function (point, zoom) {
-    this.logger.trace("[IT] - setXYCenter");
+ItMap.prototype.setXYCenter = function (point, zoom) {
+    this.logger.trace("[ItMap] - setXYCenter");
     if (!point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
         this.logger.info("no valid coordinates for map center");
         return;
@@ -27,7 +27,7 @@ IT.prototype.setXYCenter = function (point, zoom) {
             y : wgs84Coords[1]
         };
     } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) === undefined) {
-        this.logger.trace("[IT] - setXYCenter(" + point.projection + " not handled ! )");
+        this.logger.trace("[ItMap] - setXYCenter(" + point.projection + " not handled ! )");
         return;
     }
 
@@ -41,7 +41,7 @@ IT.prototype.setXYCenter = function (point, zoom) {
     }
     // set the camera aimed point on the specified coords
     this.libMap.setCameraTargetGeoPosition(position);
-    this.logger.trace("[IT] - setXYCenter(" + point.x + "," + point.y + ")");
+    this.logger.trace("[ItMap] - setXYCenter(" + point.x + "," + point.y + ")");
 };
 
 /**
@@ -53,8 +53,8 @@ IT.prototype.setXYCenter = function (point, zoom) {
  * @param {Number} zoom - zoom level (optional, used for geolocate)
  *
  */
-IT.prototype.setAutoCenter = function (point, zoom) {
-    this.logger.trace("[IT] - setAutoCenter");
+ItMap.prototype.setAutoCenter = function (point, zoom) {
+    this.logger.trace("[ItMap] - setAutoCenter");
     if (!point.hasOwnProperty("x") || !point.hasOwnProperty("y")) {
         this.logger.info("no valid coordinates for map center");
         return;
@@ -67,7 +67,7 @@ IT.prototype.setAutoCenter = function (point, zoom) {
             y : wgs84Coords[1]
         };
     } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) === undefined) {
-        this.logger.trace("[IT] - setAutoCenter(" + point.projection + " not handled ! )");
+        this.logger.trace("[ItMap] - setAutoCenter(" + point.projection + " not handled ! )");
         return;
     }
 
@@ -85,7 +85,7 @@ IT.prototype.setAutoCenter = function (point, zoom) {
     this.libMap.onCameraMoveStop(function () {
         this.libMap.setCameraTargetGeoPosition(position);
     }.bind(this));
-    this.logger.trace("[IT] - setAutoCenter(" + point.x + "," + point.y + ")");
+    this.logger.trace("[ItMap] - setAutoCenter(" + point.x + "," + point.y + ")");
 };
 
 /**
@@ -93,7 +93,7 @@ IT.prototype.setAutoCenter = function (point, zoom) {
  *
  * @returns {Object} - Coordinates of the map center
  */
-IT.prototype.getCenter = function () {
+ItMap.prototype.getCenter = function () {
     return this.libMap.getCenter();
 };
 
@@ -102,7 +102,7 @@ IT.prototype.getCenter = function () {
  *
  * @returns {Number} - ZoomLevel of the map
  */
-IT.prototype.getZoom = function () {
+ItMap.prototype.getZoom = function () {
     // -1 pour se baser sur les zooms Gp
     var zoom = this.libMap.getZoom() - 1;
     return zoom;
@@ -113,7 +113,7 @@ IT.prototype.getZoom = function () {
  *
  * @param {Number} zoom - ZoomLevel
  */
-IT.prototype.setZoom = function (zoom) {
+ItMap.prototype.setZoom = function (zoom) {
     if ((parseFloat(zoom) !== parseInt(zoom, 10)) || isNaN(zoom)) {
         this.logger.info("no valid zoomLevel");
         return;
@@ -121,13 +121,13 @@ IT.prototype.setZoom = function (zoom) {
     zoom = parseInt(zoom, 10);
     // On utilise la méthode setZoom d'iTowns (+1 pour se baser sur les zooms Gp)
     this.libMap.setZoom(zoom + 1);
-    this.logger.trace("[IT] - setZoom(" + zoom + ")");
+    this.logger.trace("[ItMap] - setZoom(" + zoom + ")");
 };
 
 /**
  * Increments the zoom level of the map by 1
  */
-IT.prototype.zoomIn = function () {
+ItMap.prototype.zoomIn = function () {
     var zoom = this.getZoom();
     // On ne zoom pas si le zoom est à 21 (max)
     if (zoom === 20) {
@@ -139,7 +139,7 @@ IT.prototype.zoomIn = function () {
 /**
  * Decrements the zoom level of the map by 1
  */
-IT.prototype.zoomOut = function () {
+ItMap.prototype.zoomOut = function () {
     var zoom = this.getZoom();
     // On ne dézoome pas si le zoom est à 0 (min)
     if (zoom === -1) {
@@ -153,7 +153,7 @@ IT.prototype.zoomOut = function () {
  *
  * @returns {Number} azimuth - orientation of the map
  */
-IT.prototype.getAzimuth = function () {
+ItMap.prototype.getAzimuth = function () {
     return this.libMap.getAzimuth();
 };
 
@@ -162,14 +162,14 @@ IT.prototype.getAzimuth = function () {
  *
  * @param {Number} azimuth - Azimuth of the map
  */
-IT.prototype.setAzimuth = function (azimuth) {
+ItMap.prototype.setAzimuth = function (azimuth) {
     if (isNaN(azimuth)) {
         this.logger.info("Not a valid azimuth  : must be a float");
         return;
     }
     // IT method to set the camera orientation
     this.libMap.setAzimuth(azimuth);
-    this.logger.trace("[IT] - setAzimuth(" + azimuth + ")");
+    this.logger.trace("[ItMap] - setAzimuth(" + azimuth + ")");
 };
 
 /**
@@ -177,7 +177,7 @@ IT.prototype.setAzimuth = function (azimuth) {
  *
  * @returns {Number} tilt - tilt of the map
  */
-IT.prototype.getTilt = function () {
+ItMap.prototype.getTilt = function () {
     return this.libMap.getTilt();
 };
 
@@ -186,7 +186,7 @@ IT.prototype.getTilt = function () {
  *
  * @param {Number} tilt - Tilt of the map
  */
-IT.prototype.setTilt = function (tilt) {
+ItMap.prototype.setTilt = function (tilt) {
     tilt = parseFloat(tilt);
     if (isNaN(tilt) || tilt < 0 || tilt > 90) {
         this.logger.info("no valid tilt angle");
@@ -194,5 +194,5 @@ IT.prototype.setTilt = function (tilt) {
     }
     // methode setTilt d'itowns pour régler l'inclinaison
     this.libMap.setTilt(tilt);
-    this.logger.trace("[IT] - setTilt(" + tilt + ")");
+    this.logger.trace("[ItMap] - setTilt(" + tilt + ")");
 };

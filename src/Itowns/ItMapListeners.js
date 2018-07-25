@@ -1,6 +1,6 @@
-import {IT} from "./ItBase";
+import {ItMap} from "./ItMapBase";
 import {itownsExtended as Itowns} from "gp";
-import {IMap} from "../IMap";
+import {IMap} from "../Interface/IMap";
 
 /**
 * Associate a function to trigger when an event is received.
@@ -25,8 +25,8 @@ import {IMap} from "../IMap";
 * @param {Function} action - The function to execute when the event occures.
 * @param {Object} context - The object that will be used as "this" in the action function
 */
-IT.prototype.listen = function (eventId, action, context) {
-    this.logger.trace("[IT]  : listen...");
+ItMap.prototype.listen = function (eventId, action, context) {
+    this.logger.trace("[ItMap]  : listen...");
     // verifications de base de la classe mère
     if (!IMap.prototype.listen.apply(this, arguments)) {
         return;
@@ -127,7 +127,7 @@ IT.prototype.listen = function (eventId, action, context) {
                     layerIndex = -1;
                 }
                 if (!layerOpts) {
-                    map.logger.trace("[IT] listen  : enregistrement d'une couche 'inconnue'.");
+                    map.logger.trace("[ItMap] listen  : enregistrement d'une couche 'inconnue'.");
                     // layerOpts = map._registerUnknownLayer(ladded) ;
                 }
 
@@ -151,7 +151,7 @@ IT.prototype.listen = function (eventId, action, context) {
             map._registerEvent(key, eventId, action, context);
 
             // abonnement à un changement de propriete sur chaque couche
-            for (var obsProperty in IT.LAYERPROPERTIES) {
+            for (var obsProperty in ItMap.LAYERPROPERTIES) {
                 map.libMap.getColorLayers().forEach(function (itLayer) {
                     var layerOpts = map._getLayerOpts(itLayer.id);
 
@@ -166,9 +166,9 @@ IT.prototype.listen = function (eventId, action, context) {
                         var newCommonProp = map._getCommonLayerParams(newItObj);
 
                         action.call(context, {
-                            property : IT.LAYERPROPERTIES[key],
-                            oldValue : oldCommonProp[IT.LAYERPROPERTIES[key]],
-                            newValue : newCommonProp[IT.LAYERPROPERTIES[key]],
+                            property : ItMap.LAYERPROPERTIES[key],
+                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[key]],
+                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[key]],
                             layerChanged : layerOpts
                         });
                     };
@@ -216,8 +216,8 @@ IT.prototype.listen = function (eventId, action, context) {
 *
 * @param {Function} action - The function associated to the event.
 */
-IT.prototype.forget = function (eventId, action) {
-    this.logger.trace("[IT] : forget...");
+ItMap.prototype.forget = function (eventId, action) {
+    this.logger.trace("[ItMap] : forget...");
 
     // verifications de base de la classe mère
     if (!IMap.prototype.forget.apply(this, arguments)) {
@@ -235,7 +235,7 @@ IT.prototype.forget = function (eventId, action) {
         if (rEvents[i].action == action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
-            this.logger.trace("[IT] : forgetting : " + eventId + " (" + evKey + ")");
+            this.logger.trace("[ItMap] : forgetting : " + eventId + " (" + evKey + ")");
             this.libMap.forgetByKey(evKey);
         }
     }
@@ -248,8 +248,8 @@ IT.prototype.forget = function (eventId, action) {
  *
  * @private
  */
-IT.prototype._onMapClick = function (evt) {
-    this.logger.trace("[IT] : _onMapClick...");
+ItMap.prototype._onMapClick = function (evt) {
+    this.logger.trace("[ItMap] : _onMapClick...");
     this._removeInfoDivs();
 
     var visibleFeatures = this.libMap.getFeaturesAtMousePosition(evt);
@@ -273,7 +273,7 @@ IT.prototype._onMapClick = function (evt) {
 *
 * @private
 */
-IT.prototype._removeInfoDivs = function () {
+ItMap.prototype._removeInfoDivs = function () {
     var featureInfoDivs = document.getElementsByClassName("gp-feature-info-div-it");
     if (featureInfoDivs.length > 0) {
         for (var i = 0; i < featureInfoDivs.length; i++) {
@@ -290,8 +290,8 @@ IT.prototype._removeInfoDivs = function () {
  *
  * @private
  */
-IT.prototype._features2html = function (features) {
-    this.logger.trace("[IT] : _features2html...");
+ItMap.prototype._features2html = function (features) {
+    this.logger.trace("[ItMap] : _features2html...");
     var content = document.createElement("div");
     features.forEach(function (f) {
         var props = {};
@@ -363,8 +363,8 @@ IT.prototype._features2html = function (features) {
  *
  * @private
  */
-IT.prototype._displayInfo = function (position, content) {
-    this.logger.trace("[IT] : _displayInfo...");
+ItMap.prototype._displayInfo = function (position, content) {
+    this.logger.trace("[ItMap] : _displayInfo...");
 
     // Affichage des features.
     var element = document.createElement("div");
@@ -408,7 +408,7 @@ IT.prototype._displayInfo = function (position, content) {
  *
  * @private
  */
-IT.prototype._addVectorLayer = function (layerObj) {
+ItMap.prototype._addVectorLayer = function (layerObj) {
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
@@ -506,7 +506,7 @@ IT.prototype._addVectorLayer = function (layerObj) {
  *
  * @private
  */
-IT.prototype._addRasterLayer = function (layerObj) {
+ItMap.prototype._addRasterLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     var layerNames;
@@ -706,7 +706,7 @@ IT.prototype._addRasterLayer = function (layerObj) {
             }
         }
         // we add the layer and refresh the itowns viewer
-        // this will launch the addedLayer callback (dans "IT._onLayerChanged")
+        // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
         this.libMap.addLayer(layer);
     }
 };
@@ -720,7 +720,7 @@ IT.prototype._addRasterLayer = function (layerObj) {
  *
  * @private
  */
-IT.prototype._addGeoportalLayer = function (layerObj, layerConf) {
+ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     // FIXME à faire ailleurs
     var layerId = Object.keys(layerObj)[0];
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns

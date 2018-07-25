@@ -1,5 +1,5 @@
-import {OL} from "./OlBase";
-import {IMap} from "../IMap";
+import {OlMap} from "./OlMapBase";
+import {IMap} from "../Interface/IMap";
 import {olExtended as Ol} from "gp";
 
 /**
@@ -25,8 +25,8 @@ import {olExtended as Ol} from "gp";
  * @param {Function} action - The function to execute when the event occures.
  * @param {Object} context - The object that will be used as "this" in the action function
  */
-OL.prototype.listen = function (eventId, action, context) {
-    this.logger.trace("[OL] : listen...");
+OlMap.prototype.listen = function (eventId, action, context) {
+    this.logger.trace("[OlMap] : listen...");
     // verifications de base de la classe mère
     if (!IMap.prototype.listen.apply(this, arguments)) {
         return;
@@ -98,7 +98,7 @@ OL.prototype.listen = function (eventId, action, context) {
                 var ladded = olEvt.element;
                 var layerOpts = this._getLayerOpts(ladded);
                 if (!layerOpts) {
-                    map.logger.trace("[OL] listen : enregistrement d'une couche 'inconnue'.");
+                    map.logger.trace("[OlMap] listen : enregistrement d'une couche 'inconnue'.");
                     layerOpts = this._registerUnknownLayer(ladded);
                 }
                 action.call(context, {
@@ -129,8 +129,8 @@ OL.prototype.listen = function (eventId, action, context) {
             this._registerEvent(olEventKey, eventId, action, context);
             olEventKey = null;
             // abonnement à un changement de propriete sur chaque couche
-            for (var obsProperty in OL.LAYERPROPERTIES) {
-                map.logger.trace("[OL] listen : abonnement layerProperty : " + obsProperty);
+            for (var obsProperty in OlMap.LAYERPROPERTIES) {
+                map.logger.trace("[OlMap] listen : abonnement layerProperty : " + obsProperty);
                 this.libMap.getLayers().forEach(function (olLayer, i, array) {
                     var layerOpts = this._getLayerOpts(olLayer);
                     if (obsProperty === "grayScaled") {
@@ -161,9 +161,9 @@ OL.prototype.listen = function (eventId, action, context) {
                                 newOlObj[olEvt.key] = this.get(olEvt.key);
                                 var newCommonProp = map._getCommonLayerParams(newOlObj);
                                 action.call(context, {
-                                    property : OL.LAYERPROPERTIES[olEvt.key],
-                                    oldValue : oldCommonProp[OL.LAYERPROPERTIES[olEvt.key]],
-                                    newValue : newCommonProp[OL.LAYERPROPERTIES[olEvt.key]],
+                                    property : OlMap.LAYERPROPERTIES[olEvt.key],
+                                    oldValue : oldCommonProp[OlMap.LAYERPROPERTIES[olEvt.key]],
+                                    newValue : newCommonProp[OlMap.LAYERPROPERTIES[olEvt.key]],
                                     layerChanged : layerOpts
                                 });
                             },
@@ -210,8 +210,8 @@ OL.prototype.listen = function (eventId, action, context) {
  *
  * @param {Function} action - The function associated to the event.
  */
-OL.prototype.forget = function (eventId, action) {
-    this.logger.trace("[OL] : forget...");
+OlMap.prototype.forget = function (eventId, action) {
+    this.logger.trace("[OlMap] : forget...");
 
     // verifications de base de la classe mère
     if (!IMap.prototype.forget.apply(this, arguments)) {
@@ -229,7 +229,7 @@ OL.prototype.forget = function (eventId, action) {
         if (rEvents[i].action == action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
-            this.logger.trace("[OL] : forgetting : " + eventId + " (" + evKey + ")");
+            this.logger.trace("[OlMap] : forgetting : " + eventId + " (" + evKey + ")");
             Ol.Observable.unByKey(evKey);
         }
     }
@@ -242,7 +242,7 @@ OL.prototype.forget = function (eventId, action) {
  *
  * @return {Object[]} interactions
  */
-OL.prototype.setDraggable = function (controlOpts) {
+OlMap.prototype.setDraggable = function (controlOpts) {
     return this._toggleInteractions("draggable", controlOpts);
 };
 
@@ -253,7 +253,7 @@ OL.prototype.setDraggable = function (controlOpts) {
  *
  * @return {Object[]} interactions
  */
-OL.prototype.setKeyboard = function (controlOpts) {
+OlMap.prototype.setKeyboard = function (controlOpts) {
     return this._toggleInteractions("keyboard", controlOpts);
 };
 
@@ -264,7 +264,7 @@ OL.prototype.setKeyboard = function (controlOpts) {
  *
  * @return {Object[]} interactions
  */
-OL.prototype.setSelectable = function (controlOpts) {
+OlMap.prototype.setSelectable = function (controlOpts) {
     return this._toggleInteractions("selectable", controlOpts);
 };
 
@@ -276,14 +276,14 @@ OL.prototype.setSelectable = function (controlOpts) {
  *
  * @return {Object[]} interactions
  */
-OL.prototype._toggleInteractions = function (controlId, controlOpts) {
+OlMap.prototype._toggleInteractions = function (controlId, controlOpts) {
     var interactions = this.getLibMapControl(controlId);
     if (interactions == null) {
         interactions = [];
         // les interactions ne sont pas sur la carte, on les rajoute, quitte à les désactiver après !
-        for (var i = 0; i < OL.CONTROLSCLASSES[controlId].length; i++) {
-            this.logger.trace("[OL] : adding interaction " + OL.CONTROLSCLASSES[controlId][i].name + " to the map.");
-            var interaction = new OL.CONTROLSCLASSES[controlId][i]();
+        for (var i = 0; i < OlMap.CONTROLSCLASSES[controlId].length; i++) {
+            this.logger.trace("[OlMap] : adding interaction " + OlMap.CONTROLSCLASSES[controlId][i].name + " to the map.");
+            var interaction = new OlMap.CONTROLSCLASSES[controlId][i]();
             this.libMap.addInteraction(interaction);
             interactions.push(interaction);
         }
@@ -291,7 +291,7 @@ OL.prototype._toggleInteractions = function (controlId, controlOpts) {
     // on active / desactive toutes les interactions correspondantes
     for (var ii = 0; ii < interactions.length; ii++) {
         var _interaction = interactions[ii];
-        this.logger.trace("[OL] : setting interaction to " + controlOpts + " for control : " + controlId);
+        this.logger.trace("[OlMap] : setting interaction to " + controlOpts + " for control : " + controlId);
         _interaction.setActive(controlOpts);
     }
     return interactions;
@@ -306,29 +306,29 @@ OL.prototype._toggleInteractions = function (controlId, controlOpts) {
  *
  * @private
  */
-OL.prototype._getCommonLayerParams = function (olLayerOpts) {
+OlMap.prototype._getCommonLayerParams = function (olLayerOpts) {
     var commonOpts = {};
-    this.logger.trace("[OL] : _getCommonLayerParams ");
+    this.logger.trace("[OlMap] : _getCommonLayerParams ");
     if (olLayerOpts.hasOwnProperty("opacity")) {
-        this.logger.trace("[OL] : _getCommonLayerParams - opacity : " + olLayerOpts.opacity);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - opacity : " + olLayerOpts.opacity);
         commonOpts.opacity = olLayerOpts.opacity;
     }
     if (olLayerOpts.hasOwnProperty("visible")) {
-        this.logger.trace("[OL] : _getCommonLayerParams - visibility : " + olLayerOpts.visible);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - visibility : " + olLayerOpts.visible);
         commonOpts.visibility = olLayerOpts.visible;
     }
     if (olLayerOpts.hasOwnProperty("zIndex")) {
-        this.logger.trace("[OL] : _getCommonLayerParams - position : " + olLayerOpts.zIndex);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - position : " + olLayerOpts.zIndex);
         commonOpts.position = olLayerOpts.zIndex;
     }
     if (olLayerOpts.hasOwnProperty("maxResolution")) {
         var minZoom = this._getZoomFromResolution(olLayerOpts.maxResolution);
-        this.logger.trace("[OL] : _getCommonLayerParams - minZoom : " + minZoom);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - minZoom : " + minZoom);
         commonOpts.minZoom = minZoom;
     }
     if (olLayerOpts.hasOwnProperty("minResolution")) {
         var maxZoom = this._getZoomFromResolution(olLayerOpts.minResolution);
-        this.logger.trace("[OL] : _getCommonLayerParams - maxZoom : " + maxZoom);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - maxZoom : " + maxZoom);
         commonOpts.maxZoom = maxZoom;
     }
 

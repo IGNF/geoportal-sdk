@@ -1,9 +1,9 @@
-import {IT} from "../../src/Itowns/IT";
-import Utils from "../utils/ITutils"
+import {ItMap} from "../../src/Itowns/ItMap";
+import Utils from "../utils/ItUtils"
 
 import {assert, expect, should} from "chai";
 
-describe("-- Test IT --", function () {
+describe("-- Test ItMap --", function () {
     this.timeout(10000);
 
     describe("-- Init Events --", function() {

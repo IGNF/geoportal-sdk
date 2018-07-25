@@ -1,4 +1,4 @@
-import {IMap} from "./IBase";
+import {IMap} from "./IMapBase";
 import {Services} from "gp";
 
 /**
@@ -232,6 +232,23 @@ IMap.prototype.getTilt = function () {
  * @param {Float} tilt - The camera's tilt.
  */
 IMap.prototype.setTilt = function (tilt) {
+};
+
+/**
+ * Returns the current map's azimuth.
+ *
+ * @returns {Number} - The current map's azimuth expressed in decimal degrees clockwise to the north.
+ */
+IMap.prototype.getAzimuth = function () {
+    return 0;
+};
+
+/**
+ * Sets a new map's azimuth.
+ *
+ * @param {Float} azimuth - The new map's azimuth expressed in decimal degrees clockwise to the north.
+ */
+IMap.prototype.setAzimuth = function (azimuth) {
 };
 
 /**

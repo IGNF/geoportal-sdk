@@ -1,5 +1,5 @@
 import * as SDK from "../../dist/3d/GpSDK3D";
-import Utils from "../utils/ITutils";
+import Utils from "../utils/ItUtils";
 import {enginePath3d, apiKey} from "../config";
 
 import {assert, expect, should} from "chai";
@@ -25,7 +25,7 @@ describe("-- Test SDK 3D --", function () {
                 SDK.should.have.property('sdkDate');
 
                 // integration Map
-                SDK.should.have.property('Map');
+                SDK.should.have.property('MapLoader');
                 expect(SDK.Map).to.be.an('Object');
 
                 // integration extension ol
@@ -90,7 +90,7 @@ describe("-- Test SDK 3D --", function () {
                 expect(scope.itowns).to.not.exist ;
 
                 var div = Utils.createDiv();
-                var map = SDK.Map.load(
+                var map = SDK.MapLoader.load(
                     div,
                     {
                         apiKey : apiKey,

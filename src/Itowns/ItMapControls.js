@@ -1,10 +1,10 @@
-import {IT} from "./ItBase";
+import {ItMap} from "./ItMapBase";
 import {itownsExtended as Itowns} from "gp";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation
  */
-IT.CONTROLSCLASSES = {
+ItMap.CONTROLSCLASSES = {
     mouseposition : "itowns.control.MousePosition",
     layerswitcher : "itowns.control.LayerSwitcher",
     attributions : "itowns.control.Attributions",
@@ -30,7 +30,7 @@ IT.CONTROLSCLASSES = {
  *
  * @returns {Object} control - mousePosition control
  */
-IT.prototype.addMousePositionControl = function (controlOpts) {
+ItMap.prototype.addMousePositionControl = function (controlOpts) {
     var mpOpts = {};
     if (controlOpts.div) {
         mpOpts.target = controlOpts.div;
@@ -43,7 +43,7 @@ IT.prototype.addMousePositionControl = function (controlOpts) {
             /*
             if (!ol.proj.get(controlOpts.systems[i].crs)) {
                 // on retire les systèmes non définis
-                this.logger.trace("[IT] addMousePositionControl  : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
+                this.logger.trace("[ItMap] addMousePositionControl  : crs [" + controlOpts.systems[i].crs + "] not found." ) ;
                 continue ;
             } */
             if (!mpOpts.systems) {
@@ -58,7 +58,7 @@ IT.prototype.addMousePositionControl = function (controlOpts) {
         mpOpts.units = [];
         for (var j = 0; j < controlOpts.units.length; j++) {
             if (typeof controlOpts.units[j] === "string") {
-                this.logger.trace("[IT] addMousePositionControl : adding unit   [" + controlOpts.units[j].toUpperCase());
+                this.logger.trace("[ItMap] addMousePositionControl : adding unit   [" + controlOpts.units[j].toUpperCase());
                 mpOpts.units.push(controlOpts.units[j]);
             }
         }
@@ -82,8 +82,8 @@ IT.prototype.addMousePositionControl = function (controlOpts) {
  *
  * @returns {Object} control - layerSwitcher control
  */
-IT.prototype.addLayerSwitcherControl = function (controlOpts) {
-    this.logger.trace("[IT]  : addLayerSwitcherControl ... ");
+ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
+    this.logger.trace("[ItMap]  : addLayerSwitcherControl ... ");
     // TODO  : parametrage des couches
     var lsOpts = {
         layers : controlOpts.layers || [],
@@ -101,7 +101,7 @@ IT.prototype.addLayerSwitcherControl = function (controlOpts) {
         if (layer.obj.type !== "color") {
             continue;
         }
-        this.logger.trace("[IT]  : layerSwitcher  : configuring layer  : " + layer.id);
+        this.logger.trace("[ItMap]  : layerSwitcher  : configuring layer  : " + layer.id);
         // INFO  : les couches Geoportail sont aussi configurées.
         var layerConf = {
             id : layer.id,
@@ -109,29 +109,29 @@ IT.prototype.addLayerSwitcherControl = function (controlOpts) {
             config : {}
         };
         if (layer.options.title) {
-            this.logger.trace("[IT]  : layerSwitcher  : setting title to [" + layer.options.title + "] for layer " + layer.id);
+            this.logger.trace("[ItMap]  : layerSwitcher  : setting title to [" + layer.options.title + "] for layer " + layer.id);
             layerConf.config.title = layer.options.title;
         }
         if (layer.options.description) {
-            this.logger.trace("[IT  : layerSwitcher  : setting description to [" + layer.options.description + "] for layer " + layer.id);
+            this.logger.trace("[ItMap  : layerSwitcher  : setting description to [" + layer.options.description + "] for layer " + layer.id);
             layerConf.config.description = layer.options.description;
         }
         if (layer.options.quicklookUrl) {
-            this.logger.trace("[IT]  : layerSwitcher  : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id);
+            this.logger.trace("[ItMap]  : layerSwitcher  : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id);
             layerConf.config.quicklookUrl = layer.options.quicklookUrl;
         }
         if (layer.options.legends) {
-            this.logger.trace("[IT]  : layerSwitcher  : setting legends to [" + layer.options.legends + "] for layer " + layer.id);
+            this.logger.trace("[ItMap]  : layerSwitcher  : setting legends to [" + layer.options.legends + "] for layer " + layer.id);
             layerConf.config.legends = layer.options.legends;
         }
         if (layer.options.metadata) {
-            this.logger.trace("[IT]  : layerSwitcher  : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id);
+            this.logger.trace("[ItMap]  : layerSwitcher  : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id);
             layerConf.config.metadata = layer.options.metadata;
         }
         lsOpts.layers.push(layerConf);
     }
 
-    this.logger.trace("[IT]  : layerSwitcher Opts  : ... ");
+    this.logger.trace("[ItMap]  : layerSwitcher Opts  : ... ");
     var control = new Itowns.control.LayerSwitcher(lsOpts);
     this.libMap.addWidget(control);
     return control;
@@ -151,8 +151,8 @@ IT.prototype.addLayerSwitcherControl = function (controlOpts) {
  *
  * @returns {Object} control - overview control
  */
-IT.prototype.addOverviewControl = function (controlOpts) {
-    this.logger.trace("[IT] addOverviewControl : ... ");
+ItMap.prototype.addOverviewControl = function (controlOpts) {
+    this.logger.trace("[ItMap] addOverviewControl : ... ");
     var ovControlOptions = {};
     if (controlOpts.position) {
         ovControlOptions.position = controlOpts.position;
@@ -210,8 +210,8 @@ IT.prototype.addOverviewControl = function (controlOpts) {
  *
  * @returns {Object} control - graphic scale control
  */
-IT.prototype.addGraphicScaleControl = function (controlOpts) {
-    this.logger.trace("[IT] addGraphicScaleControl...");
+ItMap.prototype.addGraphicScaleControl = function (controlOpts) {
+    this.logger.trace("[ItMap] addGraphicScaleControl...");
     var scaleControlOptions = {};
     if (controlOpts.position) {
         scaleControlOptions.position = controlOpts.position;
@@ -248,7 +248,7 @@ IT.prototype.addGraphicScaleControl = function (controlOpts) {
  *
  * @returns {Object} control - attributions control
  */
-IT.prototype.addAttributionsControl = function (controlOpts) {
+ItMap.prototype.addAttributionsControl = function (controlOpts) {
     var attOpts = {};
     attOpts.options = {};
     if (controlOpts.div) {
@@ -265,8 +265,8 @@ IT.prototype.addAttributionsControl = function (controlOpts) {
  *
  * @param {Array.<String>} controlIds - A list of control's id or null.
  */
-IT.prototype.removeControls = function (controlIds) {
-    this.logger.trace("[IT]  : removeControls ... ");
+ItMap.prototype.removeControls = function (controlIds) {
+    this.logger.trace("[ItMap]  : removeControls ... ");
     if (!controlIds || (Array.isArray(controlIds) && controlIds.length === 0)) {
         this.logger.info("No control to remove.");
         return;
@@ -280,7 +280,7 @@ IT.prototype.removeControls = function (controlIds) {
 
         var idx = this._findRegisteredControl(controlId);
         if (idx >= 0) {
-            this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from register.");
+            this.logger.trace("[ItMap]  : removeControls  : removing [" + controlId + "] from register.");
             this._controls.splice(idx, 1);
         }
 
@@ -291,7 +291,7 @@ IT.prototype.removeControls = function (controlIds) {
             continue;
         }
 
-        this.logger.trace("[IT]  : removeControls  : removing [" + controlId + "] from Map.");
+        this.logger.trace("[ItMap]  : removeControls  : removing [" + controlId + "] from Map.");
         this.libMap.removeWidget(itownsControl);
     }
 };
@@ -302,31 +302,31 @@ IT.prototype.removeControls = function (controlIds) {
  * @param {String} controlId - identifier of the control
  * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
  */
-IT.prototype.getLibMapControl = function (controlId) {
+ItMap.prototype.getLibMapControl = function (controlId) {
     var foundItControl = null;
     // verifications de base  : controlId est bien gere.
-    if (!IT.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
-        !IT.CONTROLSCLASSES[controlId.toLowerCase()]) {
-        this.logger.trace("[IT] getLibMapControl  : control " + controlId + " non implémenté.");
+    if (!ItMap.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
+        !ItMap.CONTROLSCLASSES[controlId.toLowerCase()]) {
+        this.logger.trace("[ItMap] getLibMapControl  : control " + controlId + " non implémenté.");
         return foundItControl;
     }
     // on regarde du cote des controles
     var itControls = this.libMap.getWidgets();
     if (!itControls || itControls.length === 0) {
-        this.logger.trace("[IT] getLibMapControl  : no control found on map");
+        this.logger.trace("[ItMap] getLibMapControl  : no control found on map");
         return foundItControl;
     }
     for (var j = 0; j < itControls.length; j++) {
-        this.logger.trace("[IT] getLibMapControl  : analyzing  : " + controlId);
+        this.logger.trace("[ItMap] getLibMapControl  : analyzing  : " + controlId);
         // test on control Name
         if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
             foundItControl = itControls[j];
-            this.logger.trace("[IT] getLibMapControl  : found GP Plugin Control ! ");
+            this.logger.trace("[ItMap] getLibMapControl  : found GP Plugin Control ! ");
             break;
         }
     }
     if (!foundItControl) {
-        this.logger.trace("[IT] getLibMapControl  : control " + controlId + " not found ! ");
+        this.logger.trace("[ItMap] getLibMapControl  : control " + controlId + " not found ! ");
     }
 
     return foundItControl;
@@ -338,11 +338,11 @@ IT.prototype.getLibMapControl = function (controlId) {
  * @param {String} layerId - layer identifier
  * @returns {String} - Layer Container div Id in the LayerSwitcher
  */
-IT.prototype.getLSLayerContainerDivId = function (layerId) {
+ItMap.prototype.getLSLayerContainerDivId = function (layerId) {
     var id = null;
     var idxLS = this._findRegisteredControl("layerswitcher");
     if (idxLS < 0) {
-        this.logger.trace("[IT] : getLSLayerContainerDivId : no layerswitcher on map !");
+        this.logger.trace("[ItMap] : getLSLayerContainerDivId : no layerswitcher on map !");
         return id;
     }
     var itlayers = this._getLayersObj([layerId]);
@@ -359,6 +359,6 @@ IT.prototype.getLSLayerContainerDivId = function (layerId) {
             }
         }
     }
-    this.logger.trace("[IT] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !");
+    this.logger.trace("[ItMap] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !");
     return id;
 };

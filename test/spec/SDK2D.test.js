@@ -14,7 +14,7 @@ describe("-- Test SDK 2D --", function () {
                 SDK.should.have.property('sdkDate');
 
                 // integration Map
-                SDK.should.have.property('Map');
+                SDK.should.have.property('MapLoader');
                 expect(SDK.Map).to.be.an('Object');
 
                 // integration extension ol

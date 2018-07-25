@@ -33,7 +33,7 @@
             outDivElem.innerHTML = "<p>" + JSON.stringify(evt) + "</p>"
         }
 
-        var map = Gp.Map.load('geoportalMap',{
+        var map = Gp.MapLoader.load('geoportalMap',{
             apiKey : "{{apikey}}",
             center : {
                 geolocate : true,

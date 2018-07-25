@@ -36,7 +36,7 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.Map.load("geoportalMap1",{
+        var map = Gp.MapLoader.load("geoportalMap1",{
             apiKey : "{{apikey}}",
             viewMode : "2d",
             layersOptions : {
@@ -76,7 +76,7 @@
                 map2.setAzimuth(map.getAzimuth());
             } else {
                 // creation d'une nouvelle carte à l'identique
-                map2 = Gp.Map.load('geoportalMap2', {
+                map2 = Gp.MapLoader.load('geoportalMap2', {
                     apiKey : ["{{apikey}}"],
                     viewMode : "3d",
                     enginePath3d : "{{baseurl}}/node_modules/itowns/dist/",

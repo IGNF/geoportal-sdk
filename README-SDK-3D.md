@@ -154,7 +154,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * utilisation des **droits de la clef** 'APIKEY' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
 
-* **library** : "itowns" pour un chargement de la cartographie en 3D, ou "ol" (par défaut) pour un chargement de la cartographie en 2D. Il sera ensuite possible de basculer d'un mode de visualisation à l'autre ([Voir la partie "Bascule entre 2D et 3D](#switchToLib)).
+* **viewMode** : "**3d**" pour un chargement de la cartographie en 3D, **avec la librairie iTowns,** ou "**2d**" (par défaut) pour un chargement de la cartographie en 2D, **avec la librairie OpenLayers.** Il sera ensuite possible de basculer d'un mode de visualisation à l'autre (Voir la partie "Bascule entre 2D et 3D).
 
 * **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 

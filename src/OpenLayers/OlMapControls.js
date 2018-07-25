@@ -1,11 +1,11 @@
-import {OL} from "./OlBase";
-import {IMap} from "../IMap";
+import {OlMap} from "./OlMapBase";
+import {IMap} from "../Interface/IMap";
 import {olExtended as Ol} from "gp";
 
 /**
  * Proprietes modifiables des controles pour OL
  */
-OL.CONTROLPROPERTIES = {
+OlMap.CONTROLPROPERTIES = {
     maximised : "collapsed"
 
     // TODO : rajouter mapping property SDK <-> property OL au fur et à mesure de l'ajout des controles.
@@ -15,7 +15,7 @@ OL.CONTROLPROPERTIES = {
 /**
  * Association controlId <-> classe OpenLayers d'implemenation
  */
-OL.CONTROLSCLASSES = {
+OlMap.CONTROLSCLASSES = {
     draggable : [Ol.interaction.Pointer, Ol.interaction.MouseWheelZoom, Ol.interaction.DoubleClickZoom],
     keyboard : [Ol.interaction.KeyboardPan, Ol.interaction.KeyboardZoom],
     scrollwheel : null,
@@ -50,7 +50,7 @@ OL.CONTROLSCLASSES = {
  *
  * @returns {Ol.control.Zoom} control
  */
-OL.prototype.addZoomControl = function (controlOpts) {
+OlMap.prototype.addZoomControl = function (controlOpts) {
     var control = new Ol.control.Zoom({
         target : controlOpts.div
     });
@@ -65,15 +65,13 @@ OL.prototype.addZoomControl = function (controlOpts) {
  *
  * @returns {Object} control
  */
-OL.prototype.addZoomBoxControl = function (controlOpts) {
+OlMap.prototype.addZoomBoxControl = function (controlOpts) {
     // TODO
     return null;
 };
 
 /**
  * Adds overview map to the map.
- * @namespace
- * @alias pouet
  *
  * @param {Object} controlOpts - control options
  * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
@@ -85,8 +83,8 @@ OL.prototype.addZoomBoxControl = function (controlOpts) {
  *
  * @returns {Ol.control.OverviewMap} control
  */
-OL.prototype.addOverviewControl = function (controlOpts) {
-    this.logger.trace("[OL] addOverviewControl : ... ");
+OlMap.prototype.addOverviewControl = function (controlOpts) {
+    this.logger.trace("[OlMap] addOverviewControl : ... ");
     var ovOpts = {};
     if (controlOpts.div) {
         ovOpts.target = controlOpts.div;
@@ -96,7 +94,7 @@ OL.prototype.addOverviewControl = function (controlOpts) {
         var layerObjs = this._getLayersObj(controlOpts.layers);
         var olLayers = [];
         layerObjs.forEach(function (layerObj) {
-            this.logger.trace("[OL] addOverviewControl : adding " + layerObj.id + " to map");
+            this.logger.trace("[OlMap] addOverviewControl : adding " + layerObj.id + " to map");
             olLayers.push(layerObj.obj);
         },
         this);
@@ -104,7 +102,7 @@ OL.prototype.addOverviewControl = function (controlOpts) {
             // couche(s) non chargée(s) dans la carte principale :
             // on essaye de les créer comme des couches WMTS Géoportail.
             for (var i = 0; i < controlOpts.layers.length; i++) {
-                this.logger.trace("[OL] addOverviewControl : adding geoportal layer : " + controlOpts.layers[i] + " to map");
+                this.logger.trace("[OlMap] addOverviewControl : adding geoportal layer : " + controlOpts.layers[i] + " to map");
                 var gpLayer = new Ol.layer.GeoportalWMTS({
                     layer : controlOpts.layers[i]/*,
                     // on ecrase les contraintes de zoom qui peuvent
@@ -153,7 +151,7 @@ OL.prototype.addOverviewControl = function (controlOpts) {
  *
  * @returns {Ol.control.Rotate} control
  */
-OL.prototype.addOrientationControl = function (controlOpts) {
+OlMap.prototype.addOrientationControl = function (controlOpts) {
     var control = new Ol.control.Rotate({
         target : controlOpts.div,
         autoHide : controlOpts.autoHide || false // ol param
@@ -172,14 +170,14 @@ OL.prototype.addOrientationControl = function (controlOpts) {
  *
  * @returns {Object} control
  */
-OL.prototype.addGraphicScaleControl = function (controlOpts) {
+OlMap.prototype.addGraphicScaleControl = function (controlOpts) {
     var olunits = controlOpts.units;
     if (olunits && controlOpts.units.toLowerCase() === "deg") {
         olunits = "degrees";
     } else if (olunits && controlOpts.units.toLowerCase() === "m") {
         olunits = "metric";
     }
-    this.logger.trace("[OL] addGraphicScaleControl : setting graphicscale units to " + olunits);
+    this.logger.trace("[OlMap] addGraphicScaleControl : setting graphicscale units to " + olunits);
     var control = new Ol.control.ScaleLine({
         target : controlOpts.div,
         units : olunits,
@@ -199,7 +197,7 @@ OL.prototype.addGraphicScaleControl = function (controlOpts) {
  *
  * @return {Ol.Graticule} graticule
  */
-OL.prototype.addGraticuleControl = function (controlOpts) {
+OlMap.prototype.addGraticuleControl = function (controlOpts) {
     var options = controlOpts || {};
     options.strokeColor = options.strokeColor || "#000000";
     options.strokeOpacity = options.strokeOpacity || 0.2;
@@ -243,7 +241,7 @@ OL.prototype.addGraticuleControl = function (controlOpts) {
  *
  * @return {Ol.control.GeoportalMousePosition} control
  */
-OL.prototype.addMousePositionControl = function (controlOpts) {
+OlMap.prototype.addMousePositionControl = function (controlOpts) {
     var mpOpts = {};
     if (controlOpts.div) {
         mpOpts.target = controlOpts.div;
@@ -255,7 +253,7 @@ OL.prototype.addMousePositionControl = function (controlOpts) {
         for (var i = 0; i < controlOpts.systems.length; i++) {
             if (!Ol.proj.get(controlOpts.systems[i].crs)) {
                 // on retire les systèmes non définis
-                this.logger.trace("[OL] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found.");
+                this.logger.trace("[OlMap] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found.");
                 continue;
             }
             if (!mpOpts.systems) {
@@ -270,7 +268,7 @@ OL.prototype.addMousePositionControl = function (controlOpts) {
         mpOpts.units = [];
         for (var ii = 0; ii < controlOpts.units.length; ii++) {
             if (typeof controlOpts.units[ii] === "string") {
-                this.logger.trace("[OL] addMousePositionControl : adding unit   [" + controlOpts.units[ii].toUpperCase());
+                this.logger.trace("[OlMap] addMousePositionControl : adding unit   [" + controlOpts.units[ii].toUpperCase());
                 mpOpts.units.push(controlOpts.units[ii]);
             }
         }
@@ -306,7 +304,7 @@ OL.prototype.addMousePositionControl = function (controlOpts) {
  *
  * @return {Ol.control.Route} control
  */
-OL.prototype.addRouteControl = function (controlOpts) {
+OlMap.prototype.addRouteControl = function (controlOpts) {
     var rteOpts = {};
     if (controlOpts.div) {
         rteOpts.target = controlOpts.div;
@@ -362,7 +360,7 @@ OL.prototype.addRouteControl = function (controlOpts) {
  *
  * @return {Ol.control.Isocurve} control
  */
-OL.prototype.addIsocurveControl = function (controlOpts) {
+OlMap.prototype.addIsocurveControl = function (controlOpts) {
     var isoOpts = {};
     if (controlOpts.div) {
         isoOpts.target = controlOpts.div;
@@ -433,7 +431,7 @@ OL.prototype.addIsocurveControl = function (controlOpts) {
  *
  * @return {Ol.control.LayerImport} control
  */
-OL.prototype.addLayerImportControl = function (controlOpts) {
+OlMap.prototype.addLayerImportControl = function (controlOpts) {
     var importOpts = {};
     if (controlOpts.div) {
         importOpts.target = controlOpts.div;
@@ -548,8 +546,8 @@ OL.prototype.addLayerImportControl = function (controlOpts) {
  *
  * @return {Ol.control.LayerSwitcher} control
  */
-OL.prototype.addLayerSwitcherControl = function (controlOpts) {
-    this.logger.trace("[OL] : addLayerSwitcherControl ... ");
+OlMap.prototype.addLayerSwitcherControl = function (controlOpts) {
+    this.logger.trace("[OlMap] : addLayerSwitcherControl ... ");
     // TODO : parametrage des couches
     var lsOpts = {
         layers : [],
@@ -563,36 +561,36 @@ OL.prototype.addLayerSwitcherControl = function (controlOpts) {
     // application des configuration des couches :
     for (var i = 0; i < this._layers.length; i++) {
         var layer = this._layers[i];
-        this.logger.trace("[OL] : layerSwitcher : configuring layer : " + layer.id);
+        this.logger.trace("[OlMap] : layerSwitcher : configuring layer : " + layer.id);
         // INFO : les couches Geoportail sont aussi configurées.
         var layerConf = {
             layer : layer.obj,
             config : {}
         };
         if (layer.options.title) {
-            this.logger.trace("[OL] : layerSwitcher : setting title to [" + layer.options.title + "] for layer " + layer.id);
+            this.logger.trace("[OlMap] : layerSwitcher : setting title to [" + layer.options.title + "] for layer " + layer.id);
             layerConf.config.title = layer.options.title;
         }
         if (layer.options.description) {
-            this.logger.trace("[OL] : layerSwitcher : setting description to [" + layer.options.description + "] for layer " + layer.id);
+            this.logger.trace("[OlMap] : layerSwitcher : setting description to [" + layer.options.description + "] for layer " + layer.id);
             layerConf.config.description = layer.options.description;
         }
         if (layer.options.quicklookUrl) {
-            this.logger.trace("[OL] : layerSwitcher : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id);
+            this.logger.trace("[OlMap] : layerSwitcher : setting quicklookUrl to [" + layer.options.quicklookUrl + "] for layer " + layer.id);
             layerConf.config.quicklookUrl = layer.options.quicklookUrl;
         }
         if (layer.options.legends) {
-            this.logger.trace("[OL] : layerSwitcher : setting legends to [" + layer.options.legends + "] for layer " + layer.id);
+            this.logger.trace("[OlMap] : layerSwitcher : setting legends to [" + layer.options.legends + "] for layer " + layer.id);
             layerConf.config.legends = layer.options.legends;
         }
         if (layer.options.metadata) {
-            this.logger.trace("[OL] : layerSwitcher : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id);
+            this.logger.trace("[OlMap] : layerSwitcher : setting metadata to [" + layer.options.metadata + "] for layer " + layer.id);
             layerConf.config.metadata = this._filterEmptyMetadata(layer.options.metadata);
         }
         lsOpts.layers.push(layerConf);
     }
 
-    this.logger.trace("[OL] : layerSwitcher Opts : ... ");
+    this.logger.trace("[OlMap] : layerSwitcher Opts : ... ");
     var control = new Ol.control.LayerSwitcher(lsOpts);
     this.libMap.addControl(control);
     return control;
@@ -605,7 +603,7 @@ OL.prototype.addLayerSwitcherControl = function (controlOpts) {
  *
  * @return {Ol.control.MeasureLength} control
  */
-OL.prototype.addLengthControl = function (controlOpts) {
+OlMap.prototype.addLengthControl = function (controlOpts) {
     var lengthOpts = {};
     if (controlOpts.div) {
         lengthOpts.target = controlOpts.div;
@@ -658,8 +656,8 @@ OL.prototype.addLengthControl = function (controlOpts) {
  *
  * @return {Ol.control.MeasureArea} control
  */
-OL.prototype.addAreaControl = function (controlOpts) {
-    this.logger.trace("[OL] addAreaControl : ... ");
+OlMap.prototype.addAreaControl = function (controlOpts) {
+    this.logger.trace("[OlMap] addAreaControl : ... ");
     var areaOpts = {};
     if (controlOpts.div) {
         areaOpts.target = controlOpts.div;
@@ -713,7 +711,7 @@ OL.prototype.addAreaControl = function (controlOpts) {
  *
  * @return {Ol.control.MeasureAzimuth} control
  */
-OL.prototype.addAzimuthControl = function (controlOpts) {
+OlMap.prototype.addAzimuthControl = function (controlOpts) {
     var azimuthOpts = {};
     if (controlOpts.div) {
         azimuthOpts.target = controlOpts.div;
@@ -795,9 +793,9 @@ OL.prototype.addAzimuthControl = function (controlOpts) {
  *
  * @return {Ol.control.ElevationPath} control
  */
-OL.prototype.addElevationPathControl = function (controlOpts) {
+OlMap.prototype.addElevationPathControl = function (controlOpts) {
     var elevOpts = {};
-    this.logger.trace("[OL] addElevationPathControl : ... ");
+    this.logger.trace("[OlMap] addElevationPathControl : ... ");
     if (controlOpts.div) {
         elevOpts.target = controlOpts.div;
     }
@@ -868,7 +866,7 @@ OL.prototype.addElevationPathControl = function (controlOpts) {
  *
  * @return {Ol.control.SearchEngine} control
  */
-OL.prototype.addSearchControl = function (controlOpts) {
+OlMap.prototype.addSearchControl = function (controlOpts) {
     var searchOpts = {};
     if (searchOpts.div) {
         searchOpts.target = controlOpts.div;
@@ -916,7 +914,7 @@ OL.prototype.addSearchControl = function (controlOpts) {
  *
  * @return {Ol.control.ReverseGeocode} control
  */
-OL.prototype.addReverseSearchControl = function (controlOpts) {
+OlMap.prototype.addReverseSearchControl = function (controlOpts) {
     var searchOpts = {};
     if (searchOpts.div) {
         searchOpts.target = controlOpts.div;
@@ -989,7 +987,7 @@ OL.prototype.addReverseSearchControl = function (controlOpts) {
  *
  * @return {Ol.control.Drawing} control
  */
-OL.prototype.addDrawingControl = function (controlOpts) {
+OlMap.prototype.addDrawingControl = function (controlOpts) {
     var drawingOpts = {};
     if (controlOpts.div) {
         drawingOpts.target = controlOpts.div;
@@ -1049,7 +1047,7 @@ OL.prototype.addDrawingControl = function (controlOpts) {
  * @param {Object} controlOpts - options du controle
  * @return {Ol.control.GeoportalAttribution} control
  */
-OL.prototype.addAttributionsControl = function (controlOpts) {
+OlMap.prototype.addAttributionsControl = function (controlOpts) {
     var attOpts = {};
     if (controlOpts.div) {
         attOpts.target = controlOpts.div;
@@ -1066,7 +1064,7 @@ OL.prototype.addAttributionsControl = function (controlOpts) {
  * @param {Object} controlOpts - options du controle
  * @return {Object} control
  */
-OL.prototype.addCameraControl = function (controlOpts) {
+OlMap.prototype.addCameraControl = function (controlOpts) {
     // Not implemented (3D feature)
     return null;
 };
@@ -1077,7 +1075,7 @@ OL.prototype.addCameraControl = function (controlOpts) {
  * @param {Object} controlOpts - options du controle
  * @return {Ol.control.GetFeatureInfo} control
  */
-OL.prototype.addGetFeatureInfoControl = function (controlOpts) {
+OlMap.prototype.addGetFeatureInfoControl = function (controlOpts) {
     var gfiOpts = {};
     gfiOpts.options = {};
 
@@ -1164,8 +1162,8 @@ OL.prototype.addGetFeatureInfoControl = function (controlOpts) {
  *
  * @param {Array.<String>} controlIds - A list of control's id or null.
  */
-OL.prototype.removeControls = function (controlIds) {
-    this.logger.trace("[OL] : removeControls ... ");
+OlMap.prototype.removeControls = function (controlIds) {
+    this.logger.trace("[OlMap] : removeControls ... ");
     if (!controlIds || (Array.isArray(controlIds) && controlIds.length === 0)) {
         this.logger.info("No control to remove.");
         return;
@@ -1178,7 +1176,7 @@ OL.prototype.removeControls = function (controlIds) {
         controlId = controlIds[i];
         var idx = this._findRegisteredControl(controlId);
         if (idx >= 0) {
-            this.logger.trace("[OL] : removeControls : removing [" + controlId + "] from register.");
+            this.logger.trace("[OlMap] : removeControls : removing [" + controlId + "] from register.");
             this._controls.splice(idx, 1);
         }
         var olControl = this.getLibMapControl(controlId);
@@ -1196,7 +1194,7 @@ OL.prototype.removeControls = function (controlIds) {
             // ce sont des interactions => on ne fait rien.
             return;
         }
-        this.logger.trace("[OL] : removeControls : removing [" + controlId + "] from Map.");
+        this.logger.trace("[OlMap] : removeControls : removing [" + controlId + "] from Map.");
         this.libMap.removeControl(olControl);
     }
 };
@@ -1207,23 +1205,23 @@ OL.prototype.removeControls = function (controlIds) {
  * @param {String} controlId - identifier of the control
  * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
  */
-OL.prototype.getLibMapControl = function (controlId) {
+OlMap.prototype.getLibMapControl = function (controlId) {
     var foundOlControl = null;
     // verifications de base : controlId est bien gere.
-    if (!OL.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
-        !OL.CONTROLSCLASSES[controlId.toLowerCase()]) {
-        this.logger.trace("[OL] getLibMapControl : control " + controlId + " non implémenté.");
+    if (!OlMap.CONTROLSCLASSES.hasOwnProperty(controlId.toLowerCase()) ||
+        !OlMap.CONTROLSCLASSES[controlId.toLowerCase()]) {
+        this.logger.trace("[OlMap] getLibMapControl : control " + controlId + " non implémenté.");
         return foundOlControl;
     }
-    var olControlClass = OL.CONTROLSCLASSES[controlId.toLowerCase()];
+    var olControlClass = OlMap.CONTROLSCLASSES[controlId.toLowerCase()];
     // olControlClass == Array => interactions
     if (Array.isArray(olControlClass)) {
-        this.logger.trace("[OL] getLibMapControl : searching interactions.");
+        this.logger.trace("[OlMap] getLibMapControl : searching interactions.");
         var olInteractions = [];
         this.getLibMap().getInteractions().forEach(function (interaction) {
             for (var j = 0; j < olControlClass.length; j++) {
                 if (interaction instanceof olControlClass[j]) {
-                    this.logger.trace("[OL] getLibMapControl : found interaction : " + olControlClass[j].name);
+                    this.logger.trace("[OlMap] getLibMapControl : found interaction : " + olControlClass[j].name);
                     olInteractions.push(interaction);
                     break;
                 }
@@ -1237,19 +1235,19 @@ OL.prototype.getLibMapControl = function (controlId) {
         return this.getLibMap().hasOwnProperty("graticule") ? this.getLibMap().graticule : null;
     }
     // ici c'est un controle simple.
-    this.logger.trace("[OL] getLibMapControl : controlClass : " + olControlClass.name);
+    this.logger.trace("[OlMap] getLibMapControl : controlClass : " + olControlClass.name);
     // on regarde du cote des controles
     var olControls = this.getLibMap().getControls().getArray();
     if (olControls.length === 0) {
-        this.logger.trace("[OL] getLibMapControl : no control found on map");
+        this.logger.trace("[OlMap] getLibMapControl : no control found on map");
         return foundOlControl;
     }
     for (var i = 0; i < olControls.length; i++) {
         var olControl = olControls[i];
-        this.logger.trace("[OL] getLibMapControl : analyzing : " + typeof olControl);
+        this.logger.trace("[OlMap] getLibMapControl : analyzing : " + typeof olControl);
         if (olControl instanceof olControlClass) {
             foundOlControl = olControl;
-            this.logger.trace("[OL] getLibMapControl : found ! ");
+            this.logger.trace("[OlMap] getLibMapControl : found ! ");
             break;
         }
     }
@@ -1263,8 +1261,8 @@ OL.prototype.getLibMapControl = function (controlId) {
  * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
  * @private
  */
-OL.prototype._addMarkers = function (markersOptions) {
-    this.logger.trace("[OL] : _addMarkers");
+OlMap.prototype._addMarkers = function (markersOptions) {
+    this.logger.trace("[OlMap] : _addMarkers");
     if (!Array.isArray(markersOptions)) {
         this.logger.info("Can not process markersOptions. It is not an Array.");
         return;
@@ -1276,7 +1274,7 @@ OL.prototype._addMarkers = function (markersOptions) {
     // this == img element associated to the marker
     var fopenPopup = function (evt) {
         var evtPx = context.getLibMap().getEventPixel(evt);
-        context.logger.trace("[OL] : _addMarkers : display content : " + mo.content);
+        context.logger.trace("[OlMap] : _addMarkers : display content : " + mo.content);
         Ol.gp.GfiUtils.displayInfo(
             context.getLibMap(),
             context.getLibMap().getCoordinateFromPixel([
@@ -1301,7 +1299,7 @@ OL.prototype._addMarkers = function (markersOptions) {
         if (!mo.hasOwnProperty("offset")) {
             mo.offset = Ol.control.DefaultMarkers["defaultOffset"];
         }
-        this.logger.trace("[OL] : _addMarkers : offset [" + mo.offset[0] + "," + mo.offset[1] + "]");
+        this.logger.trace("[OlMap] : _addMarkers : offset [" + mo.offset[0] + "," + mo.offset[1] + "]");
         // popup offset (from mouse click)
         if (!mo.hasOwnProperty("ppoffset")) {
             // default popup has a 15px of y offset (see .gp-feature-info-div::before css class)
@@ -1337,7 +1335,7 @@ OL.prototype._addMarkers = function (markersOptions) {
         if (mo.position.hasOwnProperty("projection")) {
             fcoords = Ol.proj.transform(fcoords, mo.position.projection, this.getProjection());
         }
-        this.logger.trace("[OL] : _addMarkers : coords [" + fcoords[0] + ", " + fcoords[1] + "]");
+        this.logger.trace("[OlMap] : _addMarkers : coords [" + fcoords[0] + ", " + fcoords[1] + "]");
         var mrkImg = document.createElement("img");
         mrkImg.src = mo.url;
         // mrkImg.setAttribute("content", mo.content);
@@ -1385,7 +1383,7 @@ OL.prototype._addMarkers = function (markersOptions) {
  * @returns {Ol.style.Stroke} - ol.style.Stroke Object
  * @private
  */
-OL.prototype._fillStrokeStyles = function (stylesProps) {
+OlMap.prototype._fillStrokeStyles = function (stylesProps) {
     var strokeOpts = {};
     var resultStyle = null;
     if (stylesProps.hasOwnProperty("strokeLineDash")) {
@@ -1410,7 +1408,7 @@ OL.prototype._fillStrokeStyles = function (stylesProps) {
  * @returns {Ol.style.Stroke} - ol.style.Stroke Object
  * @private
  */
-OL.prototype._fillPointerStyles = function (stylesProps) {
+OlMap.prototype._fillPointerStyles = function (stylesProps) {
     var pointerOpts = {};
     if (stylesProps.hasOwnProperty("radius")) {
         pointerOpts.radius = stylesProps.radius;
@@ -1432,8 +1430,8 @@ OL.prototype._fillPointerStyles = function (stylesProps) {
  * @param {Gp.LayerOptions} layerOptions - options de la couche.
  * @private
  */
-OL.prototype._addLayerConfToLayerSwitcher = function (implLayer, layerOptions) {
-    this.logger.trace("[OL] : _addLayerConfToLayerSwitcher ... ");
+OlMap.prototype._addLayerConfToLayerSwitcher = function (implLayer, layerOptions) {
+    this.logger.trace("[OlMap] : _addLayerConfToLayerSwitcher ... ");
     var lsControl = this.getLibMapControl("layerswitcher");
     if (lsControl) {
         lsControl.addLayer(implLayer, this._layerOptions2layerConf(layerOptions));
@@ -1446,11 +1444,11 @@ OL.prototype._addLayerConfToLayerSwitcher = function (implLayer, layerOptions) {
  * @param {String} layerId - layer identifier
  * @returns {String} - Layer Container div Id in the LayerSwitcher
  */
-OL.prototype.getLSLayerContainerDivId = function (layerId) {
+OlMap.prototype.getLSLayerContainerDivId = function (layerId) {
     var id = null;
     var idxLS = this._findRegisteredControl("layerswitcher");
     if (idxLS < 0) {
-        this.logger.trace("[OL] : getLSLayerContainerDivId : no layerswitcher on map !");
+        this.logger.trace("[OlMap] : getLSLayerContainerDivId : no layerswitcher on map !");
         return id;
     }
     var olLayers = this._getLayersObj([layerId]);
@@ -1458,6 +1456,6 @@ OL.prototype.getLSLayerContainerDivId = function (layerId) {
         var olLs = this._controls[idxLS].obj;
         return olLs.getLayerDOMId(olLayers[0].obj);
     }
-    this.logger.trace("[OL] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !");
+    this.logger.trace("[OlMap] : getLSLayerContainerDivId : layer [" + layerId + "] not found on map !");
     return id;
 };

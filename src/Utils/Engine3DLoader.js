@@ -1,4 +1,4 @@
-var Loader = {
+var Engine3DLoader = {
 
     // loader engine itowns
     loadEngine : function (src, callbackSuccess, callbackError, scope) {
@@ -83,4 +83,4 @@ var Loader = {
     }
 };
 
-export default Loader;
+export {Engine3DLoader};

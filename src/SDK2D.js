@@ -1,12 +1,11 @@
-import {Map} from "./Map";
-import {OL} from "./OpenLayers/OL";
-import "../res/OpenLayers/OL.css";
+import {MapLoader} from "./Utils/MapLoader";
+import {OlMap} from "./OpenLayers/OlMap";
+import "../res/OpenLayers/OlMap.css";
 
 export * from "gp";
 
-Map.__classOl = OL;
-Map._class = Map.__classOl.prototype; // IMap !
-export {Map};
+MapLoader.__class2d = OlMap;
+export {MapLoader};
 
 export const sdkVersion = "__GPSDKVERSION__";
 export const sdkDate = "__GPDATE__";

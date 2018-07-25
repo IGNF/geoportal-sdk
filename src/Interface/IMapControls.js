@@ -1,4 +1,4 @@
-import {IMap} from "./IBase";
+import {IMap} from "./IMapBase";
 
 /**
  * Default autoPanOptions
@@ -61,23 +61,6 @@ IMap.prototype._hexToRgba = function (hex, opacity) {
     } : null;
     var result = rgb ? "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + opacity + ")" : null;
     return result;
-};
-
-/**
- * Returns the current map's azimuth.
- *
- * @returns {Number} - The current map's azimuth expressed in decimal degrees clockwise to the north.
- */
-IMap.prototype.getAzimuth = function () {
-    return 0;
-};
-
-/**
- * Sets a new map's azimuth.
- *
- * @param {Float} azimuth - The new map's azimuth expressed in decimal degrees clockwise to the north.
- */
-IMap.prototype.setAzimuth = function (azimuth) {
 };
 
 /**

@@ -1,10 +1,10 @@
-import {IT} from "./ItBase";
-import {IMap} from "../IMap";
+import {ItMap} from "./ItMapBase";
+import {IMap} from "../Interface/IMap";
 
 /**
  * Proprietes observables des couches pour le SDK
  */
-IT.LAYERPROPERTIES = {
+ItMap.LAYERPROPERTIES = {
     visible : "visibility",
     opacity : "opacity",
     sequence : "position"
@@ -15,7 +15,7 @@ IT.LAYERPROPERTIES = {
  *
  * @param {Array.<String>} layerIds - A list of layer's id or null.
  */
-IT.prototype.removeLayers = function (layerIds) {
+ItMap.prototype.removeLayers = function (layerIds) {
     if (!IMap.prototype.removeLayers.apply(this, arguments)) {
         return;
     }
@@ -27,7 +27,7 @@ IT.prototype.removeLayers = function (layerIds) {
         if (this._getLayersObj(_layerId) && Array.isArray(this._getLayersObj(_layerId)) && this._getLayersObj(_layerId).length > 0) {
             this.libMap.removeLayer(_layerId);
         } else {
-            this.logger.info("[IT]  : Impossible to remove " + _layerId + " - not Found");
+            this.logger.info("[ItMap]  : Impossible to remove " + _layerId + " - not Found");
         }
     },
     this);
@@ -38,7 +38,7 @@ IT.prototype.removeLayers = function (layerIds) {
  *
  * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}).
  */
-IT.prototype.modifyLayers = function (layersOptions) {
+ItMap.prototype.modifyLayers = function (layersOptions) {
     if (!IMap.prototype.modifyLayers.apply(this, arguments)) {
         return;
     }
@@ -47,7 +47,7 @@ IT.prototype.modifyLayers = function (layersOptions) {
     var _layerObjs = this._getLayersObj(layerIds);
     _layerObjs.forEach(function (_layerObj) {
         this.logger.trace("[IMap] modifyLayers  : modifying  : [" + _layerObj.id + "]");
-        // traduction options ahn => options IT
+        // traduction options ahn => options ItMap
         var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]);
         // application des options IT aux couches IT
         // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
@@ -86,13 +86,13 @@ IT.prototype.modifyLayers = function (layersOptions) {
  *
  * @private
  */
-IT.prototype._getLayerOpts = function (layerId, layersStack) {
+ItMap.prototype._getLayerOpts = function (layerId, layersStack) {
     var layerOpts = null;
     layersStack = layersStack || this._layers;
     for (var i = 0; i < layersStack.length; i++) {
         var l = layersStack[i];
         if (l.id === layerId) {
-            this.logger.trace("[IT]  : found layer  : " + l.id);
+            this.logger.trace("[ItMap]  : found layer  : " + l.id);
             layerOpts = {};
             layerOpts[l.id] = l.options;
             break;
@@ -109,7 +109,7 @@ IT.prototype._getLayerOpts = function (layerId, layersStack) {
  *
  * @private
  */
-IT.prototype._registerUnknownLayer = function (layerObj) {
+ItMap.prototype._registerUnknownLayer = function (layerObj) {
     // couches de résultat (itineraire, isochrone)
     /* var layerId = "unknownLayer" ;
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
@@ -139,19 +139,19 @@ IT.prototype._registerUnknownLayer = function (layerObj) {
  *
  * @private
  */
-IT.prototype._getCommonLayerParams = function (itlayerOpts) {
+ItMap.prototype._getCommonLayerParams = function (itlayerOpts) {
     var commonOpts = {};
-    this.logger.trace("[IT] : _getCommonLayerParams ");
+    this.logger.trace("[ItMap] : _getCommonLayerParams ");
     if (itlayerOpts.hasOwnProperty("opacity")) {
-        this.logger.trace("[IT] : _getCommonLayerParams - opacity : " + itlayerOpts.opacity);
+        this.logger.trace("[ItMap] : _getCommonLayerParams - opacity : " + itlayerOpts.opacity);
         commonOpts.opacity = itlayerOpts.opacity;
     }
     if (itlayerOpts.hasOwnProperty("visible")) {
-        this.logger.trace("[IT] : _getCommonLayerParams - visibility : " + itlayerOpts.visible);
+        this.logger.trace("[ItMap] : _getCommonLayerParams - visibility : " + itlayerOpts.visible);
         commonOpts.visibility = itlayerOpts.visible;
     }
     if (itlayerOpts.hasOwnProperty("sequence")) {
-        this.logger.trace("[IT] : _getCommonLayerParams - position : " + itlayerOpts.sequence);
+        this.logger.trace("[ItMap] : _getCommonLayerParams - position : " + itlayerOpts.sequence);
         commonOpts.position = itlayerOpts.sequence;
     }
 
@@ -167,19 +167,19 @@ IT.prototype._getCommonLayerParams = function (itlayerOpts) {
  *
  * @private
  */
-IT.prototype._applyCommonLayerParams = function (layerOpts) {
+ItMap.prototype._applyCommonLayerParams = function (layerOpts) {
     var commonOpts = {};
-    this.logger.trace("[IT]  : _applyCommonLayerParams ");
+    this.logger.trace("[ItMap]  : _applyCommonLayerParams ");
     if (layerOpts.hasOwnProperty("opacity")) {
-        this.logger.trace("[IT]  : _applyCommonLayerParams - opacity  : " + layerOpts.opacity);
+        this.logger.trace("[ItMap]  : _applyCommonLayerParams - opacity  : " + layerOpts.opacity);
         commonOpts.opacity = layerOpts.opacity;
     }
     if (layerOpts.hasOwnProperty("visibility")) {
-        this.logger.trace("[IT]  : _applyCommonLayerParams - visibility  : " + layerOpts.visibility);
+        this.logger.trace("[ItMap]  : _applyCommonLayerParams - visibility  : " + layerOpts.visibility);
         commonOpts.visible = layerOpts.visibility;
     }
     if (layerOpts.hasOwnProperty("position")) {
-        this.logger.trace("[IT]  : _applyCommonLayerParams - position  : " + layerOpts.position);
+        this.logger.trace("[ItMap]  : _applyCommonLayerParams - position  : " + layerOpts.position);
         commonOpts.zIndex = layerOpts.position;
     }
     /* TODO à compléter
@@ -209,7 +209,7 @@ IT.prototype._applyCommonLayerParams = function (layerOpts) {
   *
   * @private
   */
-IT.prototype._getTMSLimits = function (TMSID) {
+ItMap.prototype._getTMSLimits = function (TMSID) {
     var TMSlimits;
     if (TMSID === "PM") {
         TMSlimits = {
@@ -461,5 +461,5 @@ IT.prototype._getTMSLimits = function (TMSID) {
         };
         return TMSlimits;
     }
-    this.logger.trace("[IT]  : no TMS Limits found for this TMS id");
+    this.logger.trace("[ItMap]  : no TMS Limits found for this TMS id");
 };

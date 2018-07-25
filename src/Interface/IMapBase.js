@@ -1,9 +1,9 @@
-/* global __SWITCH_2D3D_ALLOWED__ */
+/* global __SWITCH2D3D_ALLOWED__ */
 
-import Logger from "./Utils/LoggerByDefault";
+import Logger from "../Utils/LoggerByDefault";
 import * as Ol from "openlayers";
 import {Services, ProxyUtils} from "gp";
-import {Map} from "./Map";
+import {MapLoader} from "../Utils/MapLoader";
 
 /**
  * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
@@ -25,6 +25,7 @@ var switch2D3D = function (viewMode) {
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
     oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
+    oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
 
     // remove old controls and associated listeners
     for (var controlId in oldMap.controlsOptions) {
@@ -74,7 +75,7 @@ var switch2D3D = function (viewMode) {
         return;
     }
     // this.libMap = null;
-    var newMap = Map.load(
+    var newMap = MapLoader.load(
         // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
         // this.libMap.getApiKeys(),
         // FIXME faut-il rajouter un acces à la div directement dans Map getDiv()
@@ -83,7 +84,8 @@ var switch2D3D = function (viewMode) {
         // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
         {
             apiKey : oldMap.apiKey,
-            enginePath3d : oldMap.enginePath3d || null,
+            enginePath3d : oldMap.enginePath3d,
+            enableRotation : oldMap.enableRotation,
             projection : oldMap.projection,
             center : oldMap.center,
             azimuth : oldMap.azimuth,
