@@ -2,6 +2,8 @@ import * as SDK from "../../dist/2d/GpSDK2D";
 
 import {assert, expect, should} from "chai";
 
+should();
+
 describe("-- Test SDK 2D --", function () {
     describe("-- Test Integration composants SDK, ol --", function () {
 
@@ -10,12 +12,13 @@ describe("-- Test SDK 2D --", function () {
             it('SDK exists and is integrated', function () {
 
                 expect(SDK).to.exist ;
+                console.log(SDK);
                 SDK.should.have.property('sdkVersion');
                 SDK.should.have.property('sdkDate');
 
                 // integration Map
                 SDK.should.have.property('MapLoader');
-                expect(SDK.Map).to.be.an('Object');
+                expect(SDK.MapLoader).to.be.an('Object');
 
                 // integration extension ol
                 SDK.should.have.property('olExtVersion');

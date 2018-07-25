@@ -4,6 +4,7 @@ import {enginePath3d, apiKey} from "../config";
 
 import {assert, expect, should} from "chai";
 
+should();
 
 describe("-- Test SDK 3D --", function () {
 
@@ -26,7 +27,7 @@ describe("-- Test SDK 3D --", function () {
 
                 // integration Map
                 SDK.should.have.property('MapLoader');
-                expect(SDK.Map).to.be.an('Object');
+                expect(SDK.MapLoader).to.be.an('Object');
 
                 // integration extension ol
                 SDK.should.have.property('olExtVersion');

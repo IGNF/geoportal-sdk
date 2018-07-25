@@ -28,7 +28,7 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.LoadMap("viewerDiv",{
+        var map = Gp.MapLoader.load("viewerDiv",{
             apiKey : "{{apikey}}",
             viewMode : "3d",
             enableRotation : false,
