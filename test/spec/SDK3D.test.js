@@ -26,8 +26,8 @@ describe("-- Test SDK 3D --", function () {
                 SDK.should.have.property('sdkDate');
 
                 // integration Map
-                SDK.should.have.property('MapLoader');
-                expect(SDK.MapLoader).to.be.an('Object');
+                SDK.should.have.property('Map');
+                expect(SDK.Map).to.be.an('Object');
 
                 // integration extension ol
                 SDK.should.have.property('olExtVersion');
@@ -91,7 +91,7 @@ describe("-- Test SDK 3D --", function () {
                 expect(scope.itowns).to.not.exist ;
 
                 var div = Utils.createDiv();
-                var map = SDK.MapLoader.load(
+                var map = SDK.Map.load(
                     div,
                     {
                         apiKey : apiKey,

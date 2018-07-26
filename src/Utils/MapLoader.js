@@ -7,7 +7,7 @@ import Logger from "./LoggerByDefault";
  * Provide convenience method to create a Map (instance of {@link Gp.Map}) and attach it to a HTML element.
  *
  * @module
- * @alias Gp.MapLoader
+ * @alias Gp.Map.load()
  */
 var MapLoader = {
     /**
@@ -18,7 +18,7 @@ var MapLoader = {
      * @param {String | DOMElement} div - The HTML element or its id where the map will be loaded.
      * @param {Gp.MapOptions} [mapOptions] - Options for loading the map.
      * @example
-     *      Gp.MapLoader.load(
+     *      Gp.Map.load(
      *          'geoportalMap',
      *          {
      *              apiKey : "YOUR_API_KEY",
