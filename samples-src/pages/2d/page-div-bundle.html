@@ -36,7 +36,7 @@
 
 {{#content "js"}}
     <script>
-        Gp.MapLoader.load('geoportalMap1', {
+        Gp.Map.load('geoportalMap1', {
             apiKey : "{{apikey}}",
             controlsOptions : {
               "search" : {
@@ -49,7 +49,7 @@
             }
         });
 
-        Gp.MapLoader.load(document.getElementById('geoportalMap2'), {
+        Gp.Map.load(document.getElementById('geoportalMap2'), {
             apiKey : "{{apikey}}",
             controlsOptions : {
               "search" : {
@@ -60,7 +60,7 @@
             }
         });
 
-        Gp.MapLoader.load('inconnu', {
+        Gp.Map.load('inconnu', {
             apiKey : "{{apikey}}"
         });
     </script>

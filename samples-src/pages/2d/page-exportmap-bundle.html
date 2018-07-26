@@ -34,7 +34,7 @@
 {{#content "js"}}
     <script>
         var map2 = null ;
-        var map = Gp.MapLoader.load('geoportalMap',{
+        var map = Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
             center : {
                 location : "Nimes",
@@ -76,7 +76,7 @@
             }
             outputDiv.innerHTML += "</p>" ;
             // creation d'une nouvelle carte à l'identique
-            map2 = Gp.MapLoader.load('geoportalMap2', {
+            map2 = Gp.Map.load('geoportalMap2', {
                 apiKey : ["{{apikey}}"],
                 center : map.getCenter(),
                 layersOptions : layersOptions,

@@ -29,7 +29,7 @@
 
 {{#content "js"}}
     <script>
-        Gp.MapLoader.load('geoportalMap1', {
+        Gp.Map.load('geoportalMap1', {
             apiKey : "{{apikey}}",
             maxZoom : 15,
             controlsOptions:{
@@ -37,7 +37,7 @@
             }
         });
 
-        Gp.MapLoader.load('geoportalMap2', {
+        Gp.Map.load('geoportalMap2', {
             apiKey : "{{apikey}}",
             minZoom : 5,
             controlsOptions:{

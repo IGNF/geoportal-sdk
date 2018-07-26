@@ -26,7 +26,7 @@ if (typeof OlMap !== "undefined" &&
     logger.log("Aucune lib. détectée !?");
 }
 
-export {MapLoader};
+export {MapLoader as Map};
 
 export const sdkVersion = "__GPSDKVERSION__";
 export const sdkDate = "__GPDATE__";

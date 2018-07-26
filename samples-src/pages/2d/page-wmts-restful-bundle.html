@@ -18,13 +18,13 @@
 
 {{#content "body"}}
     <h1>WMTS Restful</h1>
-    <p>Chargement d'une couche WMTS Restful (Cartes Topographiques du Luxembourg) via Gp.MapLoader.load()</p>
+    <p>Chargement d'une couche WMTS Restful (Cartes Topographiques du Luxembourg) via Gp.Map.load()</p>
     <div id="geoportalMap"></div>
 {{/content}}
 
 {{#content "js"}}
     <script>
-        Gp.MapLoader.load('geoportalMap',{
+        Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
             center : {
                 x : 6.12,

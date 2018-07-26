@@ -14,7 +14,7 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Ajout d'une carte avec Gp.MapLoader.load() et des tests sur l'attribut "position" des couches</h1>
+    <h1>Ajout d'une carte avec Gp.Map.load() et des tests sur l'attribut "position" des couches</h1>
     <div id="geoportalMap"></div>
     <input type="button" value="add layers" onclick="addLayers();"/><br>
     <input type="button" value="remove layers" onclick="removeLayers();"/><br>
@@ -24,7 +24,7 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.MapLoader.load(
+        var map = Gp.Map.load(
             'geoportalMap',
             {
                 apiKey : "{{apikey}}",

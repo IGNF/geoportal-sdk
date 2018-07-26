@@ -14,14 +14,14 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Ajout d'une carte avec Gp.MapLoader.load() et l'ensemble des options possibles de mapOptions </h1>
+    <h1>Ajout d'une carte avec Gp.Map.load() et l'ensemble des options possibles de mapOptions </h1>
     <div id="geoportalMap"></div>
     <input type="button" value="addLayer" onclick="addLayer();"/><br>
 {{/content}}
 
 {{#content "js"}}
     <script>
-        var map = Gp.MapLoader.load(
+        var map = Gp.Map.load(
             'geoportalMap',
             {
                 apiKey : "{{apikey}}",

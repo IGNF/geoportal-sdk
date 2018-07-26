@@ -37,17 +37,17 @@
 {{#content "js"}}
     <script type="module">
         import * as Gp from "{{ baseurl }}/dist/2d/GpSDK2D{{ mode }}.js";
-        self.Gp.MapLoader.load('geoportalMap1',{
+        self.Gp.Map.load('geoportalMap1',{
             apiKey : "{{apikey}}",
         });
-        self.Gp.MapLoader.load('geoportalMap2', {
+        self.Gp.Map.load('geoportalMap2', {
             apiKey : "{{apikey}}",
             center : {
                 x : -511270,
                 y : 6151620
             }
         });
-        self.Gp.MapLoader.load('geoportalMap3', {
+        self.Gp.Map.load('geoportalMap3', {
             apiKey : "{{apikey}}",
             center : {
                 x : -4.620391,
