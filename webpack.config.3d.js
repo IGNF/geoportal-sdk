@@ -279,6 +279,10 @@ module.exports = env => {
                 raw : true
             }),
             new BannerWebPackPlugin({
+                banner : fs.readFileSync(path.join(__dirname, "licences", "licence-geoportal-extensions.txt"), "utf8"),
+                raw : true
+            }),
+            new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-ign.tmpl"), "utf8"), {
                     __BRIEF__ : pkg.description,
                     __VERSION__ : pkg.SDK3DVersion,

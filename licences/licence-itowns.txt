@@ -1,4 +1,5 @@
 /*!
  * iTowns. See http://www.itowns-project.org/
- * License: https://github.com/iTowns/itowns/blob/master/LICENSE.md
+ * License: https://github.com/iTowns/itowns/blob/master/LICENCE.md
+ * Version: 2.3.0
  */
