@@ -1,5 +1,0 @@
-/*!
- * geoportal-extensions. See https://github.com/IGNF/geoportal-extensions
- * License: https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * Version: 2.0.0
- */

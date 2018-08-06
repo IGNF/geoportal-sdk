@@ -271,15 +271,22 @@ module.exports = env => {
                 raw : true
             }),
             new BannerWebPackPlugin({
-                banner : fs.readFileSync(path.join(__dirname, "licences", "licence-openlayers.txt"), "utf8"),
+                banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-openlayers.tmpl"), "utf8"), {
+                    __VERSION__ : pkg.dependencies.openlayers,
+                }),
                 raw : true
             }),
             new BannerWebPackPlugin({
-                banner : fs.readFileSync(path.join(__dirname, "licences", "licence-itowns.txt"), "utf8"),
+                banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-itowns.tmpl"), "utf8"), {
+                    __VERSION__ : pkg.dependencies.itowns,
+                }),
                 raw : true
             }),
             new BannerWebPackPlugin({
-                banner : fs.readFileSync(path.join(__dirname, "licences", "licence-geoportal-extensions.txt"), "utf8"),
+                banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-geoportal-extensions.tmpl"), "utf8"), {
+                    __NAME__ : "geoportal-extensions-openlayers-itowns",
+                    __VERSION__ : pkg.dependencies["geoportal-extensions-openlayers-itowns"],
+                }),
                 raw : true
             }),
             new BannerWebPackPlugin({
