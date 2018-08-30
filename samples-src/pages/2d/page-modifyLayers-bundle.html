@@ -1,0 +1,56 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Modify Layers</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+        #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Modify Layers</h1>
+    <p>Les trois boutons permettent d'agir sur les propriétés de chacune des couches à l'aide de la méthode modifyLayers().</p>
+    <div id="geoportalMap"></div>
+    <div id="BoutonDiv">
+        <input type="button" name="export" onclick="modifyLayers();" value="modifiyLayers(null)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {opacity : 0.5}});" value="modifyLayers(GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'ORTHOIMAGERY.ORTHOPHOTOS':{minZoom:8,maxZoom:12},'CADASTRALPARCELS.PARCELS':{visibility:false}});" value="modifyLayers(ORTHOIMAGERY.ORTHOPHOTOS,CADASTRALPARCELS.PARCELS)"/><br/>
+    </div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    minZoom : 1,
+                    maxZoom : 15
+                },
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {},
+                'CADASTRALPARCELS.PARCELS' : {}
+            },
+            controlsOptions : {
+                'layerSwitcher' : {
+                    maximised : true
+                }
+            },
+            zoom : 10
+        });
+
+        function modifyLayers(layersOpts) {
+            map.modifyLayers(layersOpts) ;
+        }
+    </script>
+{{/content}}
+{{/extend}}

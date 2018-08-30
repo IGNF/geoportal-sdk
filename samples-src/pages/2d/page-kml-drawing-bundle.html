@@ -1,0 +1,75 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D KML Drawing</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une couche KML</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center:{
+                x : 837444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerSwitcher" : {}
+            },
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    minZoom : 1,
+                    maxZoom : 21
+                },
+                maCoucheKML : {
+                    opacity : 0.7,
+                    minZoom : 1,
+                    maxZoom : 21,
+                    visibility : true,
+                    title : "Croquis",
+                    description : "ma couche croquis en KML",
+                    format : "kml",
+                    url : "{{resources}}/KML/croquis-drawingtool.kml",
+                    extractStyles : true,
+                    showPointNames : true,
+                    zoomToExtent : true
+                },
+                MonMarker : {
+                    opacity : 1,
+                    minZoom : 1,
+                    maxZoom : 21,
+                    visibility : true,
+                    title : "Croquis",
+                    description : "mon marker en KML",
+                    format : "kml",
+                    url : "{{resources}}/KML/marker.kml",
+                    extractStyles : true,
+                    showPointNames : true,
+                    zoomToExtent : false
+                }
+            },
+            zoom : 5
+        });
+    </script>
+{{/content}}
+{{/extend}}

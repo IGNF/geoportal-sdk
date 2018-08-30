@@ -1,0 +1,57 @@
+{{#extend "sample-amd-layout-3d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 3D Azimuth</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 1200px;
+          position : "relative";
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test 3D</h1>
+    <h2>Carte 3D.</h2>
+    <div id="BoutonSwitch2d3d">
+        <input type="button" name="switch" onclick="switchTo2D3D();" value="Switch 2D <-> 3D"/><br/>
+    </div>
+    <div id="viewerDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = null;
+
+        requirejs([
+          "Gp"
+        ],
+        function (
+          Gp
+        ) {
+            map = Gp.Map.load("viewerDiv",{
+                apiKey : "{{apikey}}",
+                viewMode : "2d",
+                enginePath3d : "{{baseurl}}/node_modules/itowns/dist/",
+                layersOptions : {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+                },
+                center : {
+                    x : 2.357,
+                    y : 48.83
+                },
+                azimuth : 60
+            });
+        });
+
+        function switchTo2D3D () {
+            var viewMode = map.getViewMode();
+            map = map.switch2D3D(viewMode === "2d" ? "3d":"2d");
+        };
+    </script>
+{{/content}}
+{{/extend}}

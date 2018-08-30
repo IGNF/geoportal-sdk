@@ -1,0 +1,88 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Events</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Abonnement aux evenements</h1>
+    <div id="geoportalMap"></div>
+    <div id="eventsDiv">
+        <input type="checkbox" name="azimuthChanged" onclick="listen(this);"/>azimuthChanged<br/>
+        <input type="checkbox" name="zoomChanged" onclick="listen(this);"/>zoomChanged<br/>
+        <input type="checkbox" name="centerChanged" checked="true" onclick="listen(this);"/>centerChanged<br/>
+        <input type="checkbox" name="layerChanged" onclick="listen(this);"/>layerChanged<br/>
+        <input type="button" name="grayScale" onclick="toggleGS();" value="Toggle Orthos Grayscale / Color"/>
+    </div>
+    <div id="outputDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        function action (evt) {
+            var outDivElem= document.getElementById("outputDiv") ;
+            outDivElem.innerHTML = "<p>" + JSON.stringify(evt) + "</p>"
+        }
+
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center : {
+                geolocate : true,
+                location : "Nimes",
+                locationTypes : ["PositionOfInterest"]
+            },
+            azimuth : 45,
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    minZoom : 1,
+                    maxZoom : 15
+                }
+            },
+            controlsOptions : {
+                'layerSwitcher' : {
+                    maximised : true
+                }
+            },
+            mapEventsOptions : {
+                'centerChanged' : action,
+                'located' : action,
+                'geolocated' : action,
+                'layerChanged' : action,
+                'configured' : function () {
+                    map.addLayers({
+                        'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {}
+                    }) ;
+                }
+            },
+            zoom : 10
+        });
+
+        function listen(elem) {
+            if (elem.checked) {
+                map.listen(elem.name,action) ;
+            } else {
+                map.forget(elem.name,action) ;
+            }
+        }
+
+        function toggleGS(elem) {
+           lo = map.getLayersOptions(["ORTHOIMAGERY.ORTHOPHOTOS"]) ;
+           if (!lo || !lo["ORTHOIMAGERY.ORTHOPHOTOS"]) {
+               console.log(lo) ;
+               return ;
+           }
+           lo["ORTHOIMAGERY.ORTHOPHOTOS"].grayScaled = (lo["ORTHOIMAGERY.ORTHOPHOTOS"].grayScaled ? false : true) ;
+           map.modifyLayers(lo) ;
+        }
+    </script>
+{{/content}}
+{{/extend}}

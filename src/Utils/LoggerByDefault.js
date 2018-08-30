@@ -1,25 +1,21 @@
-define(["log4js", "logger-cfg"], function (Log4js, Config) {
-    
-    "use strict";
-    
+/* global __PRODUCTION__ */
+import * as Log from "loglevel";
+
+var LoggerByDefault = {
     /**
-     * classe LoggerByDefault
+     *logger statique
+     * @param {String} [name="default"] - the logger name
+     *
+     * @returns {Object} logger
      */
-    var LoggerByDefault = {
-        
-        /**
-         * methode getLogger
-         */
-        getLogger : function (name) {
-            Log4js.load(Config, function (error) {
-                if (error) {
-                    // FIXME comment traite t on cette exception !? 
-                    throw error;
-                }
-            });
-            return Log4js.getLogger(name || "default");
-        }
-    };
-    
-    return LoggerByDefault;
-});
+    getLogger : function (name) {
+        // Substitute global constants configured at compile time
+        // cf. webpack.config.js
+        (__PRODUCTION__)
+            ? Log.disableAll() : Log.enableAll();
+        var logname = name || "default";
+        return Log.getLogger(logname);
+    }
+};
+
+export default LoggerByDefault;

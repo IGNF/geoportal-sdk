@@ -40,8 +40,11 @@
 /bower_components/
 /bower_dependencies/
 /node_modules/
+/publish/
 /test/bower_components/
 /test/bower_dependencies/
 /test/node_modules/
 /lib/external/virtual/
 /dist/
+/jsdoc/
+/samples/

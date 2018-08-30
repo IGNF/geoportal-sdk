@@ -1,0 +1,42 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D OSM</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte avec une couche OSM</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            controlsOptions : {
+                "layerSwitcher" : {}
+            },
+            layersOptions : {
+                maCoucheOSM : {
+                    opacity : 0.7,
+                    minZoom : 8,
+                    maxZoom : 13,
+                    visibility : true,
+                    format :"osm",
+                    url : "http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png"
+                }
+            },
+            zoom : 9
+        });
+    </script>
+{{/content}}
+{{/extend}}

@@ -1,0 +1,60 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Measures Without Toolbox</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+        #container-measure {
+          position: absolute;
+          top: 42px;
+          left: 16px;
+          z-index: 1;
+          bottom: auto;
+          right: auto;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Controles Mesures</h1>
+    <p>Ici, les outils de mesures sont positionnés dans une div indépendante de la carte (sans container).</p>
+    <div id="geoportalMap">
+      <div id="container-measure">
+        <!-- HERE : widgets tools measures -->
+      </div>
+    </div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            zoom : 12,
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : false
+                },
+                area : {
+                    div : 'container-measure'
+                },
+                length : {
+                    div : 'container-measure'
+                },
+                azimuth : {
+                    div : 'container-measure'
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

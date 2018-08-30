@@ -20,13 +20,13 @@ Vous pouvez récupérer le Kit de Développement Géoportail soit par [télécha
 Il contient l'arborescence suivante :
 
     <Kit de Développement Géoportail>/
-        GpOl3Itowns.js
+        GpSDK3D.js
             (version minifiée du code javascript pour une utilisation en production)
-        GpOl3Itowns.css
+        GpSDK3D.css
             (version minifiée des css pour une utilisation en production)
-        GpOl3Itowns-src.js
+        GpSDK3D-src.js
             (version non minifiée du code javascript pour une utilisation en développement)
-        GpOl3Itowns-src.css
+        GpSDK3D-src.css
             (version non minifiée des css pour une utilisation en développement)
         itowns.js
             (version minifiée de la librairie iTowns compatible avec le SDK 3D)
@@ -53,17 +53,17 @@ Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) i
 npm i geoportal-sdk
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/mixIt/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/3d/` de votre projet.
 
 #### Accès direct
 
 Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
 Par exemple sur Github Pages :
 ```
-http://ignf.github.io/geoportal-sdk/latest/dist/mixIt/GpOL3Itowns.js
-http://ignf.github.io/geoportal-sdk/latest/dist/mixIt/GpOL3Itowns.css
-http://ignf.github.io/geoportal-sdk/latest/dist/mixIt/GpOL3Itowns-src.js
-http://ignf.github.io/geoportal-sdk/latest/dist/mixIt/GpOL3Itowns-src.css
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.js
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.css
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.js
+http://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.css
 ```
 
 
@@ -75,14 +75,27 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 
 ``` html
 <!-- SDK Géoportail -->
-<script src="chemin/vers/GpOl3Itowns.js"></script>
-<link rel="stylesheet" href="chemin/vers/GpOl3Itowns.css" />
+<script src="chemin/vers/GpSDK3D.js"></script>
+<link rel="stylesheet" href="chemin/vers/GpSDK3D.css" />
+```
+
+### Utilisation dans module ES6
+
+``` javascript
+import * as Gp from "@geoportal-sdk/3d";
+
+// votre utilisation du SDK
+var map = Gp.Map.load("myDivId",{
+    apiKey : "myApiKey",
+    viewMode : "2d", // ou "3d"
+    ...
+});
 ```
 
 
 ### Interfaces de programmation
 
-Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/ol3/); d'[iTowns](https://www.itowns-project.org/itowns/API_Doc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/).
+Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/); d'[iTowns](https://www.itowns-project.org/itowns/API_Doc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/).
 
 
 
@@ -107,7 +120,14 @@ var map = Gp.Map.load(
          // clef d'accès à la plateforme
          apiKey: "APIKEY",
          // chargement de la cartographie en 3D avec la librairie itowns
-         library : "itowns",
+         viewMode : "3d",
+
+         // localisation du fichier itowns.js pour le chargement du moteur 3d
+         // en ligne, en pointant vers la dernière version compatible disponible (voir fichier DEPENDENCIES.md)
+         enginePath3d : "https://github.com/iTowns/itowns/releases/download/v2.3.0/",
+         // ou en local, exemple :
+         // enginePath3d : "chemin/vers/le/dossier/contenant/itowns.js/",
+
          // centrage de la carte
          center : {
              location : "73 avenue de Paris, Saint-Mandé"
@@ -134,7 +154,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * utilisation des **droits de la clef** 'APIKEY' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
 
-* **library** : "itowns" pour un chargement de la cartographie en 3D, ou "ol3" (par défaut) pour un chargement de la cartographie en 2D. Il sera ensuite possible de basculer d'un mode de visualisation à l'autre ([Voir la partie "Bascule entre 2D et 3D](#switchToLib)).
+* **viewMode** : "**3d**" pour un chargement de la cartographie en 3D, **avec la librairie iTowns,** ou "**2d**" (par défaut) pour un chargement de la cartographie en 2D, **avec la librairie OpenLayers.** Il sera ensuite possible de basculer d'un mode de visualisation à l'autre (Voir la partie "Bascule entre 2D et 3D).
 
 * **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 
@@ -199,7 +219,7 @@ var map = Gp.Map.load(
 
 Le paramétrage du cente de la carte se fait à l'aide de la propriété **[center](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Center.html)** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
-On peut centrer la carte de differentes façons :
+On peut centrer la carte de différentes façons :
 
 #### Centrage par coordonnées
 
@@ -296,7 +316,7 @@ Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage
 
 #### Affichage des couches Géoportail WMS et WMTS
 
-Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
+Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
 Pour afficher un MNT IGN dans un contexte 3D, il suffit de renseigner le paramètre "isElevation" à true.
 
@@ -370,7 +390,7 @@ var map = Gp.Map.load(
 
 #### Affichage des couches "externes"
 
-Le couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
+Le couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
 
 Les formats supportés par le SDK pour les couches externes sont les suivants :
 
@@ -378,7 +398,7 @@ Pour les données images : WMS, WMTS (Open Street Map uniquement en 2D)
 
 Pour les données vecteur : KML, GPX, GeoJSON (WFS uniquement en 2D)
 
-Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
+Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
 
 
 **Exemple** : ajout d'une couche WMS externe.
@@ -418,7 +438,7 @@ var map = Gp.Map.load(
 
 ### Configuration des markers - visu 2D uniquement
 
-Le SDK 3D vous permet de rajouter des repères (markers) sur votre carte, **mais uniquement pour un affichage 2D**. 
+Le SDK 3D vous permet de rajouter des repères (markers) sur votre carte, **mais uniquement pour un affichage 2D**.
 Cela se fait à l'aide de la propriété **markersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
 Il s'agit d'un tableau javascript contenant autant d'éléments que de markers à rajouter. Chaque élément est un objet javascript de type [Gp.MarkerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MarkerOptions.html) ; il permet de préciser les caractéristiques (positionnement, apparence, ...) du repère de positionnement à afficher.
@@ -448,9 +468,9 @@ var map = Gp.Map.load(
 ### Configuration des outils additionnels à proposer sur la carte
 
 Par défaut, la carte se présente :
-- en 2D avec les boutons de zoom et l'affichage des attributions. 
-- en 3D avec l'affichage des attributions. 
-Le SDK 3D vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'intéragir avec la celle-ci. **Attention :** certains de ces outils ne sont disponibles que sur la visualisation 2D.
+- en 2D avec les boutons de zoom et l'affichage des attributions.
+- en 3D avec l'affichage des attributions.
+Le SDK 3D vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'interagir avec la celle-ci. **Attention :** certains de ces outils ne sont disponibles que sur la visualisation 2D.
 
 L'ajout d'outils se fait à l'aide de la propriété **controlsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). Il s'agit d'un objet javascript dont chaque propriété a le nom de l'outil à rajouter et chaque valeur de propriété permet de préciser - si besoin - le paramétrage de l'outil. Ce paramétrage se fait à l'aide d'un objet javascript de type [Gp.ControlOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html), dont les propriétés vont varier selon l'outil.
 
@@ -497,7 +517,7 @@ Les outils disponibles en 2D uniquement sont les suivants :
 
 <a id="switch_tools"/>
 
-*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
+*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
 
 
 <a id="events"/>
@@ -545,7 +565,7 @@ var map = Gp.Map.load(
 
 ### Bascule entre 2D et 3D
 
-Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switchToLibITOL3()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switchToLibITOL3). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
+Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
 
 **Voir un exemple de bascule sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/fsgxk3ov/embedded/result,js,html,css/)**
 
@@ -575,9 +595,9 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 ### Interaction avec la carte créée
 
-La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
+La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'interagir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
-Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événment à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
+Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événement à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
 
 ``` javascript
 

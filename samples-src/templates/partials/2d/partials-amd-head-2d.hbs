@@ -1,0 +1,10 @@
+        <!-- requirejs -->
+        <script src="{{ baseurl }}/node_modules/requirejs/require.js"></script>
+        <script>
+                /* global requirejs */
+                requirejs.config({
+                    "paths": {
+                        "Gp"       : "{{ baseurl }}/dist/2d/GpSDK2D{{ mode }}"
+                    }
+                });
+        </script>

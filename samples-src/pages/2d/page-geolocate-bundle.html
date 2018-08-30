@@ -1,0 +1,64 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Geolocate</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap2 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap3 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Paramètre geolocate</h1>
+    <h2>Centrage de la carte sur la position de l'internaute.</h2>
+    <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur Paris (centrage par default).</p>
+    <div id="geoportalMap1"></div>
+    <h2>Centrage sur la position de l'internaute, ou sur une adresse en cas de problème avec la géolocalisation.</h2>
+    <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur les coordonnées fournies : le Finistère.</p>
+    <div id="geoportalMap2"></div>
+    <h2>Centrage sur la position de l'internaute, ou sur une adresse en cas de problème avec la géolocalisation.</h2>
+    <p>Si l'utilisateur accepte : la carte est centrée sur sa position. Sinon, la carte est centrée sur Nîmes.</p>
+    <div id="geoportalMap3"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1', {
+            apiKey : "{{apikey}}",
+            center : {
+                geolocate : true
+            }
+        });
+        Gp.Map.load('geoportalMap2', {
+            apiKey : "{{apikey}}",
+            center : {
+                geolocate : true,
+                x : -511270,
+                y : 6151620
+            }
+        });
+
+        Gp.Map.load('geoportalMap3', {
+            apiKey : "{{apikey}}",
+            center : {
+                geolocate : true,
+                location : "Nimes",
+                locationType : ["PositionOfInterest"]
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

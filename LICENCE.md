@@ -33,6 +33,30 @@ THIS SOFTWARE IS PROVIDED BY OPENLAYERS CONTRIBUTORS ``AS IS'' AND ANY EXPRESS O
 The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of OpenLayers Contributors.
 
 
+### iTowns V2
+
+Copyright 2016 iTowns Contributors
+
+iTowns V2 is licenced under both licences CeCILL-B Version 1.0 and MIT.
+
+
+#### CeCILL-B
+
+iTowns is licensed under the CeCILL-B license, Version 1.0. You may obtain a copy of the License at
+
+http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+#### MIT
+
+iTowns is licensed under the MIT Licence. You may obtain a copy of the License at
+
+https://opensource.org/licenses/MIT
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
 ### Geoportal extension for OpenLayers and Geoportal extension for iTowns
 
 These softwares are released under the licence CeCILL-B (Free BSD compatible)
@@ -48,7 +72,3 @@ see http://www.cecill.info/
 Copyright (c) 2016 IGN
 
 See [Geoportal Extensions third party code licences](https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md)
-
-
-
-

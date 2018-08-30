@@ -1,0 +1,45 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D WFS</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte avec une couche WFS</h1>
+    <p>TODO : revoir le serveur WFS ou les features utilisés ("Error occurred getting features Schema 'water_areas' does not exist.")</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center : {
+                x : -14966982,
+                y : 10522301
+            },
+            layersOptions : {
+                maCoucheWFS : {
+                    format :"wfs",
+                    url : "http://demo.boundlessgeo.com/geoserver/wfs",
+                    typeNames : "osm:water_areas",
+                    version : "1.1.0",
+                    outputFormat : "application/json",
+                    maxFeatures : 200,
+                    visibility : true
+                }
+            },
+            zoom : 6
+        });
+    </script>
+{{/content}}
+{{/extend}}

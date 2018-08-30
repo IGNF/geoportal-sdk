@@ -1,0 +1,82 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Measures</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+        #extControlDiv {
+            height: 60px;
+            width : 400px;
+            border : 1px solid;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Controles Mesures</h1>
+    <p>Ajout des outils de mesures dans leur container standard. Personnalisation des styles de tracé.</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var drawStyles = {
+            pointer : {
+                radius : 5,
+                strokeColor : "blue",
+                fillColor : "red"
+            },
+            start : {
+                strokeColor : "#000",
+                fillColor : "rgba(255,255,255,0.2)",
+                strokeLineDash : [10,10],
+                strokeWidth : 2
+            },
+            finish : {
+                strokeColor : "#000",
+                fillColor : "rgba(255,255,255,0.5)",
+                strokeWidth : 2
+            },
+            // uniquement pour elevationPath
+            marker : {
+                src : "http://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png",
+                xAnchor : 0.5,
+                yAnchor : 1
+            }
+        } ;
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            zoom : 12,
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : false
+                },
+                area : {
+                    styles : drawStyles
+                },
+                length : {
+                    styles : drawStyles
+                },
+                azimuth : {
+                    styles : drawStyles,
+                    geodesic : false
+                },
+                elevationPath : {
+                    styles : drawStyles
+
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

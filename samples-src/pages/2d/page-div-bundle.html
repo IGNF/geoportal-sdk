@@ -1,0 +1,68 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D div Parameter</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap2 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap3 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre div</h1>
+    <h2>CAS 1 : l'utilisateur connaît l'identifiant de l'élément HTML destiné à accueillir la carte</h2>
+    <p>Résultat attendu : La carte s'affiche dans la div.</p>
+    <div id="geoportalMap1"></div>
+    <h2>CAS 2 : l'utilisateur connaît l'élément HTML destiné à accueillir la carte</h2>
+    <p>Résultat attendu : La carte s'affiche dans la div.</p>
+    <div id="geoportalMap2"></div>
+    <h2>CAS 3 : L'élément HTML indiqué par l'utilisateur n'existe pas.</h2>
+    <p>Résultat attendu : La carte ne s'affiche pas.</p>
+    <div id="geoportalMap3"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1', {
+            apiKey : "{{apikey}}",
+            controlsOptions : {
+              "search" : {
+                 maximised : true
+               },
+               "layerswitcher" : {},
+               area : {},
+               length : {},
+               azimuth : {}
+            }
+        });
+
+        Gp.Map.load(document.getElementById('geoportalMap2'), {
+            apiKey : "{{apikey}}",
+            controlsOptions : {
+              "search" : {
+                 maximised : true
+               },
+               "layerswitcher" : {},
+               area : {}
+            }
+        });
+
+        Gp.Map.load('inconnu', {
+            apiKey : "{{apikey}}"
+        });
+    </script>
+{{/content}}
+{{/extend}}

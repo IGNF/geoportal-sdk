@@ -1,0 +1,79 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D GFI WMS</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        body {
+            width : 100% !important;
+        }
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Get Feature Info</h1>
+    <p>Exemple de mise en oeuvre du widget getFeatureInfo avec une couche WMS (école) et WMTS (photos).</p>
+    <p>Ici l'évènement par défault est le simple click.</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+            // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+            center : {
+                x : 22700,
+                y : 6395900
+            },
+            zoom : 15,
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "mousePosition" : {},
+                "getfeatureinfo" : {
+                    options : {
+                        active : true,
+                        hidden: false,
+                        defaultEvent : "singleclick",
+                        cursorStyle : "pointer"
+                    },
+                    layers : {
+                        'ecoles' : {},
+                        'ORTHOIMAGERY.ORTHOPHOTOS' : {}
+                    }
+                }
+            },
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS' : {
+                    queryable : true
+                },
+                'ecoles' : {
+                    minZoom : 14,
+                    maxZoom : 21,
+                    format : "wms",
+                    title : "Ecoles maternelles et élémentaires",
+                    description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
+                    url : "http://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
+                    layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
+                    outputFormat : "image/png",
+                    queryable : true,
+                    gfiFormat : "text/html",
+                    originators: [{
+                            "name":"IGN",
+                            "attribution":"Institut national de l'information géographique et forestière",
+                            "url":"http://www.ign.fr",
+                        }
+                    ]
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

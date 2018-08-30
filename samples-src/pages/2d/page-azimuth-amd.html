@@ -1,0 +1,38 @@
+{{#extend "sample-amd-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Azimuth</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        div#map {
+            max-width: 100%;
+            height: 500px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h2>Contrôle de l'azimuth en mode AMD</h2>
+    <!-- map -->
+    <div id="map">
+    </div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        requirejs([
+          "Gp"
+        ],
+        function (
+          Gp
+        ) {
+            Gp.Map.load('map', {
+                apiKey : "{{apikey}}",
+                azimuth : 45
+            });
+        });
+    </script>
+{{/content}}
+{{/extend}}

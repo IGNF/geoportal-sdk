@@ -20,13 +20,13 @@ Vous pouvez récupérer le Kit de Développement Géoportail soit par [télécha
 Il contient l'arborescence suivante :
 
     <Kit de Développement Géoportail>/
-        GpOl3.js
+        GpSDK2D.js
             (version minifiée du code javascript pour une utilisation en production)
-        GpOl3.css
+        GpSDK2D.css
             (version minifiée des css pour une utilisation en production)
-        GpOl3-src.js
+        GpSDK2D-src.js
             (version non minifiée du code javascript pour une utilisation en développement)
-        GpOl3-src.css
+        GpSDK2D-src.css
             (version non minifiée des css pour une utilisation en développement)
 
 
@@ -51,35 +51,47 @@ Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) i
 npm i geoportal-sdk
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/ol3/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/2d/` de votre projet.
 
 #### Accès direct
 
 Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
 Par exemple sur Github Pages :
 ```
-http://ignf.github.io/geoportal-sdk/latest/dist/ol3/GpOl3.js
-http://ignf.github.io/geoportal-sdk/latest/dist/ol3/GpOl3.css
-http://ignf.github.io/geoportal-sdk/latest/dist/ol3/GpOl3-src.js
-http://ignf.github.io/geoportal-sdk/latest/dist/ol3/GpOl3-src.css
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.js
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.css
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.js
+http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.css
 ```
 
 ### Intégration dans une page web
 
-Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
+Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript.
 
 Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
 
 ``` html
 <!-- SDK Géoportail -->
-<script src="chemin/vers/GpOl3.js"></script>
-<link rel="stylesheet" href="chemin/vers/GpOl3.css" />
+<script src="chemin/vers/GpSDK2D.js"></script>
+<link rel="stylesheet" href="chemin/vers/GpSDK2D.css" />
+
 ```
 
+### Utilisation dans module ES6
+
+``` javascript
+import * as Gp from "@geoportal-sdk/2d";
+
+// votre utilisation du SDK
+var map = Gp.Map.load("myDivId",{
+    apiKey : "myApiKey",
+    ...
+});
+```
 
 ### Interfaces de programmation
 
-Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/ol3/).
+Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/).
 
 
 
@@ -293,7 +305,7 @@ Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage
 
 #### Affichage des couches Géoportail WMS et WMTS
 
-Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
+Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
 **Exemple 1** : ajout des couches WMTS Photographies aériennes et cartes avec une opacité de 30%.
 
@@ -342,7 +354,7 @@ var map = Gp.Map.load(
 
 #### Affichage des couches "externes"
 
-Le couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
+Le couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
 
 Les formats supportés par le SDK pour les couches externes sont les suivants :
 
@@ -350,7 +362,7 @@ Pour les données images : WMS, WMTS, Open Street Map
 
 Pour les données vecteur : WFS, KML, GPX, GeoJSON
 
-Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
+Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
 
 
 **Exemple** : ajout d'une couche WMS externe.
@@ -420,15 +432,13 @@ var map = Gp.Map.load(
 
 Par défaut la carte se présente avec les boutons de zoom et l'affichage des attributions. Le SDK vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'intéragir avec la celle-ci.
 
-L'ajout d'outils se fait à l'aide de la propriété **controlsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). Il s'agit d'un objet javascript dont chaque propriété a le nom de l'outil à rajouter et chaque valeur de propriété permet de préciser - si besoin - le paramétrage de l'outil. Ce paramétrage se fait à l'aide d'un objet javascript de type [Gp.ControlOptions](//ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html), dont les propriétés vont varier selon l'outil.
+L'ajout d'outils se fait à l'aide de la propriété **controlsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). Il s'agit d'un objet javascript dont chaque propriété a le nom de l'outil à rajouter et chaque valeur de propriété permet de préciser - si besoin - le paramétrage de l'outil. Ce paramétrage se fait à l'aide d'un objet javascript de type [Gp.ControlOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html), dont les propriétés vont varier selon l'outil.
 
 Les outils disponibles sont les suivants :
 
 * boutons de zoom (["zoom"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#zoom)) ;
 
 * gestionnaire de couches (["layerswitcher"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#layerswitcher))
-
-* affichage des informations attributaires (["getfeatureinfo"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#getfeatureinfo))
 
 * barre de recherche (["search"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#searchctrl))
 
@@ -531,7 +541,7 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
-Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieursau chargement de la carte à la réception de cet événment à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
+Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événement à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
 
 ``` javascript
 
