@@ -379,10 +379,14 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             // FIXME : useless projection param ?
             if (layerOpts.projection) {
                 // param for GeoJSON format
+                // FIXME
+                // cf. https://github.com/openlayers/openlayers/commit/cbaa9a7567ae32629241bab4721bc429940c942e#diff-2734579f56e71d2f13d47cd894a3fe68
+                // defaultDataProjection to dataProjection version > 5.0.0 !
                 formatOptions["defaultDataProjection"] = layerOpts.projection;
                 // param for GMLx format
                 formatOptions["srsName"] = layerOpts.projection;
             }
+            // FIXME à revoir...
             if (oflc.indexOf("gml") > 0 ||
                 oflc.indexOf("xml") > 0
             ) {
