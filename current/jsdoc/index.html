@@ -29,7 +29,7 @@
     
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"applicationName":"Geoportal SDK","default":{}};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"applicationName":"Geoportal SDK 2D/3D","dateFormat":"ddd MMM Do YYYY","outputSourceFiles":true,"outputSourcePath":true,"systemName":"Geoportal SDK 2D/3D","footer":"API SDK version 1.1.0","copyright":"Geoportail - Copyright (c) IGN, released under the CECILL-B license","navType":"inline","theme":"darkly","linenums":true,"collapseSymbols":true,"inverseNav":true,"highlightTutorialCode":false,"syntaxTheme":"default","default":{}};
     </script>
     
 
@@ -42,7 +42,7 @@
     <header>
     <div class="header-content">
         <p class="logoIGN"><a href="./index.html"><img src="./images/logoIGN.png"/></a></p>
-        <h1>Geoportal SDK API Reference</h1>
+        <h1>Geoportal SDK 2D/3D API Reference</h1>
     </div>      
     </header>
 
@@ -53,9 +53,9 @@
 
 <aside class="menu-left">
     <label class="closeLeftMenu" for="showLeftMenu" title="Fermer le menu latéral"></label> 
-    <div class="header-menu">Geoportal SDK</div>
+    <div class="header-menu">Geoportal SDK 2D/3D</div>
 <!--
-    <h3 class="applicationName"><a href="index.html">Geoportal SDK</a></h3>
+    <h3 class="applicationName"><a href="index.html">Geoportal SDK 2D/3D</a></h3>
 -->
     <div class="search">
         <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
@@ -645,8 +645,6 @@
             
                 <div class="l3 itemMembers" data-name="Gp.Map#setZoom"> <a href="Gp.Map.html#setZoom">setZoom</a> </div>
             
-                <div class="l3 itemMembers" data-name="Gp.Map#switchToLibITOL3"> <a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a> </div>
-            
                 <div class="l3 itemMembers" data-name="Gp.Map#zoomIn"> <a href="Gp.Map.html#zoomIn">zoomIn</a> </div>
             
                 <div class="l3 itemMembers" data-name="Gp.Map#zoomOut"> <a href="Gp.Map.html#zoomOut">zoomOut</a> </div>
@@ -707,8 +705,6 @@
             
                 <li data-name="setZoom"><a href="Gp.Map.html#setZoom">setZoom</a></li>
             
-                <li data-name="switchToLibITOL3"><a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a></li>
-            
                 <li data-name="zoomIn"><a href="Gp.Map.html#zoomIn">zoomIn</a></li>
             
                 <li data-name="zoomOut"><a href="Gp.Map.html#zoomOut">zoomOut</a></li>
@@ -729,14 +725,14 @@
 -->
     
 <!--
-        <li class="item" data-alias= "Gp.Map.load()" data-name="Map">
+        <li class="item" data-alias= "Gp.Map.load()" data-name="src/Utils/MapLoader">
 -->
-        <li class="l1 item" data-alias= "Gp.Map.load()" data-name="Map">
-                <a href="module-Map.html">Gp.Map.load()</a>
+        <li class="l1 item" data-alias= "Gp.Map.load()" data-name="src/Utils/MapLoader">
+                <a href="module-src_Utils_MapLoader.html">Gp.Map.load()</a>
                 
 <!--
             <span class="title">
-                <a href="module-Map.html">Gp.Map.load()</a>
+                <a href="module-src_Utils_MapLoader.html">Gp.Map.load()</a>
                 
             </span>
 -->
@@ -761,7 +757,7 @@
             
             <div class="l2 itemMembers"> Methods </div>
             
-                <div class="l3 itemMembers" data-name="module:Map.load"> <a href="module-Map.html#.load">load</a> </div>
+                <div class="l3 itemMembers" data-name="module:src/Utils/MapLoader.load"> <a href="module-src_Utils_MapLoader.html#.load">load</a> </div>
             
 
 <!--
@@ -769,7 +765,7 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="load"><a href="module-Map.html#.load">load</a></li>
+                <li data-name="load"><a href="module-src_Utils_MapLoader.html#.load">load</a></li>
             
             </ul>
 -->
@@ -1171,22 +1167,22 @@
         <article class="readme"><h1>Geoportal SDK API Reference</h1><p>The Geoportal SDK (Software Developement Kit) is an integrated javascript API that allows web application developpers to easyly integrate dynamic geoportal based maps on a web page.</p>
 <p>It is a wrapper over the following libraries :</p>
 <ul>
-<li><p><a href="http://openlayers.org/">OpenLayers 3</a></p>
+<li><p><a href="http://openlayers.org/">OpenLayers</a></p>
 </li>
 <li><p><a href="http://www.itowns-project.org/"> iTowns </a></p>
 </li>
-<li><p><a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md">Geoportal extension for OpenLayers 3</a></p>
+<li><p><a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-openlayers.md">Geoportal extension for OpenLayers</a></p>
 </li>
 <li><p><a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md">Geoportal extension for iTowns</a></p>
 </li>
 </ul>
-<h2>Basic usage</h2><p>Create a Map and attach it to your web page with the <a href="module-Map.html">Gp.Map.load()</a> function. It returns a <a href="Gp.Map.html">Gp.Map</a> object which provides methods to interact with the created map.</p>
+<h2>Basic usage</h2><p>Create a Map and attach it to your web page with the Gp.Map.load() function. It returns a <a href="Gp.Map.html">Gp.Map</a> object which provides methods to interact with the created map.</p>
 <p>Example :</p>
 <pre class="prettyprint source lang-javascript"><code>var map = Gp.map.load(
     &quot;mapDiv&quot;,                     // html element id  where to attach the map
     {                             // mapOptions
         apiKey : &quot;YOUR_API_KEY&quot;,   // geoportal access key
-        library : &quot;itowns&quot;,        // &quot;ol3&quot; by default. Library the map will be loaded with.
+        library : &quot;itowns&quot;,        // &quot;ol&quot; by default. Library the map will be loaded with.
         center : {                // -> map center params
             location : &quot;73 avenue de Paris, Saint-Mandé&quot;
         },
@@ -1195,16 +1191,17 @@
             &quot;ORTHOIMAGERY.ORTHOPHOTOS&quot; : {}
         }
     }
-) ;</code></pre><h2>Functionalities</h2><p>Geoportal SDK provides a simple Application Programmation Interface that allows developers to create a map with the following possibilities :</p>
+) ;
+</code></pre><h2>Functionalities</h2><p>Geoportal SDK provides a simple Application Programmation Interface that allows developers to create a map with the following possibilities :</p>
 <h3>Map and view positionning (center, orientation and zoom).</h3><p>See <a href="Gp.MapOptions.html">Gp.MapOptions properties</a> : <strong>center</strong>, <strong>azimuth</strong>, <strong>zoom</strong>, ... and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#setCenter">Gp.Map.setCenter()</a>, <a href="Gp.Map.html#setAzimuth">Gp.Map.setAzimuth()</a>, <a href="Gp.Map.html#setZoom">Gp.Map.setZoom()</a>, ...</p>
 <h3>Map composition (layers composition and markers positioning)</h3><p>See <a href="Gp.MapOptions.html">Gp.MapOptions properties</a> : <strong>layerOptions</strong> and  <strong>markerOptions</strong> and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#addLayers">Gp.Map.addLayers()</a>, <a href="Gp.Map.html#modifyLayers">Gp.Map.modifyLayers()</a>, <a href="Gp.Map.html#removeLayers">Gp.Map.removeLayers()</a>, ...</p>
 <p>See <a href="Gp.LayerOptions.html">Gp.LayerOptions</a> to have a overview of layer types availables.</p>
 <h3>Providing various interaction tools for end users</h3><p>See <a href="Gp.MapOptions.html">Gp.MapOptions property</a> : <strong>controlsOptions</strong>  and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#addControls">Gp.Map.addControls()</a>, <a href="Gp.Map.html#modifyControls">Gp.Map.modifyControls()</a>, <a href="Gp.Map.html#removeControls">Gp.Map.removeControls()</a>, ...</p>
 <p>See <a href="Gp.ControlOptions.html">Gp.ControlOptions</a> to have a list of tools availables.</p>
 <h3>Being able to react to end users interactions with the map.</h3><p>See <a href="Gp.MapOptions.html">Gp.MapOptions property</a> : <strong>mapEventsOptions</strong> and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#listen">Gp.Map.listen()</a>, <a href="Gp.Map.html#forget">Gp.Map.forget()</a>.</p>
-<h2>Advanced Functionalities</h2><p>If you want more functionalities, you will then have to use those offered by : </p>
+<h2>Advanced Functionalities</h2><p>If you want more functionalities, you will then have to use those offered by :</p>
 <ul>
-<li><p><a href="http://openlayers.org/en/latest/apidoc/">OpenLayers 3 API</a> and its <a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md">dedicated Geoportal extension</a> which are part of the Geoportal SDK.</p>
+<li><p><a href="http://openlayers.org/en/latest/apidoc/">OpenLayers 3 API</a> and its <a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-openlayers.md">dedicated Geoportal extension</a> which are part of the Geoportal SDK.</p>
 </li>
 <li><p><a href="http://www.itowns-project.org/itowns/API_Doc/">iTowns API</a> and its <a href="https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md">dedicated Geoportal extension</a> which are part of the Geoportal SDK.</p>
 </li>
@@ -1226,7 +1223,7 @@
     <footer>
         Copyright (c) IGN, released under the CECILL-B license 
         </br>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jun 28 2018 16:19:52 GMT+0000 (UTC)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Sep 03 2018 10:29:11 GMT+0000 (UTC)
     </footer>
 
 

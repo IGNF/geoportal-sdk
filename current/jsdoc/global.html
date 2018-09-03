@@ -29,7 +29,7 @@
     
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"applicationName":"Geoportal SDK","default":{}};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"applicationName":"Geoportal SDK 2D/3D","dateFormat":"ddd MMM Do YYYY","outputSourceFiles":true,"outputSourcePath":true,"systemName":"Geoportal SDK 2D/3D","footer":"API SDK version 1.1.0","copyright":"Geoportail - Copyright (c) IGN, released under the CECILL-B license","navType":"inline","theme":"darkly","linenums":true,"collapseSymbols":true,"inverseNav":true,"highlightTutorialCode":false,"syntaxTheme":"default","default":{}};
     </script>
     
 
@@ -42,7 +42,7 @@
     <header>
     <div class="header-content">
         <p class="logoIGN"><a href="./index.html"><img src="./images/logoIGN.png"/></a></p>
-        <h1>Geoportal SDK API Reference</h1>
+        <h1>Geoportal SDK 2D/3D API Reference</h1>
     </div>      
     </header>
 
@@ -53,9 +53,9 @@
 
 <aside class="menu-left">
     <label class="closeLeftMenu" for="showLeftMenu" title="Fermer le menu latéral"></label> 
-    <div class="header-menu">Geoportal SDK</div>
+    <div class="header-menu">Geoportal SDK 2D/3D</div>
 <!--
-    <h3 class="applicationName"><a href="index.html">Geoportal SDK</a></h3>
+    <h3 class="applicationName"><a href="index.html">Geoportal SDK 2D/3D</a></h3>
 -->
     <div class="search">
         <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
@@ -645,8 +645,6 @@
             
                 <div class="l3 itemMembers" data-name="Gp.Map#setZoom"> <a href="Gp.Map.html#setZoom">setZoom</a> </div>
             
-                <div class="l3 itemMembers" data-name="Gp.Map#switchToLibITOL3"> <a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a> </div>
-            
                 <div class="l3 itemMembers" data-name="Gp.Map#zoomIn"> <a href="Gp.Map.html#zoomIn">zoomIn</a> </div>
             
                 <div class="l3 itemMembers" data-name="Gp.Map#zoomOut"> <a href="Gp.Map.html#zoomOut">zoomOut</a> </div>
@@ -707,8 +705,6 @@
             
                 <li data-name="setZoom"><a href="Gp.Map.html#setZoom">setZoom</a></li>
             
-                <li data-name="switchToLibITOL3"><a href="Gp.Map.html#switchToLibITOL3">switchToLibITOL3</a></li>
-            
                 <li data-name="zoomIn"><a href="Gp.Map.html#zoomIn">zoomIn</a></li>
             
                 <li data-name="zoomOut"><a href="Gp.Map.html#zoomOut">zoomOut</a></li>
@@ -729,14 +725,14 @@
 -->
     
 <!--
-        <li class="item" data-alias= "Gp.Map.load()" data-name="Map">
+        <li class="item" data-alias= "Gp.Map.load()" data-name="src/Utils/MapLoader">
 -->
-        <li class="l1 item" data-alias= "Gp.Map.load()" data-name="Map">
-                <a href="module-Map.html">Gp.Map.load()</a>
+        <li class="l1 item" data-alias= "Gp.Map.load()" data-name="src/Utils/MapLoader">
+                <a href="module-src_Utils_MapLoader.html">Gp.Map.load()</a>
                 
 <!--
             <span class="title">
-                <a href="module-Map.html">Gp.Map.load()</a>
+                <a href="module-src_Utils_MapLoader.html">Gp.Map.load()</a>
                 
             </span>
 -->
@@ -761,7 +757,7 @@
             
             <div class="l2 itemMembers"> Methods </div>
             
-                <div class="l3 itemMembers" data-name="module:Map.load"> <a href="module-Map.html#.load">load</a> </div>
+                <div class="l3 itemMembers" data-name="module:src/Utils/MapLoader.load"> <a href="module-src_Utils_MapLoader.html#.load">load</a> </div>
             
 
 <!--
@@ -769,7 +765,7 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="load"><a href="module-Map.html#.load">load</a></li>
+                <li data-name="load"><a href="module-src_Utils_MapLoader.html#.load">load</a></li>
             
             </ul>
 -->
@@ -1224,7 +1220,7 @@
 <dd>
     
     <div class="description">
-        <p>Controlss enregistrés par l'AHN<br>Structure des objets stockés :<br>{<br>    id : controlId<br>    obj : objet control géré par l'implémentation.<br>    options : propriétés du controle (de type controlOptions)<br>}</p>
+        <p>Controlss enregistrés par le SDK<br>Structure des objets stockés :<br>{<br>    id : controlId<br>    obj : objet control géré par l'implémentation.<br>    options : propriétés du controle (de type controlOptions)<br>}</p>
     </div>
     
     
@@ -1269,7 +1265,7 @@
 <dd>
     
     <div class="description">
-        <p>object d'enriegistrements des evenements.<br>Les propriétés sont les identifiants de l'evenement associées à un tableau :<br>&quot;eventId&quot; : [{<br>     action : // function<br>     key : &quot;clef retournée par OL3 pour l'enregistrement de l'evt&quot;<br>     context : objet d'execution de l'action<br> }]</p>
+        <p>object d'enriegistrements des evenements.<br>Les propriétés sont les identifiants de l'evenement associées à un tableau :<br>&quot;eventId&quot; : [{<br>     action : // function<br>     key : &quot;clef retournée par OL pour l'enregistrement de l'evt&quot;<br>     context : objet d'execution de l'action<br> }]</p>
     </div>
     
     
@@ -1314,7 +1310,7 @@
 <dd>
     
     <div class="description">
-        <p>Couches enregistrées par l'AHN<br>Structure des objets stockés :<br>{<br>    id : layerId<br>    obj : objet couche géré par l'implémentation.<br>    options : propriétés de la couche (de type layerOptions)<br>}</p>
+        <p>Couches enregistrées par le SDK<br>Structure des objets stockés :<br>{<br>    id : layerId<br>    obj : objet couche géré par l'implémentation.<br>    options : propriétés de la couche (de type layerOptions)<br>}</p>
     </div>
     
     
@@ -1359,7 +1355,97 @@
 <dd>
     
     <div class="description">
-        <p>Couches enregistrées par l'AHN et supprimées<br>Structure des objets stockés :<br>{<br>    id : layerId<br>    obj : objet couche géré par l'implémentation.<br>    options : propriétés de la couche (de type layerOptions)<br>}</p>
+        <p>Couches enregistrées par le SDK et supprimées<br>Structure des objets stockés :<br>{<br>    id : layerId<br>    obj : objet couche géré par l'implémentation.<br>    options : propriétés de la couche (de type layerOptions)<br>}</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="CLASSNAME">CLASSNAME</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Nom de la classe (heritage)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="CLASSNAME">CLASSNAME</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Nom de la classe (heritage)</p>
     </div>
     
     
@@ -1402,14 +1488,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="loader">
+        <h4 class="name" id="ItMap">
             
-            loader<span class="signature">()</span>
+            ItMap<span class="signature">(opts)</span>
         </h4>
     
         
         <div class="tag-source">
-            ol3/OL3.js, line 1862
+            Itowns/ItMapBase.js, line 10
         </div>
         
     </div>
@@ -1419,15 +1505,57 @@
 <dd>
     
     
-    <div class="description">
-        <p>features loader</p>
-    </div>
-    
 
     
     
     
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name">opts</td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>map options<br>Itowns IMap implementation class.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+
     
     
     
@@ -1473,14 +1601,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="onFailure">
+        <h4 class="name" id="OlMap">
             
-            onFailure<span class="signature">()</span>
+            OlMap<span class="signature">(opts)</span>
         </h4>
     
         
         <div class="tag-source">
-            IMap.js, line 369
+            OpenLayers/OlMapBase.js, line 10
         </div>
         
     </div>
@@ -1491,7 +1619,7 @@
     
     
     <div class="description">
-        <p>fonction de rappel onSuccess</p>
+        <p>OpenLayers IMap implementation class.</p>
     </div>
     
 
@@ -1499,6 +1627,52 @@
     
     
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name">opts</td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>map options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+
     
     
     
@@ -1544,14 +1718,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="onFailure">
+        <h4 class="name" id="switch2D3D">
             
-            onFailure<span class="signature">()</span>
+            switch2D3D<span class="signature">(viewMode)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
         </h4>
     
         
         <div class="tag-source">
-            ol3/OL3.js, line 1879
+            Interface/IMapBase.js, line 16
         </div>
         
     </div>
@@ -1562,7 +1736,7 @@
     
     
     <div class="description">
-        <p>callback on failure</p>
+        <p>Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.<br>This function only works with the GpSDK3D bundle (run the &quot;build:3d&quot; npm task to generate it)</p>
     </div>
     
 
@@ -1570,6 +1744,52 @@
     
     
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name">viewMode</td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The cartographic view mode. &quot;2d&quot; (for a 2D map) or &quot;3d&quot; (for a 3D map).</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+
     
     
     
@@ -1609,358 +1829,13 @@
     
     
     
-</dd>
 
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onFailure">
-            
-            onFailure<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            IMap.js, line 608
-        </div>
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>si le service de géocodage échoue</p>
-    </div>
-    
+<h5>Returns:</h5>
+new map
+<br />
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onResponse">
-            
-            onResponse<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            ol3/OL3.js, line 1868
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>callback on success</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onSuccess">
-            
-            onSuccess<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            IMap.js, line 589
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>si le service de geocodage répond</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onSuccess">
-            
-            onSuccess<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            IMap.js, line 365
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>fonction de rappel onSuccess</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="url">
-            
-            url<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            ol3/OL3.js, line 1964
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>envoi de la requête WFS</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
     
     
     
@@ -1988,7 +1863,7 @@
     <footer>
         Copyright (c) IGN, released under the CECILL-B license 
         </br>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jun 28 2018 16:19:52 GMT+0000 (UTC)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Sep 03 2018 10:29:11 GMT+0000 (UTC)
     </footer>
 
 
