@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 2.0.0
- * @date 2018-09-03
+ * @version 1.3.0
+ * @date 2018-09-04
  *
  */
 
@@ -58342,8 +58342,8 @@ __webpack_require__(25);
 
 _MapLoader.MapLoader.__class2d = _OlMap.OlMap;
 exports.Map = _MapLoader.MapLoader;
-var sdkVersion = exports.sdkVersion = "2.0.0";
-var sdkDate = exports.sdkDate = "2018-09-03";
+var sdkVersion = exports.sdkVersion = "1.3.0";
+var sdkDate = exports.sdkDate = "2018-09-04";
 
 /***/ }),
 /* 11 */

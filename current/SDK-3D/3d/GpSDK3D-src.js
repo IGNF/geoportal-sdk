@@ -9,8 +9,8 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 2.0.0
- * @date 2018-09-03
+ * @version 1.3.0
+ * @date 2018-09-04
  *
  */
 
@@ -63718,8 +63718,8 @@ if (typeof _OlMap.OlMap !== "undefined" && typeof _ItMap.ItMap !== "undefined") 
 }
 
 exports.Map = _MapLoader.MapLoader;
-var sdkVersion = exports.sdkVersion = "2.0.0";
-var sdkDate = exports.sdkDate = "2018-09-03";
+var sdkVersion = exports.sdkVersion = "1.3.0";
+var sdkDate = exports.sdkDate = "2018-09-04";
 
 /***/ }),
 /* 12 */
