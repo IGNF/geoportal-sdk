@@ -80,7 +80,7 @@ Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une b
 ### Utilisation dans module ES6
 
 ``` javascript
-import * as Gp from "@geoportal-sdk/2d";
+import * as Gp from "@ignf-geoportal/sdk-2d";
 
 // votre utilisation du SDK
 var map = Gp.Map.load("myDivId",{
