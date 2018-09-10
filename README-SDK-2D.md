@@ -28,6 +28,10 @@ Il contient l'arborescence suivante :
             (version non minifiée du code javascript pour une utilisation en développement)
         GpSDK2D-src.css
             (version non minifiée des css pour une utilisation en développement)
+        GpSDK2D-map.js
+            (version source map du code javascript pour une utilisation en développement)
+        GpSDK2D-map.css
+            (version source map des css pour une utilisation en développement)
 
 
 <a id="download-direct"/>

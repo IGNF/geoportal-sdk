@@ -28,6 +28,10 @@ Il contient l'arborescence suivante :
             (version non minifiée du code javascript pour une utilisation en développement)
         GpSDK3D-src.css
             (version non minifiée des css pour une utilisation en développement)
+        GpSDK"D-map.js
+            (version source map du code javascript pour une utilisation en développement)
+        GpSDK3D-map.css
+            (version source map des css pour une utilisation en développement)
         itowns.js
             (version minifiée de la librairie iTowns compatible avec le SDK 3D)
 
