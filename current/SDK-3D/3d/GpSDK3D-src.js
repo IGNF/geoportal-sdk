@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 2.0.0
- * @date 2018-09-04
+ * @date 2018-09-10
  *
  */
 
@@ -63719,7 +63719,7 @@ if (typeof _OlMap.OlMap !== "undefined" && typeof _ItMap.ItMap !== "undefined") 
 
 exports.Map = _MapLoader.MapLoader;
 var sdkVersion = exports.sdkVersion = "2.0.0";
-var sdkDate = exports.sdkDate = "2018-09-04";
+var sdkDate = exports.sdkDate = "2018-09-10";
 
 /***/ }),
 /* 12 */
