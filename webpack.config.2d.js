@@ -157,6 +157,14 @@ module.exports = env => {
             new JsDocWebPackPlugin({
                 conf : path.join(__dirname, "doc/jsdoc.json")
             }),
+            /* COPIE DES RESSOURCES IMAGES JSDOC */
+            new CopyWebpackPlugin([
+                {
+                    from : path.join(__dirname, "doc", "images", "**/*"),
+                    to : path.join(__dirname, "jsdoc", "images"),
+                    context : path.join(__dirname, "doc", "images")
+                }
+            ]),
             /** CSS / IMAGES */
             new ExtractTextWebPackPlugin("GpSDK2D" + _mode + ".css"),
             /** HANDLEBARS TEMPLATES */

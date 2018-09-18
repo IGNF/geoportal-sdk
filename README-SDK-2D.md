@@ -358,7 +358,7 @@ var map = Gp.Map.load(
 
 #### Affichage des couches "externes"
 
-Le couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
+Les couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
 
 Les formats supportés par le SDK pour les couches externes sont les suivants :
 
