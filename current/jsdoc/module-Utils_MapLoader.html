@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <!-- !meta IGN -->
 
-    <title>Namespace: LayerChangedEvent</title>
+    <title>Module: Utils/MapLoader</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -1139,7 +1139,7 @@
 
     <section class="content">
         <label class="openLeftMenu" for="showLeftMenu" title="Ouvrir le menu latéral"></label>
-        <h1 class="page-title" data-filename="Gp.LayerChangedEvent.html">Namespace: LayerChangedEvent</h1>
+        <h1 class="page-title" data-filename="module-Utils_MapLoader.html">Module: Utils/MapLoader</h1>
         
 
 
@@ -1150,7 +1150,7 @@
 <header>
 -->
     <h1>
-    <span class="main-title" data-classname=Gp.LayerChangedEvent> Gp.LayerChangedEvent </span>
+    <span class="main-title" data-classname=Gp.Map.load()> Gp.Map.load() </span>
     </h1>
     
     
@@ -1164,184 +1164,12 @@
     
     
         
-            <div class="description"><p><strong>Common 2D/3D event</strong></p>
-<p>LayerChanged Event. Triggered when one of the map's layers has changed in some way : <br/></p>
-<ul>
-<li>If a layer has be removed from the map, property <strong>layerRemoved</strong> will host the removed layer definition.</li>
-<li>If a layer has be added to the map, property <strong>layerAdded</strong> will host the added layer definition.</li>
-<li>If properties (among <em>visibility</em>, <em>opacity</em>, <em>position</em> and <em>grayScaled</em>) of a layer has changed, property <strong>layerChanged</strong> will host the modified layer definition and <strong>property</strong>, <strong>oldValue</strong> and <strong>newValues</strong> will host the modified property with its old and new value.<br><br/><br>One can listen to this event with <a href="Gp.Map.html#listen">Gp.Map.listen()</a> method</li>
-</ul></div>
+            <div class="description"><p>Geoportal map loader.</p>
+<p>Provide convenience method to create a Map (instance of <a href="Gp.Map.html">Gp.Map</a>) and attach it to a HTML element.</p></div>
         
         
         
 <dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name">layerAdded</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>definition of the layer that has been added : object key is the layer Id and object value is a <a href="Gp.LayerOptions.html">Gp.LayerOptions</a> object.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">layerRemoved</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>definition of the layer that has been removed : object key is the layer Id and object value is a <a href="Gp.LayerOptions.html">Gp.LayerOptions</a> object.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">layerChanged</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>definition of the layer that has been modified : object key is the layer Id and object value is a <a href="Gp.LayerOptions.html">Gp.LayerOptions</a> object.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">property</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>layer property name that has changed</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">oldValue</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>old layer property value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name">newValue</td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>new layer property value</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-</dl>
-        
     
         
     
@@ -1382,6 +1210,195 @@
     
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".load">
+            
+            <span class="type-signature static">static</span>load<span class="signature">(div, <span class="optional">mapOptions</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Gp.Map.html">Gp.Map</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            Utils/MapLoader.js, line 13
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Initialize a Geoportal map in an HTML element.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name">div</td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">DOMElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>The HTML element or its id where the map will be loaded.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name">mapOptions</td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Gp.MapOptions.html">Gp.MapOptions</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Options for loading the map.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The Geoportal map.
+<br />
+
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code>Gp.Map.load(
+         'geoportalMap',
+         {
+             apiKey : "YOUR_API_KEY",
+             center : {
+                 location : "rue pasteur, Saint-Mandé"
+             },
+             zoom : 16,
+             layersOptions : {
+                 'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD' : {}
+             }
+         }
+     );</code></pre>
+    
+
+    
+</dd>
+
+        </dl>
     
     
     

@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 2.0.1
- * @date 2018-09-10
+ * @date 2018-09-18
  *
  */
 
@@ -58343,7 +58343,7 @@ __webpack_require__(25);
 _MapLoader.MapLoader.__class2d = _OlMap.OlMap;
 exports.Map = _MapLoader.MapLoader;
 var sdkVersion = exports.sdkVersion = "2.0.1";
-var sdkDate = exports.sdkDate = "2018-09-10";
+var sdkDate = exports.sdkDate = "2018-09-18";
 
 /***/ }),
 /* 11 */
