@@ -166,6 +166,14 @@ IMap.prototype.addLayers = function (layersOptions) {
                     }
                 }
             }
+            // ... puis MAPBOX GEOPORTAIL
+            if (format == null || format.toUpperCase() === "MAPBOX") {
+                // FIXME statuer sur le formalisme du nom de la couche !
+                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:MAPBOX");
+                if (layerConf) {
+                    format = "MAPBOX";
+                }
+            }
             // FIXME / TODO : WFS Geoportail ?
             if (layerConf) {
                 // on a trouve la couche Geoportail : on rajoute sa configuration à ses options.
@@ -176,6 +184,7 @@ IMap.prototype.addLayers = function (layersOptions) {
                 addLayerParam[layerId] = this._layerOptions2layerConf(layerConf, addLayerParam[layerId]);
             }
             switch (format) {
+                case "MAPBOX" :
                 case "WMTS" :
                 case "WMS" :
                     this._addGeoportalLayer(addLayerParam, layerConf);
@@ -209,6 +218,9 @@ IMap.prototype.addLayers = function (layersOptions) {
             case "WFS":
             case "DRAWING":
                 this._addVectorLayer(addLayerParam);
+                break;
+            case "MAPBOX":
+                this._addMapBoxLayer(addLayerParam);
                 break;
             case "WMS":
             case "WMTS":
@@ -401,6 +413,18 @@ IMap.prototype._addRasterLayer = function (layerObj) {
  * @private
  */
 IMap.prototype._addVectorLayer = function (layerObj) {
+    // Abstract method to be overridden
+};
+
+/**
+ * Add a vector Layer MapBox to the map
+ *
+ * @param {Object} layerObj - geoportalLayer to add.
+ * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ *
+ * @private
+ */
+IMap.prototype._addMapBoxLayer = function (layerObj) {
     // Abstract method to be overridden
 };
 

@@ -49,7 +49,9 @@ module.exports = env => {
         },
         resolve : {
             alias : {
+                openlayers : path.resolve(__dirname, "node_modules", "openlayers", "dist", (production) ? "ol.js" : "ol-debug.js"),
                 gp : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", (production) ? "GpPluginOpenLayers.js" : "GpPluginOpenLayers-src.js")
+                // olms : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js")
             }
         },
         externals : {
@@ -103,6 +105,10 @@ module.exports = env => {
                         options : "ol"
                     }]
                 },
+                // {
+                //     test : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js"),
+                //     use : "exports-loader?olms"
+                // },
                 {
                     test : /\.css$/,
                     include : [

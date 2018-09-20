@@ -1,0 +1,39 @@
+{
+    "tilejson": "2.2.0",
+    "attribution": "Geoportail©",
+    "bounds": [],
+    "center": [],
+    "format": "geojson",
+    "minzoom": 0,
+    "maxzoom": 20,
+    "name": "GeoJSON Geoportail sur les USA",
+    "description": "Données de type mapbox sur les USA",
+    "scheme": "",
+    "tiles": [],
+    "grids": [],
+    "data": [
+        "https://rawgit.com/lowzonenose/editor/master/data/states.geojson"
+    ],
+    "version": "1.0.0",
+    "template": null,
+    "legend": null,
+    "vector_layers" : [
+        {
+            "version": 1,
+            "id": "states",
+            "name": "states",
+            "description": "styles sur la sources 'states'",
+            "minzoom": 0,
+            "maxzoom": 20,
+            "fields": [
+                "STATE_ABBR",
+                "STATE_NAME",
+                "AREA_LAND",
+                "AREA_WATER",
+                "PERSONS",
+                "MALE",
+                "FEMALE"
+            ]
+        }
+    ]
+}

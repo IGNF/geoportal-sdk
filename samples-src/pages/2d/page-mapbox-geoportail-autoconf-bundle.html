@@ -1,0 +1,41 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D MapBox Geoportail</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Affichage couche MapBox Géoportail</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "{{resources}}/MAPBOX/autoconf.js",
+            center : {
+                x : -1.15,
+                y : 46.15,
+                projection : "EPSG:4326"
+            },
+            layersOptions : {
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {},
+                "STATES.MAPBOX.TEST" : {} // TODO ajouter / creer une entrée dans l'autoconf !
+            },
+            controlsOptions : {
+                "layerSwitcher" : {}
+            },
+            zoom : 16
+        });
+    </script>
+{{/content}}
+{{/extend}}

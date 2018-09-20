@@ -44,21 +44,21 @@ OlMap.prototype.modifyLayers = function (layersOptions) {
     // on recupere les objets correspondants dejà sur la carte
     var _layerObjs = this._getLayersObj(layerIds);
     _layerObjs.forEach(function (_layerObj) {
-        this.logger.trace("[IMap] modifyLayers : modifying : [" + _layerObj.id + "]");
+        this.logger.trace("[modifyLayers] : modifying : [" + _layerObj.id + "]");
         // traduction options ahn => options OlMap
         var commonOpts = this._applyCommonLayerParams(layersOptions[_layerObj.id]);
         // application des options OL aux couches OL
         // l'objet _layerObj.options sera mis à jour par le mécanisme des evenements.
         if (commonOpts.hasOwnProperty("opacity")) {
-            this.logger.trace("[IMap] modifyLayers : setting opacity of : [" + _layerObj.id + "] to : " + commonOpts.opacity);
+            this.logger.trace("[modifyLayers] : setting opacity of : [" + _layerObj.id + "] to : " + commonOpts.opacity);
             _layerObj.obj.setOpacity(commonOpts.opacity);
         }
         if (commonOpts.hasOwnProperty("visible")) {
-            this.logger.trace("[IMap] modifyLayers : setting visible of : [" + _layerObj.id + "] to : " + commonOpts.visible);
+            this.logger.trace("[modifyLayers] : setting visible of : [" + _layerObj.id + "] to : " + commonOpts.visible);
             _layerObj.obj.setVisible(commonOpts.visible);
         }
         if (commonOpts.hasOwnProperty("zIndex")) {
-            this.logger.trace("[IMap] modifyLayers : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex);
+            this.logger.trace("[modifyLayers] : setting zIndex of : [" + _layerObj.id + "] to : " + commonOpts.zIndex);
             _layerObj.obj.setZIndex(commonOpts.zIndex);
             // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL) (cf. issue #12)
             if (commonOpts.zIndex === 0) {
@@ -70,15 +70,15 @@ OlMap.prototype.modifyLayers = function (layersOptions) {
             }
         }
         if (commonOpts.hasOwnProperty("minResolution")) {
-            this.logger.trace("[IMap] modifyLayers : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution);
+            this.logger.trace("[modifyLayers] : setting minResolution of : [" + _layerObj.id + "] to : " + commonOpts.minResolution);
             _layerObj.obj.setMinResolution(commonOpts.minResolution);
         }
         if (commonOpts.hasOwnProperty("maxResolution")) {
-            this.logger.trace("[IMap] modifyLayers : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution);
+            this.logger.trace("[modifyLayers] : setting maxResolution of : [" + _layerObj.id + "] to : " + commonOpts.maxResolution);
             _layerObj.obj.setMaxResolution(commonOpts.maxResolution);
         }
         if (commonOpts.hasOwnProperty("grayScaled")) {
-            this.logger.trace("[IMap] modifyLayers : setting grayScaled of : [" + _layerObj.id + "] to : " + commonOpts.grayScaled);
+            this.logger.trace("[modifyLayers] : setting grayScaled of : [" + _layerObj.id + "] to : " + commonOpts.grayScaled);
             this._changeLayerColor(_layerObj.id, commonOpts.grayScaled);
         }
     },
@@ -102,7 +102,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
         switch (layerOpts.format.toUpperCase()) {
             case "WMS":
             {
-                this.logger.trace("ajout d'une couche WMS");
+                this.logger.trace("[_addRasterLayer] : ajout d'une couche WMS");
                 var params = {};
                 params.LAYERS = layerOpts.layers.join(",");
 
@@ -116,7 +116,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     if (Array.isArray(layerOpts.stylesNames)) {
                         params.STYLES = layerOpts.stylesNames.join();
                     } else {
-                        this.logger.info("'stylesNames' parameter should be an array of style names (string)");
+                        this.logger.info("[_addRasterLayer] : 'stylesNames' parameter should be an array of style names (string)");
                     }
                 }
                 if (layerOpts.outputFormat) {
@@ -144,7 +144,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
             }
             case "WMTS":
             {
-                this.logger.trace("ajout d'une couche WMTS");
+                this.logger.trace("[_addRasterLayer] : ajout d'une couche WMTS");
                 // chargement des options par defaut
                 var lOpts = this._getWMTSDefaultOpts();
                 // surcharge avec les options utilisateurs
@@ -181,7 +181,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                 break;
             }
             case "OSM":
-                this.logger.trace("ajout d'une couche OSM");
+                this.logger.trace("[_addRasterLayer] : ajout d'une couche OSM");
                 constructorOpts.source = new Ol.source.OSM({
                     url : layerOpts.url
                 });
@@ -286,12 +286,12 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
 
     switch (layerOpts.format.toUpperCase()) {
         case "KML":
-            this.logger.trace("ajout d'une couche KML");
+            this.logger.trace("[_addVectorLayer] : ajout d'une couche KML");
 
             // FIXME !?
-            // constructorOpts.source = new ol.source.Vector({
+            // constructorOpts.source = new Ol.source.Vector({
             //     url : this.setProxy(layerOpts.url),
-            //     format : new ol.format.KMLExtended({
+            //     format : new Ol.format.KMLExtended({
             //         extractStyles : layerOpts.extractStyles,
             //         showPointNames : false
             //     })
@@ -324,14 +324,14 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                         },
                         // callback on failure
                         onFailure : function (error) {
-                            this.logger.info("[Ol.control.LayerImport] Kml/Gpx request failed : ", error);
+                            this.logger.info("[_addVectorLayer] : Kml request failed : ", error);
                         }
                     });
                 }
             });
             break;
         case "GPX":
-            this.logger.trace("ajout d'une couche GPX");
+            this.logger.trace("[_addVectorLayer] : ajout d'une couche GPX");
             constructorOpts.source = new Ol.source.Vector({
                 url : this.setProxy(layerOpts.url),
                 format : new Ol.format.GPX()
@@ -342,7 +342,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             // TODO GeoRSS
             break;
         case "GEOJSON":
-            this.logger.trace("ajout d'une couche GeoJSON");
+            this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
             constructorOpts.source = new Ol.source.Vector({
                 url : this.setProxy(layerOpts.url),
                 format : new Ol.format.GeoJSON()
@@ -351,7 +351,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "WFS":
             // TODO : gestion des valeurs par defaut
-            this.logger.trace("ajout d'une couche WFS");
+            this.logger.trace("[_addVectorLayer] : ajout d'une couche WFS");
             var maxFeatures = "";
             var sld = "";
 
@@ -418,7 +418,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "drawing":
             // à tester avec les outils de dessins
-            this.logger.trace("ajout d'une couche de dessin");
+            this.logger.trace("[_addVectorLayer] : ajout d'une couche de dessin");
 
             constructorOpts.source = new Ol.source.Vector({});
             break;
@@ -469,6 +469,162 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
 };
 
 /**
+ * Add a vector Layer MapBox to the map
+ *
+ * @param {Object} layerObj - geoportalLayer to add.
+ * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ *
+ * @private
+ */
+OlMap.prototype._addMapBoxLayer = function (layerObj) {
+    this.logger.warn("[_addMapBoxLayer] : implementation in progress !");
+
+    var layerId = Object.keys(layerObj)[0];
+    var layerOpts = layerObj[layerId];
+
+    // carte courante
+    var _map = this.libMap;
+
+    // url des styles
+    var _url = this.setProxy(layerOpts.url); // FIXME proxy ?
+
+    var self = this;
+    fetch(_url)
+        .then(function (response) {
+            if (response.ok) {
+                response.json()
+                    .then(function (_style) {
+                        // - creation de(s) couches et application des styles
+                        Ol.olms.apply(_map, _style);
+
+                        // - gestion du centre de la cate sur la carte si center renseigné !
+                        var projCode = _map.getView().getProjection().getCode();
+                        if (_map.getView() && _style.center && _style.center.length) {
+                            _map.getView().setCenter(Ol.proj.transform(_style.center, "EPSG:4326", projCode));
+                        }
+
+                        // - gestion du zoom sur la carte si zoom renseigné !
+                        if (_map.getView() && (_style.zoom || _style.zoom === 0)) {
+                            _map.getView().setZoom(_style.zoom);
+                        }
+
+                        // - ajout des informations pour le layerSwitcher :
+                        //   ex. titre, description, legende, metadata ...
+                        //      les infos sont issues de 'layerOptions'
+                        //      ('layerOptions' : title, description, legends, metadata et originators)
+                        //      et les infos mapbox sont contenues dans le tag metadata...
+                        var _key = _map.getLayerGroup().on("change", function (e) {
+                            var layers = e.target.getLayers();
+                            layers.forEach(function (layer) {
+                                // - la couche mapbox n'est pas encore inserée dans le gestionnaire de couches
+                                // et normalement, il ne peut avoir qu'une seule couche insérée à la fois...
+                                if (typeof layer.gpLayerId === "undefined") {
+                                    self.logger.trace("gpLayerId:undefined", layer);
+                                    // - ajout de l'identifiant du type de couche crée par le composant
+                                    layer.gpResultLayerId = "layerimport:MapBox";
+                                    // - lecture des informations dans le style
+                                    // ex. metadata : {
+                                    //     geoportail:[title | description | quicklookUrl | legends | originators | metadata]
+                                    // }
+                                    if (_style.metadata) {
+                                        for (var ns in _style.metadata) {
+                                            if (_style.metadata.hasOwnProperty(ns)) {
+                                                var _keys = ns.split(":");
+                                                if (_keys[0] === "geoportail") {
+                                                    var key = _keys[1];
+                                                    if (key === "title" && !layerOpts.title) {
+                                                        layerOpts.title = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                    if (key === "description" && !layerOpts.description) {
+                                                        layerOpts.description = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                    if (key === "quicklookUrl" && !layerOpts.quicklookUrl) {
+                                                        layerOpts.quicklookUrl = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                    if (key === "legends" && !layerOpts.legends) {
+                                                        layerOpts.legends = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                    if (key === "metadata" && !layerOpts.metadata) {
+                                                        layerOpts.metadata = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                    if (key === "originators" && !layerOpts.originators) {
+                                                        layerOpts.originators = _style.metadata[ns];
+                                                        continue;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // - ajout des informations issues des options :
+                                    // titre et description par defaut
+                                    if (!layerOpts.title) {
+                                        layerOpts.title = "Import MapBox";
+                                    }
+                                    if (!layerOpts.description) {
+                                        layerOpts.description = "Import MapBox";
+                                    }
+                                    // - ajout du layer
+                                    self._layers.push({
+                                        id : layerId, // FIXME unique !?
+                                        obj : layer,
+                                        options : layerOpts
+                                    });
+                                    // - ajout dans le LayerSwitcher
+                                    self._addLayerConfToLayerSwitcher(layer, layerOpts);
+                                } else if (layer.get("mapbox-source") && layer.gpResultLayerId === "layerimport:MapBox") {
+                                    self.logger.trace("gpLayerId:defined && gpResultLayerId:layerimport:MapBox", layer);
+                                    // - maj du gestionnaire de couches pour un titre par defaut d'une couche mapbox
+                                    //  déjà chargée dans la carte !
+                                    //  attention, on doit mettre à jour uniquement la dernière couche ajoutée !
+                                    if (layerOpts.title === "Import MapBox") {
+                                        // - maj du titre par defaut
+                                        layerOpts.title += " ('" + layer.get("mapbox-source") + "')";
+                                        // - maj dans le LayerSwitcher
+                                        self._addLayerConfToLayerSwitcher(layer, layerOpts);
+                                        Ol.Observable.unByKey(_key);
+                                    }
+                                }
+                            });
+                        });
+
+                        // TODO zoom sur l'étendue (opts:zoomToExtent)
+                        var _vectorSource = null;
+                        if (_map.getView() && _vectorSource && _vectorSource.getExtent) {
+                            var _fit = layerOpts.zoomToExtent || false;
+                            if (_fit) {
+                                var key = _vectorSource.on("change", function () {
+                                    var _sourceExtent = _vectorSource.getExtent();
+                                    var _stateExtent = _vectorSource.getState();
+                                    if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
+                                        Ol.Observable.unByKey(key);
+                                        _map.getView().fit(_sourceExtent, {
+                                            maxZoom : 18
+                                        });
+                                    }
+                                });
+
+                                setTimeout(function () {
+                                    _vectorSource.dispatchEvent("change");
+                                }, 100);
+                            }
+                        }
+                    })
+                    .catch(function () {
+                        // TODO...
+                    });
+            }
+        })
+        .catch(
+            // TODO...
+        );
+};
+
+/**
  * Add a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
@@ -494,16 +650,19 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
         layerOpts.minZoom >= 0 &&
         layerOpts.minZoom <= 28) {
         olParams.maxResolution = this._getResolutionFromZoomLevel(layerOpts.minZoom);
-        this.logger.trace("[OlMap] : apply MaxResolution : " + olParams.maxResolution);
+        this.logger.trace("[_addGeoportalLayer] : apply MaxResolution : " + olParams.maxResolution);
     }
     if (layerOpts.hasOwnProperty("maxZoom") &&
         layerOpts.maxZoom >= 0 &&
         layerOpts.maxZoom <= 28) {
         olParams.minResolution = this._getResolutionFromZoomLevel(layerOpts.maxZoom);
-        this.logger.trace("[OlMap] : apply minResolution : " + olParams.minResolution);
+        this.logger.trace("[_addGeoportalLayer] : apply minResolution : " + olParams.minResolution);
     }
     var LayerClass = null;
     switch (layerOpts.format.toUpperCase()) {
+        case "MAPBOX" :
+            this.logger.error("[_addGeoportalLayer] : not yet implemented !");
+            break;
         case "WMTS" :
             LayerClass = Ol.layer.GeoportalWMTS;
             break;
@@ -511,8 +670,13 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
             LayerClass = Ol.layer.GeoportalWMS;
             break;
         default :
-            this.logger.info("addGeoportalLayer : no class found for " + layerOpts.format);
+            this.logger.info("[_addGeoportalLayer] : no class found for " + layerOpts.format);
     }
+    // au cas ou...
+    if (LayerClass === null) {
+        return;
+    }
+    // instance
     var olLayer = new LayerClass({
         layer : layerId,
         olParams : olParams
@@ -539,7 +703,7 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
 /**
  * Trouve l'objet layerOpts correspondant au layer OL
  *
- * @param {Object} layerObj - ol layer
+ * @param {Object} layerObj - Ol layer
  * @param {Object} layersStack - tableau des couches où chercher
  *
  * @return {Object} layer options
@@ -561,7 +725,7 @@ OlMap.prototype._getLayerOpts = function (layerObj, layersStack) {
 /**
  * Registers unknown unregistered layer
  *
- * @param {Object} layerObj - ol layer
+ * @param {Object} layerObj - Ol layer
  * @returns {Object} - new layer index in this._layers
  */
 OlMap.prototype._registerUnknownLayer = function (layerObj) {
@@ -604,6 +768,8 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         }
     } else if (layerId.indexOf("layerimport:WMTS") === 0) {
         options.format = "WMTS";
+    } else if (layerId.indexOf("layerimport:MapBox") === 0) {
+        options.format = "MAPBOX";
     }
     this._layers.push({
         id : layerId,
@@ -650,7 +816,7 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
         case "GPX":
         case "WFS":
         case "drawing":
-            this.logger.info("[OlMap.prototype._changeLayerColor] warning : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
+            this.logger.warn("[_changeLayerColor] : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;
     }
 
@@ -673,7 +839,7 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
  *
  * @param {Object} gpLayer - gp layer object
  * @param {String} gpLayer.id - layer identifier
- * @param {ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
+ * @param {Ol.layer.Layer} gpLayer.obj - implementation layer object (here openlayers)
  * @param {Object} gpLayer.options - layer properties (of type layerOptions)
  * @param {Boolean} toGrayScale - indicates conversion direction.
  *
@@ -773,41 +939,41 @@ OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
  * opacity, visibility, minZoom, maxZoom
  *
  * @param {Gp.LayerOptions} layerOpts - options of the layer
- * @returns {Object} a ol.layer.Layer constructor options object
+ * @returns {Object} a Ol.layer.Layer constructor options object
  *
  * @private
  */
 OlMap.prototype._applyCommonLayerParams = function (layerOpts) {
     var commonOpts = {};
-    this.logger.trace("[OlMap] : _applyCommonLayerParams ");
+    this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams ");
     if (layerOpts.hasOwnProperty("opacity")) {
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - opacity : " + layerOpts.opacity);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - opacity : " + layerOpts.opacity);
         commonOpts.opacity = layerOpts.opacity;
     }
     if (layerOpts.hasOwnProperty("visibility")) {
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - visibility : " + layerOpts.visibility);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - visibility : " + layerOpts.visibility);
         commonOpts.visible = layerOpts.visibility;
     }
     if (layerOpts.hasOwnProperty("position")) {
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - position : " + layerOpts.position);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - position : " + layerOpts.position);
         commonOpts.zIndex = layerOpts.position;
     }
     if (layerOpts.hasOwnProperty("maxZoom") &&
         layerOpts.maxZoom >= 0 &&
         layerOpts.maxZoom <= 20) {
         var minRes = this._getResolutionFromZoomLevel(layerOpts.maxZoom);
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - minRes : " + minRes);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - minRes : " + minRes);
         commonOpts.minResolution = minRes;
     }
     if (layerOpts.hasOwnProperty("minZoom") &&
         layerOpts.minZoom >= 0 &&
         layerOpts.minZoom <= 20) {
         var maxRes = this._getResolutionFromZoomLevel(layerOpts.minZoom);
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - maxRes : " + maxRes);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - maxRes : " + maxRes);
         commonOpts.maxResolution = maxRes;
     }
     if (layerOpts.hasOwnProperty("grayScaled")) {
-        this.logger.trace("[OlMap] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled);
+        this.logger.trace("[_applyCommonLayerParams] : _applyCommonLayerParams - grayScaled : " + layerOpts.grayScaled);
         commonOpts.grayScaled = layerOpts.grayScaled;
     }
 

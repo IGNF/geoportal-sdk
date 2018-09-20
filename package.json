@@ -45,7 +45,9 @@
         "geoportal-extensions-openlayers": "2.1.0",
         "geoportal-extensions-openlayers-itowns": "2.1.0",
         "itowns": "2.3.0",
-        "openlayers": "4.4.2"
+        "ol": "^4.6.5",
+        "ol-mapbox-style": "3.0.1",
+        "openlayers": "^4.6.5"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
@@ -61,6 +63,7 @@
         "eslint-plugin-node": "^6.0.1",
         "eslint-plugin-promise": "^3.7.0",
         "eslint-plugin-standard": "^3.0.1",
+        "exports-loader": "^0.7.0",
         "expose-loader": "^0.7.5",
         "extract-text-webpack-plugin": "^3.0.2",
         "handlebars": "^4.0.11",
