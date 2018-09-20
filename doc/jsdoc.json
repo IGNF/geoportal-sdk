@@ -6,7 +6,6 @@
     "source": {
         "include": [
             "./src/",
-            "./doc/images/",
             "./doc/README"
         ]
     },
