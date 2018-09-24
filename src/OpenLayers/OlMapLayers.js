@@ -508,6 +508,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                             _map.getView().setZoom(_style.zoom);
                         }
 
+                        // - multisources ?
+                        // on compte le nombre de sources (layers) afin de gérer les abonnements
+                        // sur chaque layers...
+                        self._nsources = Object.keys(_style.sources).length;
+
                         // - ajout des informations pour le layerSwitcher :
                         //   ex. titre, description, legende, metadata ...
                         //      les infos sont issues de 'layerOptions'
@@ -518,75 +523,111 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                             layers.forEach(function (layer) {
                                 // - la couche mapbox n'est pas encore inserée dans le gestionnaire de couches
                                 // et normalement, il ne peut avoir qu'une seule couche insérée à la fois...
-                                if (typeof layer.gpLayerId === "undefined") {
-                                    self.logger.trace("gpLayerId:undefined", layer);
+                                if (typeof layer.gpLayerId === "undefined" ||
+                                   (typeof layer.gpStatusSourceLoaded !== "undefined" && !layer.gpStatusSourceLoaded)
+                                ) {
+                                    // - attention, ce n'est pas une couche mapbox !
+                                    if (layer.gpResultLayerId && layer.gpResultLayerId !== "layerimport:MapBox") {
+                                        return;
+                                    }
+                                    self.logger.trace("Nouvelle couche MapBox en cours d'ajout", layer);
                                     // - ajout de l'identifiant du type de couche crée par le composant
                                     layer.gpResultLayerId = "layerimport:MapBox";
-                                    // - lecture des informations dans le style
-                                    // ex. metadata : {
-                                    //     geoportail:[title | description | quicklookUrl | legends | originators | metadata]
-                                    // }
-                                    if (_style.metadata) {
-                                        for (var ns in _style.metadata) {
-                                            if (_style.metadata.hasOwnProperty(ns)) {
-                                                var _keys = ns.split(":");
-                                                if (_keys[0] === "geoportail") {
-                                                    var key = _keys[1];
-                                                    if (key === "title" && !layerOpts.title) {
-                                                        layerOpts.title = _style.metadata[ns];
-                                                        continue;
-                                                    }
-                                                    if (key === "description" && !layerOpts.description) {
-                                                        layerOpts.description = _style.metadata[ns];
-                                                        continue;
-                                                    }
-                                                    if (key === "quicklookUrl" && !layerOpts.quicklookUrl) {
-                                                        layerOpts.quicklookUrl = _style.metadata[ns];
-                                                        continue;
-                                                    }
-                                                    if (key === "legends" && !layerOpts.legends) {
-                                                        layerOpts.legends = _style.metadata[ns];
-                                                        continue;
-                                                    }
-                                                    if (key === "metadata" && !layerOpts.metadata) {
-                                                        layerOpts.metadata = _style.metadata[ns];
-                                                        continue;
-                                                    }
-                                                    if (key === "originators" && !layerOpts.originators) {
-                                                        layerOpts.originators = _style.metadata[ns];
-                                                        continue;
+                                    // - ajout d'une information sur la statut en cours du chargement de la couche
+                                    layer.gpStatusSourceLoaded = false;
+                                    var _source = layer.getSource();
+                                    if (_source) {
+                                        self.logger.trace("Nouvelle couche MapBox chargée...");
+                                        // - maj du statut
+                                        layer.gpStatusSourceLoaded = true;
+                                        // - lecture des informations dans le style
+                                        // ex. metadata : {
+                                        //     geoportail:[title | description | quicklookUrl | legends | originators | metadata]
+                                        // }
+                                        _source._originators = layerOpts.originators;
+                                        if (_style.metadata) {
+                                            for (var ns in _style.metadata) {
+                                                if (_style.metadata.hasOwnProperty(ns)) {
+                                                    var _keys = ns.split(":");
+                                                    if (_keys[0] === "geoportail") {
+                                                        var key = _keys[1];
+                                                        if (key === "title" && !layerOpts.title) {
+                                                            _source._title = layerOpts.title = _style.metadata[ns];
+                                                            continue;
+                                                        }
+                                                        if (key === "description" && !layerOpts.description) {
+                                                            _source._description = layerOpts.description = _style.metadata[ns];
+                                                            continue;
+                                                        }
+                                                        if (key === "quicklookUrl" && !layerOpts.quicklookUrl) {
+                                                            _source._quicklookUrl = layerOpts.quicklookUrl = _style.metadata[ns];
+                                                            continue;
+                                                        }
+                                                        if (key === "legends" && !layerOpts.legends) {
+                                                            _source._legends = layerOpts.legends = _style.metadata[ns];
+                                                            continue;
+                                                        }
+                                                        if (key === "metadata" && !layerOpts.metadata) {
+                                                            _source._metadata = layerOpts.metadata = _style.metadata[ns];
+                                                            continue;
+                                                        }
+                                                        if (key === "originators" && !layerOpts.originators) {
+                                                            _source._originators = layerOpts.originators = _style.metadata[ns];
+                                                            continue;
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
+
+                                        // - ajout des informations issues des options :
+                                        // titre et description par defaut
+                                        if (!layerOpts.title) {
+                                            layerOpts.title = "Import MapBox";
+                                        }
+                                        _source._title = layerOpts.title;
+                                        if (!layerOpts.description) {
+                                            layerOpts.description = "Import MapBox";
+                                        }
+                                        _source._description = layerOpts.description;
+                                        _source._quicklookUrl = layerOpts.quicklookUrl;
+                                        _source._metadata = layerOpts.metadata;
+                                        _source._legends = layerOpts.legends;
+                                        _source._originators = layerOpts.originators;
+                                        // - ajout du layer
+                                        self._layers.push({
+                                            id : layerId, // FIXME unique, cas du multisources !?
+                                            obj : layer,
+                                            options : layerOpts
+                                        });
+                                        // - ajout dans le LayerSwitcher
+                                        self._addLayerConfToLayerSwitcher(layer, layerOpts);
                                     }
-                                    // - ajout des informations issues des options :
-                                    // titre et description par defaut
-                                    if (!layerOpts.title) {
-                                        layerOpts.title = "Import MapBox";
-                                    }
-                                    if (!layerOpts.description) {
-                                        layerOpts.description = "Import MapBox";
-                                    }
-                                    // - ajout du layer
-                                    self._layers.push({
-                                        id : layerId, // FIXME unique !?
-                                        obj : layer,
-                                        options : layerOpts
-                                    });
-                                    // - ajout dans le LayerSwitcher
-                                    self._addLayerConfToLayerSwitcher(layer, layerOpts);
-                                } else if (layer.get("mapbox-source") && layer.gpResultLayerId === "layerimport:MapBox") {
-                                    self.logger.trace("gpLayerId:defined && gpResultLayerId:layerimport:MapBox", layer);
+                                } else if (layer.get("mapbox-source") &&
+                                    layer.gpResultLayerId === "layerimport:MapBox" &&
+                                    typeof layer.gpStatusSourceLoaded !== "undefined" &&
+                                    layer.gpStatusSourceLoaded
+                                ) {
+                                    self.logger.trace("Mise à jour de la couche MapBox ajoutée dans le layerSwitcher", layer);
+                                    // - on supprime le statut de la couche, on n'en a plus besoin...
+                                    delete layer.gpStatusSourceLoaded;
                                     // - maj du gestionnaire de couches pour un titre par defaut d'une couche mapbox
                                     //  déjà chargée dans la carte !
                                     //  attention, on doit mettre à jour uniquement la dernière couche ajoutée !
-                                    if (layerOpts.title === "Import MapBox") {
-                                        // - maj du titre par defaut
-                                        layerOpts.title += " ('" + layer.get("mapbox-source") + "')";
+                                    var _src = layer.getSource();
+                                    if (_src) {
+                                        if (_src._title === "Import MapBox") {
+                                            // - maj du titre par defaut
+                                            _src._title += " ('" + layer.get("mapbox-source") + "')";
+                                            layerOpts.title = _src._title;
+                                        }
                                         // - maj dans le LayerSwitcher
                                         self._addLayerConfToLayerSwitcher(layer, layerOpts);
-                                        Ol.Observable.unByKey(_key);
+                                        // - gestion de l'abonnement
+                                        self._nsources--;
+                                        if (self._nsources === 0) {
+                                            Ol.Observable.unByKey(_key);
+                                        }
                                     }
                                 }
                             });

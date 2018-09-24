@@ -4,11 +4,7 @@
   "sprite": "https://rawgit.com/lowzonenose/editor/master/data/sprite/sprite-states",
   "glyphs": "",
   "name": "states",
-  "metadata": {
-      "geoportail:title": "Vecteur tuilé GeoJSON",
-      "geoportail:description": "Exemple de vecteur tuilé sur un GeoJSON avec filtres",
-      "geoportail:other": "..."
-  },
+  "metadata": {},
   "bearing": 0,
   "zoom": 3,
   "center": [
