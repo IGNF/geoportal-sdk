@@ -11806,7 +11806,7 @@
     },
     "geometry_name": "the_geom",
     "properties": {
-      "STATE_ABBR": "TEST",
+      "STATE_ABBR": "T",
       "STATE_NAME": "TEST",
       "AREA_LAND": null,
       "AREA_WATER": null,

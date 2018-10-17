@@ -15,13 +15,7 @@
     "states": {
       "type": "geojson",
       "data": "https://rawgit.com/lowzonenose/editor/master/data/states.geojson",
-      "attribution": "Data Open Source",
-      "maxzoom": 18,
-      "buffer": 128,
-      "tolerance": 0.375,
-      "cluster": false,
-      "clusterRadius": 50,
-      "clusterMaxZoom": 5
+      "attribution": "Data Open Source"
     }
   },
   "layers": [
@@ -91,52 +85,6 @@
       "paint": {
         "line-color": "#ffffff",
         "line-width": 1
-      }
-    },
-    {
-      "id": "state_abbreviations",
-      "type": "symbol",
-      "source": "states",
-      "minzoom": 4,
-      "maxzoom": 5,
-      "layout": {
-        "visibility": "none",
-        "text-field": "{STATE_ABBR}",
-        "text-justify": "center",
-        "text-size": 12,
-        "text-font": [
-          "Arial Normal",
-          "sans-serif Normal"
-        ]
-      }
-    },
-    {
-      "id": "state_names",
-      "type": "symbol",
-      "source": "states",
-      "minzoom": 5,
-      "layout": {
-        "visibility": "none",
-        "text-field": [
-          "concat",
-          [
-            "get",
-            "STATE_ABBR"
-          ],
-          "\n",
-          [
-            "get",
-            "STATE_NAME"
-          ]
-        ],
-        "icon-image": "accommodation_camping",
-        "icon-size": 1,
-        "text-size": 12,
-        "text-justify": "center",
-        "text-font": [
-          "Arial Normal",
-          "sans-serif Normal"
-        ]
       }
     }
   ]

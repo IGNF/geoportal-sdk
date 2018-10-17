@@ -47,27 +47,33 @@
                     visibility : true,
                     format : "MapBox",
                     title : "Test Style Mapbox GeoJSON",
-                    description : "Mise en place d'un test avec Style Mapbox GeoJSON...",
+                    description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des themes...",
                     url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
-                    quicklookUrl : "https://wxs.ign.fr/static/pictures/test.jpg",
-                    metadata : [
-                        {"format":"xml","url":"http://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=TEST1.xml"},
-                        {"format":"xml","url":"http://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=TEST2.xml"}
-                    ],
-                    legends : [
-                        {
-                           format : "image/jpg",
-                           url : "http://www.geoportail.gouv.fr/depot/fiches/test.png",
-                           minScaleDenominator: null
-                        }
-                    ],
-                    htmlAdditionalContent : "Contenu additionnel de test...",
-                    originators: [{
-                            "name":"Test",
-                            "attribution":"Test",
-                            "url":"http://www.test.fr",
-                        }
-                    ]
+                    themes : {
+                        "description": "Thèmes...",
+                        "styles" : [
+                            {
+                                "image" : "{{ resources }}/data/mapbox/themes/images/layer0.png",
+                                "label" : "standard0",
+                                "style" : "{{ resources }}/data/mapbox/themes/styles/style0.json"
+                            },
+                            {
+                                "image" : "{{ resources }}/data/mapbox/themes/images/layer1.png",
+                                "label" : "standard1",
+                                "style" : "{{ resources }}/data/mapbox/themes/styles/style1.json"
+                            },
+                            {
+                                "image" : "{{ resources }}/data/mapbox/themes/images/layer2.png",
+                                "label" : "standard2",
+                                "style" : "{{ resources }}/data/mapbox/themes/styles/style2.json"
+                            },
+                            {
+                                "image" : "{{ resources }}/data/mapbox/themes/images/layer3.png",
+                                "label" : "standard3",
+                                "style" : "{{ resources }}/data/mapbox/themes/styles/style3.json"
+                            }
+                        ]
+                    }
                 }
             },
             zoom : 6

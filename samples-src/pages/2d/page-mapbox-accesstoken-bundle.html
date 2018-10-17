@@ -21,16 +21,14 @@
 
 {{#content "js"}}
     <script>
-        var _map = Gp.Map.load('geoportalMap',{
+        Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
             center:{
                 x : 407444,
                 y : 5856585
             },
             controlsOptions : {
-                "layerSwitcher" : {
-                    collapsed:false
-                },
+                "layerSwitcher" : {},
                 "getfeatureInfo" : {
                     options : {
                         auto : true,
@@ -42,14 +40,13 @@
             layersOptions : {
                 'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
                 },
-                'monMapBoxGeoJSONMultiple' : {
+                'monMapBoxWithTokenAcces' : {
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/mapbox-geojson-multisources.json"
+                    url : "https://api.mapbox.com/styles/v1/mapbox/bright-v9?access_token=pk.eyJ1IjoibG93em9uZW5vc2UiLCJhIjoiY2pqNW9pM3BnMDh3YzNxc3d1NDBrOXJiYiJ9.fpJA4mi3Dau4qgEHiqdbpw"
                 }
             },
             zoom : 6
         });
-        console.log(_map);
     </script>
 {{/content}}
 {{/extend}}

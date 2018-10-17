@@ -41,8 +41,15 @@
                 'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
                 },
                 'monMapBoxGeoJSON' : {
+                    opacity : 0.7,
+                    // minZoom : 8,
+                    // maxZoom : 15,
+                    visibility : true,
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/geojson/mapbox-states-with-metadata.json"
+                    title : "Test Style Mapbox GeoJSON",
+                    description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des themes...",
+                    url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
+                    themes : "{{ resources }}/data/mapbox/themes/themes.json"
                 }
             },
             zoom : 6

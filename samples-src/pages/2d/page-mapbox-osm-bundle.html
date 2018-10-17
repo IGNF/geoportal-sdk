@@ -23,10 +23,6 @@
     <script>
         Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
-            center:{
-                x : 407444,
-                y : 5856585
-            },
             controlsOptions : {
                 "layerSwitcher" : {},
                 "getfeatureInfo" : {
@@ -42,7 +38,7 @@
                 },
                 'monMapBoxOSM' : {
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/mapbox-osm.json"
+                    url : "{{resources}}/MAPBOX/styles/osm.json"
                 }
             },
             zoom : 6

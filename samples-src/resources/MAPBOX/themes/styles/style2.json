@@ -29,7 +29,7 @@
       "id": "background",
       "type": "background",
       "paint": {
-        "background-color": "rgba(80,80,80,0)"
+        "background-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -42,7 +42,7 @@
         2000000
       ],
       "paint": {
-        "fill-color": "#FF0000",
+        "fill-color": "#ffff66",
         "fill-opacity": 0.7
       }
     },
@@ -64,7 +64,7 @@
         ]
       ],
       "paint": {
-        "fill-color": "#FFFF00",
+        "fill-color": "#ffab43",
         "fill-opacity": 0.7
       }
     },
@@ -78,7 +78,7 @@
         4000000
       ],
       "paint": {
-        "fill-color": "#FF00FF",
+        "fill-color": "#990027",
         "fill-opacity": 0.7
       }
     },
@@ -89,7 +89,7 @@
       "minzoom": 0,
       "maxzoom": 6,
       "paint": {
-        "line-color": "#000000",
+        "line-color": "#ffffff",
         "line-width": 1
       }
     },

@@ -49,6 +49,7 @@ module.exports = env => {
         },
         resolve : {
             alias : {
+                openlayers : path.resolve(__dirname, "node_modules", "openlayers", "dist", (production) ? "ol.js" : "ol-debug.js"),
                 gp : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers-itowns", "dist", (production) ? "GpPluginOlItowns.js" : "GpPluginOlItowns-src.js"),
                 itowns : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
             }

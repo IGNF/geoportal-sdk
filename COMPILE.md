@@ -98,7 +98,14 @@ Orienté developpement :
 **ouvrir une console :**
 
     // branche master du depot "IGNF/geoportal-access-lib" (dev)
-    npm install https://github.com/IGNF/geoportal-extensions/tarball/master --no-save
+    npm install https://github.com/IGNF/geoportal-access-lib/tarball/master --no-save
+
+ou par simple copie des bundles dans le répertoire *node_modules* :
+
+    // version spécifique des extensions
+    cp pathTo/GpPluginOpenLayers*  node_modules/geopoartal-extensions-openlayers/dist/
+    cp pathTo/GpPluginItowns*  node_modules/geopoartal-extensions-itowns/dist/
+    cp pathTo/GpPluginOlItowns*  node_modules/geopoartal-extensions-openlayers-itowns/dist/
 
 Upgrade de version :
 

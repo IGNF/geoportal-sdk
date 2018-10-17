@@ -12,15 +12,16 @@
     51
   ],
   "sources": {
-    "states-1": {
+    "states": {
       "type": "geojson",
       "data": "https://rawgit.com/lowzonenose/editor/master/data/states.geojson",
-      "attribution": "Data Open Source 1"
-    },
-    "states-2": {
-      "type": "geojson",
-      "data": "https://rawgit.com/lowzonenose/editor/master/data/states.geojson",
-      "attribution": "Data Open Source 2"
+      "attribution": "Data Open Source",
+      "maxzoom": 18,
+      "buffer": 128,
+      "tolerance": 0.375,
+      "cluster": false,
+      "clusterRadius": 50,
+      "clusterMaxZoom": 5
     }
   },
   "layers": [
@@ -34,21 +35,21 @@
     {
       "id": "population_lt_2m",
       "type": "fill",
-      "source": "states-1",
+      "source": "states",
       "filter": [
         "<=",
         "PERSONS",
         2000000
       ],
       "paint": {
-        "fill-color": "#A6CEE3",
+        "fill-color": "#c4c1ea",
         "fill-opacity": 0.7
       }
     },
     {
       "id": "2m_lt_population_lte_4m",
       "type": "fill",
-      "source": "states-1",
+      "source": "states",
       "filter": [
         "all",
         [
@@ -63,39 +64,39 @@
         ]
       ],
       "paint": {
-        "fill-color": "#0F78B4",
+        "fill-color": "#07b3de",
         "fill-opacity": 0.7
       }
     },
     {
       "id": "population_gt_4m",
       "type": "fill",
-      "source": "states-1",
+      "source": "states",
       "filter": [
         ">",
         "PERSONS",
         4000000
       ],
       "paint": {
-        "fill-color": "#B2DF8A",
+        "fill-color": "#00cccc",
         "fill-opacity": 0.7
       }
     },
     {
       "id": "state_outlines",
       "type": "line",
-      "source": "states-2",
+      "source": "states",
       "minzoom": 0,
       "maxzoom": 6,
       "paint": {
-        "line-color": "#ffffff",
-        "line-width": 1
+        "line-color": "#c6e2ff",
+        "line-width": 3
       }
     },
     {
       "id": "state_abbreviations",
       "type": "symbol",
-      "source": "states-2",
+      "source": "states",
       "minzoom": 4,
       "maxzoom": 5,
       "layout": {
@@ -112,7 +113,7 @@
     {
       "id": "state_names",
       "type": "symbol",
-      "source": "states-2",
+      "source": "states",
       "minzoom": 5,
       "layout": {
         "visibility": "none",
