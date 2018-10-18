@@ -49,7 +49,14 @@
                     title : "Test Style Mapbox GeoJSON",
                     description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des themes...",
                     url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
-                    themes : "{{ resources }}/MAPBOX/themes/themes.json"
+                    filters : {
+                        "description": "Filtres attributaires...",
+                        "filters" : [
+                            ["STATE_ABBR", "STATE_NAME"],
+                            ["AREA_LAND", "AREA_WATER"],
+                            ["PERSONS", "MALE", "FEMALE"]
+                        ]
+                    }
                 }
             },
             zoom : 6
