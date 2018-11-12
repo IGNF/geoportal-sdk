@@ -739,6 +739,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             position : layerOpts.position || 0, // FIXME !
                                             url : layerOpts.url,
                                             format : layerOpts.format,
+                                            themes : _themes,
+                                            filters : _filters,
                                             title : _title,
                                             description : _description,
                                             quicklookUrl : _quicklookUrl,
