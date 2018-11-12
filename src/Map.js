@@ -318,7 +318,7 @@ var autoPanOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | tileMatrixSetLimits | Object | Tiles limits of the tileMatrixSet used. |
+ * | tileMatrixSetLimits | Object | Tiles limits of the tileMatrixSet used. |
  * | isElevation | Boolean | If true, the layer is displayed as an elevation layer (DTM) |
  *
  * ### KML specific properties
@@ -337,7 +337,16 @@ var autoPanOptions = {
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  * | projection | String | coordinate reference system id used for Layer (default is map projection) |
  *
- * ### KML, GPX and GeoJSON specific properties
+ * ### MapBox specific properties
+ *
+ * ** Common 2D/3D properties**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | themes | {@link Gp.ThemesOptions} | options for layer styles |
+ * | filters | {@link Gp.FiltersOptions} | options for layer filters |
+ *
+ * ### KML, GPX, GeoJSON and MapBox specific properties
  *
  * **Common 2D/3D properties**
  *
@@ -874,4 +883,46 @@ var controlOptions = {
 *
 */
 var styleOptions = {
+};
+
+/**
+*
+* Options for MapBox vector layers
+*
+* **Common 2D/3D properties**
+*
+* | property | Type | Description |
+* | - | - | - |
+* | description | String | - |
+* | styles | Array(Object) | - |
+* | styles.image | String | - |
+* | styles.label | String | - |
+* | styles.style | String | - |
+*
+* @namespace
+* @alias Gp.ThemesOptions
+* @todo
+*/
+var themesOptions = {
+};
+
+/**
+*
+* Options for MapBox vector layers
+*
+* **Common 2D/3D properties**
+*
+* | property | Type | Description |
+* | - | - | - |
+* | description | String | - |
+* | fields | Array(Array) | - |
+* | fields[] | String | field name of table |
+* | fields[] | String | human description |
+* | fields[] | String | type of value, numeric, string, ... |
+*
+* @namespace
+* @alias Gp.FiltersOptions
+* @todo
+*/
+var filtersOptions = {
 };

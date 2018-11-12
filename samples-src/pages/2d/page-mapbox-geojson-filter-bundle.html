@@ -47,14 +47,17 @@
                     visibility : true,
                     format : "MapBox",
                     title : "Test Style Mapbox GeoJSON",
-                    description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des themes...",
+                    description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des filtres utilisateurs...",
                     url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
                     filters : {
                         "description": "Filtres attributaires...",
-                        "filters" : [
-                            ["STATE_ABBR", "STATE_NAME"],
-                            ["AREA_LAND", "AREA_WATER"],
-                            ["PERSONS", "MALE", "FEMALE"]
+                        "fields" : [
+                            // field name of table, human description, type of value
+                            ["AREA_WATER", "Surface des etendues d'eaux (m3)", "numeric"],
+                            ["AREA_LAND", "Surface des états (m2)", "numeric"],
+                            ["PERSONS", "Nombre d'habitants", "numeric"],
+                            ["MALE", "Nombre d'hommes", "numeric"],
+                            ["FEMALE", "Nombre de femmes", "numeric"]
                         ]
                     }
                 }

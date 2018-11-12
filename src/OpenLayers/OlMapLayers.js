@@ -477,8 +477,6 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
  * @private
  */
 OlMap.prototype._addMapBoxLayer = function (layerObj) {
-    this.logger.warn("[_addMapBoxLayer] : implementation in progress !");
-
     // carte courante
     var map = this.libMap;
 
@@ -734,11 +732,13 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         id : _glSourceId,
                                         styles : _glStyle,
                                         layer : vectorLayer,
-                                        // FIXME top pourri !
+                                        // FIXME top pourri ! merge à faire...
                                         options : {
                                             visibility : layerOpts.visibility,
                                             opacity : layerOpts.opacity,
-                                            position : 0, // FIXME !
+                                            position : layerOpts.position || 0, // FIXME !
+                                            url : layerOpts.url,
+                                            format : layerOpts.format,
                                             title : _title,
                                             description : _description,
                                             quicklookUrl : _quicklookUrl,
