@@ -98,7 +98,7 @@ var switch2D3D = function (viewMode) {
             // proxyUrl
             // noProxyDomains
             // reloadConfig
-            // autoconfUrl
+            // FIXME autoconfUrl ou configUrl ?
             layersOptions : oldMap.layersOptions,
             controlsOptions : oldMap.controlsOptions
             // mapEventsOptions :
@@ -267,7 +267,7 @@ IMap.prototype = {
             this._opts.mapOptions.configUrl ||
             this._opts.mapOptions.autoconfUrl) { // une clef est fournie
             // on recharge l'autoconf si l'utilisateur l'a demandé
-            // ou si aucun n'appel d'autoocnf n'a ete fait pour cette cle
+            // ou si aucun n'appel d'autoconf n'a ete fait pour cette cle
             // TODO : this.apiKey.length > 1
             needsGetConfig = (this._opts.reloadConfig ||
                               !Config ||

@@ -661,9 +661,12 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // les extensions sont enregistrées
                                             // dans les propriétés de la couche : layer.set(mapbox-extension)
                                             // pour une utilisation ulterieur (ex. editeur)
-                                            var _key = vectorTileJson.on("change", function () {
+                                            var _key = vectorTileJson.on("change", function (e) {
                                                 if (vectorTileJson.getState() === "ready") {
                                                     var _tileJSONDoc = vectorTileJson.getTileJSON();
+
+                                                    // on enregistre les extensions
+                                                    vectorLayer.set("mapbox-extension", _tileJSONDoc["vector_layers"]);
 
                                                     var tiles = Array.isArray(_tileJSONDoc.tiles) ? _tileJSONDoc.tiles : [_tileJSONDoc.tiles];
                                                     for (var i = 0; i < tiles.length; i++) {
@@ -690,9 +693,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     vectorSource._legends = _legends;
                                                     vectorSource._originators = _originators;
                                                     vectorLayer.setSource(vectorSource);
-                                                    // FIXME en attente de specifications
-                                                    // sur le format des extensions (fields, values, ...)
-                                                    vectorLayer.set("mapbox-extension", _tileJSONDoc["vector_layers"]);
                                                     Ol.Observable.unByKey(_key);
                                                 }
                                             });
@@ -735,6 +735,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // FIXME top pourri ! merge à faire...
                                         options : {
                                             visibility : layerOpts.visibility,
+                                            queryable : layerOpts.queryable, // TODO !
                                             opacity : layerOpts.opacity,
                                             position : layerOpts.position || 0, // FIXME !
                                             url : layerOpts.url,
@@ -1162,10 +1163,10 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
     var gpLayer = this._layers[layerIndex];
 
     switch (gpLayer.options.format.toUpperCase()) {
+        case "MAPBOX": // VectorTile n'est pas une image ?
         case "KML":
         case "GPX":
         case "WFS":
-        case "MAPBOX":
         case "drawing":
             this.logger.warn("[_changeLayerColor] : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;

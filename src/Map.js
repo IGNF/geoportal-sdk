@@ -901,7 +901,7 @@ var styleOptions = {
 *
 * @namespace
 * @alias Gp.ThemesOptions
-* @todo
+* @todo finish description
 */
 var themesOptions = {
 };
@@ -916,13 +916,13 @@ var themesOptions = {
 * | - | - | - |
 * | description | String | - |
 * | fields | Array(Array) | - |
-* | fields[] | String | field name of table |
+* | fields[] | String | field name of table or the field name with the table, eg "table.field" |
 * | fields[] | String | human description |
-* | fields[] | String | type of value, numeric, string, ... |
+* | fields[] | Boolean | configurable |
 *
 * @namespace
 * @alias Gp.FiltersOptions
-* @todo
+* @todo finish description
 */
 var filtersOptions = {
 };

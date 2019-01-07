@@ -1,0 +1,67 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D GFI WMS</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        body {
+            width : 100% !important;
+        }
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Get Feature Info</h1>
+    <p>Exemple de mise en oeuvre du widget getFeatureInfo avec une couche MapBox et WMTS (photos).</p>
+    <p>Ici l'évènement par défault est le simple click.</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+            // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+            center : {
+                x : 22700,
+                y : 6395900
+            },
+            zoom : 15,
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "mousePosition" : {},
+                "getfeatureinfo" : {
+                    options : {
+                        active : true,
+                        hidden: false,
+                        auto : true,
+                        defaultEvent : "singleclick",
+                        cursorStyle : "pointer"
+                    },
+                    layers : {
+                        'monMapBoxWithTokenAcces' : {},
+                        'ORTHOIMAGERY.ORTHOPHOTOS' : {}
+                    }
+                }
+            },
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS' : {
+                    queryable : true
+                },
+                'monMapBoxWithTokenAcces' : {
+                    queryable : true,
+                    format : "MapBox",
+                    url : "https://api.mapbox.com/styles/v1/mapbox/bright-v9?access_token=pk.eyJ1IjoibG93em9uZW5vc2UiLCJhIjoiY2pqNW9pM3BnMDh3YzNxc3d1NDBrOXJiYiJ9.fpJA4mi3Dau4qgEHiqdbpw"
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}
