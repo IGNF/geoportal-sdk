@@ -20,6 +20,10 @@ ItMap.prototype.setXYCenter = function (point, zoom) {
         this.logger.info("point object has location property to center on...");
         return;
     }
+    // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
+    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS[point.projection]) {
+        Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
+    }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
         var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
@@ -59,7 +63,10 @@ ItMap.prototype.setAutoCenter = function (point, zoom) {
         this.logger.info("no valid coordinates for map center");
         return;
     }
-
+    // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
+    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS[point.projection]) {
+        Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
+    }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
         var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
