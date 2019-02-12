@@ -1,0 +1,59 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D MapBox</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 800px;
+            width: 800px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une couche MapBox</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerimport" : {}
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                },
+                'monMapBoxGeoJSON' : {
+                    opacity : 0.7,
+                    // minZoom : 8,
+                    // maxZoom : 15,
+                    visibility : true,
+                    queryable : false,
+                    format : "MapBox",
+                    title : "Test en échec du Style Mapbox GeoJSON",
+                    description : "Mise en place d'un test avec Style Mapbox GeoJSON avec des erreurs...",
+                    url : "{{resources}}/MAPBOX/geojson/mapbox-states-failed.json"
+                }
+            },
+            zoom : 6
+        });
+    </script>
+{{/content}}
+{{/extend}}
