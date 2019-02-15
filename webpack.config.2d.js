@@ -184,7 +184,7 @@ module.exports = env => {
                 {
                     entry : {
                         path : path.join(__dirname, "samples-src", "pages", "2d"),
-                        pattern : "**/*.html"
+                        pattern : "**/*-bundle.html"
                     },
                     output : {
                         path : path.join(__dirname, "samples", "2d"),
@@ -218,7 +218,7 @@ module.exports = env => {
                     context : {
                         samples : () => {
                             var root = path.join(__dirname, "samples-src", "pages", "2d");
-                            var list = glob.sync(path.join(root, "**", "*.html"));
+                            var list = glob.sync(path.join(root, "**", "*-bundle.html"));
                             list = list.map(function (filePath) {
                                 var relativePath = path.relative(root, filePath);
                                 var label = relativePath.replace("/", " -- ");

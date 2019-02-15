@@ -27,7 +27,7 @@
     <script>
         Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
-            // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+            // proxyUrl : "{{ resources }}/proxy/proxy.php?url=",
             // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
             center : {
                 x : 22700,
@@ -63,12 +63,12 @@
                     legends : [
                         {
                             format : "image/jpg",
-                            url : "http://www.geoportail.gouv.fr/depot/api/legende/LEG_GEOGRAPHICALGRIDSYSTEMS_FRANCERASTER_1250.jpg",
+                            url : "https://www.geoportail.gouv.fr/depot/api/legende/LEG_GEOGRAPHICALGRIDSYSTEMS_FRANCERASTER_1250.jpg",
                             minScaleDenominator : 1250
                         },
                         {
                             format : "image/jpg",
-                            url : "http://www.geoportail.gouv.fr/depot/api/legende/LEG_GEOGRAPHICALGRIDSYSTEMS_FRANCERASTER_250000.jpg",
+                            url : "https://www.geoportail.gouv.fr/depot/api/legende/LEG_GEOGRAPHICALGRIDSYSTEMS_FRANCERASTER_250000.jpg",
                             minScaleDenominator : 250000
                         }
                     ],
@@ -85,15 +85,15 @@
                    quicklookUrl : "https://wxs.ign.fr/static/pictures/NOPIC.JPG",
                    metadata : [{"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=ECOLES.xml"}]
                 },
-                'WMS1' : {
-                    name : 'SHOM',
-                    format:'wms',
-                    queryable : true,
-                    tiled : true,
-                    url:'http://gpp3-wxs-v-ign-fr.aw.atosorigin.com/geoportail/v/wms',
-                    layers:['SHOM-MAREE_BDD-POI_WLD_WM_20170411'],
-                    outputFormat:'image/png'
-                }
+                // 'WMS1' : {
+                //     name : 'SHOM',
+                //     format:'wms',
+                //     queryable : true,
+                //     tiled : true,
+                //     url:'http://gpp3-wxs-v-ign-fr.aw.atosorigin.com/geoportail/v/wms',
+                //     layers:['SHOM-MAREE_BDD-POI_WLD_WM_20170411'],
+                //     outputFormat:'image/png'
+                // }
 
             }
         });

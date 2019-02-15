@@ -39,7 +39,7 @@
             apiKey : "{{apikey}}",
             azimuth : 45,
             zoom : 12,
-            // proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+            // proxyUrl : "{{ resources }}/proxy/proxy.php?url=",
             layersOptions : {
                 'ORTHOIMAGERY.ORTHOPHOTOS': {
                 },
@@ -134,7 +134,7 @@
                     maximised : false,
                     layerTypes : ["WMS","WMTS","KML","GPX","GeoJSON"],
                     webServicesOptions : {
-                        proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
+                        proxyUrl : "{{ resources }}/proxy/proxy.php?url=",
                         noProxyDomains : ["https://wxs.ign.fr"]
                     },
                     defaultStyles : {

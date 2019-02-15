@@ -15,7 +15,6 @@
 
 {{#content "body"}}
     <h1>Une carte avec une couche WFS</h1>
-    <p>TODO : revoir le serveur WFS ou les features utilisés ("Error occurred getting features Schema 'water_areas' does not exist.")</p>
     <div id="geoportalMap"></div>
 {{/content}}
 
@@ -30,8 +29,8 @@
             layersOptions : {
                 maCoucheWFS : {
                     format :"wfs",
-                    url : "http://demo.boundlessgeo.com/geoserver/wfs",
-                    typeNames : "osm:water_areas",
+                    url : "https://demo.boundlessgeo.com/geoserver/wfs",
+                    typeNames : "ne:ne_10m_roads",
                     version : "1.1.0",
                     outputFormat : "application/json",
                     maxFeatures : 200,
