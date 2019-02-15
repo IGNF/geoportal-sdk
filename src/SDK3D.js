@@ -8,8 +8,26 @@ import "../res/OpenLayers/OlMap.css";
 
 var logger = Logger.getLogger("SDK3D");
 
-export * from "geoportal-extensions-openlayers";
-export * from "geoportal-extensions-itowns";
+// Ol extended + Services + Outils
+export {
+    Services,
+    Error,
+    Helper,
+    Protocols,
+    servicesDate, servicesVersion,
+    LayerUtils,
+    ProxyUtils,
+    ColorUtils,
+    MathUtils,
+    olUtils, olExtVersion, olExtDate,
+    olExtended
+} from "geoportal-extensions-openlayers";
+
+// only itowns extended
+export {
+    itownsExtVersion, itownsExtDate,
+    itownsExtended
+} from "geoportal-extensions-itowns";
 
 // on declare les ns dans root global
 // auto detection des lib. chargées

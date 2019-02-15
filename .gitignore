@@ -19,6 +19,7 @@
 *.rar
 *.tar
 *.zip
+*.tgz
 
 # Logs and databases #
 ######################
@@ -48,6 +49,7 @@
 /dist/
 /jsdoc/
 /samples/
+/package/
 
 # Files #
 #########

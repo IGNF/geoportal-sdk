@@ -51,7 +51,9 @@ module.exports = env => {
         resolve : {
             alias : {
                 // "ol" : auto
-                // "geoportal-extensions-openlayers" : auto
+                // "geoportal-extensions-openlayers" : auto -> pointe vers bundle !
+                // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js")
+                // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js")
                 // "ol-mapbox-style" : olms ?
                 //      "olms" : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "olms.js"),
             }

@@ -42,10 +42,25 @@ Cette branche est clonée sur [feature-mapbox] :
     > FIXME sur les commentaires dans les css minifiées !
 
     - [x] **PROGRESS** 2D : ça compile !
-        - [ ] gestion des variables globales Gp, ol, proj4
-
     - [x] 3D : ça compile !
-        - [ ] gestion des variables globales Gp, ol, itowns, proj4
+    - [ ] **PROGRESS** gestion des variables globales
+        ex. Gp, ol, itowns, proj4
+
+        Pour utiliser openlayers, il faut charger le bundle dans la page :
+        `<script src="https://openlayers.org/en/latest/build/ol.js"></script>`
+        Du coup, olExtended et ol sont fusionnés !
+        Mais, c'est pas très logique...
+
+        ```
+        en mode dev (map)
+
+        - "geoportal-extensions-openlayers" : auto
+        - "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js")
+        > compilation OK et proj4 OK et ol !
+
+        - "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js")
+        > compilation NOK : pb de loader sur les CSS !?
+        ```
 
 * [x] **FAIT** intégrer le mode mixte dans le sdk = 3d !
 
@@ -87,6 +102,8 @@ Cette branche est clonée sur [feature-mapbox] :
     - [gfi & mapbox] exception : "Style error = Can only apply to VectorLayer or VectorTileLayer" !?
     - [gfi] selection impossible des couches vecteurs ?
     - [kml] ex. page-kml-bundle.html - l'url du kml n'existe plus...
-    - [layer & wfs] ex. page-layersOptions-bundle
-    exception sur le wfs (BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle unknown)
+    - [layer & wfs] ex.
+        page-layersOptions-bundle.html
+        page-wmts-bundle.html
+        exception sur le wfs (BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle unknown)
     - [ol] ex. page-wmts-bundle.html - variable global !?
