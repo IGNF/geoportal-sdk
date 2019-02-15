@@ -11,7 +11,8 @@ var glob = require("glob");
 var DefineWebpackPlugin = webpack.DefinePlugin;
 var ExtractTextWebPackPlugin = require("extract-text-webpack-plugin");
 var BannerWebPackPlugin = webpack.BannerPlugin;
-var UglifyJsWebPackPlugin = webpack.optimize.UglifyJsPlugin;
+var UglifyJsWebPackPlugin = require("uglifyjs-webpack-plugin");
+// var UglifyJsWebPackPlugin = webpack.optimize.UglifyJsPlugin;
 var ReplaceWebpackPlugin = require("replace-bundle-webpack-plugin");
 var JsDocWebPackPlugin = require("jsdoc-webpack-plugin");
 var HandlebarsPlugin = require("./scripts/webpackPlugins/handlebars-plugin");
@@ -36,8 +37,8 @@ module.exports = env => {
     return smp.wrap({
         // attention : importance de l'ordre des css pour que la surcharge se fasse correctement
         entry : [
-            path.join(__dirname, "node_modules", "openlayers", "dist", (production) ? "ol.css" : "ol-debug.css"),
-            path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", (production) ? "GpPluginOpenLayers.css" : "GpPluginOpenLayers-src.css"),
+            path.join(__dirname, "node_modules", "ol", "ol.css"),
+            path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.css"),
             path.join(__dirname, "src", "SDK2D")
         ],
         output : {
@@ -49,9 +50,10 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                openlayers : path.resolve(__dirname, "node_modules", "openlayers", "dist", (production) ? "ol.js" : "ol-debug.js"),
-                gp : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", (production) ? "GpPluginOpenLayers.js" : "GpPluginOpenLayers-src.js")
-                // olms : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js")
+                // "ol" : auto
+                // "geoportal-extensions-openlayers" : auto
+                // "ol-mapbox-style" : olms ?
+                //      "olms" : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "olms.js"),
             }
         },
         externals : {
@@ -71,7 +73,10 @@ module.exports = env => {
             rules : [
                 {
                     test : /\.js$/,
-                    exclude : /node_modules/,
+                    include : [
+                        path.join(__dirname, "src")
+                    ],
+                    // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
@@ -99,7 +104,7 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test : require.resolve("openlayers"),
+                    test : require.resolve("ol"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
@@ -111,9 +116,10 @@ module.exports = env => {
                 // },
                 {
                     test : /\.css$/,
+                    // exclude : [/node_modules/],
                     include : [
+                        path.join(__dirname, "node_modules", "ol"),
                         path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist"),
-                        path.join(__dirname, "node_modules", "openlayers", "dist"),
                         path.join(__dirname, "res", "OpenLayers")
                     ],
                     use : ExtractTextWebPackPlugin.extract({
@@ -240,11 +246,11 @@ module.exports = env => {
         .concat(
             (production) ? [
                 new UglifyJsWebPackPlugin({
-                    output : {
-                        comments : false,
-                        beautify : false
-                    },
                     uglifyOptions : {
+                        output : {
+                            comments : false,
+                            beautify : false
+                        },
                         mangle : true,
                         warnings : false,
                         compress : false
@@ -267,7 +273,13 @@ module.exports = env => {
             }),
             new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-openlayers.tmpl"), "utf8"), {
-                    __VERSION__ : pkg.dependencies.openlayers,
+                    __VERSION__ : pkg.dependencies.ol,
+                }),
+                raw : true
+            }),
+            new BannerWebPackPlugin({
+                banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-olms.tmpl"), "utf8"), {
+                    __VERSION__ : pkg.dependencies["ol-mapbox-style"],
                 }),
                 raw : true
             }),

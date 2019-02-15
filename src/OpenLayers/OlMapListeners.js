@@ -1,6 +1,6 @@
 import {OlMap} from "./OlMapBase";
 import {IMap} from "../Interface/IMap";
-import {olExtended as Ol} from "gp";
+import { unByKey as olObservableUnByKey } from "ol/Observable";
 
 /**
  * Associate a function to trigger when an event is received.
@@ -49,7 +49,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
             // handled in IMap
             break;
         case "centerChanged" :
-            olEventKey = this.libMap.getView().on("change:center", function (olEvt) {
+            olEventKey = this.libMap.getView().on("change:center", (olEvt) => {
                 var centerChangedEvt = {};
                 if (olEvt.oldValue) {
                     centerChangedEvt.oldCenter = {
@@ -62,11 +62,10 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     y : this.libMap.getView().getCenter()[1]
                 };
                 action.call(context, centerChangedEvt);
-            },
-            this);
+            });
             break;
         case "zoomChanged" :
-            olEventKey = this.libMap.getView().on("change:resolution", function (olEvt) {
+            olEventKey = this.libMap.getView().on("change:resolution", (olEvt) => {
                 action.call(context, {
                     // NB : quand on n'a precise aucun tableau de resolutions à
                     //      la creation de la vue, OL utilise les résolutions
@@ -74,17 +73,15 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     oldZoom : this._getZoomFromResolution(olEvt.oldValue/* , "EPSG:4326" */),
                     newZoom : this._getZoomFromResolution(this.libMap.getView().getResolution()/* , "EPSG:4326" */)
                 });
-            },
-            this);
+            });
             break;
         case "azimuthChanged" :
-            olEventKey = this.libMap.getView().on("change:rotation", function (olEvt) {
+            olEventKey = this.libMap.getView().on("change:rotation", (olEvt) => {
                 action.call(context, {
                     oldAzimuth : olEvt.oldValue * 180 / Math.PI,
                     newAzimuth : this.libMap.getView().getRotation() * 180 / Math.PI
                 });
-            },
-            this);
+            });
             break;
         case "tiltChanged" :
             // non pertinent en 2D
@@ -94,7 +91,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
             break;
         case "layerChanged" :
             // abonnement à un ajout de couche
-            olEventKey = this.libMap.getLayers().on("add", function (olEvt) {
+            olEventKey = this.libMap.getLayers().on("add", (olEvt) => {
                 var ladded = olEvt.element;
                 var layerOpts = this._getLayerOpts(ladded);
                 if (!layerOpts) {
@@ -105,11 +102,10 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     layerAdded : layerOpts,
                     position : ladded.getZIndex()
                 });
-            },
-            this);
+            });
             this._registerEvent(olEventKey, eventId, action, context);
             // abonnement à un retrait de couche
-            olEventKey = this.libMap.getLayers().on("remove", function (olEvt) {
+            olEventKey = this.libMap.getLayers().on("remove", (olEvt) => {
                 var lremoved = olEvt.element;
                 // on cherche la couche a éventuellement déjà été
                 // enlevée de this._layers
@@ -124,14 +120,13 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
-            },
-            this);
+            });
             this._registerEvent(olEventKey, eventId, action, context);
             olEventKey = null;
             // abonnement à un changement de propriete sur chaque couche
             for (var obsProperty in OlMap.LAYERPROPERTIES) {
                 map.logger.trace("[OlMap] listen : abonnement layerProperty : " + obsProperty);
-                this.libMap.getLayers().forEach(function (olLayer, i, array) {
+                this.libMap.getLayers().forEach((olLayer, i, array) => {
                     var layerOpts = this._getLayerOpts(olLayer);
                     if (obsProperty === "grayScaled") {
                         // layerChangeGrayScaled callback
@@ -151,14 +146,14 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     } else {
                         olEventKey = olLayer.on(
                             "change:" + obsProperty,
-                            function (olEvt) {
+                            (olEvt) => {
                                 // la fonction _getCommonLayerParams permet de faire la conversion
                                 // propriete ol => propriete commune
                                 var oldOlObj = {};
                                 oldOlObj[olEvt.key] = olEvt.oldValue;
                                 var oldCommonProp = map._getCommonLayerParams(oldOlObj);
                                 var newOlObj = {};
-                                newOlObj[olEvt.key] = this.get(olEvt.key);
+                                newOlObj[olEvt.key] = olLayer.get(olEvt.key);
                                 var newCommonProp = map._getCommonLayerParams(newOlObj);
                                 action.call(context, {
                                     property : OlMap.LAYERPROPERTIES[olEvt.key],
@@ -166,8 +161,8 @@ OlMap.prototype.listen = function (eventId, action, context) {
                                     newValue : newCommonProp[OlMap.LAYERPROPERTIES[olEvt.key]],
                                     layerChanged : layerOpts
                                 });
-                            },
-                            olLayer
+                            }
+                            // olLayer
                         );
 
                         this._registerEvent(olEventKey, eventId, action, context);
@@ -226,11 +221,11 @@ OlMap.prototype.forget = function (eventId, action) {
     }
     var evKey = null;
     for (var i = rEvents.length - 1; i >= 0; i--) {
-        if (rEvents[i].action == action) {
+        if (rEvents[i].action === action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
             this.logger.trace("[OlMap] : forgetting : " + eventId + " (" + evKey + ")");
-            Ol.Observable.unByKey(evKey);
+            olObservableUnByKey(evKey);
         }
     }
 };

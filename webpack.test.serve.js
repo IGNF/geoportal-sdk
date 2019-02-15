@@ -7,6 +7,8 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var DefineWebpackPlugin = webpack.DefinePlugin;
 var ExtractTextWebPackPlugin = require("extract-text-webpack-plugin");
 
+var dependencies = "lib"; // node_modules en mode production !
+
 module.exports = {
     entry : {
         tests : path.join(__dirname, "test")
@@ -18,7 +20,8 @@ module.exports = {
     },
     resolve : {
         alias : {
-            gp : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers-itowns", "dist", "GpPluginOlItowns-src.js"),
+            "geoportal-extensions-openlayers" : path.resolve(__dirname, dependencies, "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js"),
+            "geoportal-extensions-itowns" : path.resolve(__dirname, dependencies, "geoportal-extensions-itowns", "dist", "GpPluginItowns-src.js"),
         }
     },
     externals : ["request", "xmldom"],

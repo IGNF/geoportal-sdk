@@ -1,8 +1,9 @@
 import {MapLoader} from "./Utils/MapLoader";
 import {OlMap} from "./OpenLayers/OlMap";
+// CSS
 import "../res/OpenLayers/OlMap.css";
 
-export * from "gp";
+export * from "geoportal-extensions-openlayers";
 
 MapLoader.__class2d = OlMap;
 export {MapLoader as Map};

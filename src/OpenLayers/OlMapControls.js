@@ -1,6 +1,34 @@
 import {OlMap} from "./OlMapBase";
 import {IMap} from "../Interface/IMap";
-import {olExtended as Ol} from "gp";
+import {olExtended as Ol} from "geoportal-extensions-openlayers";
+import {
+    Pointer as PointerInteraction,
+    MouseWheelZoom as MouseWheelZoomInteraction,
+    DoubleClickZoom as DoubleClickZoomInteraction,
+    KeyboardPan as KeyboardPanInteraction,
+    KeyboardZoom as KeyboardZoomInteraction,
+    Select as SelectInteraction
+} from "ol/interaction";
+import {
+    Zoom as ZoomControl,
+    OverviewMap as OverviewMapControl,
+    Rotate as RotateControl,
+    ScaleLine as ScaleLineControl
+} from "ol/control";
+import Graticule from "ol/Graticule";
+import View from "ol/View";
+import Overlay from "ol/Overlay";
+import {
+    Fill as FillStyle,
+    Icon as IconStyle,
+    Stroke as StrokeStyle,
+    Style,
+    Circle as CircleStyle
+} from "ol/style";
+import {
+    transform as olTransformProj,
+    get as olGetProj
+} from "ol/proj";
 
 /**
  * Proprietes modifiables des controles pour OL
@@ -16,15 +44,22 @@ OlMap.CONTROLPROPERTIES = {
  * Association controlId <-> classe OpenLayers d'implemenation
  */
 OlMap.CONTROLSCLASSES = {
-    draggable : [Ol.interaction.Pointer, Ol.interaction.MouseWheelZoom, Ol.interaction.DoubleClickZoom],
-    keyboard : [Ol.interaction.KeyboardPan, Ol.interaction.KeyboardZoom],
+    draggable : [
+        PointerInteraction,
+        MouseWheelZoomInteraction,
+        DoubleClickZoomInteraction
+    ],
+    keyboard : [
+        KeyboardPanInteraction,
+        KeyboardZoomInteraction
+    ],
     scrollwheel : null,
-    selectable : [Ol.interaction.Select],
-    zoom : Ol.control.Zoom,
+    selectable : [SelectInteraction],
+    zoom : ZoomControl,
     zoombox : null,
-    overview : Ol.control.OverviewMap,
-    orientation : Ol.control.Rotate,
-    graphicscale : Ol.control.ScaleLine,
+    overview : OverviewMapControl,
+    orientation : RotateControl,
+    graphicscale : ScaleLineControl,
     getfeatureinfo : Ol.control.GetFeatureInfo,
     mouseposition : Ol.control.GeoportalMousePosition,
     route : Ol.control.Route,
@@ -35,7 +70,7 @@ OlMap.CONTROLSCLASSES = {
     area : Ol.control.MeasureArea,
     azimuth : Ol.control.MeasureAzimuth,
     elevationpath : Ol.control.ElevationPath,
-    graticule : Ol.Graticule,
+    graticule : Graticule,
     search : Ol.control.SearchEngine,
     reversesearch : Ol.control.ReverseGeocode,
     drawing : Ol.control.Drawing,
@@ -51,7 +86,7 @@ OlMap.CONTROLSCLASSES = {
  * @returns {Ol.control.Zoom} control
  */
 OlMap.prototype.addZoomControl = function (controlOpts) {
-    var control = new Ol.control.Zoom({
+    var control = new ZoomControl({
         target : controlOpts.div
     });
     this.libMap.addControl(control);
@@ -93,7 +128,7 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
     if (controlOpts.layers && Array.isArray(controlOpts.layers)) {
         var layerObjs = this._getLayersObj(controlOpts.layers);
         var olLayers = [];
-        layerObjs.forEach(function (layerObj) {
+        layerObjs.forEach((layerObj) => {
             this.logger.trace("[OlMap] addOverviewControl : adding " + layerObj.id + " to map");
             olLayers.push(layerObj.obj);
         },
@@ -137,9 +172,9 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
         needsView = true;
     }
     if (needsView) {
-        ovOpts.view = new Ol.View(viewOpts);
+        ovOpts.view = new View(viewOpts);
     }
-    var control = new Ol.control.OverviewMap(ovOpts);
+    var control = new OverviewMapControl(ovOpts);
     this.libMap.addControl(control);
     return control;
 };
@@ -152,7 +187,7 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
  * @returns {Ol.control.Rotate} control
  */
 OlMap.prototype.addOrientationControl = function (controlOpts) {
-    var control = new Ol.control.Rotate({
+    var control = new RotateControl({
         target : controlOpts.div,
         autoHide : controlOpts.autoHide || false // ol param
     });
@@ -178,7 +213,7 @@ OlMap.prototype.addGraphicScaleControl = function (controlOpts) {
         olunits = "metric";
     }
     this.logger.trace("[OlMap] addGraphicScaleControl : setting graphicscale units to " + olunits);
-    var control = new Ol.control.ScaleLine({
+    var control = new ScaleLineControl({
         target : controlOpts.div,
         units : olunits,
         minWidth : controlOpts.minWidth
@@ -203,8 +238,8 @@ OlMap.prototype.addGraticuleControl = function (controlOpts) {
     options.strokeOpacity = options.strokeOpacity || 0.2;
     options.strokeWidth = options.strokeWidth || 1;
     var rgba = IMap.prototype._hexToRgba.call(this, options.strokeColor, options.strokeOpacity);
-    var graticule = new Ol.Graticule({
-        strokeStyle : new Ol.style.Stroke({
+    var graticule = new Graticule({
+        strokeStyle : new StrokeStyle({
             color : rgba,
             width : options.strokeWidth
         })
@@ -251,7 +286,7 @@ OlMap.prototype.addMousePositionControl = function (controlOpts) {
         Array.isArray(controlOpts.systems) &&
         controlOpts.systems.length > 0) {
         for (var i = 0; i < controlOpts.systems.length; i++) {
-            if (!Ol.proj.get(controlOpts.systems[i].crs)) {
+            if (!olGetProj(controlOpts.systems[i].crs)) {
                 // on retire les systèmes non définis
                 this.logger.trace("[OlMap] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found.");
                 continue;
@@ -461,7 +496,7 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
         if (controlOpts.defaultStyles.KML) {
             var userKMLDefaultStyles = controlOpts.defaultStyles.KML;
             var kmldefaultStyleOptions = {};
-            kmldefaultStyleOptions.image = new Ol.style.Icon({
+            kmldefaultStyleOptions.image = new IconStyle({
                 src : userKMLDefaultStyles.markerSrc || defaultMarkerSrc,
                 anchor : [userKMLDefaultStyles.markerXAnchor || 25.5, userKMLDefaultStyles.markerYAnchor || 38],
                 anchorOrigin : "top-left",
@@ -470,16 +505,16 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             });
             strokeOpacity = userKMLDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userKMLDefaultStyles.strokeColor || "#002A50";
-            kmldefaultStyleOptions.stroke = new Ol.style.Stroke({
+            kmldefaultStyleOptions.stroke = new StrokeStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userKMLDefaultStyles.strokeWidth || 4
             });
             fillOpacity = userKMLDefaultStyles.polyFillOpacity || 0.5;
             fillColor = userKMLDefaultStyles.polyFillColor || "#00B798";
-            kmldefaultStyleOptions.fill = new Ol.style.Fill({
+            kmldefaultStyleOptions.fill = new FillStyle({
                 color : IMap.prototype._hexToRgba.call(this, fillColor, fillOpacity)
             });
-            var kmldefaultStyle = new Ol.style.Style(kmldefaultStyleOptions);
+            var kmldefaultStyle = new Style(kmldefaultStyleOptions);
             importOpts.vectorStyleOptions.KML = {
                 defaultStyle : kmldefaultStyle
             };
@@ -487,7 +522,7 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
         if (controlOpts.defaultStyles.GPX) {
             var userGPXDefaultStyles = controlOpts.defaultStyles.GPX;
             var gpxdefaultStyleOptions = {};
-            gpxdefaultStyleOptions.image = new Ol.style.Icon({
+            gpxdefaultStyleOptions.image = new IconStyle({
                 src : userGPXDefaultStyles.markerSrc || defaultMarkerSrc,
                 anchor : [userGPXDefaultStyles.markerXAnchor || 25.5, userGPXDefaultStyles.markerYAnchor || 38],
                 anchorOrigin : "top-left",
@@ -496,11 +531,11 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             });
             strokeOpacity = userGPXDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userGPXDefaultStyles.strokeColor || "#002A50";
-            gpxdefaultStyleOptions.stroke = new Ol.style.Stroke({
+            gpxdefaultStyleOptions.stroke = new StrokeStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userGPXDefaultStyles.strokeWidth || 4
             });
-            var gpxdefaultStyle = new Ol.style.Style(gpxdefaultStyleOptions);
+            var gpxdefaultStyle = new Style(gpxdefaultStyleOptions);
             importOpts.vectorStyleOptions.GPX = {
                 defaultStyle : gpxdefaultStyle
             };
@@ -508,7 +543,7 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
         if (controlOpts.defaultStyles.GeoJSON) {
             var userGeoJSONDefaultStyles = controlOpts.defaultStyles.GeoJSON;
             var geoJSONdefaultStyleOptions = {};
-            geoJSONdefaultStyleOptions.image = new Ol.style.Icon({
+            geoJSONdefaultStyleOptions.image = new IconStyle({
                 src : userGeoJSONDefaultStyles.markerSrc || defaultMarkerSrc,
                 anchor : [userGeoJSONDefaultStyles.markerXAnchor || 25.5, userGeoJSONDefaultStyles.markerYAnchor || 38],
                 anchorOrigin : "top-left",
@@ -517,16 +552,16 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             });
             strokeOpacity = userGeoJSONDefaultStyles.strokeOpacity || 0.8;
             strokeColor = userGeoJSONDefaultStyles.strokeColor || "#002A50";
-            geoJSONdefaultStyleOptions.stroke = new Ol.style.Stroke({
+            geoJSONdefaultStyleOptions.stroke = new StrokeStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userGeoJSONDefaultStyles.strokeWidth || 4
             });
             fillOpacity = userGeoJSONDefaultStyles.polyFillOpacity || 0.5;
             fillColor = userGeoJSONDefaultStyles.polyFillColor || "#00B798";
-            geoJSONdefaultStyleOptions.fill = new Ol.style.Fill({
+            geoJSONdefaultStyleOptions.fill = new FillStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity)
             });
-            var geoJSONdefaultStyle = new Ol.style.Style(geoJSONdefaultStyleOptions);
+            var geoJSONdefaultStyle = new Style(geoJSONdefaultStyleOptions);
             importOpts.vectorStyleOptions.GeoJSON = {
                 defaultStyle : geoJSONdefaultStyle
             };
@@ -621,22 +656,22 @@ OlMap.prototype.addLengthControl = function (controlOpts) {
             var startOpts = {};
             startOpts.stroke = this._fillStrokeStyles(controlOpts.styles.start);
             if (controlOpts.styles.start.hasOwnProperty("fillColor")) {
-                startOpts.fill = new Ol.style.Fill({
+                startOpts.fill = new FillStyle({
                     color : controlOpts.styles.start.fillColor
                 });
             }
-            lengthOpts.styles.start = new Ol.style.Style(startOpts);
+            lengthOpts.styles.start = new Style(startOpts);
         }
         // drawEnd style creation
         if (controlOpts.styles.hasOwnProperty("finish")) {
             var finishOpts = {};
             finishOpts.stroke = this._fillStrokeStyles(controlOpts.styles.finish);
             if (controlOpts.styles.finish.hasOwnProperty("fillColor")) {
-                finishOpts.fill = new Ol.style.Fill({
+                finishOpts.fill = new FillStyle({
                     color : controlOpts.styles.finish.fillColor
                 });
             }
-            lengthOpts.styles.finish = new Ol.style.Style(finishOpts);
+            lengthOpts.styles.finish = new Style(finishOpts);
         }
     }
     // geodesic
@@ -675,22 +710,22 @@ OlMap.prototype.addAreaControl = function (controlOpts) {
             var startOpts = {};
             startOpts.stroke = this._fillStrokeStyles(controlOpts.styles.start);
             if (controlOpts.styles.start.hasOwnProperty("fillColor")) {
-                startOpts.fill = new Ol.style.Fill({
+                startOpts.fill = new FillStyle({
                     color : controlOpts.styles.start.fillColor
                 });
             }
-            areaOpts.styles.start = new Ol.style.Style(startOpts);
+            areaOpts.styles.start = new Style(startOpts);
         }
         // drawEnd style creation
         if (controlOpts.styles.hasOwnProperty("finish")) {
             var finishOpts = {};
             finishOpts.stroke = this._fillStrokeStyles(controlOpts.styles.finish);
             if (controlOpts.styles.finish.hasOwnProperty("fillColor")) {
-                finishOpts.fill = new Ol.style.Fill({
+                finishOpts.fill = new FillStyle({
                     color : controlOpts.styles.finish.fillColor
                 });
             }
-            areaOpts.styles.finish = new Ol.style.Style(finishOpts);
+            areaOpts.styles.finish = new Style(finishOpts);
         }
     }
 
@@ -729,22 +764,22 @@ OlMap.prototype.addAzimuthControl = function (controlOpts) {
             var startOpts = {};
             startOpts.stroke = this._fillStrokeStyles(controlOpts.styles.start);
             if (controlOpts.styles.start.hasOwnProperty("fillColor")) {
-                startOpts.fill = new Ol.style.Fill({
+                startOpts.fill = new FillStyle({
                     color : controlOpts.styles.start.fillColor
                 });
             }
-            azimuthOpts.styles.start = new Ol.style.Style(startOpts);
+            azimuthOpts.styles.start = new Style(startOpts);
         }
         // drawEnd style creation
         if (controlOpts.styles.hasOwnProperty("finish")) {
             var finishOpts = {};
             finishOpts.stroke = this._fillStrokeStyles(controlOpts.styles.finish);
             if (controlOpts.styles.finish.hasOwnProperty("fillColor")) {
-                finishOpts.fill = new Ol.style.Fill({
+                finishOpts.fill = new FillStyle({
                     color : controlOpts.styles.finish.fillColor
                 });
             }
-            azimuthOpts.styles.finish = new Ol.style.Style(finishOpts);
+            azimuthOpts.styles.finish = new Style(finishOpts);
         }
     }
 
@@ -833,7 +868,7 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
                 ];
             }
             if (Object.keys(markerOpts).length > 0) {
-                elevOpts.stylesOptions.marker = new Ol.style.Icon(markerOpts);
+                elevOpts.stylesOptions.marker = new IconStyle(markerOpts);
             }
         }
     }
@@ -1218,7 +1253,7 @@ OlMap.prototype.getLibMapControl = function (controlId) {
     if (Array.isArray(olControlClass)) {
         this.logger.trace("[OlMap] getLibMapControl : searching interactions.");
         var olInteractions = [];
-        this.getLibMap().getInteractions().forEach(function (interaction) {
+        this.getLibMap().getInteractions().forEach((interaction) => {
             for (var j = 0; j < olControlClass.length; j++) {
                 if (interaction instanceof olControlClass[j]) {
                     this.logger.trace("[OlMap] getLibMapControl : found interaction : " + olControlClass[j].name);
@@ -1226,8 +1261,7 @@ OlMap.prototype.getLibMapControl = function (controlId) {
                     break;
                 }
             }
-        },
-        this);
+        });
         return olInteractions.length > 0 ? olInteractions : null;
     }
     // cas du graticule
@@ -1333,14 +1367,14 @@ OlMap.prototype._addMarkers = function (markersOptions) {
         // create overlay
         var fcoords = [mo.position.x, mo.position.y];
         if (mo.position.hasOwnProperty("projection")) {
-            fcoords = Ol.proj.transform(fcoords, mo.position.projection, this.getProjection());
+            fcoords = olTransformProj(fcoords, mo.position.projection, this.getProjection());
         }
         this.logger.trace("[OlMap] : _addMarkers : coords [" + fcoords[0] + ", " + fcoords[1] + "]");
         var mrkImg = document.createElement("img");
         mrkImg.src = mo.url;
         // mrkImg.setAttribute("content", mo.content);
         mrkImg.mo = mo;
-        var mrk = new Ol.Overlay({
+        var mrk = new Overlay({
             position : fcoords,
             offset : mo.offset,
             element : mrkImg
@@ -1360,7 +1394,7 @@ OlMap.prototype._addMarkers = function (markersOptions) {
                     locEvt.position.y
                 ];
                 if (locEvt.position.hasOwnProperty("projection")) {
-                    fcoords = Ol.proj.transform(fcoords, locEvt.position.projection, gpMap.getProjection());
+                    fcoords = olTransformProj(fcoords, locEvt.position.projection, gpMap.getProjection());
                 }
                 this.setPosition(fcoords);
             };
@@ -1396,7 +1430,7 @@ OlMap.prototype._fillStrokeStyles = function (stylesProps) {
         strokeOpts.width = stylesProps.strokeWidth;
     }
     if (Object.keys(strokeOpts).length > 0) {
-        resultStyle = new Ol.style.Stroke(strokeOpts);
+        resultStyle = new StrokeStyle(strokeOpts);
     }
     return resultStyle;
 };
@@ -1415,11 +1449,11 @@ OlMap.prototype._fillPointerStyles = function (stylesProps) {
     }
     pointerOpts.stroke = this._fillStrokeStyles(stylesProps);
     if (stylesProps.hasOwnProperty("fillColor")) {
-        pointerOpts.fill = new Ol.style.Fill({
+        pointerOpts.fill = new FillStyle({
             color : stylesProps.fillColor
         });
     }
-    var pStyle = new Ol.style.Circle(pointerOpts);
+    var pStyle = new CircleStyle(pointerOpts);
     return pStyle;
 };
 

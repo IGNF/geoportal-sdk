@@ -2,12 +2,14 @@ import {MapLoader} from "./Utils/MapLoader";
 import {OlMap} from "./OpenLayers/OlMap";
 import {ItMap} from "./Itowns/ItMap";
 import Logger from "./Utils/LoggerByDefault";
+// CSS
 import "../res/Itowns/ItMap.css";
 import "../res/OpenLayers/OlMap.css";
 
 var logger = Logger.getLogger("SDK3D");
 
-export * from "gp";
+export * from "geoportal-extensions-openlayers";
+export * from "geoportal-extensions-itowns";
 
 // on declare les ns dans root global
 // auto detection des lib. chargées

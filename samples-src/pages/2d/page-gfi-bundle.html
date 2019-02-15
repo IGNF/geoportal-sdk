@@ -81,7 +81,7 @@
                     format : "wms",
                     title : "Ecoles maternelles et élémentaires",
                     description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
-                    url : "http://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
+                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
                     layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                     outputFormat : "image/png",
                     queryable : true,
@@ -95,13 +95,13 @@
                         {
                             "name":"MEN",
                             "attribution":"Ministère de l’Education nationale",
-                            // "logo":"http://wxs.ign.fr/static/logos/MEN/MEN.gif",
+                            // "logo":"https://wxs.ign.fr/static/logos/MEN/MEN.gif",
                             "url":"http://www.education.gouv.fr",
                             "constraints":[{"crs":"EPSG:4326","bbox":{"left":-63.09696,"right":55.826077,"top":51.073032,"bottom":-21.385712},"minScaleDenominator":0,"maxScaleDenominator":559082265,"temporalExtent":["2016-02-18","2016-02-18"]}]
                         }
                     ],
                     metadata : [
-                        {"format":"xml","url":"http://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=ECOLES.xml"}
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=ECOLES.xml"}
                     ],
                     legends : [
                         {
@@ -117,7 +117,7 @@
                     format : "wms",
                     title : "Limites administratives",
                     description : "blah blah",
-                    url : "http://wxs.ign.fr/{{apikey3}}/geoportail/r/wms",
+                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/r/wms",
                     layers : ["ADMINISTRATIVEUNITS.BOUNDARIES"],
                     outputFormat : "image/png",
                     queryable : true, //pour test devait etre false
@@ -131,7 +131,7 @@
                     format : "wmts",
                     title : "RPG 2012",
                     description : "blah blah",
-                    url : "http://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
+                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
                     layer : "LANDUSE.AGRICULTURE2012",
                     tileMatrixSet : "PM",
                     styleName : "normal",
@@ -147,7 +147,7 @@
                     format : "wmts",
                     title : "Réseau ferroviaire",
                     description : "blah blah",
-                    url : "http://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
+                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
                     layer : "TRANSPORTNETWORKS.RAILWAYS",
                     tileMatrixSet : "PM",
                     styleName : "normal",

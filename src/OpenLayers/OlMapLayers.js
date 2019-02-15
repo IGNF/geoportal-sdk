@@ -1,7 +1,39 @@
 import {OlMap} from "./OlMapBase";
 import {IMap} from "../Interface/IMap";
-import {Protocols, olExtended as Ol} from "gp";
+import {Protocols, olExtended as Ol} from "geoportal-extensions-openlayers";
 
+import VectorTileLayer from "ol/layer/VectorTile";
+import VectorTileSource from "ol/source/VectorTile";
+import VectorLayer from "ol/layer/Vector";
+import ImageLayer from "ol/layer/Image";
+import TileLayer from "ol/layer/Tile";
+import VectorSource from "ol/source/Vector";
+import TileWMSSource from "ol/source/TileWMS";
+import ImageWMSSource from "ol/source/ImageWMS";
+import OSMSource from "ol/source/OSM";
+import TileJSONSource from "ol/source/TileJSON";
+
+import GML2 from "ol/format/GML2";
+import GML3 from "ol/format/GML3";
+import MVT from "ol/format/MVT";
+import GeoJSON from "ol/format/GeoJSON";
+import GPX from "ol/format/GPX";
+
+import { createXYZ as olCreateXYZTileGrid } from "ol/tilegrid";
+import WMTSTileGrid from "ol/tilegrid/WMTS";
+
+import {
+    Fill as FillStyle,
+    Icon as IconStyle,
+    Stroke as StrokeStyle,
+    Style,
+    Text as TextStyle
+} from "ol/style";
+
+import Collection from "ol/Collection";
+import { unByKey as olObservableUnByKey } from "ol/Observable";
+import { transform as olTransformProj } from "ol/proj";
+import { bbox as olStrategyBBOX } from "ol/loadingstrategy";
 /**
  * Proprietes observables des couches pour le SDK
  */
@@ -136,9 +168,9 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     sourceOpts.projection = layerOpts.projection;
                 }
                 if (layerOpts.hasOwnProperty("tiled") && layerOpts.tiled === true) {
-                    constructorOpts.source = new Ol.source.TileWMS(sourceOpts);
+                    constructorOpts.source = new TileWMSSource(sourceOpts);
                 } else {
-                    constructorOpts.source = new Ol.source.ImageWMS(sourceOpts);
+                    constructorOpts.source = new ImageWMSSource(sourceOpts);
                 }
                 break;
             }
@@ -159,7 +191,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     format : layerOpts.outputFormat,
                     version : layerOpts.version,
                     style : layerOpts.styleName,
-                    tileGrid : new Ol.tilegrid.WMTS({
+                    tileGrid : new WMTSTileGrid({
                         origin : [
                             layerOpts.topLeftCorner.x,
                             layerOpts.topLeftCorner.y
@@ -182,7 +214,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
             }
             case "OSM":
                 this.logger.trace("[_addRasterLayer] : ajout d'une couche OSM");
-                constructorOpts.source = new Ol.source.OSM({
+                constructorOpts.source = new OSMSource({
                     url : layerOpts.url
                 });
                 break;
@@ -197,9 +229,9 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
             if (layerOpts.format.toUpperCase() === "WMS" &&
                  (!layerOpts.hasOwnProperty("tiled") || layerOpts.tiled !== true)
             ) {
-                layer = new Ol.layer.Image(constructorOpts);
+                layer = new ImageLayer(constructorOpts);
             } else {
-                layer = new Ol.layer.Tile(constructorOpts);
+                layer = new TileLayer(constructorOpts);
             }
             // pour forcer la prise en compte par le LayerSwitcher du zIndex quand il vaut zéro (extension OL) (cf. issue #12)
             if (constructorOpts.hasOwnProperty("zIndex") && constructorOpts.zIndex === 0) {
@@ -252,7 +284,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
     var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
     var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
     var styleOptions = {};
-    styleOptions.image = new Ol.style.Icon({
+    styleOptions.image = new IconStyle({
         src : layerStyleOptions.markerSrc || defaultMapOptions.markerSrc || defaultOptions.markerSrc,
         anchor : [
             layerStyleOptions.markerXAnchor || defaultMapOptions.markerXAnchor || defaultOptions.markerXAnchor,
@@ -262,34 +294,34 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
         anchorXUnits : "pixels",
         anchorYUnits : "pixels"
     });
-    styleOptions.stroke = new Ol.style.Stroke({
+    styleOptions.stroke = new StrokeStyle({
         color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor, layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity),
         width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
     });
-    styleOptions.fill = new Ol.style.Fill({
+    styleOptions.fill = new FillStyle({
         color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor, layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity)
     });
-    styleOptions.text = new Ol.style.Text({
+    styleOptions.text = new TextStyle({
         font : "16px Sans",
         textAlign : "left",
-        fill : new Ol.style.Fill({
+        fill : new FillStyle({
             color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.textColor || defaultMapOptions.textColor || defaultOptions.textColor, 1)
         })
     });
     if (layerStyleOptions.textStrokeColor) {
-        styleOptions.text.stroke = new Ol.style.Stroke({
+        styleOptions.text.stroke = new StrokeStyle({
             color : IMap.prototype._hexToRgba.call(this, layerStyleOptions.textStrokeColor || defaultMapOptions.textStrokeColor || defaultOptions.textStrokeColor, 1),
             width : 1
         });
     }
-    var vectorStyle = new Ol.style.Style(styleOptions);
+    var vectorStyle = new Style(styleOptions);
 
     switch (layerOpts.format.toUpperCase()) {
         case "KML":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche KML");
 
             // FIXME !?
-            // constructorOpts.source = new Ol.source.Vector({
+            // constructorOpts.source = new VectorSource({
             //     url : this.setProxy(layerOpts.url),
             //     format : new Ol.format.KMLExtended({
             //         extractStyles : layerOpts.extractStyles,
@@ -303,8 +335,8 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                 showPointNames : layerOpts.showPointNames,
                 defaultStyle : [vectorStyle]
             });
-            constructorOpts.source = new Ol.source.Vector({
-                features : new Ol.Collection(),
+            constructorOpts.source = new VectorSource({
+                features : new Collection(),
                 // features loader
                 loader : function (extent, resolution, projectionFeature) {
                     Protocols.XHR.call({
@@ -332,9 +364,9 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "GPX":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GPX");
-            constructorOpts.source = new Ol.source.Vector({
+            constructorOpts.source = new VectorSource({
                 url : this.setProxy(layerOpts.url),
-                format : new Ol.format.GPX()
+                format : new GPX()
             });
             constructorOpts.style = vectorStyle;
             break;
@@ -343,9 +375,9 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "GEOJSON":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
-            constructorOpts.source = new Ol.source.Vector({
+            constructorOpts.source = new VectorSource({
                 url : this.setProxy(layerOpts.url),
-                format : new Ol.format.GeoJSON()
+                format : new GeoJSON()
             });
             constructorOpts.style = vectorStyle;
             break;
@@ -394,16 +426,16 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                 if (oflc.indexOf("2.1") > 0 ||
                     oflc.indexOf("gml2") > 0
                 ) {
-                    format = new Ol.format.GML2(formatOptions);
+                    format = new GML2(formatOptions);
                 } else {
                     // GML => defaults to GML3
-                    format = new Ol.format.GML3(formatOptions);
+                    format = new GML3(formatOptions);
                 }
             } else {
                 // Defaults format to GeoJSON
-                format = new Ol.format.GeoJSON(formatOptions);
+                format = new GeoJSON(formatOptions);
             }
-            constructorOpts.source = new Ol.source.Vector({
+            constructorOpts.source = new VectorSource({
                 format : format,
                 // envoi de la requête WFS
                 url : function (extent, resolution, projection) {
@@ -412,7 +444,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                     "&outputFormat=" + layerOpts.outputFormat + "&srsname=" + projection.getCode() +
                     "&bbox=" + extent.join(",") + "," + projection.getCode() + maxFeatures + sld;
                 },
-                strategy : Ol.loadingstrategy.bbox
+                strategy : olStrategyBBOX
             });
 
             break;
@@ -420,7 +452,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             // à tester avec les outils de dessins
             this.logger.trace("[_addVectorLayer] : ajout d'une couche de dessin");
 
-            constructorOpts.source = new Ol.source.Vector({});
+            constructorOpts.source = new VectorSource({});
             break;
         default:
             break;
@@ -432,7 +464,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             constructorOpts.source._originators = layerOpts.originators;
         }
 
-        var layer = new Ol.layer.Vector(constructorOpts);
+        var layer = new VectorLayer(constructorOpts);
         this._layers.push({
             id : layerId,
             obj : layer,
@@ -452,7 +484,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                     var _sourceExtent = _vectorSource.getExtent();
                     var _stateExtent = _vectorSource.getState();
                     if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
-                        Ol.Observable.unByKey(key);
+                        olObservableUnByKey(key);
                         _map.getView().fit(_sourceExtent, {
                             // size : _map.getSize(),
                             maxZoom : 18
@@ -620,11 +652,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
 
                                         if (_glTiles) {
                                             // service tuilé et/ou mapbox
-                                            vectorFormat = new Ol.format.MVT();
-                                            vectorSource = new Ol.source.VectorTile({
+                                            vectorFormat = new MVT();
+                                            vectorSource = new VectorTileSource({
                                                 attributions : _glSource.attribution,
                                                 format : vectorFormat,
-                                                tileGrid : Ol.tilegrid.createXYZ({ // TODO scheme tms ?
+                                                tileGrid : olCreateXYZTileGrid({ // TODO scheme tms ?
                                                     extent : _glSource.bounds, // [minx, miny, maxx, maxy]
                                                     maxZoom : _glSource.maxzoom || 22,
                                                     minZoom : _glSource.minzoom || 1,
@@ -638,7 +670,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorSource._metadata = _metadata;
                                             vectorSource._legends = _legends;
                                             vectorSource._originators = _originators;
-                                            vectorLayer = new Ol.layer.VectorTile({
+                                            vectorLayer = new VectorTileLayer({
                                                 source : vectorSource,
                                                 visible : false,
                                                 // zIndex: 0, // FIXME gerer l'ordre sur des multisources ?
@@ -647,14 +679,14 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorLayer.id = _glSourceId;
                                         } else if (_glUrl) {
                                             // service avec un tilejson
-                                            vectorFormat = new Ol.format.MVT();
-                                            vectorLayer = new Ol.layer.VectorTile({
+                                            vectorFormat = new MVT();
+                                            vectorLayer = new VectorTileLayer({
                                                 visible : false,
                                                 // zIndex : 0
                                                 declutter : true
                                             });
                                             vectorLayer.id = _glSourceId;
-                                            var vectorTileJson = new Ol.source.TileJSON({
+                                            var vectorTileJson = new TileJSONSource({
                                                 url : _glUrl
                                             });
                                             // lecture du tilejson avec extension IGN
@@ -678,10 +710,10 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             tiles[i] = _glUrl + tile;
                                                         }
                                                     }
-                                                    vectorSource = new Ol.source.VectorTile({
+                                                    vectorSource = new VectorTileSource({
                                                         attributions : vectorTileJson.getAttributions() || _tileJSONDoc.attribution,
                                                         format : vectorFormat,
-                                                        tileGrid : Ol.tilegrid.createXYZ({
+                                                        tileGrid : olCreateXYZTileGrid({
                                                             extent : _glSource.bounds, // [minx, miny, maxx, maxy]
                                                             maxZoom : _tileJSONDoc.maxzoom || _glSource.maxzoom || 22,
                                                             minZoom : _tileJSONDoc.minzoom || _glSource.minzoom || 0,
@@ -696,7 +728,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     vectorSource._legends = _legends;
                                                     vectorSource._originators = _originators;
                                                     vectorLayer.setSource(vectorSource);
-                                                    Ol.Observable.unByKey(_key);
+                                                    olObservableUnByKey(_key);
                                                 }
                                             });
                                         }
@@ -706,8 +738,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // - cas avec une url relative ?
                                         var _glData = _glSource.data;
 
-                                        vectorFormat = new Ol.format.GeoJSON();
-                                        vectorSource = new Ol.source.VectorTile({
+                                        vectorFormat = new GeoJSON();
+                                        vectorSource = new VectorTileSource({
                                             attributions : _glSource.attribution,
                                             format : vectorFormat,
                                             url : _glData
@@ -718,7 +750,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         vectorSource._metadata = _metadata;
                                         vectorSource._legends = _legends;
                                         vectorSource._originators = _originators;
-                                        vectorLayer = new Ol.layer.VectorTile({
+                                        vectorLayer = new VectorTileLayer({
                                             source : vectorSource,
                                             visible : false,
                                             // zIndex: 0, // FIXME gerer l'ordre sur des multisources ?
@@ -768,7 +800,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // gestion du centre de la cate sur la carte si center renseigné !
                                                     var projCode = map.getView().getProjection().getCode();
                                                     if (map.getView() && p.styles.center && p.styles.center.length) {
-                                                        map.getView().setCenter(Ol.proj.transform(p.styles.center, "EPSG:4326", projCode));
+                                                        map.getView().setCenter(olTransformProj(p.styles.center, "EPSG:4326", projCode));
                                                     }
 
                                                     // gestion du zoom sur la carte si zoom renseigné !
@@ -786,7 +818,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                                 var _sourceExtent = source.getExtent();
                                                                 var _stateExtent = source.getState();
                                                                 if (_stateExtent === "ready" && _sourceExtent[0] !== Infinity) {
-                                                                    Ol.Observable.unByKey(key);
+                                                                    olObservableUnByKey(key);
                                                                     map.getView().fit(_sourceExtent, {
                                                                         maxZoom : 18
                                                                     });
@@ -870,7 +902,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
             })
             .catch(function (e) {
                 // FIXME ?
-                console.error(e.message);
+                // console.error(e.message);
             });
     })(layerObj);
 };
@@ -1168,7 +1200,7 @@ OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
     // abonnement/desabonnement aux evenements permettant la conversion en n/b
     var source = gpLayer.obj.getSource();
     if (toGrayScale) {
-        if (source instanceof Ol.source.ImageWMS) {
+        if (source instanceof ImageWMSSource) {
             source.loadstartListenerKey = source.on("imageloadstart", imageloadstartHandler);
             source.loadendListenerKey = source.on("imageloadend", imageloadendHandler);
         } else {
@@ -1176,8 +1208,8 @@ OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
             source.loadendListenerKey = source.on("tileloadend", tileloadendHandler);
         }
     } else {
-        Ol.Observable.unByKey(source.loadstartListenerKey);
-        Ol.Observable.unByKey(source.loadendListenerKey);
+        olObservableUnByKey(source.loadstartListenerKey);
+        olObservableUnByKey(source.loadendListenerKey);
         source.loadstartListenerKey = null;
         source.loadendListenerKey = null;
     }

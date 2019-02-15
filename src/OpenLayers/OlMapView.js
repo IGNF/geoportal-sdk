@@ -1,5 +1,9 @@
 import {OlMap} from "./OlMapBase";
-import {olExtended as Ol} from "gp";
+import View from "ol/View";
+import {
+    transform as olTransformProj,
+    transformExtent as olTransformExtentProj
+} from "ol/proj";
 
 /**
  * retourne le code de la projection courante de la carte
@@ -34,7 +38,7 @@ OlMap.prototype.getViewExtent = function (projection) {
         var mapProj = this.libMap.getView().getProjection().getCode();
         if (projection &&
              projection !== mapProj) {
-            extent = Ol.proj.transformExtent(extent, mapProj, projection);
+            extent = olTransformExtentProj(extent, mapProj, projection);
         }
         // extent OL :
         // [-136845.07118250668, 5803180.6192946555, -124691.58368516366, 5810852.986008779]
@@ -77,7 +81,7 @@ OlMap.prototype.getResolution = function () {
  * @param {String} projection - projection
  */
 OlMap.prototype.setProjection = function (projection) {
-    var view = new Ol.View({
+    var view = new View({
         center : this.libMap.getView().getCenter(),
         // minZoom : this.mapOptions.minZoom,
         // maxZoom : this.mapOptions.maxZoom,
@@ -107,7 +111,7 @@ OlMap.prototype.setXYCenter = function (point) {
     var mapProj = this.libMap.getView().getProjection().getCode();
     if (point.projection &&
          point.projection !== mapProj) {
-        center = Ol.proj.transform(center, point.projection, mapProj);
+        center = olTransformProj(center, point.projection, mapProj);
     }
     this.libMap.getView().setCenter(center);
     this.logger.trace("[OlMap] - setXYCenter(" + point.x + "," + point.y + "), projection Map : " + mapProj);

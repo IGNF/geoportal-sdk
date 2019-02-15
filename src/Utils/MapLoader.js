@@ -1,4 +1,3 @@
-
 import Logger from "./LoggerByDefault";
 
 /**

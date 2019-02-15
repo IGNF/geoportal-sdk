@@ -1,5 +1,5 @@
 import {ItMap} from "./ItMapBase";
-import {itownsExtended as Itowns} from "gp";
+import {itownsExtended as Itowns} from "geoportal-extensions-itowns";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation

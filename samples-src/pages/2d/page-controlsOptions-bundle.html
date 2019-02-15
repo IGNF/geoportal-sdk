@@ -4,6 +4,10 @@
     <title>Sample SDK 2D Controls Options</title>
 {{/content}}
 
+{{#content "vendor"}}
+        <script src="{{ resources }}/vendor/d3.v3.min.js"></script>
+{{/content}}
+
 {{#content "style"}}
     <style>
         #geoportalMap {
@@ -131,7 +135,7 @@
                     layerTypes : ["WMS","WMTS","KML","GPX","GeoJSON"],
                     webServicesOptions : {
                         proxyUrl : "http://localhost/proxy/php/proxy.php?url=",
-                        noProxyDomains : ["http://wxs.ign.fr"]
+                        noProxyDomains : ["https://wxs.ign.fr"]
                     },
                     defaultStyles : {
                         "KML" : {

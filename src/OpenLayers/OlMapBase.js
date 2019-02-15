@@ -1,6 +1,7 @@
 import Logger from "../Utils/LoggerByDefault";
 import {IMap} from "../Interface/IMap";
-import {olExtended as Ol} from "gp";
+import View from "ol/View";
+import Map from "ol/Map";
 
 /**
  * OpenLayers IMap implementation class.
@@ -41,7 +42,7 @@ OlMap.prototype.constructor = OlMap;
 OlMap.prototype._initMap = function () {
     this.logger.trace("[OlMap] : _initMap");
     // creation de la view
-    var view = new Ol.View({
+    var view = new View({
         // center : [center.x, center.y],
         enableRotation : this.mapOptions.enableRotation,
         zoom : this.mapOptions.zoom,
@@ -52,7 +53,7 @@ OlMap.prototype._initMap = function () {
     });
 
     // creation de la map vide
-    this.libMap = new Ol.Map({
+    this.libMap = new Map({
         // interactions : interactions,
         target : this.div,
         view : view

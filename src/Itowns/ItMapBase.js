@@ -1,7 +1,7 @@
 import {Engine3DLoader} from "../Utils/Engine3DLoader";
 import {IMap} from "../Interface/IMap";
 import Logger from "../Utils/LoggerByDefault";
-import {itownsExtended as Itowns} from "gp";
+import {itownsExtended as Itowns} from "geoportal-extensions-itowns";
 
 /**
 * @param {Object} opts - map options

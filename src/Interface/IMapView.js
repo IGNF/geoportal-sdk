@@ -1,5 +1,5 @@
 import {IMap} from "./IMapBase";
-import {Services} from "gp";
+import {Services} from "geoportal-extensions-openlayers";
 
 /**
  * envoie d'une requête de geocodage.

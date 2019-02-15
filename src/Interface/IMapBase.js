@@ -1,8 +1,8 @@
 /* global __SWITCH2D3D_ALLOWED__ */
 
 import Logger from "../Utils/LoggerByDefault";
-import * as Ol from "openlayers";
-import {Services, ProxyUtils} from "gp";
+import { transform as olTransformProj } from "ol/proj";
+import {Services, ProxyUtils} from "geoportal-extensions-openlayers";
 import {MapLoader} from "../Utils/MapLoader";
 
 /**
@@ -41,7 +41,7 @@ var switch2D3D = function (viewMode) {
         oldMap.center = [oldMap.center.x, oldMap.center.y];
         // transformation des coordonnées de planes en géographiques
         // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-        var lonlat = Ol.proj.transform(oldMap.center, oldMap.projection, "EPSG:4326");
+        var lonlat = olTransformProj(oldMap.center, oldMap.projection, "EPSG:4326");
         oldMap.center = {
             x : lonlat[0],
             y : lonlat[1]
@@ -52,7 +52,7 @@ var switch2D3D = function (viewMode) {
         oldMap.center = [oldMap.center.lon, oldMap.center.lat];
         // transformation des coordonnées de géographiques en planes
         // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-        var xy = Ol.proj.transform(oldMap.center, "EPSG:4326", "EPSG:3857");
+        var xy = olTransformProj(oldMap.center, "EPSG:4326", "EPSG:3857");
         oldMap.center = {
             x : xy[0],
             y : xy[1]
