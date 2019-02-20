@@ -21,7 +21,7 @@ ItMap.prototype.setXYCenter = function (point, zoom) {
         return;
     }
     // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
-    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS[point.projection]) {
+    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS && Itowns.CRS[point.projection]) {
         Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
     }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
@@ -64,7 +64,7 @@ ItMap.prototype.setAutoCenter = function (point, zoom) {
         return;
     }
     // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
-    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS[point.projection]) {
+    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS && Itowns.CRS[point.projection]) {
         Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
     }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
