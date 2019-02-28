@@ -182,7 +182,7 @@ IMap.prototype.forget = function (eventId, action) {
             }
             var itCallback = null;
             for (var i = rEvents.length - 1; i >= 0; i--) {
-                if (rEvents[i].action == action) {
+                if (rEvents[i].action === action) {
                     if (!rEvents[i].eventOrigin) {
                         continue;
                     }

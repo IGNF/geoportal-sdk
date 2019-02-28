@@ -226,7 +226,7 @@ OlMap.prototype.forget = function (eventId, action) {
     }
     var evKey = null;
     for (var i = rEvents.length - 1; i >= 0; i--) {
-        if (rEvents[i].action == action) {
+        if (rEvents[i].action === action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
             this.logger.trace("[OlMap] : forgetting : " + eventId + " (" + evKey + ")");
