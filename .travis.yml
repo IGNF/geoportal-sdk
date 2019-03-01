@@ -26,8 +26,6 @@ before_deploy:
 deploy:
   # fix : https://github.com/travis-ci/travis-ci/issues/9312
   # ...wait for v1.9.1
-  edge:
-    branch: v1.8.47
   provider: pages
   skip-cleanup: true
   github-token: $ghkey  # Set in travis-ci.org dashboard, marked secure
