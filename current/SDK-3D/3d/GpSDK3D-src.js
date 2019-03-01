@@ -9,15 +9,15 @@
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 2.0.1
- * @date 2018-09-18
+ * @version 2.0.2
+ * @date 2019-03-01
  *
  */
 
 /*!
  * geoportal-extensions-openlayers-itowns. See https://github.com/IGNF/geoportal-extensions
  * License: https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * Version: 2.1.0
+ * Version: 2.1.2
  */
 
 /*!
@@ -192,8 +192,8 @@ return /******/ (function(modules) { // webpackBootstrap
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 2.1.0
- * @date 2018-08-20
+ * @version 2.1.2
+ * @date 2019-02-18
  *
  */
 
@@ -276,7 +276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		exports["Gp"] = factory(require("itowns"), require("xmldom"), require("request"), require("openlayers"));
 	else
 		root["Gp"] = factory(root["itowns"], root[undefined], root[undefined], root["ol"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_44__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_47__, __WEBPACK_EXTERNAL_MODULE_2__) {
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_44__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_48__, __WEBPACK_EXTERNAL_MODULE_2__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -339,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 45);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -353,7 +353,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _loglevel = __webpack_require__(48);
+var _loglevel = __webpack_require__(49);
 
 var Log = _interopRequireWildcard(_loglevel);
 
@@ -570,8 +570,8 @@ exports.default = SelectorID;
  * copyright CeCILL-B
  * copyright IGN
  * @author IGN
- * @version 2.1.0
- * @date 2018-08-01
+ * @version 2.1.2
+ * @date 2019-02-14
  *
  */
 /*!
@@ -584,7 +584,7 @@ exports.default = SelectorID;
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(14), __webpack_require__(47));
+		module.exports = factory(__webpack_require__(14), __webpack_require__(48));
 	else if(typeof define === 'function' && define.amd)
 		define("Gp", ["require", "require"], factory);
 	else if(typeof exports === 'object')
@@ -974,7 +974,7 @@ function CommonService (options) {
     this.options = {
         // protocol : "JSONP",
         protocol : "XHR",
-        ssl : false,
+        ssl : true,
         proxyURL : "",
         // callbackName : "",
         callbackSuffix : null,
@@ -1230,7 +1230,7 @@ CommonService.prototype = {
         // rajout de l'option gpbibaccess
         // INFO : acces au numero de version de package.conf aprés compilation !
         this.options.serverUrl = __WEBPACK_IMPORTED_MODULE_1__Utils_Helper__["a" /* default */].normalyzeUrl(this.options.serverUrl, {
-            "gp-access-lib" : "2.1.0"
+            "gp-access-lib" : "2.1.2"
         }, false);
 
         // si le proxy est renseigné, on proxifie l'url du service
@@ -1517,15 +1517,16 @@ var Helper = {
 // -> http://wxs.ign.fr/efe4r54tj4uy5i78o7545eaz7e87a/alti/rest/elevationLine.xml
 // -> http://wxs.ign.fr/efe4r54tj4uy5i78o7545eaz7e87a/alti/wps
 //
-// Force ssl :
+// ssl by default.
 //
-// DefaultUrlService.ssl = true;
+// Force to not do ssl :
+// DefaultUrlService.ssl = false;
+//
 // DefaultUrlService.AutoComplete.url('efe4r54tj4uy5i78o7545eaz7e87a')
 // output {Object|String}
 // -> https://wxs.ign.fr/efe4r54tj4uy5i78o7545eaz7e87a/ols/apis/completion
 
 // constantes internes
-var ISBROWSER = typeof window !== "undefined" ? 1 : 0;
 var HOSTNAME = "wxs.ign.fr";
 
 /**
@@ -1536,8 +1537,8 @@ var HOSTNAME = "wxs.ign.fr";
  */
 var DefaultUrlService = {
 
-    /** if set true, require the use of https protocol (except browser) */
-    ssl : false,
+    /** if set true, require the use of https protocol */
+    ssl : true,
 
     /**
     * base url of services (ssl protocol management)
@@ -1546,9 +1547,16 @@ var DefaultUrlService = {
     * @returns {String} url
     */
     url : function (key, path) {
-        // en mode browser, c'est le protocole du navigateur,
-        // sinon, il est fixé par l'option 'ssl' (par défaut à false, cad en http)
-        var _protocol = (ISBROWSER) ? (location && location.protocol && location.protocol.indexOf("https:") === 0 ? "https://" : "http://") : (DefaultUrlService.ssl ? "https://" : "http://");
+        // comportement par défaut => https
+        // sinon, il est fixé par l'option 'ssl' (false => http)
+        var _protocol;
+        
+        if (DefaultUrlService.ssl === false) {
+            _protocol = "http://";
+        } else {
+            _protocol = "https://";
+        }
+
         return _protocol + HOSTNAME.concat("/", key, path);
     },
 
@@ -5982,8 +5990,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var Gp = {
-    servicesVersion : "2.1.0",
-    servicesDate : "2018-08-01",
+    servicesVersion : "2.1.2",
+    servicesDate : "2019-02-14",
     /**
      * Methode pour rajouter une classe / objet au namespace global.
      *
@@ -6102,6 +6110,7 @@ var Services = {
      * @param {Function} [options.onFailure] - Callback function for handling unsuccessful service responses (timeOut, missing rights, ...). Takes a {@link Gp.Error} object as parameter.
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/autoconf] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=JSONP] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting an underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6132,6 +6141,7 @@ var Services = {
      * @param {Function} [options.onFailure] - Callback function for handling unsuccessful service responses (timeOut, missing rights, ...). Takes a {@link Gp.Error} object as parameter.
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/alti/rest/elevation.json] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6192,6 +6202,7 @@ var Services = {
      * @param {Function} [options.onFailure] - Callback function for handling unsuccessful service responses (timeOut, missing rights, ...). Takes a {@link Gp.Error} object as parameter.
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/geoportail/ols] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6223,6 +6234,7 @@ var Services = {
      * @param {Function} [options.onFailure] - Callback function for handling unsuccessful service responses (timeOut, missing rights, ...). Takes a {@link Gp.Error} object as parameter.
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/geoportail/ols] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6249,6 +6261,7 @@ var Services = {
      * @param {Function} [options.onFailure] - Callback function for handling unsuccessful service responses (timeOut, missing rights, ...). Takes a {@link Gp.Error} object as parameter.
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/ols/apis/completion] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6281,6 +6294,7 @@ var Services = {
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.outputFormat='json'] - Output format ("json" or "xml") to use for underlying webService. Only use if you know what you are doing.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/itineraire/rest/route.json] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -6313,6 +6327,7 @@ var Services = {
      * @param {Number} [options.timeOut=0] - Number of milliseconds above which a timeOut response will be returned with onFailure callback (see above). Default value is 0 which means timeOut will not be handled.
      * @param {String} [options.outputFormat='json'] - Output format ("json" or "xml") to use for underlying webService. Only use if you know what you are doing.
      * @param {String} [options.serverUrl=http (s)://wxs.ign.fr/APIKEY/isochrone/isochrone.json] - Web service URL. If used, options.apiKey parameter is ignored. Only use if you know what you're doing.
+     * @param {Boolean} [options.ssl = true] - Use of HTTPS or HTTP protocol to request the services. HTTPS by default (ssl=true).
      * @param {String} [options.protocol=XHR] - Protocol used to handle dialog with web service. Possible values are 'JSONP' ({@link https://en.wikipedia.org/wiki/JSONP}) and 'XHR' ({@link https://en.wikipedia.org/wiki/XMLHttpRequest}). Only XHR protocol is supported in a NodeJS environment. Only use if you know what you're doing.
      * @param {String} [options.proxyURL] - Proxy URL to use when requesting underlying web service. Ignored when options.protocol is set to 'JSONP' value. Only use if you know what you're doing.
      * @param {String} [options.callbackSuffix] - Callback function name suffix to use in case of a JSONP protocol use (see above), to set your own suffix instead of auto-increment. Ignored when options.protocol is set to 'XHR' value. Only use if you know what you're doing.
@@ -7035,7 +7050,7 @@ var Protocol = {
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   v4.2.4+314e4831
+ * @version   v4.2.5+7f2b526d
  */
 
 (function (global, factory) {
@@ -8141,15 +8156,19 @@ var Promise$1 = function () {
     var promise = this;
     var constructor = promise.constructor;
 
-    return promise.then(function (value) {
-      return constructor.resolve(callback()).then(function () {
-        return value;
+    if (isFunction(callback)) {
+      return promise.then(function (value) {
+        return constructor.resolve(callback()).then(function () {
+          return value;
+        });
+      }, function (reason) {
+        return constructor.resolve(callback()).then(function () {
+          throw reason;
+        });
       });
-    }, function (reason) {
-      return constructor.resolve(callback()).then(function () {
-        throw reason;
-      });
-    });
+    }
+
+    return promise.then(callback, callback);
   };
 
   return Promise;
@@ -10467,8 +10486,8 @@ AutoConfResponseReader.NAMESPACES = {
  * Localisation (URL) du schema de définition du XML (XSD)
  */
 AutoConfResponseReader.SCHEMALOCATION = [
-    "http://www.opengis.net/context http://gpp3-wxs.ign.fr/schemas/extContext.xsd http://api.ign.fr/geoportail http://wxs.ign.fr/schemas/autoconf/autoconf.xsd",
-    "http://www.opengis.net/context http://gpp3-wxs.ign.fr/schemas/extContext.xsd http://api.ign.fr/geoportail http://gpp3-wxs.ign.fr/schemas/autoconf.xsd"
+    "http://www.opengis.net/context http://wxs.ign.fr/schemas/extContext.xsd http://api.ign.fr/geoportail http://wxs.ign.fr/schemas/autoconf/autoconf.xsd",
+    "http://www.opengis.net/context http://wxs.ign.fr/schemas/extContext.xsd http://api.ign.fr/geoportail http://wxs.ign.fr/schemas/autoconf.xsd"
 ];
 
 /**
@@ -19211,7 +19230,7 @@ var Config = {
 };
 
 exports.default = Config;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ }),
 /* 6 */
@@ -21800,7 +21819,7 @@ var _LoggerByDefault = __webpack_require__(0);
 
 var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
 
-var _Interactions = __webpack_require__(18);
+var _Interactions = __webpack_require__(17);
 
 var _Interactions2 = _interopRequireDefault(_Interactions);
 
@@ -22333,7 +22352,7 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _MeasureToolBoxDOM = __webpack_require__(74);
+var _MeasureToolBoxDOM = __webpack_require__(75);
 
 var _MeasureToolBoxDOM2 = _interopRequireDefault(_MeasureToolBoxDOM);
 
@@ -23482,6 +23501,940 @@ exports.default = KML;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ol = __webpack_require__(2);
+
+var _ol2 = _interopRequireDefault(_ol);
+
+var _LoggerByDefault = __webpack_require__(0);
+
+var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
+
+var _Utils = __webpack_require__(1);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = _LoggerByDefault2.default.getLogger("interactions");
+
+/**
+ * HOWTO
+ * Pourquoi et comment l'utiliser ?
+ * Cette classe permet de gérer les interactions entre chaque extension.
+ * Une extension qui active une interaction avec la carte, doit desactiver
+ * les autres interactions issues d'autre extensions.
+ * La désactivation d'une interaction s'accompagne d'actions telles que
+ * le nettoyage des dessins, l'état du composant graphique, ...
+ *
+ * Ex
+ * // desactive toutes les interactions avec l'opération par defaut : clean
+ * Interactions.unset(map);
+ * // desactive les interactions sauf celles de Drawing. On execute des
+ * // operations particulieres : status, collapse et message
+ * Interactions.unset(map, {
+ *    current : "Drawing",
+ *    status : false,
+ *    collapse : true,
+ *    messsage : ["WARNING", "Ceci est un avertissement !"]
+ * });
+ *
+ * Dans le code de l'extension, il faut placer des informations dans l'interaction :
+ * interaction.setProperties({
+ *     name : "Drawing",
+ *     source : this
+ * });
+ */
+var Interactions = {
+
+    /**
+     * Liste des extensions qui utilisent le mécanisme des interactions
+     */
+    _extensions: ["Measures", "ElevationPath", "Drawing"],
+
+    /**
+     * Options par defaut
+     * - current : ex. "Drawing"
+     *       c'est l'extension qui demande la desactivation des autres interactions.
+     *       Par defaut, toutes les interactions sont desactivées.
+     * - clean :
+     *       c'est la suppression des interactions, des dessins de la carte,
+     *       ainsi que la reinitialisation de l'état graphique.
+     *       Les extensions doivent implementer la méthode 'clean()'.
+     *       Par defaut, tous les dessins sont supprimés
+     */
+    _options: {
+        current: null,
+        clean: null
+    },
+
+    /**
+     * Permet de desactive les interactions (Draw) de la carte pour les extensions,
+     * sauf l'interaction courrante (si elle est renseignée avec l'option 'current').
+     * Il est possible d'ajouter des fonctionnalités via les options.
+     * Par defaut, l'option 'clean' est renseignée...
+     *
+     * @param {Object} map - the map
+     * @param {Object} options - options
+     */
+    unset: function unset(map, options) {
+        logger.trace("unset()");
+
+        var opts = {};
+        _Utils2.default.mergeParams(opts, this._options);
+        _Utils2.default.mergeParams(opts, options);
+
+        var interactions = map.getInteractions().getArray();
+        for (var i = 0; i < interactions.length; i++) {
+            if (interactions[i].getActive() && (interactions[i] instanceof _ol2.default.interaction.Draw || interactions[i] instanceof _ol2.default.interaction.Select || interactions[i] instanceof _ol2.default.interaction.Modify)) {
+                var prop = interactions[i].getProperties();
+                var name = prop.name;
+                if (typeof name !== "undefined" && this._extensions.indexOf(name) > -1) {
+                    // doit on desactiver l'interaction courrante ?
+                    if (opts.current && opts.current === name) {
+                        continue;
+                    }
+                    interactions[i].setActive(false);
+                    // instance de l'extension
+                    var source = prop.source;
+                    if (typeof source !== "undefined" && source instanceof _ol2.default.control.Control) {
+                        // opérations sur le composant graphique
+                        for (var action in opts) {
+                            if (opts.hasOwnProperty(action)) {
+                                if (action === "current") {
+                                    continue;
+                                }
+                                if (typeof source[action] === "function") {
+                                    var args = Array.isArray(opts[action]) ? opts[action] : [opts[action]];
+                                    source[action].apply(source, args);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+exports.default = Interactions;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = {"name":"geoportal-extensions","leafletExtName":"French Geoportal Extension for Leaflet","olExtName":"French Geoportal Extension for OpenLayers","itownsExtName":"French Geoportal Extension for Itowns","olItownsExtName":"French Geoportal Extension for OpenLayers & Itowns","version":"2.1.1","leafletExtVersion":"2.0.3","olExtVersion":"2.1.2","itownsExtVersion":"2.1.2","olItownsExtVersion":"2.1.2","description":"French Geoportal Extensions for OpenLayers, Leaflet and iTowns libraries","main":"dist/leaflet/GpPluginLeaflet.js, dist/openlayers/GpPluginOpenLayers.js, dist/itowns/GpPluginItowns.js, dist/mix/GpPluginOlItowns.js","directories":{},"scripts":{"setup":"npm install","clean":"echo \"Warning: target not yet implemented!\" && exit 0","test":"cd test && mocha-webpack --require setup.js --webpack-config webpack.test.js --glob \"test-*.js\" spec/Common/*/*","test:serve":"cd test && webpack-dev-server --hot --config webpack.test.serve.js","cover":"nyc --reporter=lcov --reporter=text npm run test","sample":"npm run sample:serve","sample:serve":"npm run sample:ol:serve","sample:itowns:serve":"webpack-dev-server --config webpack.config.itowns --open-page samples/index-itowns-src.html --contentBase . --port 9001 --open","sample:leaflet:serve":"webpack-dev-server --config webpack.config.leaflet --open-page samples/index-leaflet-src.html --contentBase . --port 9001 --open","sample:ol:serve":"webpack-dev-server --config webpack.config.openlayers --open-page samples/index-openlayers-src.html --contentBase . --port 9001 --open","doc":"npm run doc:serve","doc:serve":"npm run doc:ol:serve","doc:itowns:serve":"webpack-dev-server --config webpack.config.itowns --contentBase jsdoc/itowns --port 9001 --open","doc:leaflet:serve":"webpack-dev-server --config webpack.config.leaflet --contentBase jsdoc/leaflet --port 9001 --open","doc:ol:serve":"webpack-dev-server --config webpack.config.openlayers --contentBase jsdoc/openlayers --port 9001 --open","build:dev":"npm run build:ol:dev; npm run build:itowns:dev; npm run build:mix:dev; npm run build:leaflet:dev","build:prod":"npm run build:ol:prod; npm run build:itowns:prod; npm run build:mix:prod; npm run build:leaflet:prod","build":"npm run build:ol; npm run build:itowns; npm run build:mix; npm run build:leaflet","build:itowns:dev":"webpack --config webpack.config.itowns --env.development","build:itowns:prod":"webpack --config webpack.config.itowns --env.production","build:itowns":"webpack --config webpack.config.itowns","build:mix:dev":"webpack --config webpack.config.mix --env.development","build:mix:prod":"webpack --config webpack.config.mix --env.production","build:mix":"webpack --config webpack.config.mix","build:ol:dev":"webpack --config webpack.config.openlayers --env.development","build:ol:prod":"webpack --config webpack.config.openlayers --env.production","build:ol":"webpack --config webpack.config.openlayers","build:leaflet:dev":"webpack --config webpack.config.leaflet --env.development","build:leaflet:prod":"webpack --config webpack.config.leaflet --env.production","build:leaflet":"webpack --config webpack.config.leaflet"},"nyc":{"include":["src/**/*.js"],"instrument":false,"sourceMap":false},"repository":{"type":"git","url":"https://github.com/IGNF/geoportal-extensions.git"},"author":"IGNF","keywords":["geoportail","javascript","OpenLayers","Leaflet","Itowns","3D"],"license":"CECILL-B","bugs":{"url":"https://github.com/IGNF/geoportal-extensions/issues"},"homepage":"https://github.com/IGNF/geoportal-extensions#readme","dependencies":{"geoportal-access-lib":"2.1.2","itowns":"2.3.0","leaflet":"1.3.1","leaflet-draw":"1.0.2","loglevel":"~1.6.1","openlayers":"4.4.2","proj4":"2.4.4","proj4leaflet":"~1.0.2","sortablejs":"1.4.0","three":"~0.93.0","three.meshline":"~1.1.0"},"devDependencies":{"babel-core":"^6.26.0","babel-loader":"^7.1.2","babel-preset-env":"^1.6.1","chai":"^4.1.2","clean-webpack-plugin":"^0.1.19","copy-webpack-plugin":"^4.5.1","css-loader":"^0.28.10","eslint":"^4.18.2","eslint-config-standard":"^11.0.0","eslint-loader":"^2.0.0","eslint-plugin-import":"^2.9.0","eslint-plugin-node":"^6.0.1","eslint-plugin-promise":"^3.7.0","eslint-plugin-standard":"^3.0.1","expose-loader":"^0.7.4","extract-text-webpack-plugin":"^3.0.2","handlebars-layouts":"^3.1.4","handlebars-webpack-plugin":"^1.4.1","html-webpack-plugin":"^3.1.0","istanbul-instrumenter-loader":"^3.0.1","jsdoc-webpack-plugin":"0.0.1","jsdom":"^9.9.1","mocha":"^5.0.5","mocha-loader":"^1.1.3","mocha-webpack":"^1.1.0","nyc":"^12.0.2","path":"^0.12.7","replace-bundle-webpack-plugin":"^1.0.0","requirejs":"^2.3.5","speed-measure-webpack-plugin":"^1.2.2","string-template":"^1.0.0","style-loader":"^0.20.2","url-loader":"^1.0.1","webpack":"^3.11.0","webpack-dev-server":"^2.11.1","webpack-merge":"^4.1.2","webpack-node-externals":"^1.6.0"}}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _ol = __webpack_require__(2);
+
+var _ol2 = _interopRequireDefault(_ol);
+
+var _gp = __webpack_require__(4);
+
+var _gp2 = _interopRequireDefault(_gp);
+
+var _LoggerByDefault = __webpack_require__(0);
+
+var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
+
+var _ProxyUtils = __webpack_require__(15);
+
+var _ProxyUtils2 = _interopRequireDefault(_ProxyUtils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import $__xmldom from "xmldom";
+
+var logger = _LoggerByDefault2.default.getLogger("GfiUtils");
+
+var GfiUtils = {
+
+    /**
+     * Return layer format
+     *
+     * @param {ol.layer.Layer} l - layer openlayers
+     *
+     * @return {String} format - layer format can be wms, wmts, vector or unknown
+     *
+     */
+    getLayerFormat: function getLayerFormat(l) {
+        var source = l.getSource();
+        if (source instanceof _ol2.default.source.TileWMS || source instanceof _ol2.default.source.ImageWMS) {
+            return "wms";
+        }
+        if (source instanceof _ol2.default.source.WMTS) {
+            return "wmts";
+        }
+        if (source instanceof _ol2.default.source.Vector || source instanceof _ol2.default.source.VectorTile) {
+            return "vector";
+        }
+        return "unknown";
+    },
+
+    /**
+     * Info Popup creation and display
+     *
+     * @param {ol.Map} map - map openlayers
+     * @param {ol.Coordinate} coords - coordinates where to anchor popup.
+     * @param {String} content - content to display
+     * @param {String} [contentType='text/html'] - content mime-type
+     * @param {Object} autoPanOptions - Auto-pan pop-up options
+     * @param {Boolean} [autoPanOptions.autoPan] - Specifies whether the map should auto-pan if the pop-up is rendered outside of the canvas
+     * @param {olx.OverlayPanOptions} [autoPanOptions.autoPanAnimation] - Used to customize the auto-pan animation. See {@link https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions olx.OverlayPanOptions}.
+     * @param {Number} [autoPanOptions.autoPanMargin] - Margin (in pixels) between the pop-up and the border of the map when autopanning. Default is 20.
+     * @return {Boolean} displayed - indicates if something has been displayed
+     */
+    displayInfo: function displayInfo(map, coords, content, contentType, autoPanOptions) {
+        logger.trace("[GfiUtils] : displayInfo...");
+
+        if (!contentType) {
+            contentType = "text/html";
+        }
+
+        if (content === null) {
+            return;
+        }
+
+        var _htmlDoc = null;
+        var _parser = null;
+
+        var _content = content;
+        _content = _content.replace(/\n/g, "");
+        _content = _content.replace(/(>)\s*(<)/g, "$1$2");
+
+        var scope = typeof window !== "undefined" ? window : null;
+
+        if (( false ? "undefined" : _typeof(exports)) === "object" && window === null) {
+            // code for nodejs
+            var DOMParser = __webpack_require__(14).DOMParser;
+            _parser = new DOMParser();
+            _htmlDoc = _parser.parseFromString(_content, contentType);
+        } else if (scope.DOMParser) {
+            // code for modern browsers
+            _parser = new scope.DOMParser();
+            _htmlDoc = _parser.parseFromString(_content, contentType);
+        } else if (scope.ActiveXObject) {
+            // code for old IE browsers
+            _htmlDoc = new scope.ActiveXObject("Microsoft.XMLDOM");
+            _htmlDoc.async = false;
+            _htmlDoc.loadXML(_content);
+        } else {
+            logger.log("Incompatible environment for DOM Parser !");
+            return false;
+        }
+
+        var body = _htmlDoc.getElementsByTagName("body");
+        if (body && body.length === 1) {
+            if (!body[0].hasChildNodes()) {
+                return false;
+            }
+        }
+
+        // Affichage des features.
+        var element = document.createElement("div");
+        element.className = "gp-feature-info-div";
+
+        var closer = document.createElement("input");
+        closer.type = "button";
+        closer.className = "gp-styling-button closer";
+
+        // fait disparaître la popup au clic sur x
+        closer.onclick = function () {
+            if (map.featuresOverlay) {
+                map.removeOverlay(map.featuresOverlay);
+                map.featuresOverlay = null;
+            }
+            return false;
+        };
+
+        var contentDiv = document.createElement("div");
+        contentDiv.className = "gp-features-content-div";
+        contentDiv.innerHTML = content;
+        /*
+        if (content instanceof HTMLElement) {
+            this.logger.trace("[Openlayers] : _displayInfo : pure HTMLElement") ;
+            contentDiv.appendChild(content) ;
+        } else {
+            var parser = new DOMParser() ;
+            var doc = null ;
+            try {
+                doc = parser.parseFromString(content,contentType) ;
+                this.logger.trace("[Openlayers] : _displayInfo : HTMLElement from parser") ;
+                // FIXME : avec cette methode, on a une balise html + body qui s'insère...
+                contentDiv.appendChild(doc.documentElement) ;
+            } catch (e) {
+                console.log(e) ;
+                this.logger.trace("[Openlayers] : _displayInfo : parsing content failed (not HTML)") ;
+                // en cas d'erreur : on se contente de recopier le contenu.
+                contentDiv.innerHTML = content ;
+            }
+        }
+        */
+        element.appendChild(contentDiv);
+        element.appendChild(closer);
+
+        if (map.featuresOverlay) {
+            // fermeture d'une éventuelle popup déjà ouverte.
+            map.removeOverlay(map.featuresOverlay);
+            map.featuresOverlay = null;
+        }
+        map.featuresOverlay = new _ol2.default.Overlay({
+            // id : id,
+            element: element,
+            autoPan: autoPanOptions.autoPan,
+            autoPanAnimation: autoPanOptions.autoPanAnimation,
+            autoPanMargin: autoPanOptions.autoPanMargin,
+            positioning: "bottom-center",
+            insertFirst: false, // popup appears on top of other overlays if any
+            stopEvent: true
+        });
+        map.addOverlay(map.featuresOverlay);
+        map.featuresOverlay.setPosition(coords);
+        map.featuresOverlay.render();
+
+        return true;
+    },
+
+    /**
+     * Gets HTML content from features array
+     *
+     * @param {ol.Map} map - map openlayers
+     * @param {Array.<ol.Features>} features - openlayers features Array
+     * @returns {HTMLElement} HTML content.
+     */
+    features2html: function features2html(map, features) {
+        var content = document.createElement("div");
+        features.forEach(function (f) {
+            var props = f.getProperties();
+            if (props.hasOwnProperty("name")) {
+                var nameDiv = document.createElement("div");
+                nameDiv.className = "gp-att-name-div";
+                // nameDiv.appendChild(document.createTextNode(props["name"])) ;
+                nameDiv.insertAdjacentHTML("afterbegin", props["name"]);
+                content.appendChild(nameDiv);
+            }
+            if (props.hasOwnProperty("description")) {
+                var descDiv = document.createElement("div");
+                descDiv.className = "gp-att-description-div";
+                // descDiv.appendChild(document.createTextNode(props["description"])) ;
+                descDiv.insertAdjacentHTML("afterbegin", props["description"]);
+                content.appendChild(descDiv);
+            }
+            var p = null;
+            var others = false;
+            var oDiv = null;
+            var ul = null;
+            var li = null;
+            for (p in props) {
+                if (p === "geometry" || p === "value" || p === "name" || p === "description" || p === "styleUrl") {
+                    continue;
+                }
+                // FIXME La lecture des extensions GPX n'est pas gérée !
+                if (p === "extensionsNode_" && props[p] === undefined) {
+                    continue;
+                }
+                if (!others) {
+                    oDiv = document.createElement("div");
+                    oDiv.className = "gp-att-others-div";
+                    ul = document.createElement("ul");
+                    others = true;
+                }
+                li = document.createElement("li");
+                var span = document.createElement("span");
+                span.className = "gp-attname-others-span";
+                span.appendChild(document.createTextNode(p + " : "));
+                li.appendChild(span);
+                li.appendChild(document.createTextNode(props[p]));
+                ul.appendChild(li);
+            }
+            if (ul) {
+                oDiv.appendChild(ul);
+                content.appendChild(oDiv);
+            }
+        }, map);
+
+        // pas de contenu !
+        if (!content.hasChildNodes()) {
+            content = null;
+        }
+
+        return content;
+    },
+
+    /**
+     * Indicates if there is a feature at the given coordinates for the given layer
+     *
+     * @param {ol.Map} map - map openlayers
+     * @param {ol.layer.Layer} olLayer - vector layer openlayers
+     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
+     *
+     * @return {Boolean} has feature
+     *
+     */
+    layerGetFeatureAtCoordinates: function layerGetFeatureAtCoordinates(map, olLayer, olCoordinate) {
+        var pixel = map.getPixelFromCoordinate(olCoordinate);
+        return map.hasFeatureAtPixel(pixel, function (layer) {
+            if (layer === olLayer) {
+                return true;
+            }
+            return false;
+        });
+    },
+
+    /**
+     * Get information from all the features located at the specified coordinates
+     * and belonging to the layers list argument. Those information are gathered
+     * and displayed in an info popup.
+     *
+     * @param {ol.Map} map - map openlayers
+     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
+     * @param {Array.<ol.layer.Layer>} olLayers - layers requested
+     * @param {Object} autoPanOptions - autopan options
+     *
+     * @returns {Boolean} something is displayed
+     *
+     */
+    displayVectorFeatureInfo: function displayVectorFeatureInfo(map, olCoordinate, olLayers, autoPanOptions) {
+        var pixel = map.getPixelFromCoordinate(olCoordinate);
+
+        // couches vecteur : on remplit un tableau avec les features à proximité.
+        var features = [];
+        map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+            if (!olLayers || olLayers.indexOf(layer) > -1) {
+                features.push(feature);
+            }
+        });
+        if (features.length === 0) {
+            // no features
+            return false;
+        }
+        var content = this.features2html(map, features);
+        // pas de contenu !
+        if (content === null) {
+            return false;
+        }
+        // Affichage des features.
+        this.displayInfo(map, olCoordinate, content.innerHTML, "text/html", autoPanOptions);
+        // this._displayInfo(evt.coordinate,content,"text/html") ;
+        return true;
+    },
+
+    /**
+     * Method to manage the request of information from a list of layers already added to the map.
+     * Among the given list of layers only the visible ones are requested.
+     * The priority is given to the upper layer having a feature at the pointed coordinates.
+     * If the first (upper) feature encountered is from a vector layer the info popup will
+     * display the information of the features from all visible vector layers and located at
+     * the specified coordinates.
+     *
+     * @param {ol.Map} map - map openlayers
+     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
+     * @param {Array.<Object>} gfiLayers - list of layers which can be requested through the control. Each array element is an object, with following properties :
+     * @param {ol.layer.Layer} gfiLayers.obj - ol.layer.Layer layer handled by the control (that has been added to map).
+     * @param {String} [gfiLayers.event] - name of the mouse event triggering getFeatureInfo on this layer (that has been added to map). allowed values are : 'singleclick', 'dblclick' and 'contextmenu'
+     * @param {String} [gfiLayers.infoFormat] - indicates the format mime-type of the response of GetFeatureInfo requests.
+     * @param {Object} [proxyOptions] - options for poxy configuration :
+     * @param {String} [proxyOptions.proxyUrl] - Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer.
+     * @param {Array.<String>} [proxyOptions.noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions).
+     * @param {Object} [autoPanOptions] - Auto-pan pop-up options
+     * @param {Boolean} [autoPanOptions.autoPan = true] - Specifies whether the map should auto-pan if the pop-up is rendered outside of the canvas. Defaults to true.
+     * @param {olx.OverlayPanOptions} [autoPanOptions.autoPanAnimation] - Used to customize the auto-pan animation. See {@link https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions olx.OverlayPanOptions}.
+     * @param {Number} [autoPanOptions.autoPanMargin] - Margin (in pixels) between the pop-up and the border of the map when autopanning. Default is 20.
+     *
+     */
+    displayFeatureInfo: function displayFeatureInfo(map, olCoordinate, gfiLayers, proxyOptions, autoPanOptions) {
+        // Layers orders
+        var layersOrdered = {};
+        for (var j = 0; j < gfiLayers.length; j++) {
+            var layer = gfiLayers[j];
+            var position = layer.obj.getZIndex();
+            if (!layersOrdered[position]) {
+                layersOrdered[position] = [];
+            }
+            layersOrdered[position].push(layer);
+        }
+
+        // affichage de la première popup d'informations en partant du dessus...
+        var requests = [];
+        // inversion de l'ordre des layers
+        var positions = Object.keys(layersOrdered);
+        positions.sort(function (a, b) {
+            return b - a;
+        });
+
+        // si la 1ere couche affichable est de type vecteur on affiche les infos de toutes
+        // les couches vecteur qui suivent. Par consequent, une seule requete vecteur suffit
+        // (celle correspondant au premier objet vecteur rencontre)
+        var foundFeature = false;
+
+        for (var k = 0; k < positions.length; k++) {
+            var p = positions[k];
+            for (var h = 0; h < layersOrdered[p].length; ++h) {
+                var l = layersOrdered[p][h].obj;
+                var infoFormat = layersOrdered[p][h].infoFormat || "text/html";
+                var minMaxResolutionOk = true;
+                if (l.minResolution && l.minResolution > map.getResolution()) {
+                    minMaxResolutionOk = false;
+                }
+                if (minMaxResolutionOk && l.maxResolution && l.maxResolution < map.getResolution()) {
+                    minMaxResolutionOk = false;
+                }
+
+                if (l.getVisible() && minMaxResolutionOk) {
+                    var format = this.getLayerFormat(l);
+                    if (format === "vector") {
+                        if (!foundFeature && this.layerGetFeatureAtCoordinates(map, l, olCoordinate)) {
+                            requests.push({
+                                format: format,
+                                scope: this,
+                                coordinate: olCoordinate
+                            });
+                        }
+                        continue;
+                    } else if (format !== "wms" && format !== "wmts") {
+                        logger.log("[ERROR] DisplayFeatureInfo - layer format '" + format + "' not allowed");
+                        continue;
+                    }
+
+                    var _res = map.getView().getResolution();
+                    var _url = null;
+                    if (format === "wmts") {
+                        _url = l.getSource().getGetFeatureInfoUrl(olCoordinate, _res, map.getView().getProjection(), {
+                            INFOFORMAT: infoFormat
+                        });
+                    } else {
+                        _url = l.getSource().getGetFeatureInfoUrl(olCoordinate, _res, map.getView().getProjection(), {
+                            INFO_FORMAT: infoFormat
+                        });
+                    }
+
+                    requests.push({
+                        // id : _id,
+                        format: infoFormat,
+                        url: _ProxyUtils2.default.proxifyUrl(_url, proxyOptions),
+                        scope: this,
+                        coordinate: olCoordinate
+                    });
+                }
+            }
+        }
+
+        // on recupere les couches vecteur ordonnees (a utiliser dans le cas de l'affichage de donnees vecteur)
+        var vectorLayersOrdered = null;
+
+        // call request sync
+        function requestsSync(list, iterator, callback) {
+            if (list.length === 0) {
+                return;
+            }
+            var nextItemIndex = 0;
+            // function report next request
+            function report(displayed) {
+                nextItemIndex++;
+                if (displayed || nextItemIndex === list.length) {
+                    callback();
+                } else {
+                    iterator(list[nextItemIndex], report);
+                }
+            }
+            // instead of starting all the iterations, we only start the 1st one
+            iterator(list[0], report);
+        };
+
+        var context = this;
+
+        requestsSync(requests, function (data, report) {
+            if (data.format === "vector") {
+                if (!vectorLayersOrdered) {
+                    vectorLayersOrdered = [];
+                    for (var m = 0; m < positions.length; m++) {
+                        var p = positions[m];
+                        for (var n = 0; n < layersOrdered[p].length; ++n) {
+                            vectorLayersOrdered.push(layersOrdered[p][n].obj);
+                        }
+                    }
+                }
+                report(data.scope.displayVectorFeatureInfo(map, data.coordinate, vectorLayersOrdered, autoPanOptions));
+            } else {
+                // var self = data.scope;
+                _gp2.default.Protocols.XHR.call({
+                    url: data.url,
+                    method: "GET",
+                    scope: data.scope,
+                    // Handles GFI response
+                    onResponse: function onResponse(resp) {
+                        var exception = false;
+
+                        // a t on une exception ?
+                        if (resp.trim().length === 0 || resp.indexOf("java.lang.NullPointerException") !== -1 || resp.indexOf("not queryable") !== -1) {
+                            // rien à afficher
+                            exception = true;
+                        }
+
+                        // on affiche la popup GFI !
+                        var displayed = !exception && context.displayInfo(map, data.coordinate, resp, "text/html", autoPanOptions);
+                        // on reporte sur la prochaine requête...
+                        report(displayed);
+                    },
+                    // Handles GFI response error
+                    onFailure: function onFailure(error) {
+                        logger.log(error);
+                        report(false);
+                    }
+                });
+            }
+        }, function () {
+            logger.trace("Finish sync to GFI !");
+        });
+    },
+
+    // Function returning the clicked position of an event
+    getPosition: function getPosition(e, map) {
+        if (e.coordinate) {
+            return e.coordinate;
+        }
+
+        var pixel = [0, 0];
+
+        if (e.offsetX || e.offsetY) {
+            pixel[0] = e.offsetX; // + document.body.scrollLeft + document.documentElement.scrollLeft;
+            pixel[1] = e.offsetY; // + document.body.scrollTop + document.documentElement.scrollTop;
+        } else if (e.pointerType === "touch") {
+            // a implementer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            // Safari iOS / iPhone en mode Touch (cf. hammer)
+            var p = e.pointers[0];
+            pixel[0] = p.pageX;
+            pixel[1] = p.pageY;
+        }
+
+        var coordinate = map.getCoordinateFromPixel(pixel);
+        return coordinate;
+    },
+
+    // onDisplayFeatureInfo
+    onDisplayFeatureInfo: function onDisplayFeatureInfo(e, gfiObj) {
+        if (!gfiObj.isActive()) {
+            return;
+        }
+
+        logger.trace(e);
+
+        var map = gfiObj.getMap();
+
+        if (e.type === "contextmenu" || e.type === "dblclick") {
+            e.preventDefault();
+        } else if (e.type === "singleclick") {
+            var interactions = map.getInteractions().getArray();
+            for (var i = 0; i < interactions.length; i++) {
+                if (interactions[i].getActive() && (interactions[i] instanceof _ol2.default.interaction.Select || interactions[i] instanceof _ol2.default.interaction.Modify || interactions[i] instanceof _ol2.default.interaction.Draw)) {
+                    // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
+                    return;
+                }
+            }
+        }
+
+        var proxyOptions = {};
+        if (gfiObj._proxyUrl) {
+            proxyOptions.proxyUrl = gfiObj._proxyUrl;
+        }
+        if (gfiObj._noProxyDomains) {
+            proxyOptions.noProxyDomains = gfiObj._noProxyDomains;
+        }
+
+        var autoPanOptions = {};
+        if (gfiObj._autoPan) {
+            autoPanOptions.autoPan = gfiObj._autoPan;
+        }
+        if (gfiObj._autoPanAnimation) {
+            autoPanOptions.autoPanAnimation = gfiObj._autoPanAnimation;
+        }
+        if (gfiObj._autoPanMargin) {
+            autoPanOptions.autoPanMargin = gfiObj._autoPanMargin;
+        }
+
+        var eventLayers = [];
+        for (var j = 0; j < gfiObj._layers.length; ++j) {
+            var event = gfiObj._layers[j].event ? gfiObj._layers[j].event : gfiObj._defaultEvent;
+            if (event === e.type) {
+                var ind = eventLayers.push(gfiObj._layers[j]) - 1;
+                if (!eventLayers[ind].infoFormat) {
+                    eventLayers[ind].infoFormat = gfiObj._defaultInfoFormat;
+                }
+            }
+        }
+
+        var coords = this.getPosition(e, map);
+
+        this.displayFeatureInfo(map, coords, eventLayers, proxyOptions, autoPanOptions);
+    }
+};
+
+exports.default = GfiUtils;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ol = __webpack_require__(2);
+
+var _ol2 = _interopRequireDefault(_ol);
+
+var _gp = __webpack_require__(4);
+
+var _gp2 = _interopRequireDefault(_gp);
+
+var _Utils = __webpack_require__(1);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @classdesc
+ *
+ * Extended ol.source.WMTS.
+ *
+ * @constructor
+ * @extends {ol.source.WMTS}
+ * @param {Object} options - Options
+ */
+function WMTS(options) {
+    if (!(this instanceof WMTS)) {
+        throw new TypeError("ERROR CLASS_CONSTRUCTOR");
+    }
+
+    // call constructor
+    _ol2.default.source.WMTS.call(this, options);
+}
+
+// Inherits
+_ol2.default.inherits(WMTS, _ol2.default.source.WMTS);
+
+/*
+ * @lends module:KML
+ */
+WMTS.prototype = Object.create(_ol2.default.source.WMTS.prototype, {});
+
+/**
+ * Constructor (alias)
+ */
+WMTS.prototype.constructor = WMTS;
+
+/**
+ * Return the GetFeatureInfo URL for the passed coordinate, resolution, and
+ * projection. Return `undefined` if the GetFeatureInfo URL cannot be
+ * constructed.
+ * @param {ol.Coordinate} coordinate - Coordinate.
+ * @param {Number} resolution - Resolution.
+ * @param {ol.proj.Projection} projection - Projection.
+ * @param {!Object} params - GetFeatureInfo params. `INFOFORMAT` at least should
+ *     be provided.
+ * @return {String|undefined} GetFeatureInfo URL.
+ */
+WMTS.prototype.getGetFeatureInfoUrl = function (coordinate, resolution, projection, params) {
+    var pixelRatio = this.option && this.options.tilePixelRatio ? this.options.tilePixelRatio : 1;
+
+    var tileGrid = this.tileGrid;
+    var tileCoord = this.tileGrid.getTileCoordForCoordAndResolution(coordinate, resolution);
+
+    // this code is duplicated from createFromWMTSTemplate function
+    var getTransformedTileCoord = function getTransformedTileCoord(tileCoord, tileGrid, projection) {
+        var tmpTileCoord = [0, 0, 0]; /* Note : [z(zoomLevel),x,y] */
+        var tmpExtent = _ol2.default.extent.createEmpty();
+        var x = tileCoord[1];
+        var y = -tileCoord[2] - 1;
+        var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
+        var projectionExtent = projection.getExtent();
+        var extent = projectionExtent;
+
+        if (extent != null && projection.isGlobal() && extent[0] === projectionExtent[0] && extent[2] === projectionExtent[2]) {
+            var numCols = Math.ceil(_ol2.default.extent.getWidth(extent) / _ol2.default.extent.getWidth(tileExtent));
+            x = x % numCols;
+            tmpTileCoord[0] = tileCoord[0];
+            tmpTileCoord[1] = x;
+            tmpTileCoord[2] = tileCoord[2];
+            tileExtent = tileGrid.getTileCoordExtent(tmpTileCoord, tmpExtent);
+        }
+        if (!_ol2.default.extent.intersects(tileExtent, extent) /* || ol.extent.touches(tileExtent, extent) */) {
+                return null;
+            }
+        return [tileCoord[0], x, y];
+    };
+
+    var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
+    var transformedTileCoord = getTransformedTileCoord(tileCoord, tileGrid, projection);
+
+    if (tileGrid.getResolutions().length <= tileCoord[0]) {
+        return undefined;
+    }
+
+    var tileResolution = tileGrid.getResolution(tileCoord[0]);
+    var tileMatrix = tileGrid.getMatrixIds()[tileCoord[0]];
+
+    var baseParams = {
+        SERVICE: "WMTS",
+        VERSION: "1.0.0",
+        REQUEST: "GetFeatureInfo",
+        LAYER: this.getLayer(),
+        TILECOL: transformedTileCoord[1],
+        TILEROW: transformedTileCoord[2],
+        TILEMATRIX: tileMatrix,
+        TILEMATRIXSET: this.getMatrixSet(),
+        FORMAT: this.getFormat() || "image/png",
+        STYLE: this.getStyle() || "normal"
+    };
+
+    _Utils2.default.assign(baseParams, params);
+
+    /* var tileSize = tileGrid.getTileSize();
+    var x = Math.floor(tileSize*((coordinate[0]-tileExtent[0])/(tileExtent[2]-tileExtent[0])));
+    var y = Math.floor(tileSize*((tileExtent[3]-coordinate[1])/(tileExtent[3]-tileExtent[1]))); */
+
+    var x = Math.floor((coordinate[0] - tileExtent[0]) / (tileResolution / pixelRatio));
+    var y = Math.floor((tileExtent[3] - coordinate[1]) / (tileResolution / pixelRatio));
+
+    baseParams["I"] = x;
+    baseParams["J"] = y;
+
+    var url = this.urls[0];
+
+    var featureInfoUrl = _gp2.default.Helper.normalyzeUrl(url, baseParams);
+
+    return featureInfoUrl;
+};
+
+exports.default = WMTS;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ol = __webpack_require__(2);
+
+var _ol2 = _interopRequireDefault(_ol);
+
+var _proj = __webpack_require__(22);
+
+var _proj2 = _interopRequireDefault(_proj);
+
+var _Register = __webpack_require__(50);
+
+var _Register2 = _interopRequireDefault(_Register);
+
+var _LoggerByDefault = __webpack_require__(0);
+
+var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = _LoggerByDefault2.default.getLogger("CRS");
+
+/**
+ * Autoload function that loads all defs into proj4
+ * and adds proj4 defs into ol.
+ */
+(function () {
+    // load all defs into proj4
+    _Register2.default.load(_proj2.default);
+    // overload proj4 into ol
+    if (!_ol2.default.proj.proj4_ && _ol2.default.proj.setProj4) {
+        _ol2.default.proj.setProj4(_proj2.default);
+    } else {
+        logger.log("WARNING : OpenLayers library should manage proj4 dependency in order to add custom projections (Lambert 93 for instance)");
+    }
+})();
+
+var CRS = {
+
+    /**
+     * Overload OpenLayers ol.proj.transformExtent function,
+     * to manage EPSG:2154 extent restriction
+     */
+    overloadTransformExtent: function overloadTransformExtent() {
+        /**
+         * Transforms an extent from source projection to destination projection.  This
+         * returns a new extent (and does not modify the original).
+         * Overload Geoportal Extension for Openlayers : to manage EPSG:2154 extent restriction.
+         *
+         * @param {ol.Extent} extent - The extent to transform.
+         * @param {ol.proj.ProjectionLike} source - Source projection-like.
+         * @param {ol.proj.ProjectionLike} destination - Destination projection-like.
+         * @return {ol.Extent} extent - The transformed extent.
+         */
+        _ol2.default.proj.transformExtent = function (extent, source, destination) {
+            if (destination === "EPSG:2154") {
+                if (source === "EPSG:4326") {
+                    // dans le cas d'une transfo 4326->2154,
+                    // il faut restreindre l'étendue géographique à l'étendue de validité de Lambert93.
+                    if (extent[0] < -9.62) {
+                        extent[0] = -9.62;
+                    }
+                    if (extent[1] < 41.18) {
+                        extent[1] = 41.18;
+                    }
+                    if (extent[2] > 10.3) {
+                        extent[2] = 10.3;
+                    }
+                    if (extent[3] > 51.54) {
+                        extent[3] = 51.54;
+                    }
+                }
+            }
+            var transformFn = _ol2.default.proj.getTransform(source, destination);
+            var transformedExtent = _ol2.default.extent.applyTransform(extent, transformFn);
+            return transformedExtent;
+        };
+    },
+
+    /**
+     * Load all overload function
+     */
+    overload: function overload() {
+        // TODO ajouter les fonctions à surcharger...
+        this.overloadTransformExtent();
+    }
+};
+
+exports.default = CRS;
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -29814,940 +30767,6 @@ exports.default = KML;
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ol = __webpack_require__(2);
-
-var _ol2 = _interopRequireDefault(_ol);
-
-var _LoggerByDefault = __webpack_require__(0);
-
-var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
-
-var _Utils = __webpack_require__(1);
-
-var _Utils2 = _interopRequireDefault(_Utils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logger = _LoggerByDefault2.default.getLogger("interactions");
-
-/**
- * HOWTO
- * Pourquoi et comment l'utiliser ?
- * Cette classe permet de gérer les interactions entre chaque extension.
- * Une extension qui active une interaction avec la carte, doit desactiver
- * les autres interactions issues d'autre extensions.
- * La désactivation d'une interaction s'accompagne d'actions telles que
- * le nettoyage des dessins, l'état du composant graphique, ...
- *
- * Ex
- * // desactive toutes les interactions avec l'opération par defaut : clean
- * Interactions.unset(map);
- * // desactive les interactions sauf celles de Drawing. On execute des
- * // operations particulieres : status, collapse et message
- * Interactions.unset(map, {
- *    current : "Drawing",
- *    status : false,
- *    collapse : true,
- *    messsage : ["WARNING", "Ceci est un avertissement !"]
- * });
- *
- * Dans le code de l'extension, il faut placer des informations dans l'interaction :
- * interaction.setProperties({
- *     name : "Drawing",
- *     source : this
- * });
- */
-var Interactions = {
-
-    /**
-     * Liste des extensions qui utilisent le mécanisme des interactions
-     */
-    _extensions: ["Measures", "ElevationPath", "Drawing"],
-
-    /**
-     * Options par defaut
-     * - current : ex. "Drawing"
-     *       c'est l'extension qui demande la desactivation des autres interactions.
-     *       Par defaut, toutes les interactions sont desactivées.
-     * - clean :
-     *       c'est la suppression des interactions, des dessins de la carte,
-     *       ainsi que la reinitialisation de l'état graphique.
-     *       Les extensions doivent implementer la méthode 'clean()'.
-     *       Par defaut, tous les dessins sont supprimés
-     */
-    _options: {
-        current: null,
-        clean: null
-    },
-
-    /**
-     * Permet de desactive les interactions (Draw) de la carte pour les extensions,
-     * sauf l'interaction courrante (si elle est renseignée avec l'option 'current').
-     * Il est possible d'ajouter des fonctionnalités via les options.
-     * Par defaut, l'option 'clean' est renseignée...
-     *
-     * @param {Object} map - the map
-     * @param {Object} options - options
-     */
-    unset: function unset(map, options) {
-        logger.trace("unset()");
-
-        var opts = {};
-        _Utils2.default.mergeParams(opts, this._options);
-        _Utils2.default.mergeParams(opts, options);
-
-        var interactions = map.getInteractions().getArray();
-        for (var i = 0; i < interactions.length; i++) {
-            if (interactions[i].getActive() && (interactions[i] instanceof _ol2.default.interaction.Draw || interactions[i] instanceof _ol2.default.interaction.Select || interactions[i] instanceof _ol2.default.interaction.Modify)) {
-                var prop = interactions[i].getProperties();
-                var name = prop.name;
-                if (typeof name !== "undefined" && this._extensions.indexOf(name) > -1) {
-                    // doit on desactiver l'interaction courrante ?
-                    if (opts.current && opts.current === name) {
-                        continue;
-                    }
-                    interactions[i].setActive(false);
-                    // instance de l'extension
-                    var source = prop.source;
-                    if (typeof source !== "undefined" && source instanceof _ol2.default.control.Control) {
-                        // opérations sur le composant graphique
-                        for (var action in opts) {
-                            if (opts.hasOwnProperty(action)) {
-                                if (action === "current") {
-                                    continue;
-                                }
-                                if (typeof source[action] === "function") {
-                                    var args = Array.isArray(opts[action]) ? opts[action] : [opts[action]];
-                                    source[action].apply(source, args);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-};
-
-exports.default = Interactions;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = {"name":"geoportal-extensions","leafletExtName":"French Geoportal Extension for Leaflet","olExtName":"French Geoportal Extension for OpenLayers","itownsExtName":"French Geoportal Extension for Itowns","olItownsExtName":"French Geoportal Extension for OpenLayers & Itowns","version":"2.1.0","leafletExtVersion":"2.0.2","olExtVersion":"2.1.0","itownsExtVersion":"2.1.0","olItownsExtVersion":"2.1.0","description":"French Geoportal Extensions for OpenLayers, Leaflet and iTowns libraries","main":"dist/leaflet/GpPluginLeaflet.js, dist/openlayers/GpPluginOpenLayers.js, dist/itowns/GpPluginItowns.js, dist/mix/GpPluginOlItowns.js","directories":{},"scripts":{"setup":"npm install","clean":"echo \"Warning: target not yet implemented!\" && exit 0","test":"cd test && mocha-webpack --require setup.js --webpack-config webpack.test.js --glob \"test-*.js\" spec/Common/*/*","test:serve":"cd test && webpack-dev-server --hot --config webpack.test.serve.js","cover":"nyc --reporter=lcov --reporter=text npm run test","sample":"npm run sample:serve","sample:serve":"npm run sample:ol:serve","sample:itowns:serve":"webpack-dev-server --config webpack.config.itowns --open-page samples/index-itowns-src.html --contentBase . --port 9001 --open","sample:leaflet:serve":"webpack-dev-server --config webpack.config.leaflet --open-page samples/index-leaflet-src.html --contentBase . --port 9001 --open","sample:ol:serve":"webpack-dev-server --config webpack.config.openlayers --open-page samples/index-openlayers-src.html --contentBase . --port 9001 --open","doc":"npm run doc:serve","doc:serve":"npm run doc:ol:serve","doc:itowns:serve":"webpack-dev-server --config webpack.config.itowns --contentBase jsdoc/itowns --port 9001 --open","doc:leaflet:serve":"webpack-dev-server --config webpack.config.leaflet --contentBase jsdoc/leaflet --port 9001 --open","doc:ol:serve":"webpack-dev-server --config webpack.config.openlayers --contentBase jsdoc/openlayers --port 9001 --open","build:dev":"npm run build:ol:dev; npm run build:itowns:dev; npm run build:mix:dev; npm run build:leaflet:dev","build:prod":"npm run build:ol:prod; npm run build:itowns:prod; npm run build:mix:prod; npm run build:leaflet:prod","build":"npm run build:ol; npm run build:itowns; npm run build:mix; npm run build:leaflet","build:itowns:dev":"webpack --config webpack.config.itowns --env.development","build:itowns:prod":"webpack --config webpack.config.itowns --env.production","build:itowns":"webpack --config webpack.config.itowns","build:mix:dev":"webpack --config webpack.config.mix --env.development","build:mix:prod":"webpack --config webpack.config.mix --env.production","build:mix":"webpack --config webpack.config.mix","build:ol:dev":"webpack --config webpack.config.openlayers --env.development","build:ol:prod":"webpack --config webpack.config.openlayers --env.production","build:ol":"webpack --config webpack.config.openlayers","build:leaflet:dev":"webpack --config webpack.config.leaflet --env.development","build:leaflet:prod":"webpack --config webpack.config.leaflet --env.production","build:leaflet":"webpack --config webpack.config.leaflet"},"nyc":{"include":["src/**/*.js"],"instrument":false,"sourceMap":false},"repository":{"type":"git","url":"https://github.com/IGNF/geoportal-extensions.git"},"author":"IGNF","keywords":["geoportail","javascript","OpenLayers","Leaflet","Itowns","3D"],"license":"CECILL-B","bugs":{"url":"https://github.com/IGNF/geoportal-extensions/issues"},"homepage":"https://github.com/IGNF/geoportal-extensions#readme","dependencies":{"geoportal-access-lib":"2.1.0","itowns":"2.3.0","leaflet":"1.3.1","leaflet-draw":"1.0.2","loglevel":"~1.6.1","openlayers":"4.4.2","proj4":"2.4.4","proj4leaflet":"~1.0.2","sortablejs":"1.4.0","three":"~0.93.0","three.meshline":"~1.1.0"},"devDependencies":{"babel-core":"^6.26.0","babel-loader":"^7.1.2","babel-preset-env":"^1.6.1","chai":"^4.1.2","clean-webpack-plugin":"^0.1.19","copy-webpack-plugin":"^4.5.1","css-loader":"^0.28.10","eslint":"^4.18.2","eslint-config-standard":"^11.0.0","eslint-loader":"^2.0.0","eslint-plugin-import":"^2.9.0","eslint-plugin-node":"^6.0.1","eslint-plugin-promise":"^3.7.0","eslint-plugin-standard":"^3.0.1","expose-loader":"^0.7.4","extract-text-webpack-plugin":"^3.0.2","handlebars-layouts":"^3.1.4","handlebars-webpack-plugin":"^1.4.1","html-webpack-plugin":"^3.1.0","istanbul-instrumenter-loader":"^3.0.1","jsdoc-webpack-plugin":"0.0.1","jsdom":"^9.9.1","mocha":"^5.0.5","mocha-loader":"^1.1.3","mocha-webpack":"^1.1.0","nyc":"^12.0.2","path":"^0.12.7","replace-bundle-webpack-plugin":"^1.0.0","requirejs":"^2.3.5","speed-measure-webpack-plugin":"^1.2.2","string-template":"^1.0.0","style-loader":"^0.20.2","url-loader":"^1.0.1","webpack":"^3.11.0","webpack-dev-server":"^2.11.1","webpack-merge":"^4.1.2","webpack-node-externals":"^1.6.0"}}
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _ol = __webpack_require__(2);
-
-var _ol2 = _interopRequireDefault(_ol);
-
-var _gp = __webpack_require__(4);
-
-var _gp2 = _interopRequireDefault(_gp);
-
-var _LoggerByDefault = __webpack_require__(0);
-
-var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
-
-var _ProxyUtils = __webpack_require__(15);
-
-var _ProxyUtils2 = _interopRequireDefault(_ProxyUtils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import $__xmldom from "xmldom";
-
-var logger = _LoggerByDefault2.default.getLogger("GfiUtils");
-
-var GfiUtils = {
-
-    /**
-     * Return layer format
-     *
-     * @param {ol.layer.Layer} l - layer openlayers
-     *
-     * @return {String} format - layer format can be wms, wmts, vector or unknown
-     *
-     */
-    getLayerFormat: function getLayerFormat(l) {
-        var source = l.getSource();
-        if (source instanceof _ol2.default.source.TileWMS || source instanceof _ol2.default.source.ImageWMS) {
-            return "wms";
-        }
-        if (source instanceof _ol2.default.source.WMTS) {
-            return "wmts";
-        }
-        if (source instanceof _ol2.default.source.Vector || source instanceof _ol2.default.source.VectorTile) {
-            return "vector";
-        }
-        return "unknown";
-    },
-
-    /**
-     * Info Popup creation and display
-     *
-     * @param {ol.Map} map - map openlayers
-     * @param {ol.Coordinate} coords - coordinates where to anchor popup.
-     * @param {String} content - content to display
-     * @param {String} [contentType='text/html'] - content mime-type
-     * @param {Object} autoPanOptions - Auto-pan pop-up options
-     * @param {Boolean} [autoPanOptions.autoPan] - Specifies whether the map should auto-pan if the pop-up is rendered outside of the canvas
-     * @param {olx.OverlayPanOptions} [autoPanOptions.autoPanAnimation] - Used to customize the auto-pan animation. See {@link https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions olx.OverlayPanOptions}.
-     * @param {Number} [autoPanOptions.autoPanMargin] - Margin (in pixels) between the pop-up and the border of the map when autopanning. Default is 20.
-     * @return {Boolean} displayed - indicates if something has been displayed
-     */
-    displayInfo: function displayInfo(map, coords, content, contentType, autoPanOptions) {
-        logger.trace("[GfiUtils] : displayInfo...");
-
-        if (!contentType) {
-            contentType = "text/html";
-        }
-
-        if (content === null) {
-            return;
-        }
-
-        var _htmlDoc = null;
-        var _parser = null;
-
-        var _content = content;
-        _content = _content.replace(/\n/g, "");
-        _content = _content.replace(/(>)\s*(<)/g, "$1$2");
-
-        var scope = typeof window !== "undefined" ? window : null;
-
-        if (( false ? "undefined" : _typeof(exports)) === "object" && window === null) {
-            // code for nodejs
-            var DOMParser = __webpack_require__(14).DOMParser;
-            _parser = new DOMParser();
-            _htmlDoc = _parser.parseFromString(_content, contentType);
-        } else if (scope.DOMParser) {
-            // code for modern browsers
-            _parser = new scope.DOMParser();
-            _htmlDoc = _parser.parseFromString(_content, contentType);
-        } else if (scope.ActiveXObject) {
-            // code for old IE browsers
-            _htmlDoc = new scope.ActiveXObject("Microsoft.XMLDOM");
-            _htmlDoc.async = false;
-            _htmlDoc.loadXML(_content);
-        } else {
-            logger.log("Incompatible environment for DOM Parser !");
-            return false;
-        }
-
-        var body = _htmlDoc.getElementsByTagName("body");
-        if (body && body.length === 1) {
-            if (!body[0].hasChildNodes()) {
-                return false;
-            }
-        }
-
-        // Affichage des features.
-        var element = document.createElement("div");
-        element.className = "gp-feature-info-div";
-
-        var closer = document.createElement("input");
-        closer.type = "button";
-        closer.className = "gp-styling-button closer";
-
-        // fait disparaître la popup au clic sur x
-        closer.onclick = function () {
-            if (map.featuresOverlay) {
-                map.removeOverlay(map.featuresOverlay);
-                map.featuresOverlay = null;
-            }
-            return false;
-        };
-
-        var contentDiv = document.createElement("div");
-        contentDiv.className = "gp-features-content-div";
-        contentDiv.innerHTML = content;
-        /*
-        if (content instanceof HTMLElement) {
-            this.logger.trace("[Openlayers] : _displayInfo : pure HTMLElement") ;
-            contentDiv.appendChild(content) ;
-        } else {
-            var parser = new DOMParser() ;
-            var doc = null ;
-            try {
-                doc = parser.parseFromString(content,contentType) ;
-                this.logger.trace("[Openlayers] : _displayInfo : HTMLElement from parser") ;
-                // FIXME : avec cette methode, on a une balise html + body qui s'insère...
-                contentDiv.appendChild(doc.documentElement) ;
-            } catch (e) {
-                console.log(e) ;
-                this.logger.trace("[Openlayers] : _displayInfo : parsing content failed (not HTML)") ;
-                // en cas d'erreur : on se contente de recopier le contenu.
-                contentDiv.innerHTML = content ;
-            }
-        }
-        */
-        element.appendChild(contentDiv);
-        element.appendChild(closer);
-
-        if (map.featuresOverlay) {
-            // fermeture d'une éventuelle popup déjà ouverte.
-            map.removeOverlay(map.featuresOverlay);
-            map.featuresOverlay = null;
-        }
-        map.featuresOverlay = new _ol2.default.Overlay({
-            // id : id,
-            element: element,
-            autoPan: autoPanOptions.autoPan,
-            autoPanAnimation: autoPanOptions.autoPanAnimation,
-            autoPanMargin: autoPanOptions.autoPanMargin,
-            positioning: "bottom-center",
-            insertFirst: false, // popup appears on top of other overlays if any
-            stopEvent: true
-        });
-        map.addOverlay(map.featuresOverlay);
-        map.featuresOverlay.setPosition(coords);
-        map.featuresOverlay.render();
-
-        return true;
-    },
-
-    /**
-     * Gets HTML content from features array
-     *
-     * @param {ol.Map} map - map openlayers
-     * @param {Array.<ol.Features>} features - openlayers features Array
-     * @returns {HTMLElement} HTML content.
-     */
-    features2html: function features2html(map, features) {
-        var content = document.createElement("div");
-        features.forEach(function (f) {
-            var props = f.getProperties();
-            if (props.hasOwnProperty("name")) {
-                var nameDiv = document.createElement("div");
-                nameDiv.className = "gp-att-name-div";
-                // nameDiv.appendChild(document.createTextNode(props["name"])) ;
-                nameDiv.insertAdjacentHTML("afterbegin", props["name"]);
-                content.appendChild(nameDiv);
-            }
-            if (props.hasOwnProperty("description")) {
-                var descDiv = document.createElement("div");
-                descDiv.className = "gp-att-description-div";
-                // descDiv.appendChild(document.createTextNode(props["description"])) ;
-                descDiv.insertAdjacentHTML("afterbegin", props["description"]);
-                content.appendChild(descDiv);
-            }
-            var p = null;
-            var others = false;
-            var oDiv = null;
-            var ul = null;
-            var li = null;
-            for (p in props) {
-                if (p === "geometry" || p === "value" || p === "name" || p === "description" || p === "styleUrl") {
-                    continue;
-                }
-                // FIXME La lecture des extensions GPX n'est pas gérée !
-                if (p === "extensionsNode_" && props[p] === undefined) {
-                    continue;
-                }
-                if (!others) {
-                    oDiv = document.createElement("div");
-                    oDiv.className = "gp-att-others-div";
-                    ul = document.createElement("ul");
-                    others = true;
-                }
-                li = document.createElement("li");
-                var span = document.createElement("span");
-                span.className = "gp-attname-others-span";
-                span.appendChild(document.createTextNode(p + " : "));
-                li.appendChild(span);
-                li.appendChild(document.createTextNode(props[p]));
-                ul.appendChild(li);
-            }
-            if (ul) {
-                oDiv.appendChild(ul);
-                content.appendChild(oDiv);
-            }
-        }, map);
-
-        // pas de contenu !
-        if (!content.hasChildNodes()) {
-            content = null;
-        }
-
-        return content;
-    },
-
-    /**
-     * Indicates if there is a feature at the given coordinates for the given layer
-     *
-     * @param {ol.Map} map - map openlayers
-     * @param {ol.layer.Layer} olLayer - vector layer openlayers
-     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
-     *
-     * @return {Boolean} has feature
-     *
-     */
-    layerGetFeatureAtCoordinates: function layerGetFeatureAtCoordinates(map, olLayer, olCoordinate) {
-        var pixel = map.getPixelFromCoordinate(olCoordinate);
-        return map.hasFeatureAtPixel(pixel, function (layer) {
-            if (layer === olLayer) {
-                return true;
-            }
-            return false;
-        });
-    },
-
-    /**
-     * Get information from all the features located at the specified coordinates
-     * and belonging to the layers list argument. Those information are gathered
-     * and displayed in an info popup.
-     *
-     * @param {ol.Map} map - map openlayers
-     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
-     * @param {Array.<ol.layer.Layer>} olLayers - layers requested
-     * @param {Object} autoPanOptions - autopan options
-     *
-     * @returns {Boolean} something is displayed
-     *
-     */
-    displayVectorFeatureInfo: function displayVectorFeatureInfo(map, olCoordinate, olLayers, autoPanOptions) {
-        var pixel = map.getPixelFromCoordinate(olCoordinate);
-
-        // couches vecteur : on remplit un tableau avec les features à proximité.
-        var features = [];
-        map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-            if (!olLayers || olLayers.indexOf(layer) > -1) {
-                features.push(feature);
-            }
-        });
-        if (features.length === 0) {
-            // no features
-            return false;
-        }
-        var content = this.features2html(map, features);
-        // pas de contenu !
-        if (content === null) {
-            return false;
-        }
-        // Affichage des features.
-        this.displayInfo(map, olCoordinate, content.innerHTML, "text/html", autoPanOptions);
-        // this._displayInfo(evt.coordinate,content,"text/html") ;
-        return true;
-    },
-
-    /**
-     * Method to manage the request of information from a list of layers already added to the map.
-     * Among the given list of layers only the visible ones are requested.
-     * The priority is given to the upper layer having a feature at the pointed coordinates.
-     * If the first (upper) feature encountered is from a vector layer the info popup will
-     * display the information of the features from all visible vector layers and located at
-     * the specified coordinates.
-     *
-     * @param {ol.Map} map - map openlayers
-     * @param {ol.Coordinate} olCoordinate - coordinates pointed by user
-     * @param {Array.<Object>} gfiLayers - list of layers which can be requested through the control. Each array element is an object, with following properties :
-     * @param {ol.layer.Layer} gfiLayers.obj - ol.layer.Layer layer handled by the control (that has been added to map).
-     * @param {String} [gfiLayers.event] - name of the mouse event triggering getFeatureInfo on this layer (that has been added to map). allowed values are : 'singleclick', 'dblclick' and 'contextmenu'
-     * @param {String} [gfiLayers.infoFormat] - indicates the format mime-type of the response of GetFeatureInfo requests.
-     * @param {Object} [proxyOptions] - options for poxy configuration :
-     * @param {String} [proxyOptions.proxyUrl] - Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer.
-     * @param {Array.<String>} [proxyOptions.noProxyDomains] - Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions).
-     * @param {Object} [autoPanOptions] - Auto-pan pop-up options
-     * @param {Boolean} [autoPanOptions.autoPan = true] - Specifies whether the map should auto-pan if the pop-up is rendered outside of the canvas. Defaults to true.
-     * @param {olx.OverlayPanOptions} [autoPanOptions.autoPanAnimation] - Used to customize the auto-pan animation. See {@link https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions olx.OverlayPanOptions}.
-     * @param {Number} [autoPanOptions.autoPanMargin] - Margin (in pixels) between the pop-up and the border of the map when autopanning. Default is 20.
-     *
-     */
-    displayFeatureInfo: function displayFeatureInfo(map, olCoordinate, gfiLayers, proxyOptions, autoPanOptions) {
-        // Layers orders
-        var layersOrdered = {};
-        for (var j = 0; j < gfiLayers.length; j++) {
-            var layer = gfiLayers[j];
-            var position = layer.obj.getZIndex();
-            if (!layersOrdered[position]) {
-                layersOrdered[position] = [];
-            }
-            layersOrdered[position].push(layer);
-        }
-
-        // affichage de la première popup d'informations en partant du dessus...
-        var requests = [];
-        // inversion de l'ordre des layers
-        var positions = Object.keys(layersOrdered);
-        positions.sort(function (a, b) {
-            return b - a;
-        });
-
-        // si la 1ere couche affichable est de type vecteur on affiche les infos de toutes
-        // les couches vecteur qui suivent. Par consequent, une seule requete vecteur suffit
-        // (celle correspondant au premier objet vecteur rencontre)
-        var foundFeature = false;
-
-        for (var k = 0; k < positions.length; k++) {
-            var p = positions[k];
-            for (var h = 0; h < layersOrdered[p].length; ++h) {
-                var l = layersOrdered[p][h].obj;
-                var infoFormat = layersOrdered[p][h].infoFormat || "text/html";
-                var minMaxResolutionOk = true;
-                if (l.minResolution && l.minResolution > map.getResolution()) {
-                    minMaxResolutionOk = false;
-                }
-                if (minMaxResolutionOk && l.maxResolution && l.maxResolution < map.getResolution()) {
-                    minMaxResolutionOk = false;
-                }
-
-                if (l.getVisible() && minMaxResolutionOk) {
-                    var format = this.getLayerFormat(l);
-                    if (format === "vector") {
-                        if (!foundFeature && this.layerGetFeatureAtCoordinates(map, l, olCoordinate)) {
-                            requests.push({
-                                format: format,
-                                scope: this,
-                                coordinate: olCoordinate
-                            });
-                        }
-                        continue;
-                    } else if (format !== "wms" && format !== "wmts") {
-                        logger.log("[ERROR] DisplayFeatureInfo - layer format '" + format + "' not allowed");
-                        continue;
-                    }
-
-                    var _res = map.getView().getResolution();
-                    var _url = null;
-                    if (format === "wmts") {
-                        _url = l.getSource().getGetFeatureInfoUrl(olCoordinate, _res, map.getView().getProjection(), {
-                            INFOFORMAT: infoFormat
-                        });
-                    } else {
-                        _url = l.getSource().getGetFeatureInfoUrl(olCoordinate, _res, map.getView().getProjection(), {
-                            INFO_FORMAT: infoFormat
-                        });
-                    }
-
-                    requests.push({
-                        // id : _id,
-                        format: infoFormat,
-                        url: _ProxyUtils2.default.proxifyUrl(_url, proxyOptions),
-                        scope: this,
-                        coordinate: olCoordinate
-                    });
-                }
-            }
-        }
-
-        // on recupere les couches vecteur ordonnees (a utiliser dans le cas de l'affichage de donnees vecteur)
-        var vectorLayersOrdered = null;
-
-        // call request sync
-        function requestsSync(list, iterator, callback) {
-            if (list.length === 0) {
-                return;
-            }
-            var nextItemIndex = 0;
-            // function report next request
-            function report(displayed) {
-                nextItemIndex++;
-                if (displayed || nextItemIndex === list.length) {
-                    callback();
-                } else {
-                    iterator(list[nextItemIndex], report);
-                }
-            }
-            // instead of starting all the iterations, we only start the 1st one
-            iterator(list[0], report);
-        };
-
-        var context = this;
-
-        requestsSync(requests, function (data, report) {
-            if (data.format === "vector") {
-                if (!vectorLayersOrdered) {
-                    vectorLayersOrdered = [];
-                    for (var m = 0; m < positions.length; m++) {
-                        var p = positions[m];
-                        for (var n = 0; n < layersOrdered[p].length; ++n) {
-                            vectorLayersOrdered.push(layersOrdered[p][n].obj);
-                        }
-                    }
-                }
-                report(data.scope.displayVectorFeatureInfo(map, data.coordinate, vectorLayersOrdered, autoPanOptions));
-            } else {
-                // var self = data.scope;
-                _gp2.default.Protocols.XHR.call({
-                    url: data.url,
-                    method: "GET",
-                    scope: data.scope,
-                    // Handles GFI response
-                    onResponse: function onResponse(resp) {
-                        var exception = false;
-
-                        // a t on une exception ?
-                        if (resp.trim().length === 0 || resp.indexOf("java.lang.NullPointerException") !== -1 || resp.indexOf("not queryable") !== -1) {
-                            // rien à afficher
-                            exception = true;
-                        }
-
-                        // on affiche la popup GFI !
-                        var displayed = !exception && context.displayInfo(map, data.coordinate, resp, "text/html", autoPanOptions);
-                        // on reporte sur la prochaine requête...
-                        report(displayed);
-                    },
-                    // Handles GFI response error
-                    onFailure: function onFailure(error) {
-                        logger.log(error);
-                        report(false);
-                    }
-                });
-            }
-        }, function () {
-            logger.trace("Finish sync to GFI !");
-        });
-    },
-
-    // Function returning the clicked position of an event
-    getPosition: function getPosition(e, map) {
-        if (e.coordinate) {
-            return e.coordinate;
-        }
-
-        var pixel = [0, 0];
-
-        if (e.offsetX || e.offsetY) {
-            pixel[0] = e.offsetX; // + document.body.scrollLeft + document.documentElement.scrollLeft;
-            pixel[1] = e.offsetY; // + document.body.scrollTop + document.documentElement.scrollTop;
-        } else if (e.pointerType === "touch") {
-            // a implementer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            // Safari iOS / iPhone en mode Touch (cf. hammer)
-            var p = e.pointers[0];
-            pixel[0] = p.pageX;
-            pixel[1] = p.pageY;
-        }
-
-        var coordinate = map.getCoordinateFromPixel(pixel);
-        return coordinate;
-    },
-
-    // onDisplayFeatureInfo
-    onDisplayFeatureInfo: function onDisplayFeatureInfo(e, gfiObj) {
-        if (!gfiObj.isActive()) {
-            return;
-        }
-
-        logger.trace(e);
-
-        var map = gfiObj.getMap();
-
-        if (e.type === "contextmenu" || e.type === "dblclick") {
-            e.preventDefault();
-        } else if (e.type === "singleclick") {
-            var interactions = map.getInteractions().getArray();
-            for (var i = 0; i < interactions.length; i++) {
-                if (interactions[i].getActive() && (interactions[i] instanceof _ol2.default.interaction.Select || interactions[i] instanceof _ol2.default.interaction.Modify || interactions[i] instanceof _ol2.default.interaction.Draw)) {
-                    // si on a une interaction de dessin ou de sélection en cours, on ne fait rien.
-                    return;
-                }
-            }
-        }
-
-        var proxyOptions = {};
-        if (gfiObj._proxyUrl) {
-            proxyOptions.proxyUrl = gfiObj._proxyUrl;
-        }
-        if (gfiObj._noProxyDomains) {
-            proxyOptions.noProxyDomains = gfiObj._noProxyDomains;
-        }
-
-        var autoPanOptions = {};
-        if (gfiObj._autoPan) {
-            autoPanOptions.autoPan = gfiObj._autoPan;
-        }
-        if (gfiObj._autoPanAnimation) {
-            autoPanOptions.autoPanAnimation = gfiObj._autoPanAnimation;
-        }
-        if (gfiObj._autoPanMargin) {
-            autoPanOptions.autoPanMargin = gfiObj._autoPanMargin;
-        }
-
-        var eventLayers = [];
-        for (var j = 0; j < gfiObj._layers.length; ++j) {
-            var event = gfiObj._layers[j].event ? gfiObj._layers[j].event : gfiObj._defaultEvent;
-            if (event === e.type) {
-                var ind = eventLayers.push(gfiObj._layers[j]) - 1;
-                if (!eventLayers[ind].infoFormat) {
-                    eventLayers[ind].infoFormat = gfiObj._defaultInfoFormat;
-                }
-            }
-        }
-
-        var coords = this.getPosition(e, map);
-
-        this.displayFeatureInfo(map, coords, eventLayers, proxyOptions, autoPanOptions);
-    }
-};
-
-exports.default = GfiUtils;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ol = __webpack_require__(2);
-
-var _ol2 = _interopRequireDefault(_ol);
-
-var _gp = __webpack_require__(4);
-
-var _gp2 = _interopRequireDefault(_gp);
-
-var _Utils = __webpack_require__(1);
-
-var _Utils2 = _interopRequireDefault(_Utils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @classdesc
- *
- * Extended ol.source.WMTS.
- *
- * @constructor
- * @extends {ol.source.WMTS}
- * @param {Object} options - Options
- */
-function WMTS(options) {
-    if (!(this instanceof WMTS)) {
-        throw new TypeError("ERROR CLASS_CONSTRUCTOR");
-    }
-
-    // call constructor
-    _ol2.default.source.WMTS.call(this, options);
-}
-
-// Inherits
-_ol2.default.inherits(WMTS, _ol2.default.source.WMTS);
-
-/*
- * @lends module:KML
- */
-WMTS.prototype = Object.create(_ol2.default.source.WMTS.prototype, {});
-
-/**
- * Constructor (alias)
- */
-WMTS.prototype.constructor = WMTS;
-
-/**
- * Return the GetFeatureInfo URL for the passed coordinate, resolution, and
- * projection. Return `undefined` if the GetFeatureInfo URL cannot be
- * constructed.
- * @param {ol.Coordinate} coordinate - Coordinate.
- * @param {Number} resolution - Resolution.
- * @param {ol.proj.Projection} projection - Projection.
- * @param {!Object} params - GetFeatureInfo params. `INFOFORMAT` at least should
- *     be provided.
- * @return {String|undefined} GetFeatureInfo URL.
- */
-WMTS.prototype.getGetFeatureInfoUrl = function (coordinate, resolution, projection, params) {
-    var pixelRatio = this.option && this.options.tilePixelRatio ? this.options.tilePixelRatio : 1;
-
-    var tileGrid = this.tileGrid;
-    var tileCoord = this.tileGrid.getTileCoordForCoordAndResolution(coordinate, resolution);
-
-    // this code is duplicated from createFromWMTSTemplate function
-    var getTransformedTileCoord = function getTransformedTileCoord(tileCoord, tileGrid, projection) {
-        var tmpTileCoord = [0, 0, 0]; /* Note : [z(zoomLevel),x,y] */
-        var tmpExtent = _ol2.default.extent.createEmpty();
-        var x = tileCoord[1];
-        var y = -tileCoord[2] - 1;
-        var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
-        var projectionExtent = projection.getExtent();
-        var extent = projectionExtent;
-
-        if (extent != null && projection.isGlobal() && extent[0] === projectionExtent[0] && extent[2] === projectionExtent[2]) {
-            var numCols = Math.ceil(_ol2.default.extent.getWidth(extent) / _ol2.default.extent.getWidth(tileExtent));
-            x = x % numCols;
-            tmpTileCoord[0] = tileCoord[0];
-            tmpTileCoord[1] = x;
-            tmpTileCoord[2] = tileCoord[2];
-            tileExtent = tileGrid.getTileCoordExtent(tmpTileCoord, tmpExtent);
-        }
-        if (!_ol2.default.extent.intersects(tileExtent, extent) /* || ol.extent.touches(tileExtent, extent) */) {
-                return null;
-            }
-        return [tileCoord[0], x, y];
-    };
-
-    var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
-    var transformedTileCoord = getTransformedTileCoord(tileCoord, tileGrid, projection);
-
-    if (tileGrid.getResolutions().length <= tileCoord[0]) {
-        return undefined;
-    }
-
-    var tileResolution = tileGrid.getResolution(tileCoord[0]);
-    var tileMatrix = tileGrid.getMatrixIds()[tileCoord[0]];
-
-    var baseParams = {
-        SERVICE: "WMTS",
-        VERSION: "1.0.0",
-        REQUEST: "GetFeatureInfo",
-        LAYER: this.getLayer(),
-        TILECOL: transformedTileCoord[1],
-        TILEROW: transformedTileCoord[2],
-        TILEMATRIX: tileMatrix,
-        TILEMATRIXSET: this.getMatrixSet(),
-        FORMAT: this.getFormat() || "image/png",
-        STYLE: this.getStyle() || "normal"
-    };
-
-    _Utils2.default.assign(baseParams, params);
-
-    /* var tileSize = tileGrid.getTileSize();
-    var x = Math.floor(tileSize*((coordinate[0]-tileExtent[0])/(tileExtent[2]-tileExtent[0])));
-    var y = Math.floor(tileSize*((tileExtent[3]-coordinate[1])/(tileExtent[3]-tileExtent[1]))); */
-
-    var x = Math.floor((coordinate[0] - tileExtent[0]) / (tileResolution / pixelRatio));
-    var y = Math.floor((tileExtent[3] - coordinate[1]) / (tileResolution / pixelRatio));
-
-    baseParams["I"] = x;
-    baseParams["J"] = y;
-
-    var url = this.urls[0];
-
-    var featureInfoUrl = _gp2.default.Helper.normalyzeUrl(url, baseParams);
-
-    return featureInfoUrl;
-};
-
-exports.default = WMTS;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ol = __webpack_require__(2);
-
-var _ol2 = _interopRequireDefault(_ol);
-
-var _proj = __webpack_require__(17);
-
-var _proj2 = _interopRequireDefault(_proj);
-
-var _Register = __webpack_require__(49);
-
-var _Register2 = _interopRequireDefault(_Register);
-
-var _LoggerByDefault = __webpack_require__(0);
-
-var _LoggerByDefault2 = _interopRequireDefault(_LoggerByDefault);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logger = _LoggerByDefault2.default.getLogger("CRS");
-
-/**
- * Autoload function that loads all defs into proj4
- * and adds proj4 defs into ol.
- */
-(function () {
-    // load all defs into proj4
-    _Register2.default.load();
-    // overload proj4 into ol
-    if (!_ol2.default.proj.proj4_ && _ol2.default.proj.setProj4) {
-        _ol2.default.proj.setProj4(_proj2.default);
-    } else {
-        logger.log("WARNING : OpenLayers library should manage proj4 dependency in order to add custom projections (Lambert 93 for instance)");
-    }
-})();
-
-var CRS = {
-
-    /**
-     * Overload OpenLayers ol.proj.transformExtent function,
-     * to manage EPSG:2154 extent restriction
-     */
-    overloadTransformExtent: function overloadTransformExtent() {
-        /**
-         * Transforms an extent from source projection to destination projection.  This
-         * returns a new extent (and does not modify the original).
-         * Overload Geoportal Extension for Openlayers : to manage EPSG:2154 extent restriction.
-         *
-         * @param {ol.Extent} extent - The extent to transform.
-         * @param {ol.proj.ProjectionLike} source - Source projection-like.
-         * @param {ol.proj.ProjectionLike} destination - Destination projection-like.
-         * @return {ol.Extent} extent - The transformed extent.
-         */
-        _ol2.default.proj.transformExtent = function (extent, source, destination) {
-            if (destination === "EPSG:2154") {
-                if (source === "EPSG:4326") {
-                    // dans le cas d'une transfo 4326->2154,
-                    // il faut restreindre l'étendue géographique à l'étendue de validité de Lambert93.
-                    if (extent[0] < -9.62) {
-                        extent[0] = -9.62;
-                    }
-                    if (extent[1] < 41.18) {
-                        extent[1] = 41.18;
-                    }
-                    if (extent[2] > 10.3) {
-                        extent[2] = 10.3;
-                    }
-                    if (extent[3] > 51.54) {
-                        extent[3] = 51.54;
-                    }
-                }
-            }
-            var transformFn = _ol2.default.proj.getTransform(source, destination);
-            var transformedExtent = _ol2.default.extent.applyTransform(extent, transformFn);
-            return transformedExtent;
-        };
-    },
-
-    /**
-     * Load all overload function
-     */
-    overload: function overload() {
-        // TODO ajouter les fonctions à surcharger...
-        this.overloadTransformExtent();
-    }
-};
-
-exports.default = CRS;
-
-/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30766,7 +30785,7 @@ var _gp = __webpack_require__(4);
 
 var _gp2 = _interopRequireDefault(_gp);
 
-var _WMTS = __webpack_require__(21);
+var _WMTS = __webpack_require__(20);
 
 var _WMTS2 = _interopRequireDefault(_WMTS);
 
@@ -30823,7 +30842,7 @@ function SourceWMTS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -30836,9 +30855,9 @@ function SourceWMTS(options) {
     if (layerId && _Config2.default.configuration.getLayerConf(layerId)) {
         var wmtsParams = _Config2.default.getLayerParams(options.layer, "WMTS", options.apiKey);
 
-        // gestion de mixContent dans l'url du service...
-        var ctx = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : null;
-        var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf("https:") === 0 ? "https://" : "http://" : options.ssl ? "https://" : "http://";
+        // si ssl = false on fait du http
+        // par défaut, ssl = true, on fait du https
+        var protocol = options.ssl === false ? "http://" : "https://";
 
         // save originators (to be updated by Originators control)
         this._originators = wmtsParams.originators;
@@ -30851,7 +30870,7 @@ function SourceWMTS(options) {
             // tracker extension openlayers
             // FIXME : gp-ext version en mode AMD
             url: _gp2.default.Helper.normalyzeUrl(wmtsParams.url.replace(/(http|https):\/\//, protocol), {
-                "gp-ol-ext": "2.1.0"
+                "gp-ol-ext": "2.1.2"
             }, false),
             version: wmtsParams.version,
             style: wmtsParams.styles,
@@ -30978,7 +30997,7 @@ function SourceWMS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -30991,15 +31010,15 @@ function SourceWMS(options) {
     if (layerId && _Config2.default.configuration.getLayerConf(layerId)) {
         var wmsParams = _Config2.default.getLayerParams(options.layer, "WMS", options.apiKey);
 
-        // gestion de mixContent dans l'url du service...
-        var ctx = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : null;
-        var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf("https:") === 0 ? "https://" : "http://" : options.ssl ? "https://" : "http://";
+        // si ssl = false on fait du http
+        // par défaut, ssl = true, on fait du https
+        var protocol = options.ssl === false ? "http://" : "https://";
 
         var wmsSourceOptions = {
             // tracker extension openlayers
             // FIXME : gp-ext version en mode AMD
             url: _gp2.default.Helper.normalyzeUrl(wmsParams.url.replace(/(http|https):\/\//, protocol), {
-                "gp-ol-ext": "2.1.0"
+                "gp-ol-ext": "2.1.2"
             }, false),
             params: {
                 SERVICE: "WMS",
@@ -31063,7 +31082,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _sortable = __webpack_require__(53);
+var _sortable = __webpack_require__(54);
 
 var _sortable2 = _interopRequireDefault(_sortable);
 
@@ -32701,7 +32720,7 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _LocationSelectorDOM = __webpack_require__(64);
+var _LocationSelectorDOM = __webpack_require__(65);
 
 var _LocationSelectorDOM2 = _interopRequireDefault(_LocationSelectorDOM);
 
@@ -33448,6 +33467,10 @@ LocationSelector.prototype._requestAutoComplete = function (settings) {
     // on utilise celle de l'autoconf ou celle renseignée au niveau du controle
     options.apiKey = options.apiKey || this.options.apiKey;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
+
     logger.log(options);
 
     _gp2.default.Services.autoComplete(options);
@@ -33655,17 +33678,232 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_44__;
 
 /***/ }),
 /* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var CRS = {
+
+  /**
+   * CRS : WGS84
+   *
+   * @property EPSG:4326
+   * @private
+   */
+  "EPSG:4326": "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +units=degrees",
+
+  /**
+   * CRS : PseudoMercator
+   *
+   * @property EPSG:3857
+   * @private
+   */
+  "EPSG:3857": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs",
+
+  /**
+   * CRS : Lambert 93
+   *
+   * @property EPSG:2154
+   * @private
+   */
+  "EPSG:2154": "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : Lambert 2 extended
+   *
+   * @property EPSG:27572
+   * @private
+   */
+  "EPSG:27572": "+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=0 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs",
+
+  /**
+   * CRS : UTM 20N (Guadeloupe, Martinique)
+   *
+   * @property EPSG:32620
+   * @private
+   */
+  "EPSG:32620": "+proj=utm +zone=20 +ellps=WGS84 +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 21N (Saint-Pierre-et-Miquelon)
+   *
+   * @property EPSG:4467
+   * @private
+   */
+  "EPSG:4467": "+proj=utm +zone=21 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 22N (Guyane)
+   *
+   * @property EPSG:2972
+   * @private
+   */
+  "EPSG:2972": "+proj=utm +zone=22 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 30N (France métropolitaine)
+   *
+   * @property EPSG:32630
+   * @private
+   */
+  "EPSG:32630": "+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 31N (France métropolitaine)
+   *
+   * @property EPSG:32631
+   * @private
+   */
+  "EPSG:32631": "+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 32N (France métropolitaine)
+   *
+   * @property EPSG:32632
+   * @private
+   */
+  "EPSG:32632": "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 38S (Mayotte)
+   *
+   * @property EPSG:4471
+   * @private
+   */
+  "EPSG:4471": "+proj=utm +zone=38 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 40S (Réunion)
+   *
+   * @property EPSG:2975
+   * @private
+   */
+  "EPSG:2975": "+proj=utm +zone=40 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 5S (Polynésie)
+   *
+   * @property EPSG:3296
+   * @private
+   */
+  "EPSG:3296": "+proj=utm +zone=5 +south +ellps=GRS80 +towgs84=0.072,-0.507,-0.245,-0.0183,0.0003,-0.007,-0.0093 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 6S (Polynésie)
+   *
+   * @property EPSG:3297
+   * @private
+   */
+  "EPSG:3297": "+proj=utm +zone=6 +south +ellps=GRS80 +towgs84=0.072,-0.507,-0.245,-0.0183,0.0003,-0.007,-0.0093 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 7S (Polynésie)
+   *
+   * @property EPSG:32707
+   * @private
+   */
+  "EPSG:32707": "+proj=utm +zone=7 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 8S (Polynésie)
+   *
+   * @property EPSG:32708
+   * @private
+   */
+  "EPSG:32708": "+proj=utm +zone=8 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 12N (Ile de Clipperton)
+   *
+   * @property EPSG:26912
+   * @private
+   */
+  "EPSG:26912": "+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 42S (Iles Kerguelen)
+   *
+   * @property EPSG:32742
+   * @private
+   */
+  "EPSG:32742": "+proj=utm +zone=42 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 39S (Iles Crozet)
+   *
+   * @property EPSG:32739
+   * @private
+   */
+  "EPSG:32739": "+proj=utm +zone=39 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 43S (Iles St-Paul et Amsterdam)
+   *
+   * @property EPSG:32743
+   * @private
+   */
+  "EPSG:32743": "+proj=utm +zone=43 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : Stéréographique polaire (Terre Adelie)
+   *
+   * @property EPSG:2986
+   * @private
+   */
+  "EPSG:2986": "",
+
+  /**
+   * CRS : UTM 37S (Iles du canal de Mozambique)
+   *
+   * @property EPSG:32737
+   * @private
+   */
+  "EPSG:32737": "+proj=utm +zone=37 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 38S (Iles du canal de Mozambique)
+   *
+   * @property EPSG:32738
+   * @private
+   */
+  "EPSG:32738": "+proj=utm +zone=38 +south +datum=WGS84 +units=m +no_defs",
+
+  /**
+   * CRS : UTM 1S (Wallis-et-Futuna)
+   *
+   * @property EPSG:2988
+   * @private
+   */
+  "EPSG:2988": "+proj=utm +zone=1 +south +ellps=intl +towgs84=253,-132,-127,0,0,0,0 +units=m +no_defs",
+
+  /**
+   * CRS : RGNC91-93 (Nouvelle-Calédonie)
+   *
+   * @property EPSG:3163
+   * @private
+   */
+  "EPSG:3163": "+proj=lcc +lat_1=-20.66666666666667 +lat_2=-22.33333333333333 +lat_0=-21.5 +lon_0=166 +x_0=400000 +y_0=300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+};
+
+exports.default = CRS;
+
+/***/ }),
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js__) if(["olItownsExtVersion","olItownsExtDate","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__OpenLayers_GpPluginOpenLayers_js__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js__) if(["olItownsExtVersion","olItownsExtDate","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_1__Itowns_GpPluginItowns_js__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__package_json__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__package_json__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__package_json__);
 
 
@@ -33681,7 +33919,7 @@ const olItownsExtDate = new Date().toISOString().split("T")[0];
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33735,7 +33973,7 @@ var _ol = __webpack_require__(2);
 
 var _ol2 = _interopRequireDefault(_ol);
 
-var _GfiUtils = __webpack_require__(20);
+var _GfiUtils = __webpack_require__(19);
 
 var _GfiUtils2 = _interopRequireDefault(_GfiUtils);
 
@@ -33745,11 +33983,11 @@ var _KML = __webpack_require__(16);
 
 var _KML2 = _interopRequireDefault(_KML);
 
-var _WMTS = __webpack_require__(21);
+var _WMTS = __webpack_require__(20);
 
 var _WMTS2 = _interopRequireDefault(_WMTS);
 
-var _CRS = __webpack_require__(22);
+var _CRS = __webpack_require__(21);
 
 var _CRS2 = _interopRequireDefault(_CRS);
 
@@ -33761,11 +33999,11 @@ var _SourceWMS = __webpack_require__(24);
 
 var _SourceWMS2 = _interopRequireDefault(_SourceWMS);
 
-var _LayerWMTS = __webpack_require__(51);
+var _LayerWMTS = __webpack_require__(52);
 
 var _LayerWMTS2 = _interopRequireDefault(_LayerWMTS);
 
-var _LayerWMS = __webpack_require__(52);
+var _LayerWMS = __webpack_require__(53);
 
 var _LayerWMS2 = _interopRequireDefault(_LayerWMS);
 
@@ -33773,39 +34011,39 @@ var _LayerSwitcher = __webpack_require__(8);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _GetFeatureInfo = __webpack_require__(54);
+var _GetFeatureInfo = __webpack_require__(55);
 
 var _GetFeatureInfo2 = _interopRequireDefault(_GetFeatureInfo);
 
-var _SearchEngine = __webpack_require__(56);
+var _SearchEngine = __webpack_require__(57);
 
 var _SearchEngine2 = _interopRequireDefault(_SearchEngine);
 
-var _MousePosition = __webpack_require__(59);
+var _MousePosition = __webpack_require__(60);
 
 var _MousePosition2 = _interopRequireDefault(_MousePosition);
 
-var _Drawing = __webpack_require__(61);
+var _Drawing = __webpack_require__(62);
 
 var _Drawing2 = _interopRequireDefault(_Drawing);
 
-var _Route = __webpack_require__(63);
+var _Route = __webpack_require__(64);
 
 var _Route2 = _interopRequireDefault(_Route);
 
-var _Isocurve = __webpack_require__(66);
+var _Isocurve = __webpack_require__(67);
 
 var _Isocurve2 = _interopRequireDefault(_Isocurve);
 
-var _ReverseGeocode = __webpack_require__(68);
+var _ReverseGeocode = __webpack_require__(69);
 
 var _ReverseGeocode2 = _interopRequireDefault(_ReverseGeocode);
 
-var _LayerImport = __webpack_require__(70);
+var _LayerImport = __webpack_require__(71);
 
 var _LayerImport2 = _interopRequireDefault(_LayerImport);
 
-var _GeoportalAttribution = __webpack_require__(72);
+var _GeoportalAttribution = __webpack_require__(73);
 
 var _GeoportalAttribution2 = _interopRequireDefault(_GeoportalAttribution);
 
@@ -33813,27 +34051,27 @@ var _Markers = __webpack_require__(6);
 
 var _Markers2 = _interopRequireDefault(_Markers);
 
-var _ElevationPath = __webpack_require__(73);
+var _ElevationPath = __webpack_require__(74);
 
 var _ElevationPath2 = _interopRequireDefault(_ElevationPath);
 
-var _MeasureLength = __webpack_require__(77);
+var _MeasureLength = __webpack_require__(78);
 
 var _MeasureLength2 = _interopRequireDefault(_MeasureLength);
 
-var _MeasureArea = __webpack_require__(79);
+var _MeasureArea = __webpack_require__(80);
 
 var _MeasureArea2 = _interopRequireDefault(_MeasureArea);
 
-var _MeasureAzimuth = __webpack_require__(81);
+var _MeasureAzimuth = __webpack_require__(82);
 
 var _MeasureAzimuth2 = _interopRequireDefault(_MeasureAzimuth);
 
-__webpack_require__(83);
+__webpack_require__(84);
 
 __webpack_require__(43);
 
-var _package = __webpack_require__(19);
+var _package = __webpack_require__(18);
 
 var _package2 = _interopRequireDefault(_package);
 
@@ -33879,13 +34117,13 @@ _ol2.default.control.ElevationPath = _ElevationPath2.default;
 exports.olExtended = _ol2.default;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_47__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_48__;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -34145,7 +34383,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34154,13 +34392,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _proj = __webpack_require__(17);
-
-var _proj2 = _interopRequireDefault(_proj);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /**
  * Register definition for IGNF, and EPSG CRS.
  * @example
@@ -34211,7 +34442,7 @@ var Register = {
     /**
      * load all defs to proj4
      */
-    load: function load() {
+    load: function load(proj4) {
         if (!this.isLoaded) {
             var registers = ["IGNF", "EPSG", "CRS"];
             for (var i = 0; i < registers.length; i++) {
@@ -34220,7 +34451,7 @@ var Register = {
                 for (var code in codes) {
                     if (codes.hasOwnProperty(code)) {
                         var name = register + ":" + code;
-                        _proj2.default.defs(name, this.get(name));
+                        proj4.defs(name, this.get(name));
                     }
                 }
             }
@@ -34669,7 +34900,7 @@ var Register = {
 exports.default = Register;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 var g;
@@ -34696,7 +34927,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34758,7 +34989,7 @@ function LayerWMTS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -34850,7 +35081,7 @@ LayerWMTS.prototype.constructor = LayerWMTS;
 exports.default = LayerWMTS;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34913,7 +35144,7 @@ function LayerWMS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -35005,7 +35236,7 @@ LayerWMS.prototype.constructor = LayerWMS;
 exports.default = LayerWMS;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
@@ -36264,7 +36495,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36284,7 +36515,7 @@ var _Utils = __webpack_require__(1);
 
 var _Utils2 = _interopRequireDefault(_Utils);
 
-var _GfiUtils = __webpack_require__(20);
+var _GfiUtils = __webpack_require__(19);
 
 var _GfiUtils2 = _interopRequireDefault(_GfiUtils);
 
@@ -36292,7 +36523,7 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _GetFeatureInfoDOM = __webpack_require__(55);
+var _GetFeatureInfoDOM = __webpack_require__(56);
 
 var _GetFeatureInfoDOM2 = _interopRequireDefault(_GetFeatureInfoDOM);
 
@@ -36939,7 +37170,7 @@ GetFeatureInfo.prototype._initContainer = function (options) {
 exports.default = GetFeatureInfo;
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37027,7 +37258,7 @@ var GetFeatureInfoDOM = {
 exports.default = GetFeatureInfoDOM;
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37067,11 +37298,11 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _SearchEngineUtils = __webpack_require__(57);
+var _SearchEngineUtils = __webpack_require__(58);
 
 var _SearchEngineUtils2 = _interopRequireDefault(_SearchEngineUtils);
 
-var _SearchEngineDOM = __webpack_require__(58);
+var _SearchEngineDOM = __webpack_require__(59);
 
 var _SearchEngineDOM2 = _interopRequireDefault(_SearchEngineDOM);
 
@@ -37088,6 +37319,7 @@ var logger = _LoggerByDefault2.default.getLogger("searchengine");
  * @alias ol.control.SearchEngine
  * @param {Object}  options - control options
  * @param {String}   [options.apiKey] - API key, mandatory if autoconf service has not been charged in advance
+ * @param {String}   [options.ssl = true] - use of ssl or not (default true, service requested using https protocol) 
  * @param {Boolean} [options.collapsed = true] - collapse mode, true by default
  * @param {Object}   [options.resources] - resources to be used by geocode and autocompletion services :
  * @param {Array}   [options.resources.geocode] - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
@@ -37798,6 +38030,10 @@ SearchEngine.prototype._requestAutoComplete = function (settings) {
     // on utilise celle de l'autoconf ou celle renseignée au niveau du controle
     options.apiKey = options.apiKey || this.options.apiKey;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
+
     logger.log(options);
 
     _gp2.default.Services.autoComplete(options);
@@ -37877,6 +38113,10 @@ SearchEngine.prototype._requestGeocoding = function (settings) {
     // cas où la clef API n'est pas renseignée dans les options du service,
     // on utilise celle de l'autoconf ou celle renseignée au niveau du controle
     options.apiKey = options.apiKey || this.options.apiKey;
+
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
 
     logger.log(options);
 
@@ -38299,6 +38539,7 @@ SearchEngine.prototype._getGeocodeCoordinatesFromFullText = function (suggestedL
     var context = this;
     _gp2.default.Services.geocode({
         apiKey: this.options.apiKey,
+        ssl: this.options.ssl,
         location: suggestedLocation.fullText,
         filterOptions: {
             type: suggestedLocation.type
@@ -38795,7 +39036,7 @@ SearchEngine.prototype._clearGeocodedLocation = function () {
 exports.default = SearchEngine;
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38949,7 +39190,7 @@ var SearchEngineUtils = {
 exports.default = SearchEngineUtils;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39715,7 +39956,7 @@ var SearchEngineDOM = {
 exports.default = SearchEngineDOM;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39755,7 +39996,7 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _MathUtils = __webpack_require__(60);
+var _MathUtils = __webpack_require__(61);
 
 var _MathUtils2 = _interopRequireDefault(_MathUtils);
 
@@ -39763,7 +40004,7 @@ var _MousePositionDOM = __webpack_require__(26);
 
 var _MousePositionDOM2 = _interopRequireDefault(_MousePositionDOM);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39778,6 +40019,7 @@ var logger = _LoggerByDefault2.default.getLogger("GeoportalMousePosition");
  * @extends {ol.control.Control}
  * @param {Object} options - options for function call.
  * @param {Sting}   [options.apiKey] - API key, mandatory if autoconf service has not been charged in advance
+ * @param {Boolean} [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)  
  * @param {Boolean} [options.collapsed = true] - Specify if MousePosition control should be collapsed at startup. Default is true.
  * @param {Array}   [options.systems] - list of projection systems, default are Geographical ("EPSG:4326"), Web Mercator ("EPSG:3857"), Lambert 93 ("EPSG:2154") and extended Lambert 2 ("EPSG:27572").
  *      Each array element (=system) is an object with following properties :
@@ -40978,9 +41220,14 @@ MousePosition.prototype.onRequestAltitude = function (coordinate, callback) {
     // on utilise celle de l'autoconf ou celle renseignée au niveau du controle
     var _apiKey = options.apiKey || this.options.apiKey;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    var _ssl = this.options.ssl;
+
     _gp2.default.Services.getAltitude({
         apiKey: _apiKey,
         protocol: _protocol,
+        ssl: _ssl,
         timeOut: _timeout,
         scope: _scope,
         rawResponse: _rawResponse,
@@ -41462,7 +41709,7 @@ MousePosition.prototype.validateExtentCoordinate = function (coordType, value) {
 exports.default = MousePosition;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41571,7 +41818,7 @@ var MathUtils = {
 exports.default = MathUtils;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41593,11 +41840,11 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _Interactions = __webpack_require__(18);
+var _Interactions = __webpack_require__(17);
 
 var _Interactions2 = _interopRequireDefault(_Interactions);
 
-var _DrawingDOM = __webpack_require__(62);
+var _DrawingDOM = __webpack_require__(63);
 
 var _DrawingDOM2 = _interopRequireDefault(_DrawingDOM);
 
@@ -43124,7 +43371,7 @@ Drawing.prototype.onExportFeatureClick = function () {
 exports.default = Drawing;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43847,7 +44094,7 @@ var DrawingDOM = {
 exports.default = DrawingDOM;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43895,7 +44142,7 @@ var _Markers = __webpack_require__(6);
 
 var _Markers2 = _interopRequireDefault(_Markers);
 
-var _RouteDOM = __webpack_require__(65);
+var _RouteDOM = __webpack_require__(66);
 
 var _RouteDOM2 = _interopRequireDefault(_RouteDOM);
 
@@ -43913,6 +44160,7 @@ var logger = _LoggerByDefault2.default.getLogger("route");
  * @extends {ol.control.Control}
  * @param {Object} options - route control options
  * @param {String}   [options.apiKey] - API key for services call (route and autocomplete services), mandatory if autoconf service has not been charged in advance
+ * @param {Boolean}   [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)  
  * @param {Boolean} [options.collapsed = true] - Specify if widget has to be collapsed (true) or not (false) on map loading. Default is true.
  * @param {Object}  [options.exclusions = {toll : false, tunnel : false, bridge : false}] - list of exclusions with status (true = checked). By default : no exclusions checked.
  * @param {Array}   [options.graphs = ["Voiture", "Pieton"]] - list of resources, by default : ["Voiture", "Pieton"]. The first element is selected.
@@ -45076,6 +45324,10 @@ Route.prototype._requestRouting = function (options) {
     // on utilise celle de l'autoconf ou celle renseignée au niveau du controle
     options.apiKey = this.options.routeOptions.apiKey || this.options.apiKey || key;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
+
     logger.log(options);
 
     // mise en place de la patience
@@ -45755,7 +46007,7 @@ Route.prototype._convertDistance = function (distance) {
 exports.default = Route;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46261,7 +46513,7 @@ var LocationSelectorDOM = {
 exports.default = LocationSelectorDOM;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47477,7 +47729,7 @@ var RouteDOM = {
 exports.default = RouteDOM;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47525,7 +47777,7 @@ var _Markers = __webpack_require__(6);
 
 var _Markers2 = _interopRequireDefault(_Markers);
 
-var _IsoDOM = __webpack_require__(67);
+var _IsoDOM = __webpack_require__(68);
 
 var _IsoDOM2 = _interopRequireDefault(_IsoDOM);
 
@@ -48511,6 +48763,10 @@ Isocurve.prototype._requestIsoCurve = function (options) {
     var key = this._resources["Isocurve"]["key"];
     options.apiKey = this.options.isocurveOptions.apiKey || this.options.apiKey || key;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
+
     logger.log(options);
 
     // on efface une éventuelle précédente couche
@@ -48819,7 +49075,7 @@ Isocurve.prototype._hideWaitingContainer = function () {
 exports.default = Isocurve;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49665,7 +49921,7 @@ var IsoDOM = {
 exports.default = IsoDOM;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49707,7 +49963,7 @@ var _SelectorID = __webpack_require__(3);
 
 var _SelectorID2 = _interopRequireDefault(_SelectorID);
 
-var _ReverseGeocodingDOM = __webpack_require__(69);
+var _ReverseGeocodingDOM = __webpack_require__(70);
 
 var _ReverseGeocodingDOM2 = _interopRequireDefault(_ReverseGeocodingDOM);
 
@@ -49725,6 +49981,7 @@ var logger = _LoggerByDefault2.default.getLogger("reversegeocoding");
  * @extends {ol.control.Control}
  * @param {Object} options - ReverseGeocode control options
  * @param {String}   [options.apiKey] - API key for services call (reverse geocode service), mandatory if autoconf service has not been charged in advance
+ * @param {String}   [options.ssl = true] - use of ssl or not (default true, service requested using https protocol) 
  * @param {Boolean} [options.collapsed = true] - Specify if widget has to be collapsed (true) or not (false) on map loading. Default is true.
  * @param {Object}   [options.resources =  ["StreetAddress", "PositionOfInterest", "CadastralParcel"]] - resources for geocoding, by default : ["StreetAddress", "PositionOfInterest", "CadastralParcel"]. Possible values are : "StreetAddress", "PositionOfInterest", "CadastralParcel", "Administratif". Resources will be displayed in the same order in widget list.
  * @param {Object}   [options.delimitations = ["Point", "Circle", "Extent"]] - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
@@ -50680,6 +50937,7 @@ ReverseGeocode.prototype._getReverseGeocodingRequestOptions = function () {
     var context = this;
     var requestOptions = {
         apiKey: reverseGeocodeOptions.apiKey || this.options.apiKey,
+        ssl: this.options.ssl,
         position: this._requestPosition,
         filterOptions: {
             type: [this._currentGeocodingType]
@@ -51396,7 +51654,7 @@ ReverseGeocode.prototype._hideWaitingContainer = function () {
 exports.default = ReverseGeocode;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51870,7 +52128,7 @@ var ReverseGeocodingDOM = {
 exports.default = ReverseGeocodingDOM;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51902,7 +52160,7 @@ var _Markers = __webpack_require__(6);
 
 var _Markers2 = _interopRequireDefault(_Markers);
 
-var _LayerImportDOM = __webpack_require__(71);
+var _LayerImportDOM = __webpack_require__(72);
 
 var _LayerImportDOM2 = _interopRequireDefault(_LayerImportDOM);
 
@@ -53928,7 +54186,7 @@ LayerImport.prototype._emptyGetCapResultsList = function () {
 exports.default = LayerImport;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54652,7 +54910,7 @@ var LayerImportDOM = {
 exports.default = LayerImportDOM;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54853,7 +55111,7 @@ GeoportalAttribution.prototype._updateLayerAttributions = function (layer, mapAt
 exports.default = GeoportalAttribution;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54898,15 +55156,15 @@ var _LayerSwitcher = __webpack_require__(8);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _Interactions = __webpack_require__(18);
+var _Interactions = __webpack_require__(17);
 
 var _Interactions2 = _interopRequireDefault(_Interactions);
 
-var _ElevationPathDOM = __webpack_require__(75);
+var _ElevationPathDOM = __webpack_require__(76);
 
 var _ElevationPathDOM2 = _interopRequireDefault(_ElevationPathDOM);
 
-var _ProfileElevationPathDOM = __webpack_require__(76);
+var _ProfileElevationPathDOM = __webpack_require__(77);
 
 var _ProfileElevationPathDOM2 = _interopRequireDefault(_ProfileElevationPathDOM);
 
@@ -54928,6 +55186,7 @@ var logger = _LoggerByDefault2.default.getLogger("elevationpath");
  * @extends ol.control.Control
  * @param {Object} options - options for function call.
  * @param {Boolean} [options.active = false] - specify if control should be actived at startup. Default is false.
+ * @param {Boolean} [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)  
  * @param {Object} [options.layerDescription = {}] - Layer informations to be displayed in LayerSwitcher widget (only if a LayerSwitcher is also added to the map)
  * @param {String} [options.layerDescription.title = "Profil altimétrique"] - Layer title to be displayed in LayerSwitcher
  * @param {String} [options.layerDescription.description = "Mon profil altimétrique"] - Layer description to be displayed in LayerSwitcher
@@ -55980,6 +56239,12 @@ ElevationPath.prototype._requestService = function () {
         apiKey: this.options.apiKey
     });
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    _Utils2.default.mergeParams(options, {
+        ssl: this.options.ssl
+    });
+
     // les callbacks
     var self = this;
 
@@ -56317,7 +56582,7 @@ ElevationPath.prototype.onOpenElevationPathInfoClick = function () {
 exports.default = ElevationPath;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56426,7 +56691,7 @@ var MeasureToolBoxDOM = {
 exports.default = MeasureToolBoxDOM;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56685,7 +56950,7 @@ var ElevationPathDOM = {
 exports.default = ElevationPathDOM;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57129,7 +57394,7 @@ var ProfileElevationPathDOM = {
 exports.default = ProfileElevationPathDOM;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57159,7 +57424,7 @@ var _Measures = __webpack_require__(12);
 
 var _Measures2 = _interopRequireDefault(_Measures);
 
-var _MeasureLengthDOM = __webpack_require__(78);
+var _MeasureLengthDOM = __webpack_require__(79);
 
 var _MeasureLengthDOM2 = _interopRequireDefault(_MeasureLengthDOM);
 
@@ -57440,7 +57705,7 @@ MeasureLength.prototype.onShowMeasureLengthClick = function (e) {
 exports.default = MeasureLength;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57531,7 +57796,7 @@ var MeasureLengthDOM = {
 exports.default = MeasureLengthDOM;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57561,7 +57826,7 @@ var _Measures = __webpack_require__(12);
 
 var _Measures2 = _interopRequireDefault(_Measures);
 
-var _MeasureAreaDOM = __webpack_require__(80);
+var _MeasureAreaDOM = __webpack_require__(81);
 
 var _MeasureAreaDOM2 = _interopRequireDefault(_MeasureAreaDOM);
 
@@ -57848,7 +58113,7 @@ MeasureArea.prototype.onShowMeasureAreaClick = function (e) {
 exports.default = MeasureArea;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57939,7 +58204,7 @@ var MeasureAreaDOM = {
 exports.default = MeasureAreaDOM;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57969,7 +58234,7 @@ var _Measures = __webpack_require__(12);
 
 var _Measures2 = _interopRequireDefault(_Measures);
 
-var _MeasureAzimuthDOM = __webpack_require__(82);
+var _MeasureAzimuthDOM = __webpack_require__(83);
 
 var _MeasureAzimuthDOM2 = _interopRequireDefault(_MeasureAzimuthDOM);
 
@@ -58308,7 +58573,7 @@ MeasureAzimuth.prototype.onPointerMoveAzimutHandler = function (e) {
 exports.default = MeasureAzimuth;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58399,7 +58664,7 @@ var MeasureAzimuthDOM = {
 exports.default = MeasureAzimuthDOM;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58435,8 +58700,6 @@ __webpack_require__(41);
 
 __webpack_require__(42);
 
-__webpack_require__(84);
-
 __webpack_require__(85);
 
 __webpack_require__(86);
@@ -58469,11 +58732,7 @@ __webpack_require__(99);
 
 __webpack_require__(100);
 
-/***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+__webpack_require__(101);
 
 /***/ }),
 /* 85 */
@@ -58573,6 +58832,12 @@ __webpack_require__(100);
 
 /***/ }),
 /* 101 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58608,7 +58873,7 @@ var _itowns = __webpack_require__(44);
 
 var Itowns = _interopRequireWildcard(_itowns);
 
-var _MousePosition = __webpack_require__(102);
+var _MousePosition = __webpack_require__(103);
 
 var _MousePosition2 = _interopRequireDefault(_MousePosition);
 
@@ -58644,11 +58909,15 @@ var _GlobeViewExtended = __webpack_require__(9);
 
 var _GlobeViewExtended2 = _interopRequireDefault(_GlobeViewExtended);
 
+var _CRS = __webpack_require__(45);
+
+var _CRS2 = _interopRequireDefault(_CRS);
+
 __webpack_require__(115);
 
 __webpack_require__(43);
 
-var _package = __webpack_require__(19);
+var _package = __webpack_require__(18);
 
 var _package2 = _interopRequireDefault(_package);
 
@@ -58671,12 +58940,13 @@ Itowns.layer = {};
 Itowns.layer.GeoportalWMTS = _LayerWMTS2.default;
 Itowns.layer.GeoportalWMS = _LayerWMS2.default;
 Itowns.layer.GeoportalElevation = _LayerElevation2.default;
+Itowns.CRS = _CRS2.default;
 Itowns.GlobeViewExtended = _GlobeViewExtended2.default;
 
 exports.itownsExtended = Itowns;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58688,7 +58958,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _proj = __webpack_require__(17);
+var _proj = __webpack_require__(22);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -58724,11 +58994,11 @@ var _Widget = __webpack_require__(11);
 
 var _Widget2 = _interopRequireDefault(_Widget);
 
-var _PositionFormater = __webpack_require__(103);
+var _PositionFormater = __webpack_require__(104);
 
 var _PositionFormater2 = _interopRequireDefault(_PositionFormater);
 
-var _CRS = __webpack_require__(104);
+var _CRS = __webpack_require__(45);
 
 var _CRS2 = _interopRequireDefault(_CRS);
 
@@ -58745,6 +59015,7 @@ var logger = _LoggerByDefault2.default.getLogger("MousePosition");
  * @alias itowns.control.MousePosition
  * @extends {itowns.control.Control}
  * @param {Object} options - options for function call.
+ * @param {Boolean} [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)   
  * @param {Boolean} [options.collapsed = true] - Specify if MousePosition control should be collapsed at startup. Default is true.
  * @param {Array}   [options.systems] - list of projection systems, default are Geographical ("EPSG:4326"), Web Mercator ("EPSG:3857"), Lambert 93 ("EPSG:2154") and extended Lambert 2 ("EPSG:27572").
  *      Each array element (=system) is an object with following properties :
@@ -59804,6 +60075,10 @@ MousePosition.prototype.onRequestAltitude = function (coordinate, callback) {
     // we use the key of the autoconf, or the key given in the control options
     options.apiKey = options.apiKey || this.options.apiKey;
 
+    // si l'utilisateur a spécifié le paramètre ssl au niveau du control, on s'en sert
+    // true par défaut (https) 
+    options.ssl = this.options.ssl;
+
     _gp2.default.Services.getAltitude(options);
 };
 
@@ -59870,14 +60145,14 @@ MousePosition.prototype.onMousePositionProjectionSystemChange = function (e) {
  * this method selects the current system projection.
  *
  * @method _setCurrentSystem
- * @param {Object} systemCode - inner code (rank in array _projectionSystems)
+ * @param {String} systemCode - inner code (rank in array _projectionSystems)
  * @private
  */
 MousePosition.prototype._setCurrentSystem = function (systemCode) {
     // if we change of system type, we must change the unit type too !
     var type = null;
     for (var i = 0; i < this._projectionSystems.length; ++i) {
-        if (this._projectionSystems[i].code === systemCode) {
+        if (this._projectionSystems[i].code === Number(systemCode)) {
             type = this._projectionSystems[i].type;
             break;
         }
@@ -59977,7 +60252,7 @@ MousePosition.prototype.onMousePositionProjectionUnitsChange = function (e) {
 exports.default = MousePosition;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60074,221 +60349,6 @@ var PositionFormater = {
 };
 
 exports.default = PositionFormater;
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var CRS = {
-
-  /**
-   * CRS : WGS84
-   *
-   * @property EPSG:4326
-   * @private
-   */
-  "EPSG:4326": "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +units=degrees",
-
-  /**
-   * CRS : PseudoMercator
-   *
-   * @property EPSG:3857
-   * @private
-   */
-  "EPSG:3857": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs",
-
-  /**
-   * CRS : Lambert 93
-   *
-   * @property EPSG:2154
-   * @private
-   */
-  "EPSG:2154": "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : Lambert 2 extended
-   *
-   * @property EPSG:27572
-   * @private
-   */
-  "EPSG:27572": "+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=0 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs",
-
-  /**
-   * CRS : UTM 20N (Guadeloupe, Martinique)
-   *
-   * @property EPSG:32620
-   * @private
-   */
-  "EPSG:32620": "+proj=utm +zone=20 +ellps=WGS84 +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 21N (Saint-Pierre-et-Miquelon)
-   *
-   * @property EPSG:4467
-   * @private
-   */
-  "EPSG:4467": "+proj=utm +zone=21 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 22N (Guyane)
-   *
-   * @property EPSG:2972
-   * @private
-   */
-  "EPSG:2972": "+proj=utm +zone=22 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 30N (France métropolitaine)
-   *
-   * @property EPSG:32630
-   * @private
-   */
-  "EPSG:32630": "+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 31N (France métropolitaine)
-   *
-   * @property EPSG:32631
-   * @private
-   */
-  "EPSG:32631": "+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 32N (France métropolitaine)
-   *
-   * @property EPSG:32632
-   * @private
-   */
-  "EPSG:32632": "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 38S (Mayotte)
-   *
-   * @property EPSG:4471
-   * @private
-   */
-  "EPSG:4471": "+proj=utm +zone=38 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 40S (Réunion)
-   *
-   * @property EPSG:2975
-   * @private
-   */
-  "EPSG:2975": "+proj=utm +zone=40 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 5S (Polynésie)
-   *
-   * @property EPSG:3296
-   * @private
-   */
-  "EPSG:3296": "+proj=utm +zone=5 +south +ellps=GRS80 +towgs84=0.072,-0.507,-0.245,-0.0183,0.0003,-0.007,-0.0093 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 6S (Polynésie)
-   *
-   * @property EPSG:3297
-   * @private
-   */
-  "EPSG:3297": "+proj=utm +zone=6 +south +ellps=GRS80 +towgs84=0.072,-0.507,-0.245,-0.0183,0.0003,-0.007,-0.0093 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 7S (Polynésie)
-   *
-   * @property EPSG:32707
-   * @private
-   */
-  "EPSG:32707": "+proj=utm +zone=7 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 8S (Polynésie)
-   *
-   * @property EPSG:32708
-   * @private
-   */
-  "EPSG:32708": "+proj=utm +zone=8 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 12N (Ile de Clipperton)
-   *
-   * @property EPSG:26912
-   * @private
-   */
-  "EPSG:26912": "+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 42S (Iles Kerguelen)
-   *
-   * @property EPSG:32742
-   * @private
-   */
-  "EPSG:32742": "+proj=utm +zone=42 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 39S (Iles Crozet)
-   *
-   * @property EPSG:32739
-   * @private
-   */
-  "EPSG:32739": "+proj=utm +zone=39 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 43S (Iles St-Paul et Amsterdam)
-   *
-   * @property EPSG:32743
-   * @private
-   */
-  "EPSG:32743": "+proj=utm +zone=43 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : Stéréographique polaire (Terre Adelie)
-   *
-   * @property EPSG:2986
-   * @private
-   */
-  "EPSG:2986": "",
-
-  /**
-   * CRS : UTM 37S (Iles du canal de Mozambique)
-   *
-   * @property EPSG:32737
-   * @private
-   */
-  "EPSG:32737": "+proj=utm +zone=37 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 38S (Iles du canal de Mozambique)
-   *
-   * @property EPSG:32738
-   * @private
-   */
-  "EPSG:32738": "+proj=utm +zone=38 +south +datum=WGS84 +units=m +no_defs",
-
-  /**
-   * CRS : UTM 1S (Wallis-et-Futuna)
-   *
-   * @property EPSG:2988
-   * @private
-   */
-  "EPSG:2988": "+proj=utm +zone=1 +south +ellps=intl +towgs84=253,-132,-127,0,0,0,0 +units=m +no_defs",
-
-  /**
-   * CRS : RGNC91-93 (Nouvelle-Calédonie)
-   *
-   * @property EPSG:3163
-   * @private
-   */
-  "EPSG:3163": "+proj=lcc +lat_1=-20.66666666666667 +lat_2=-22.33333333333333 +lat_0=-21.5 +lon_0=166 +x_0=400000 +y_0=300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-};
-
-exports.default = CRS;
 
 /***/ }),
 /* 105 */
@@ -62308,7 +62368,7 @@ var logger = _LoggerByDefault2.default.getLogger("wmtsLayer");
  * @alias itowns.layer.GeoportalWMTS
  * @param {Object} options            - options for function call.
  * @param {String} options.layer      - Layer name (e.g. "ORTHOIMAGERY.ORTHOPHOTOS")
- * @param {Boolean} [options.ssl]     - if set true, enforce protocol https (only for nodejs)
+ * @param {Boolean} [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)
  * @param {String} [options.apiKey]   - Access key to Geoportal platform
  * @param {Object} [options.itownsParams] - other options for itowns.GlobeView.addLayer function (see {@link http://www.itowns-project.org/itowns/API_Doc/GlobeView.html#addLayer GlobeView.addLayer})
  * @example
@@ -62332,7 +62392,7 @@ function LayerWMTS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -62345,9 +62405,9 @@ function LayerWMTS(options) {
     if (layerId && _Config2.default.configuration.getLayerConf(layerId)) {
         var wmtsParams = _Config2.default.getLayerParams(options.layer, "WMTS", options.apiKey);
 
-        // gestion de mixContent dans l'url du service...
-        var ctx = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : null;
-        var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf("https:") === 0 ? "https://" : "http://" : options.ssl ? "https://" : "http://";
+        // si ssl = false on fait du http
+        // par défaut, ssl = true, on fait du https
+        var protocol = options.ssl === false ? "http://" : "https://";
 
         this.type = "color";
         this.protocol = "wmts";
@@ -62432,7 +62492,7 @@ var logger = _LoggerByDefault2.default.getLogger("wmsLayer");
  * @alias itowns.layer.GeoportalWMS
  * @param {Object} options            - options for function call.
  * @param {String} options.layer      - Layer name (e.g. "ORTHOIMAGERY.ORTHOPHOTOS")
- * @param {Boolean} [options.ssl]     - if set true, enforce protocol https (only for nodejs)
+ * @param {Boolean} [options.ssl = true] - use of ssl or not (default true, service requested using https protocol)
  * @param {String} [options.apiKey]   - Access key to Geoportal platform
  * @param {Object} [options.itownsParams] - other options for itowns.GlobeView.addLayer function (see {@link http://www.itowns-project.org/itowns/API_Doc/GlobeView.html#addLayer GlobeView.addLayer})
  * @example
@@ -62456,7 +62516,7 @@ function LayerWMS(options) {
 
     // par defaut
     if (typeof options.ssl === "undefined") {
-        options.ssl = false;
+        options.ssl = true;
     }
 
     // Check if configuration is loaded
@@ -62469,9 +62529,9 @@ function LayerWMS(options) {
     if (layerId && _Config2.default.configuration.getLayerConf(layerId)) {
         var wmsParams = _Config2.default.getLayerParams(options.layer, "WMS", options.apiKey);
 
-        // gestion de mixContent dans l'url du service...
-        var ctx = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : null;
-        var protocol = ctx ? ctx.location && ctx.location.protocol && ctx.location.protocol.indexOf("https:") === 0 ? "https://" : "http://" : options.ssl ? "https://" : "http://";
+        // si ssl = false on fait du http
+        // par défaut, ssl = true, on fait du https
+        var protocol = options.ssl === false ? "http://" : "https://";
 
         this.type = "color";
         this.protocol = "wms";
@@ -63718,8 +63778,8 @@ if (typeof _OlMap.OlMap !== "undefined" && typeof _ItMap.ItMap !== "undefined") 
 }
 
 exports.Map = _MapLoader.MapLoader;
-var sdkVersion = exports.sdkVersion = "2.0.1";
-var sdkDate = exports.sdkDate = "2018-09-18";
+var sdkVersion = exports.sdkVersion = "2.0.2";
+var sdkDate = exports.sdkDate = "2019-03-01";
 
 /***/ }),
 /* 12 */
@@ -66480,7 +66540,7 @@ _IMapBase.IMap.prototype.forget = function (eventId, action) {
             }
             var itCallback = null;
             for (var i = rEvents.length - 1; i >= 0; i--) {
-                if (rEvents[i].action == action) {
+                if (rEvents[i].action === action) {
                     if (!rEvents[i].eventOrigin) {
                         continue;
                     }
@@ -69440,7 +69500,7 @@ _OlMapBase.OlMap.prototype.forget = function (eventId, action) {
     }
     var evKey = null;
     for (var i = rEvents.length - 1; i >= 0; i--) {
-        if (rEvents[i].action == action) {
+        if (rEvents[i].action === action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
             this.logger.trace("[OlMap] : forgetting : " + eventId + " (" + evKey + ")");
@@ -70935,7 +70995,7 @@ _ItMapBase.ItMap.prototype.forget = function (eventId, action) {
     }
     var evKey = null;
     for (var i = rEvents.length - 1; i >= 0; i--) {
-        if (rEvents[i].action == action) {
+        if (rEvents[i].action === action) {
             evKey = rEvents[i].key;
             rEvents.splice(i, 1);
             this.logger.trace("[ItMap] : forgetting : " + eventId + " (" + evKey + ")");
@@ -71477,6 +71537,10 @@ _ItMapBase.ItMap.prototype.setXYCenter = function (point, zoom) {
         this.logger.info("point object has location property to center on...");
         return;
     }
+    // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
+    if (point.hasOwnProperty("projection") && !_gp.itownsExtended.proj4.defs(point.projection) && _gp.itownsExtended.CRS && _gp.itownsExtended.CRS[point.projection]) {
+        _gp.itownsExtended.proj4.defs(point.projection, _gp.itownsExtended.CRS[point.projection]);
+    }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && _gp.itownsExtended.proj4.defs(point.projection)) {
         var wgs84Coords = _gp.itownsExtended.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
@@ -71516,7 +71580,10 @@ _ItMapBase.ItMap.prototype.setAutoCenter = function (point, zoom) {
         this.logger.info("no valid coordinates for map center");
         return;
     }
-
+    // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
+    if (point.hasOwnProperty("projection") && !_gp.itownsExtended.proj4.defs(point.projection) && _gp.itownsExtended.CRS && _gp.itownsExtended.CRS[point.projection]) {
+        _gp.itownsExtended.proj4.defs(point.projection, _gp.itownsExtended.CRS[point.projection]);
+    }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && _gp.itownsExtended.proj4.defs(point.projection)) {
         var wgs84Coords = _gp.itownsExtended.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
