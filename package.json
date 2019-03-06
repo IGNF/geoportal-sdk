@@ -45,8 +45,8 @@
     },
     "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
     "dependencies": {
-        "geoportal-extensions-itowns": "^2.1.0",
-        "geoportal-extensions-openlayers": "^2.1.0",
+        "geoportal-extensions-itowns": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/update-ol5/build/scripts/release/geoportal-extensions-itowns-2.2.0.tgz",
+        "geoportal-extensions-openlayers": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/update-ol5/build/scripts/release/geoportal-extensions-openlayers-3.0.0.tgz",
         "itowns": "2.3.0",
         "ol": "^5.3.0",
         "ol-mapbox-style": "^3.8.0"
