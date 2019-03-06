@@ -4,13 +4,13 @@ The Geoportal SDK (Software Developement Kit) is an integrated javascript API th
 
 It is a wrapper over the following libraries :
 
-* {@link http://openlayers.org/ OpenLayers 3}
+* <a href="http://openlayers.org/"> OpenLayers </a>
 
 * <a href="http://www.itowns-project.org/"> iTowns </a>
 
-* {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md Geoportal extension for OpenLayers 3}
+* <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md"> Geoportal extension for OpenLayers </a>
 
-* {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md Geoportal extension for iTowns}
+* <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md"> Geoportal extension for iTowns </a>
 
 
 ## Basic usage
@@ -23,8 +23,8 @@ Example :
 var map = Gp.map.load(
     "mapDiv",                     // html element id  where to attach the map
     {                             // mapOptions
-        apiKey : "YOUR_API_KEY",   // geoportal access key
-        library : "itowns",        // "ol3" by default. Library the map will be loaded with.
+        apiKey : "YOUR_API_KEY",  // geoportal access key
+        viewMode : "3d",          // "2d" by default.
         center : {                // -> map center params
             location : "73 avenue de Paris, Saint-Mandé"
         },
@@ -65,11 +65,10 @@ See [Gp.MapOptions property](Gp.MapOptions.html) : **mapEventsOptions** and {@li
 
 ## Advanced Functionalities
 
-If you want more functionalities, you will then have to use those offered by : 
+If you want more functionalities, you will then have to use those offered by :
 
-* [OpenLayers 3 API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-ol3.md) which are part of the Geoportal SDK.
+* [OpenLayers API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md) which are part of the Geoportal SDK.
 
-* [iTowns API](http://www.itowns-project.org/itowns/API_Doc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md) which are part of the Geoportal SDK.
+* [iTowns API](http://www.itowns-project.org/itowns/API_Doc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md) which are part of the Geoportal SDK.
 
 Also note that the [Geoportal Access library API](https://github.com/IGNF/geoportal-access-lib) is also available with the Geoportal SDK.
-
