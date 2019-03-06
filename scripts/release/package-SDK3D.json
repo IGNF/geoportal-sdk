@@ -2,7 +2,17 @@
     "name": "@ignf-geoportal/sdk-3d",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
     "version": "2.0.1",
-    "main": "dist/GpSDK3D.js",
+    "main": "src/SDK3D.js",
+    "browser": "dist/GpSDK3D.js",
+    "files": [
+        "dist/",
+        "src/",
+        "LICENCE.md",
+        "README.md",
+        "package.json"
+    ],
+    "directories": {},
+    "scripts": {},
     "repository": {
         "type": "git",
         "url": "https://github.com/IGNF/geoportal-sdk.git"
@@ -20,5 +30,7 @@
         "url": "https://github.com/IGNF/geoportal-sdk/issues"
     },
     "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-    "dependencies": {}
+    "dependencies": {
+        "itowns": "2.3.0"
+    }
 }

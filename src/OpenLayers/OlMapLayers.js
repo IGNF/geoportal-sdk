@@ -1,17 +1,20 @@
 import {OlMap} from "./OlMapBase";
 import {IMap} from "../Interface/IMap";
 import {Protocols, olExtended as Ol} from "geoportal-extensions-openlayers";
+import {applyStyle as applyStyleOlms} from "ol-mapbox-style";
 
 import VectorTileLayer from "ol/layer/VectorTile";
-import VectorTileSource from "ol/source/VectorTile";
 import VectorLayer from "ol/layer/Vector";
 import ImageLayer from "ol/layer/Image";
 import TileLayer from "ol/layer/Tile";
+import VectorTileSource from "ol/source/VectorTile";
 import VectorSource from "ol/source/Vector";
 import TileWMSSource from "ol/source/TileWMS";
 import ImageWMSSource from "ol/source/ImageWMS";
 import OSMSource from "ol/source/OSM";
 import TileJSONSource from "ol/source/TileJSON";
+
+import RenderFeature from "ol/render/Feature"; // FIXME !?
 
 import GML2 from "ol/format/GML2";
 import GML3 from "ol/format/GML3";
@@ -652,7 +655,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
 
                                         if (_glTiles) {
                                             // service tuilé et/ou mapbox
-                                            vectorFormat = new MVT();
+                                            vectorFormat = new MVT({ featureClass : RenderFeature });
                                             vectorSource = new VectorTileSource({
                                                 attributions : _glSource.attribution,
                                                 format : vectorFormat,
@@ -679,7 +682,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorLayer.id = _glSourceId;
                                         } else if (_glUrl) {
                                             // service avec un tilejson
-                                            vectorFormat = new MVT();
+                                            vectorFormat = new MVT({ featureClass : RenderFeature });
                                             vectorLayer = new VectorTileLayer({
                                                 visible : false,
                                                 // zIndex : 0
@@ -790,7 +793,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // TODO ajouter le style de type background !
                                         // fonction de style de la couche
                                         var setStyle = function () {
-                                            Ol.olms.applyStyle(p.layer, p.styles, p.id)
+                                            applyStyleOlms(p.layer, p.styles, p.id)
                                                 .then(function () {
                                                     var visibility = (typeof layerOpts.visibility === "undefined") ? true : layerOpts.visibility;
                                                     p.layer.setVisible(visibility);
@@ -832,7 +835,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                 })
                                                 .catch(function (e) {
                                                     // TODO styles utilisateurs par defaut !
-                                                    throw new Error("Apply Style error = " + e.message);
+                                                    // throw new Error("Apply Style error = " + e.message);
+                                                    self.logger.warn("Apply Style error = " + e.message);
                                                 });
                                         };
 

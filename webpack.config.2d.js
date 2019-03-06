@@ -54,7 +54,7 @@ module.exports = env => {
                 // "geoportal-extensions-openlayers" : auto -> pointe vers bundle !
                 // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js")
                 // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js")
-                // "ol-mapbox-style" : olms ?
+                // "ol-mapbox-style" : auto ?
                 //      "olms" : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "olms.js"),
             }
         },
@@ -71,6 +71,14 @@ module.exports = env => {
             }
         },
         devtool : (development) ? "eval-source-map" : false,
+        devServer: {
+            proxy: {
+                "/samples/resources/proxy/" : {
+                    secure: false,
+                    target: "http://localhost/proxy/proxy.php" // proxy à deployer en local !
+                }
+            }
+        },
         module : {
             rules : [
                 {

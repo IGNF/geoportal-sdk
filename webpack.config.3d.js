@@ -52,7 +52,7 @@ module.exports = env => {
         resolve : {
             alias : {
                 // "ol" : auto
-                // "olms" ou "ol-mapbox-style" : ?
+                // "ol-mapbox-style" : auto
                 // "geoportal-extensions-openlayers" : auto
                 // "geoportal-extensions-itowns" : auto
                 itowns : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
