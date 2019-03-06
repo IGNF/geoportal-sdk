@@ -8,9 +8,8 @@ stages:
 before_script:
   - npm install
 script:
-  - npm run build
-  - npm run build:dev
-  - npm run build:prod
+  - npm run build:2d
+  - npm run build:3d
 cache:
   directories:
     - node_modules
@@ -24,10 +23,6 @@ before_deploy:
     - mkdir -p deploy/current/jsdoc/
     - cp -r jsdoc/. deploy/current/jsdoc/
 deploy:
-  # fix : https://github.com/travis-ci/travis-ci/issues/9312
-  # ...wait for v1.9.1
-  edge:
-    branch: v1.8.47
   provider: pages
   skip-cleanup: true
   github-token: $ghkey  # Set in travis-ci.org dashboard, marked secure

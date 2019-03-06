@@ -4,13 +4,13 @@ The Geoportal SDK (Software Developement Kit) is an integrated javascript API th
 
 It is a wrapper over the following libraries :
 
-* {@link http://openlayers.org/ OpenLayers}
+* <a href="http://openlayers.org/"> OpenLayers </a>
 
 * <a href="http://www.itowns-project.org/"> iTowns </a>
 
-* {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-openlayers.md Geoportal extension for OpenLayers}
+* <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md"> Geoportal extension for OpenLayers </a>
 
-* {@link https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md Geoportal extension for iTowns}
+* <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md"> Geoportal extension for iTowns </a>
 
 
 ## Basic usage
@@ -67,8 +67,8 @@ See [Gp.MapOptions property](Gp.MapOptions.html) : **mapEventsOptions** and {@li
 
 If you want more functionalities, you will then have to use those offered by :
 
-* [OpenLayers API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-openlayers.md) which are part of the Geoportal SDK.
+* [OpenLayers API](http://openlayers.org/en/latest/apidoc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md) which are part of the Geoportal SDK.
 
-* [iTowns API](http://www.itowns-project.org/itowns/API_Doc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/README-itowns.md) which are part of the Geoportal SDK.
+* [iTowns API](http://www.itowns-project.org/itowns/API_Doc/) and its [dedicated Geoportal extension](https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md) which are part of the Geoportal SDK.
 
 Also note that the [Geoportal Access library API](https://github.com/IGNF/geoportal-access-lib) is also available with the Geoportal SDK.
