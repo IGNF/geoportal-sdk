@@ -23,6 +23,9 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] Migrer vers webpack 4
 
+* [ ] La taille des bundles trop elevée ?
+    - la migration vers webpack 4 devrait resoudre de pb de compression !?
+
 * [ ] Tests à jouer & à creer
     > npm run test:serve
 
@@ -53,23 +56,10 @@ Cette branche est clonée sur [feature-mapbox] :
     - [x] 3D : ça compile !
     - [ ] **PROGRESS** gestion des variables globales
         ex. Gp, ol, itowns, proj4
-
-        Pour utiliser openlayers, il faut charger le bundle dans la page :
-        `<script src="https://openlayers.org/en/latest/build/ol.js"></script>`
-        Du coup, olExtended et ol sont fusionnés !
-        Mais, c'est pas très logique..., car on souhaite embarquer openlayers !?
-
-        ```
-        - "geoportal-extensions-openlayers" : auto
-        - "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js")
-        > compilation OK
-        > proj4 OK
-        > Gp OK
-        > ol uniquement interne au sdk !
-
-        - "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js")
-        > compilation NOK : pb de loader sur les CSS !?
-        ```
+        - ol et itowns doivent contenir nos evolutions
+        - *FIXME* Gp.olExtended doit elle être fusionnée avec ol ?
+        - *FIXME* Gp.olExtended ne devrait que contenir nos evolutions !?
+        - proj4 doit être fonctionnel avec nos CRS !
 
 * [x] **FAIT** intégrer le mode mixte dans le sdk = 3d !
 
@@ -185,7 +175,7 @@ x├── page-geolocate-bundle-map.html
 └── page-wmts-restful-bundle-map.html
 
 - [webpack] commentaires dans CSS !?
-
+- [webpack] minification/compression à revoir !?
 
 ## BUG 3D !?
 
