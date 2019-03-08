@@ -51,11 +51,9 @@ module.exports = env => {
         resolve : {
             alias : {
                 // "ol" : auto
-                // "geoportal-extensions-openlayers" : auto -> pointe vers bundle !
-                // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js")
-                // "geoportal-extensions-openlayers" : path.resolve(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js")
-                // "ol-mapbox-style" : auto ?
-                //      "olms" : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "olms.js"),
+                // "geoportal-extensions-openlayers" : auto
+                // "ol-mapbox-style" : auto
+                "ol-dist" : path.join(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js")
             }
         },
         externals : {
@@ -114,7 +112,7 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test : require.resolve("ol"),
+                    test : path.resolve(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"

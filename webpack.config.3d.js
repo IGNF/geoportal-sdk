@@ -52,6 +52,7 @@ module.exports = env => {
         resolve : {
             alias : {
                 // "ol" : auto
+                "ol-dist" : path.join(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
                 // "ol-mapbox-style" : auto
                 // "geoportal-extensions-openlayers" : auto
                 // "geoportal-extensions-itowns" : auto
@@ -106,7 +107,7 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test : require.resolve("ol"),
+                    test : path.resolve(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"

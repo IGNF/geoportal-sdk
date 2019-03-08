@@ -97,6 +97,8 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] TOC dans les README
 
+* [ ] capture d'ecran dans les README
+
 ## BUG 2D !?
 
 x├── page-azimuth-bundle-map.html
@@ -116,17 +118,21 @@ x├── page-controls-bundle-map.html
 
 ?├── page-controlsOptions-bundle-map.html
 x├── page-div-bundle-map.html
-X├── page-drawing-bundle-map.html
-├── page-events-bundle-map.html
-├── page-exportmap-bundle-map.html
-├── page-geojson-bundle-map.html
-├── page-geolocate-bundle-map.html
+x├── page-drawing-bundle-map.html
+x├── page-events-bundle-map.html
+x├── page-exportmap-bundle-map.html
+x├── page-geojson-bundle-map.html
+x├── page-geolocate-bundle-map.html
 !├── page-gfi-bundle-map.html
-    - selection impossible des couches vecteurs !?
-    - 403 sur certaines couches... POI Ecoles...
+    - selection impossible sur certaines couches vecteurs !?
+    - ex. POI Ecoles...
 
-├── page-gfi-mapbox-bundle-map.html
-├── page-gfi-wms-bundle-map.html
+!├── page-gfi-mapbox-bundle-map.html
+    - selection impossible
+
+!├── page-gfi-wms-bundle-map.html
+    - selection impossible
+
 ├── page-gpplayer-bundle-map.html
 ├── page-gpx-bundle-map.html
 ├── page-graphicScale-bundle-map.html
@@ -172,7 +178,7 @@ X├── page-drawing-bundle-map.html
 ├── page-wmsc-geologie-bundle-map.html
 ├── page-wms-gfi-bundle-map.html
 !├── page-wmts-bundle-map.html
-     -  exposer ol en variable globale pour l'appel ol.proj.get !?
+     - exposer ol en variable globale pour l'appel ol.proj.get !?
      - exception sur le wfs (BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:parcelle unknown)
 
 ├── page-wmts-geoportail-bundle-map.html

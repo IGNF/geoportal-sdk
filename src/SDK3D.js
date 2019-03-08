@@ -6,9 +6,33 @@ import Logger from "./Utils/LoggerByDefault";
 import "../res/Itowns/ItMap.css";
 import "../res/OpenLayers/OlMap.css";
 
-var logger = Logger.getLogger("SDK3D");
+// import du bundle openlayers
+import * as ol from "ol-dist";
+// import des extensions openlayers
+import { olExtended } from "geoportal-extensions-openlayers";
 
-// Ol extended + Services + Outils
+var logger = Logger.getLogger("SDK3D");
+logger.log("Chargement SDK 3D...");
+
+function deepCopy (source, target) {
+    for (var prop in source) {
+        if (source.hasOwnProperty(prop)) {
+            if (!target.hasOwnProperty(prop)) {
+                target[prop] = source[prop];
+            } else if (typeof source[prop] === "object") {
+                deepCopy(source[prop], target[prop]);
+            }
+        }
+    }
+}
+
+// fusion des fonctionnalités openlayers
+// ol -> Gp.olExtended
+deepCopy(ol, olExtended);
+// Gp.olExtended -> ol
+deepCopy(olExtended, ol);
+
+// ol extended + Services + Outils
 export {
     Services,
     Error,
@@ -29,23 +53,8 @@ export {
     itownsExtended
 } from "geoportal-extensions-itowns";
 
-// on declare les ns dans root global
-// auto detection des lib. chargées
-if (typeof OlMap !== "undefined" &&
-     typeof ItMap !== "undefined") {
-    logger.log("Lib. ol et itowns détectées !");
-    MapLoader.__class2d = OlMap;
-    MapLoader.__class3d = ItMap;
-} else if (typeof OlMap !== "undefined") {
-    logger.log("Lib. ol détectée !");
-    MapLoader.__class2d = OlMap;
-} else if (typeof ItMap !== "undefined") {
-    logger.log("Lib. itowns détectée !");
-    MapLoader.__class3d = ItMap;
-} else {
-    logger.log("Aucune lib. détectée !?");
-}
-
+MapLoader.__class2d = OlMap;
+MapLoader.__class3d = ItMap;
 export {MapLoader as Map};
 
 export const sdkVersion = "__GPSDKVERSION__";
