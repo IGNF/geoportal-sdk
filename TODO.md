@@ -1,4 +1,4 @@
-# Migration vers OpenLayers v5
+# Migration vers OpenLayers v5 & MapBox
 
 Cette branche est clonée sur [feature-mapbox] :
 
@@ -104,7 +104,7 @@ x├── page-center-bundle-map.html
 
     curl 'https://services.data.shom.fr/INSPIRE/wms/r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=BATHY-DALLE_PYR-PNG_3857_WMSR&WIDTH=256&HEIGHT=256&CRS=EPSG%3A3857&STYLES=&BBOX=234814.55089206249%2C6222585.598639628%2C273950.3093740727%2C6261721.357121638' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36' --compressed
 
-    - [bug] Exception sur le passage en gris !?
+    - [bug ChangeLayerColor] Exception sur le passage en gris !?
     > TypeError: Cannot assign to read only property 'target' of object '#<CustomEvent>'
 
 x├── page-controls-bundle-map.html
@@ -124,29 +124,36 @@ x├── page-geojson-bundle-map.html
 
 x├── page-geolocate-bundle-map.html
 
-!├── page-gfi-bundle-map.html
-    - [bug GetFeatureInfo] selection impossible sur certaines couches vecteurs !?
-    - ex. POI Ecoles...
+x├── page-gfi-bundle-map.html
 
-!├── page-gfi-mapbox-bundle-map.html
-    - [bug GetFeatureInfo] selection impossible
+    - [bug GetFeatureInfo] selection impossible sur POI Ecoles...
+    => **OK** changement de ressources !
 
-!├── page-gfi-wms-bundle-map.html
+    - 403 Forbidden sur 'ADMINISTRATIVEUNITS.BOUNDARIES'
+    => **OK** desactivation de la ressource !
+
+    curl 'https://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/r/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=ADMINISTRATIVEUNITS.BOUNDARIES&CRS=EPSG%3A3857&STYLES=&WIDTH=924&HEIGHT=751&BBOX=20494.678208962883%2C6394107.90145443%2C24908.916592431815%2C6397695.664469566' -H 'Referer: http://localhost/geoportal-sdk/samples/2d/page-gfi-bundle-map.html' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36' --compressed
+
+x├── page-gfi-mapbox-bundle-map.html
+    - **OK** [bug GetFeatureInfo] selection impossible
+
+x├── page-gfi-wms-bundle-map.html
     - [bug GetFeatureInfo] selection impossible
+    => **OK** changement de ressources !
 
 x├── page-gpplayer-bundle-map.html
 
-!├── page-gpx-bundle-map.html
-    - [bug GetFeatureInfo] selection impossible
+x├── page-gpx-bundle-map.html
+    - **OK** [bug GetFeatureInfo] selection impossible
 
 x├── page-graphicScale-bundle-map.html
 
-!├── page-interaction-bundle-map.html
-    - [bug GetFeatureInfo] selection impossible
-    - [bug GetFeatureInfo] navigation clavier ?
+x├── page-interaction-bundle-map.html
+    - **OK** [bug GetFeatureInfo] selection impossible
+    - navigation clavier ?
 
 x├── page-kml-bundle-map.html
-    - modification de l'url du kml...
+    -  **OK** modification de l'url du kml...
 
 x├── page-kml-drawing-bundle-map.html
 
@@ -211,6 +218,8 @@ x├── page-styleOptions-bundle-map.html
     - pb avec cette couche !?
     > ERR_CONNECTION_TIMED_OUT
 
+    curl 'https://demo.boundlessgeo.com/geoserver/wfs?service=WFS&request=GetFeature&version=1.1.0&typename=ne:ne_10m_roads&outputFormat=application/json&srsname=EPSG:3857&bbox=-15945375.59651405,9788831.59031281,-13988587.672413535,11256422.533388196,EPSG:3857&maxFeatures=200' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36' -H 'Referer: http://localhost/geoportal-sdk/samples/2d/page-wfs-bundle-map.html' -H 'Origin: http://localhost' --compressed
+
 x├── page-wfs-geoportail-bundle-map.html
 
 x├── page-wms-bundle-map.html
@@ -229,11 +238,14 @@ x├── page-wmts-geoportail-bundle-map.html
 
 x└── page-wmts-restful-bundle-map.html
 
+    - [bug Attributions] la liste des attributions sur la couche photos contient des doublons
+    === pb autoconf !
+
 - [webpack] commentaires dans CSS !?
 - [webpack] minification/compression à revoir !?
-- [bug Attributions] la liste des attributions sur la couche photos contient des doublons
-    => pb autoconf !?
-    => hack possible au niveau de l'API ?
+- *OK* [bug ChangeLayerColor] Exception => à tester sur d'autres navigateurs comme IE !
+- [bug Attributions] evol !? => hack possible au niveau de l'API ?
+- *OK* [bug GFI] event non déclenché !?
 
 ## BUG 3D !?
 

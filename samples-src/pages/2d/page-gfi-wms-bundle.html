@@ -45,32 +45,17 @@
                         cursorStyle : "pointer"
                     },
                     layers : {
-                        'ecoles' : {},
+                        'TN.RoadTransportNetwork' : {},
                         'ORTHOIMAGERY.ORTHOPHOTOS' : {}
                     }
                 }
             },
             layersOptions : {
                 'ORTHOIMAGERY.ORTHOPHOTOS' : {
-                    queryable : true
+                    queryable : false
                 },
-                'ecoles' : {
-                    minZoom : 14,
-                    maxZoom : 21,
-                    format : "wms",
-                    title : "Ecoles maternelles et élémentaires",
-                    description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
-                    layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
-                    outputFormat : "image/png",
-                    queryable : true,
-                    gfiFormat : "text/html",
-                    originators: [{
-                            "name":"IGN",
-                            "attribution":"Institut national de l'information géographique et forestière",
-                            "url":"http://www.ign.fr",
-                        }
-                    ]
+                'TN.RoadTransportNetwork' : {
+                    queryable : true
                 }
             }
         });

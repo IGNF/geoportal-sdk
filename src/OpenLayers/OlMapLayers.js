@@ -1119,6 +1119,14 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
             }
         }
     );
+
+    // La propriéte "target" de CustomEvent est en "read-only" !?
+    // Et, on la surcharge afin d'eviter des exceptions dy type :
+    //  TypeError: Cannot assign to read only property 'target' of object '#<CustomEvent>'
+    Object.defineProperty(event, "target", {
+        writable : true
+    });
+
     gpLayer.obj.dispatchEvent(event);
 };
 
