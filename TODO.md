@@ -24,7 +24,7 @@ Cette branche est clonée sur [feature-mapbox] :
 * [ ] Migrer vers webpack 4
 
 * [ ] *FIXME* La taille des bundles trop elevée ?
-    - la migration vers webpack 4 devrait resoudre de pb de compression !?
+    - la migration vers webpack 4 devrait resoudre le pb de compression !?
 
 * [ ] Tests à jouer & à creer
     > npm run test:serve
@@ -35,12 +35,12 @@ Cette branche est clonée sur [feature-mapbox] :
 
     cf. BUG
 
-    >  *TODO* webpack-dev-server et le proxy.php !?
+    >  **OK** webpack-dev-server et le proxy php déployé en local
 
     - [ ] **PROGRESS** 2D
         > npm run sample:2d:serve
 
-    - [ ] **PROGRESS** 3D
+    - [x] **OK** 3D
         > npm run sample:3d:serve
 
     - [ ] exemples AMD/ES6 à supprimer.
@@ -50,7 +50,7 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] **PROGRESS** dependances des projets geoportal-extensions-* dans webpack
 
-    > FIXME sur les commentaires dans les css minifiées !
+    > *FIXME* sur les commentaires dans les css minifiées !
 
     - [x] 2D : ça compile !
     - [x] 3D : ça compile !
@@ -80,12 +80,12 @@ Cette branche est clonée sur [feature-mapbox] :
     - [ ] **TODO** gestion auto de la version du package
     - [ ] **TODO** gestion auto de la liste des dependances et les version des dependances
 
-* [ ] changelog & draft
+* [x] **FAIT** changelog & draft
     > https://api.github.com/repos/IGNF/geoportal-sdk/releases
 
 * [ ] jsdoc pour la variable globale Gp / exports
 
-* [ ] TOC dans les README
+* [x] TOC dans les README
 
 * [ ] capture d'ecran dans les README
 
@@ -95,22 +95,25 @@ x├── page-azimuth-bundle-map.html
 
 x├── page-center-bundle-map.html
 
-!├── page-changeLayersColor-bundle-map.html
+x├── page-changeLayersColor-bundle-map.html
+
     - 403 Forbidden WFS
+    => **OK** changement de ressources !
 
     curl 'https://wxs.ign.fr/jhyvi0fgmnuxvfv0zjzorvdn/geoportail/wfs?service=WFS&request=GetFeature&version=2.0.0&typename=LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:arrondissement_departemental&outputFormat=application/json&srsname=EPSG:3857&bbox=214329.4273116342,6220292.4877910735,307888.3499326899,6282359.354758636,EPSG:3857&count=200' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36' -H 'Referer: https://localhost:9001/samples/2d/page-changeLayersColor-bundle-map.html' -H 'Origin: https://localhost:9001' --compressed
 
     - 403 Forbidden WMS externe
+    => **OK** desactivation de la ressource !
 
     curl 'https://services.data.shom.fr/INSPIRE/wms/r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=BATHY-DALLE_PYR-PNG_3857_WMSR&WIDTH=256&HEIGHT=256&CRS=EPSG%3A3857&STYLES=&BBOX=234814.55089206249%2C6222585.598639628%2C273950.3093740727%2C6261721.357121638' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36' --compressed
 
-    - [bug ChangeLayerColor] Exception sur le passage en gris !?
+    - **OK** [bug ChangeLayerColor] Exception sur le passage en gris !?
     > TypeError: Cannot assign to read only property 'target' of object '#<CustomEvent>'
 
 x├── page-controls-bundle-map.html
     - "mixed content" avec le serveur de tuiles OSM en http..., mais pas possible de changer le protocole en https...
 
-?├── page-controlsOptions-bundle-map.html
+x├── page-controlsOptions-bundle-map.html
 
 x├── page-div-bundle-map.html
 
@@ -166,27 +169,29 @@ x├── page-local-config-bundle-map.html
 !├── page-mapbox-accesstoken-bundle-map.html
     - l'option queryable ne semble pas fonctionner !?
 
-├── page-mapbox-geojson-bundle-map.html
+x├── page-mapbox-geojson-bundle-map.html
 
-├── page-mapbox-geojson-failed-bundle-map.html
+x├── page-mapbox-geojson-failed-bundle-map.html
+    - style openlayers par defaut / couche masqué dans le LS
 
-├── page-mapbox-geojson-filter-bundle-map.html
+x├── page-mapbox-geojson-filter-bundle-map.html
 
-├── page-mapbox-geojson-metadata-bundle-map.html
+x├── page-mapbox-geojson-metadata-bundle-map.html
 
-├── page-mapbox-geojson-multisources-bundle-map.html
+x├── page-mapbox-geojson-multisources-bundle-map.html
 
-├── page-mapbox-geojson-themes-object-bundle-map.html
+x├── page-mapbox-geojson-themes-object-bundle-map.html
 
-├── page-mapbox-geojson-themes-url-bundle-map.html
+x├── page-mapbox-geojson-themes-url-bundle-map.html
+    - non fonctionnel pour le moment...
 
-!├── page-mapbox-geoportail-autoconf-bundle-map.html
-    - refaire une passe sur l'implementation MapBox (ex. avec qmap)
-    - possibles exceptions : "Style error = Can only apply to VectorLayer or VectorTileLayer" !?
+x├── page-mapbox-geoportail-autoconf-bundle-map.html
+    - non fonctionnel pour le moment...
 
-├── page-mapbox-layerimport-bundle-map.html
+!├── page-mapbox-layerimport-bundle-map.html
+    - [bug LayerImport MapBox] ???
 
-├── page-mapbox-osm-bundle-map.html
+x├── page-mapbox-osm-bundle-map.html
 
 x├── page-mapOptions-bundle-map.html
 
@@ -201,9 +206,7 @@ x├── page-measures-without-toolbox-bundle-map.html
 x├── page-modifyLayers-bundle-map.html
 
 !├── page-originators-bundle-map.html
-    - [bug Attributions] l'attribution OSM s'affiche sur la carte ainsi que dans le controle
-    (fonctionnement natif d'openlayers) mais ça ne devrait pas être le cas pour les autres
-    attributions.
+    - **OK** [bug Attributions] l'attribution OSM s'affiche sur la carte ainsi que dans le controle (fonctionnement natif d'openlayers) mais ça ne devrait pas être le cas pour les autres attributions.
 
 x├── page-osm-bundle-map.html
 
@@ -237,15 +240,16 @@ x├── page-wmts-bundle-map.html
 x├── page-wmts-geoportail-bundle-map.html
 
 x└── page-wmts-restful-bundle-map.html
-
     - [bug Attributions] la liste des attributions sur la couche photos contient des doublons
     === pb autoconf !
 
 - [webpack] commentaires dans CSS !?
 - [webpack] minification/compression à revoir !?
-- *OK* [bug ChangeLayerColor] Exception => à tester sur d'autres navigateurs comme IE !
-- [bug Attributions] evol !? => hack possible au niveau de l'API ?
-- *OK* [bug GFI] event non déclenché !?
+- [bug LayerImport MapBox]
+- *OK* [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
+- *OK* [bug GFI]
+- [bug Attributions] evol sur les doublons !? => hack possible au niveau de l'API ?
+- [bug Projections]
 
 ## BUG 3D !?
 

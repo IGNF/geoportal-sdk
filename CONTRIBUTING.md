@@ -2,6 +2,16 @@
 
 Si vous souhaitez contribuer au code du SDK Géoportail, voici quelques conseils pratiques et règles à suivre.
 
+<!-- toc -->
+
+- [Ouverture d'un ticket (issue)](#ouverture-dun-ticket-issue)
+- [Ouvrir une pull request (PR)](#ouvrir-une-pull-request-pr)
+  * [On «fork» le projet](#on-%C2%ABfork%C2%BB-le-projet)
+  * [On code...](#on-code)
+  * [On soumet une PR...](#on-soumet-une-pr)
+- [Liens utiles](#liens-utiles)
+
+<!-- tocstop -->
 
 ## Ouverture d'un ticket (issue)
 
@@ -34,7 +44,7 @@ Une pull request vous permet de soumettre une proposition d'évolution du code s
 
 - Dans le répertoire local du projet, installez les dépendances du projet :
 
-``` bash
+```
 npm install
 ```
 
@@ -45,7 +55,7 @@ cf. [COMPILE.md](COMPILE.md) pour plus d'infos.
 
 Les commandes :
 
-``` bash
+```
 npm run build[:dev|:prod|:2d[:prod]|:3d[:prod]]
 ```
 
@@ -53,7 +63,7 @@ Vous permettent de générer les binaires du SDK et de les placer dans le réper
 
 La commande :
 
-``` bash
+```
 npm run test:serve
 ```
 
@@ -62,7 +72,7 @@ Lance un navigateur avec les pages de test servies sur l'adresse http://localhos
 
 - Suivez les règles de codage du projet. Elles sont définies dans le fichier : .eslintrc (style et convention de codage + syntaxe javascript). Vous pouvez vérifier le bon respect de ces règles en lançant la tache :
 
-``` bash
+```
 npm run build:[2d|3d]
 ```
 
@@ -75,7 +85,7 @@ npm run build:[2d|3d]
 
 La commande
 
-``` bash
+```
 npm run doc:serve
 ```
 

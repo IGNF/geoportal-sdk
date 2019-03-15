@@ -29,10 +29,10 @@
 
     <div id="geoportalMap"></div>
     <div id="BoutonDiv">
-        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS');" value="changeLayerColor(maCoucheGP)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('ORTHOIMAGERY.ORTHOPHOTOS');" value="changeLayerColor(maCoucheGP)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheWFS');" value="changeLayerColor(maCoucheWFS)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS');" value="changeLayerColor(maCoucheWMS)"/><br/>
-        <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS_CORS');" value="changeLayerColor(maCoucheWMS_CORS)"/><br/>
+        <!-- <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS_CORS');" value="changeLayerColor(maCoucheWMS_CORS)"/><br/> -->
         <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheOSM');" value="changeLayerColor(maCoucheOSM)"/><br/>
     </div>
@@ -44,14 +44,14 @@
         var map = Gp.Map.load("geoportalMap",{
             apiKey : "{{apikey}}",
             layersOptions : {
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
                     title : "maCoucheGP"
                 },
                 maCoucheWFS : {
                     title : "maCoucheWFS",
                     format : "wfs",
                     url : "https://wxs.ign.fr/{{apikey}}/geoportail/wfs",
-                    typeNames : "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:arrondissement_departemental",
+                    typeNames : "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:commune",
                     version : "2.0.0",
                     outputFormat : "application/json",
                     maxFeatures : 200,
@@ -67,22 +67,22 @@
                     layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                     outputFormat : "image/png"
                 },
-                maCoucheWMS_CORS : {
-                    title : "maCoucheWMS_CORS",
-                    format : "wms",
-                    queryable : true,
-                    tiled : true,
-                    url : "http://services.data.shom.fr/INSPIRE/wms/r",
-                    layers : ["BATHY-DALLE_PYR-PNG_3857_WMSR"],
-                    outputFormat : "image/png"
-                },
+                // maCoucheWMS_CORS : {
+                //     title : "maCoucheWMS_CORS",
+                //     format : "wms",
+                //     queryable : true,
+                //     tiled : true,
+                //     url : "http://services.data.shom.fr/INSPIRE/wms/r",
+                //     layers : ["BATHY-DALLE_PYR-PNG_3857_WMSR"],
+                //     outputFormat : "image/png"
+                // },
                 "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : {
                     title : "maCoucheWMTS",
                     format : "wmts",
                     minZoom : 0,
                     maxZoom : 16,
                     visibility : true,
-                    opacity : 1 ,
+                    opacity : 0.7,
                     url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
                     layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
                     tileMatrixSet : "PM",
@@ -108,10 +108,10 @@
         });
 
         var layerColored = {
-          "GEOGRAPHICALGRIDSYSTEMS.MAPS" : false,
+          "ORTHOIMAGERY.ORTHOPHOTOS" : false,
           "maCoucheWFS" : false,
           "maCoucheWMS" : false,
-          "maCoucheWMS_CORS" : false,
+          // "maCoucheWMS_CORS" : false,
           "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : false,
           "maCoucheOSM" : false,
         }

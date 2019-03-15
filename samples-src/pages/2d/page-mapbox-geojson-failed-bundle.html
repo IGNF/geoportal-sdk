@@ -14,7 +14,7 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Une carte affichant une couche MapBox</h1>
+    <h1>Une carte affichant une couche MapBox en échec sur l'affichage des styles (style par defaut openlayers)</h1>
     <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
     <div id="geoportalMap"></div>
 {{/content}}
@@ -22,7 +22,7 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap',{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
             center:{
                 x : 407444,
                 y : 5856585

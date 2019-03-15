@@ -1,5 +1,36 @@
 # Kit de Développement (SDK) Géoportail - version 3D
 
+<!-- toc -->
+
+- [Mise en oeuvre](#mise-en-oeuvre)
+  * [Téléchargement](#telechargement)
+    + [Téléchargement direct](#telechargement-direct)
+    + [Récupération avec NPM](#recuperation-avec-npm)
+    + [Accès direct](#acces-direct)
+  * [Intégration dans une page web](#integration-dans-une-page-web)
+  * [Utilisation dans module ES6](#utilisation-dans-module-es6)
+  * [Interfaces de programmation](#interfaces-de-programmation)
+  * [Création et affichage d'une carte](#creation-et-affichage-dune-carte)
+  * [Configuration de l'accès à la plateforme Géoportail](#configuration-de-lacces-a-la-plateforme-geoportail)
+  * [Configuration dynamique](#configuration-dynamique)
+  * [Optimisation du chargement : configuration locale](#optimisation-du-chargement--configuration-locale)
+  * [Configuration du centrage de la carte](#configuration-du-centrage-de-la-carte)
+    + [Centrage par coordonnées](#centrage-par-coordonnees)
+    + [Centrage en utilisant le service de géocodage du Géoportail](#centrage-en-utilisant-le-service-de-geocodage-du-geoportail)
+    + [Centrage par géolocalisation du terminal utilisé](#centrage-par-geolocalisation-du-terminal-utilise)
+  * [Configuration des couches utilisées pour composer la carte](#configuration-des-couches-utilisees-pour-composer-la-carte)
+    + [Affichage des couches Géoportail WMS et WMTS](#affichage-des-couches-geoportail-wms-et-wmts)
+    + [Affichage des couches "externes"](#affichage-des-couches-externes)
+  * [Configuration des markers - visu 2D uniquement](#configuration-des-markers---visu-2d-uniquement)
+  * [Configuration des outils additionnels à proposer sur la carte](#configuration-des-outils-additionnels-a-proposer-sur-la-carte)
+  * [Abonnement aux intéractions des utilisateurs avec la carte](#abonnement-aux-interactions-des-utilisateurs-avec-la-carte)
+  * [Bascule entre 2D et 3D](#bascule-entre-2d-et-3d)
+  * [Autres possibilités de paramétrage](#autres-possibilites-de-parametrage)
+  * [Gestion des projections](#gestion-des-projections)
+  * [Interaction avec la carte créée](#interaction-avec-la-carte-creee)
+
+<!-- tocstop -->
+
 Le Kit de Développement Géoportail dans sa version "SDK 3D" s’adresse à des gestionnaires de site internet désireux de proposer rapidement une cartographie dynamique en 2D et 3D utilisant les fonds IGN sur leur site et faisant appel à des fonctionnalités simples :
 
 * positionnement de la carte ([centrage, orientation, niveau de zoom](#center))

@@ -5,7 +5,7 @@ import Logger from "./Utils/LoggerByDefault";
 import "../res/OpenLayers/OlMap.css";
 // import du bundle openlayers
 import * as ol from "ol-dist";
-// import des extensions openlayers
+// import des extensions openlayers (et des CRS ?)
 import { olExtended } from "geoportal-extensions-openlayers";
 
 var logger = Logger.getLogger("SDK2D");
@@ -25,7 +25,7 @@ function deepCopy (source, target) {
 
 // on fusionne les fonctionnalités openlayers
 // (olExtended ne devrait il pas comprendre que les fonctionnalités étendues ?)
-// ol -> Gp.olExtended (est ce utile ?)
+// ol -> Gp.olExtended
 deepCopy(ol, olExtended);
 // Gp.olExtended -> ol
 deepCopy(olExtended, ol);

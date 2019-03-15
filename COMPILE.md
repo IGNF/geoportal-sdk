@@ -1,7 +1,32 @@
-
 # Compilation du projet
 [![WEBPACK build](https://img.shields.io/badge/build%20with-WEBPACK-brightgreen.svg)](https://img.shields.io/badge/build%20with-WEBPACK-brightgreen.svg)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+
+<!-- toc -->
+
+- [Prérequis (outils)](#prerequis-outils)
+  * [Réglage des outils](#reglage-des-outils)
+    + [Gestion des fins de lignes (Git)](#gestion-des-fins-de-lignes-git)
+    + [Configuration du proxy d'entreprise](#configuration-du-proxy-dentreprise)
+  * [Utilisation du terminal (Console Git ou NodeJS)](#utilisation-du-terminal-console-git-ou-nodejs)
+- [Commandes via NPM](#commandes-via-npm)
+  * [Installation des dépendances](#installation-des-dependances)
+  * [Installation d'une version spécifique d'une dépendance](#installation-dune-version-specifique-dune-dependance)
+  * [Compilation](#compilation)
+    + [JSDOC](#jsdoc)
+    + [Construction de la JSDOC](#construction-de-la-jsdoc)
+    + [Ouvrir la JSDOC sur un navigateur](#ouvrir-la-jsdoc-sur-un-navigateur)
+  * [Les exemples](#les-exemples)
+    + [Construction des exemples](#construction-des-exemples)
+  * [Les tests](#les-tests)
+    + [Fonctionnels](#fonctionnels)
+    + [Tests de rendu](#tests-de-rendu)
+- [Carte des sources et des dépendances](#carte-des-sources-et-des-dependances)
+- [Analyse (The Official Analyse Tool)](#analyse-the-official-analyse-tool)
+- [Carte des sources et des dépendances](#carte-des-sources-et-des-dependances-1)
+- [Analyse (The Official Analyse Tool)](#analyse-the-official-analyse-tool-1)
+
+<!-- tocstop -->
 
 ## Prérequis (outils)
 
