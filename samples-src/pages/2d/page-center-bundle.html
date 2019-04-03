@@ -37,17 +37,20 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap1',{
-            apiKey : "{{apikey}}",
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
         });
         Gp.Map.load('geoportalMap2', {
-            apiKey : "{{apikey}}",
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
             center : {
                 x : -511270,
                 y : 6151620
             }
         });
         Gp.Map.load('geoportalMap3', {
-            apiKey : "{{apikey}}",
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
             center : {
                 x : -4.620391,
                 y : 48.268698,

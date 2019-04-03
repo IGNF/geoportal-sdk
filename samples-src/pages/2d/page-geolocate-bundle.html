@@ -37,13 +37,13 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap1', {
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             center : {
                 geolocate : true
             }
         });
         Gp.Map.load('geoportalMap2', {
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             center : {
                 geolocate : true,
                 x : -511270,
@@ -52,7 +52,7 @@
         });
 
         Gp.Map.load('geoportalMap3', {
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             center : {
                 geolocate : true,
                 location : "Nimes",

@@ -30,7 +30,7 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap1', {
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             maxZoom : 15,
             controlsOptions:{
                 'zoom':{}
@@ -38,7 +38,7 @@
         });
 
         Gp.Map.load('geoportalMap2', {
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             minZoom : 5,
             controlsOptions:{
                 'zoom':{}

@@ -61,11 +61,50 @@ build () {
         doCmd "cp -r ../../src/Itowns/ ./${main_directory}/src/."
     }
 
-    # README & LICENCE & package.json
+    # package.json
+    # lecture du package.json du projet
+    export _PACKAGE_FIELD_NAME="SDK"${ucname}"Version"
+
+    # - version :
+    export _PACKAGE_VERSION=$(cat ../../package.json |
+        perl -MJSON -0ne '
+          my $DS = decode_json $_;
+          my $field = $ENV{_PACKAGE_FIELD_NAME};
+          print $DS->{$field};
+        ')
+    printTo "> package.json-version : ${_PACKAGE_VERSION}..."
+
+    # - date
+    export _PACKAGE_DATE=$(cat ../../package.json |
+        perl -MJSON -0ne '
+          my $DS = decode_json $_;
+          my $field = "date";
+          print $DS->{$field};
+        ')
+    printTo "> package.json-date : ${_PACKAGE_DATE}..."
+
+    # modification du package.json : version & date de publication
+    `cat "package-SDK${ucname}.json" |
+        perl -MJSON -0ne '
+        my $DS = decode_json $_;
+        $DS->{version} = $ENV{_PACKAGE_VERSION};
+        $DS->{date} = $ENV{_PACKAGE_DATE};
+        print to_json($DS, {
+          utf8 => 1,
+          pretty => 1,
+          indent => 1,
+          space_before => 1,
+          space_after => 1})
+        ' > "./${main_directory}/package.json"`
+
+    # sauvegarde du package.json
+    printTo "> package.json..."
+    doCmd "cp ./${main_directory}/package.json package-SDK${ucname}.json"
+
+    # README & LICENCE
     printTo "> resources..."
     doCmd "cp ../../README-SDK-${ucname}.md ./${main_directory}/README.md"
     doCmd "cp ../../LICENCE-${ucname}.md ./${main_directory}/LICENCE.md"
-    doCmd "cp package-SDK${ucname}.json ./${main_directory}/package.json"
 
     # npm pack
     printTo "> npm pack..."

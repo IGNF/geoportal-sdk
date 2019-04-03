@@ -37,7 +37,7 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap1',{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             projection : "EPSG:3857",
             layersOptions : {
                 'maCoucheWMS' : {
@@ -50,7 +50,7 @@
         });
 
         Gp.Map.load('geoportalMap2',{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             projection : "EPSG:4326",
             layersOptions : {
                 'maCoucheWMS' : {
@@ -63,7 +63,7 @@
         });
 
         Gp.Map.load('geoportalMap3',{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             projection : "EPSG:2154",
             layersOptions : {
                 'maCoucheWMS' : {

@@ -1,10 +1,11 @@
+import Pkg from "../package";
 import {MapLoader} from "./Utils/MapLoader";
 import {OlMap} from "./OpenLayers/OlMap";
 import Logger from "./Utils/LoggerByDefault";
 // CSS
 import "../res/OpenLayers/OlMap.css";
-// import du bundle openlayers
-import * as ol from "ol-dist";
+// import openlayers
+import { default as olDist } from "ol-dist";
 // import des extensions openlayers (et des CRS ?)
 import { olExtended } from "geoportal-extensions-openlayers";
 
@@ -23,12 +24,11 @@ function deepCopy (source, target) {
     }
 }
 
-// on fusionne les fonctionnalités openlayers
-// (olExtended ne devrait il pas comprendre que les fonctionnalités étendues ?)
+// on fusionne les fonctionnalités openlayers / étendues
 // ol -> Gp.olExtended
-deepCopy(ol, olExtended);
+deepCopy(olDist, olExtended);
 // Gp.olExtended -> ol
-deepCopy(olExtended, ol);
+deepCopy(olExtended, olDist);
 
 export {
     Services,
@@ -47,5 +47,10 @@ export {
 MapLoader.__class2d = OlMap;
 export {MapLoader as Map};
 
-export const sdkVersion = "__GPSDKVERSION__";
-export const sdkDate = "__GPDATE__";
+export const sdkVersion = Pkg.SDK2DVersion;
+export const sdkDate = Pkg.date;
+
+// "ol" is exposed into window (for a build bundle) with webpack.
+if (window && window.ol) {
+    window.ol = olDist;
+}

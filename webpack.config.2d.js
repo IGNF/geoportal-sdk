@@ -24,7 +24,6 @@ var SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 var smp = new SpeedMeasurePlugin();
 
 // -- variables
-var date = new Date().toISOString().split("T")[0];
 var pkg = require(path.join(__dirname, "package.json"));
 
 module.exports = env => {
@@ -50,10 +49,11 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                // "ol" : auto
-                // "geoportal-extensions-openlayers" : auto
-                // "ol-mapbox-style" : auto
-                "ol-dist" : path.join(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js")
+                // "geoportal-extensions-openlayers" : auto (npm)
+                // "ol-mapbox-style" : auto (npm)
+                // "ol" : auto (npm)
+                //        path.join(__dirname, "lib", "openlayers", "ol"),
+                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : {
@@ -92,6 +92,7 @@ module.exports = env => {
                     ],
                     exclude : [
                         /node_modules/,
+                        path.resolve(__dirname, "lib"),
                         path.resolve(__dirname, "src", "Map.js")
                     ],
                     use : [
@@ -104,16 +105,23 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test : path.resolve(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
+                    /** openlayers est exposé en global : ol ! */
+                    test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
                     }]
                 },
-                // {
-                //     test : path.resolve(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js"),
-                //     use : "exports-loader?olms"
-                // },
+                {
+                    /** ol-mapbox-style est exposé en global : olms !
+                    * (require.resolve("ol-mapbox-style"))
+                    */
+                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    use : [{
+                        loader : "expose-loader",
+                        options : "olms"
+                    }]
+                },
                 {
                     test : /\.css$/,
                     // exclude : [/node_modules/],
@@ -145,17 +153,10 @@ module.exports = env => {
             new ReplaceWebpackPlugin(
                 [
                     {
-                        partten : /__GPSDKVERSION__/g,
-                        /** replacement de la clef __GPVERSION__ par la version du package */
+                        partten : /__DATE__/g,
+                        /** replacement de la clef __DATE__ par la date du build */
                         replacement : function () {
-                            return pkg.SDK2DVersion;
-                        }
-                    },
-                    {
-                        partten : /__GPDATE__/g,
-                        /** replacement de la clef __GPDATE__ par la date du build */
-                        replacement : function () {
-                            return date;
+                            return pkg.date;
                         }
                     }
                 ]
@@ -294,7 +295,7 @@ module.exports = env => {
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-ign.tmpl"), "utf8"), {
                     __BRIEF__ : pkg.description,
                     __VERSION__ : pkg.SDK2DVersion,
-                    __DATE__ : date
+                    __DATE__ : pkg.date
                 }),
                 raw : true,
                 entryOnly : true

@@ -34,9 +34,9 @@
 {{/content}}
 
 {{#content "js"}}
-    <script>
+<script>
         var map = Gp.Map.load('geoportalMap',{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             azimuth : 45,
             zoom : 12,
             // proxyUrl : "{{ proxy }}?url=",
@@ -132,7 +132,7 @@
                 layerimport : {
                     // div : "extControlDiv",
                     maximised : false,
-                    layerTypes : ["WMS","WMTS","KML","GPX","GeoJSON"],
+                    layerTypes : ["WMS","WMTS","KML","GPX","GeoJSON", "Vecteur tuilé"],
                     webServicesOptions : {
                         proxyUrl : "{{ proxy }}?url=",
                         noProxyDomains : ["https://wxs.ign.fr"]

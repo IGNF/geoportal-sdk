@@ -212,6 +212,7 @@ x├── page-osm-bundle-map.html
 
 !├── page-projection-bundle-map.html
     - [bug Projections] hummm..., pb avec les projections !?
+    les extends sur les projections ne sont pas renseignées...
 
 x├── page-removeLayers-bundle-map.html
 
@@ -246,9 +247,9 @@ x└── page-wmts-restful-bundle-map.html
 - [webpack] commentaires dans CSS !?
 - [webpack] minification/compression à revoir !?
 - [bug LayerImport MapBox]
-- *OK* [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
-- *OK* [bug GFI]
-- [bug Attributions] evol sur les doublons !? => hack possible au niveau de l'API ?
+- *OK*  [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
+- *OK*  [bug GFI]
+- *NOK* [evol Attributions] les doublons (hack possible au niveau de l'API) !?
 - [bug Projections]
 
 ## BUG 3D !?

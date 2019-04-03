@@ -22,7 +22,7 @@
 {{#content "js"}}
     <script>
         var map = Gp.Map.load("viewerDiv",{
-            apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             viewMode : "3d",
             enginePath3d : "{{baseurl}}/node_modules/itowns/dist/",
             defaultFeaturesStyle : {

@@ -9,6 +9,10 @@
 * Nouvelle fonctionnalité avec l'import de couche au format *vecteur tuilé* (MapBox)
 * Correctifs et amélioration suite au passage ES6
 
+[semver] :
+    - 2D : increment semver MAJOR version
+    - 3D : increment semver MINOR version
+
 ## Changelog
 
 * [Changed]
@@ -18,6 +22,7 @@
 
 * [Added]
 
+    - Ajout du package *ol-mapbox-style* en version 4.2.1
     - Ajout de l'import de couche au format *vecteur tuilé* (MapBox)
     - Description de la variable globale **Gp** dans la jsdoc
 

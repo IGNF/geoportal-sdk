@@ -1,3 +1,49 @@
+/**
+* Global variable Gp.
+*
+* The following variables are aslo global :
+*   - proj4 (exposed by geoportal extensions dependance),
+*   - ol,
+*   - olms,
+*   - itowns,
+*   - eventbus (exposed by geoportal extensions dependance)
+*
+* @module Gp
+* @alias Gp
+* @desc
+*
+* This is the global variable that is exposed in the browser environment.
+* Content is composed of constructor, functions and properties...
+*
+* > Config:  (...)
+*
+* > ColorUtils: (...)
+* > LayerUtils: (...)
+* > MathUtils: (...)
+* > ProxyUtils: (...)
+*
+* > olExtended: (...)
+* > olUtils: (...)
+* > olExtDate: "YYYY-MM-DD"
+* > olExtVersion: "X.X.X"
+*
+* > Error: (...)
+* > Helper: (...)
+* > Protocols: (...)
+* > Services: (...)
+* > servicesDate: "YYYY-MM-DD"
+* > servicesVersion: "X.X.X"
+*
+* > itownsExtended: (...)
+* > itownsExtVersion: "X.X.X"
+* > itownsExtDate: "YYYY-MM-DD"
+*
+* > Map: (...)
+* > sdkVersion: "X.X.X"
+* > sdkDate: "YYYY-MM-DD"
+*/
+
+import Pkg from "../package";
 import {MapLoader} from "./Utils/MapLoader";
 import {OlMap} from "./OpenLayers/OlMap";
 import {ItMap} from "./Itowns/ItMap";
@@ -6,8 +52,8 @@ import Logger from "./Utils/LoggerByDefault";
 import "../res/Itowns/ItMap.css";
 import "../res/OpenLayers/OlMap.css";
 
-// import du bundle openlayers
-import * as ol from "ol-dist";
+// import openlayers
+import { default as olDist } from "ol-dist";
 // import des extensions openlayers
 import { olExtended } from "geoportal-extensions-openlayers";
 
@@ -28,9 +74,9 @@ function deepCopy (source, target) {
 
 // fusion des fonctionnalités openlayers
 // ol -> Gp.olExtended
-deepCopy(ol, olExtended);
+deepCopy(olDist, olExtended);
 // Gp.olExtended -> ol
-deepCopy(olExtended, ol);
+deepCopy(olExtended, olDist);
 
 // ol extended + Services + Outils
 export {
@@ -57,5 +103,10 @@ MapLoader.__class2d = OlMap;
 MapLoader.__class3d = ItMap;
 export {MapLoader as Map};
 
-export const sdkVersion = "__GPSDKVERSION__";
-export const sdkDate = "__GPDATE__";
+export const sdkVersion = Pkg.SDK3DVersion;
+export const sdkDate = Pkg.date;
+
+// "ol" is exposed into window (for a build bundle) with webpack.
+if (window && window.ol) {
+    window.ol = olDist;
+}

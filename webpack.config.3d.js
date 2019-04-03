@@ -24,7 +24,6 @@ var SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 var smp = new SpeedMeasurePlugin();
 
 // -- variables
-var date = new Date().toISOString().split("T")[0];
 var pkg = require(path.join(__dirname, "package.json"));
 
 module.exports = env => {
@@ -51,12 +50,12 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                // "ol" : auto
-                "ol-dist" : path.join(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
-                // "ol-mapbox-style" : auto
-                // "geoportal-extensions-openlayers" : auto
                 // "geoportal-extensions-itowns" : auto
-                itowns : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
+                // "geoportal-extensions-openlayers" : auto
+                // "ol-mapbox-style" : auto
+                // "ol" : auto
+                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js"),
+                "itowns" : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
             }
         },
         externals : {
@@ -107,10 +106,21 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test : path.resolve(__dirname, "lib", "openlayers", "v5.3.0-dist", "ol.js"),
+                    /** openlayers est exposé en global : ol ! */
+                    test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
+                    }]
+                },
+                {
+                    /** ol-mapbox-style est exposé en global : olms !
+                    * (require.resolve("ol-mapbox-style"))
+                    */
+                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    use : [{
+                        loader : "expose-loader",
+                        options : "olms"
                     }]
                 },
                 // {
@@ -158,17 +168,10 @@ module.exports = env => {
             new ReplaceWebpackPlugin(
                 [
                     {
-                        partten : /__GPSDKVERSION__/g,
-                        /** replacement de la clef __GPVERSION__ par la version du package */
+                        partten : /__DATE__/g,
+                        /** replacement de la clef __DATE__ par la date du build */
                         replacement : function () {
-                            return pkg.SDK3DVersion;
-                        }
-                    },
-                    {
-                        partten : /__GPDATE__/g,
-                        /** replacement de la clef __GPDATE__ par la date du build */
-                        replacement : function () {
-                            return date;
+                            return pkg.date;
                         }
                     }
                 ]
@@ -310,7 +313,7 @@ module.exports = env => {
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-ign.tmpl"), "utf8"), {
                     __BRIEF__ : pkg.description,
                     __VERSION__ : pkg.SDK3DVersion,
-                    __DATE__ : date
+                    __DATE__ : pkg.date
                 }),
                 raw : true,
                 entryOnly : true
