@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 2.0.2
- * @date 2019-03-01
+ * @date 2019-04-04
  *
  */
 
@@ -58393,7 +58393,7 @@ __webpack_require__(25);
 _MapLoader.MapLoader.__class2d = _OlMap.OlMap;
 exports.Map = _MapLoader.MapLoader;
 var sdkVersion = exports.sdkVersion = "2.0.2";
-var sdkDate = exports.sdkDate = "2019-03-01";
+var sdkDate = exports.sdkDate = "2019-04-04";
 
 /***/ }),
 /* 11 */
@@ -63308,7 +63308,7 @@ _OlMapBase.OlMap.prototype.addElevationPathControl = function (controlOpts) {
  */
 _OlMapBase.OlMap.prototype.addSearchControl = function (controlOpts) {
     var searchOpts = {};
-    if (searchOpts.div) {
+    if (controlOpts.div) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
@@ -63356,7 +63356,7 @@ _OlMapBase.OlMap.prototype.addSearchControl = function (controlOpts) {
  */
 _OlMapBase.OlMap.prototype.addReverseSearchControl = function (controlOpts) {
     var searchOpts = {};
-    if (searchOpts.div) {
+    if (controlOpts.div) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
