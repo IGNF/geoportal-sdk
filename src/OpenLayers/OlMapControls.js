@@ -868,7 +868,7 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
  */
 OlMap.prototype.addSearchControl = function (controlOpts) {
     var searchOpts = {};
-    if (searchOpts.div) {
+    if (controlOpts.div) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
@@ -916,7 +916,7 @@ OlMap.prototype.addSearchControl = function (controlOpts) {
  */
 OlMap.prototype.addReverseSearchControl = function (controlOpts) {
     var searchOpts = {};
-    if (searchOpts.div) {
+    if (controlOpts.div) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
