@@ -10,7 +10,7 @@
  * copyright IGN
  * @author IGN
  * @version 2.0.2
- * @date 2019-04-04
+ * @date 2019-04-05
  *
  */
 
@@ -63779,7 +63779,7 @@ if (typeof _OlMap.OlMap !== "undefined" && typeof _ItMap.ItMap !== "undefined") 
 
 exports.Map = _MapLoader.MapLoader;
 var sdkVersion = exports.sdkVersion = "2.0.2";
-var sdkDate = exports.sdkDate = "2019-04-04";
+var sdkDate = exports.sdkDate = "2019-04-05";
 
 /***/ }),
 /* 12 */
@@ -69874,8 +69874,11 @@ var Engine3DLoader = {
     },
 
     getCurrentPath: function getCurrentPath() {
-        var path = document.currentScript ? document.currentScript.src : function () {
-            var e = document.getElementsByTagName("script");
+        // on recherche la librairie SDK dans l'entête,
+        // la lib itowns se trouve au même niveau !
+        var head = document.head || document.getElementsByTagName("head")[0];
+        var path = function () {
+            var e = head.getElementsByTagName("script");
             return e[e.length - 1].src;
         }();
         path = path.substr(0, path.lastIndexOf("/") + 1);
