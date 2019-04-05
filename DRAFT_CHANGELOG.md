@@ -34,6 +34,10 @@
 
 * [Fixed]
 
+    - [#32](https://github.com/IGNF/geoportal-sdk/issues/32) - Chemin par défaut de la librairie itowns embarquée dans le SDK
+    - [#38](https://github.com/IGNF/geoportal-sdk/issues/38) - Encapsulation d'un composant
+    dans une DIV utilisateur (option.div)
+
 * [Security]
 
     - Mise à jour des dependances (faille de sécurité)

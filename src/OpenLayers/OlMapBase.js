@@ -7,6 +7,8 @@ import Map from "ol/Map";
  * OpenLayers IMap implementation class.
  *
  * @param {Object} opts - map options
+ * @constructor
+ * @private
  */
 function OlMap (opts) {
     if (!(this instanceof OlMap)) {

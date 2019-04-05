@@ -12,6 +12,8 @@ import {MapLoader} from "../Utils/MapLoader";
  * @param {Integer} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
  *
  * @return {Object} the new map
+ * @static
+ * @private
  */
 var switch2D3D = function (viewMode) {
     var oldMap = {};
@@ -111,9 +113,8 @@ var switch2D3D = function (viewMode) {
  * Map Object. Returned by {@link module:Map Gp.Map.load()} function. Provides methods to interact with map view.
  *
  * @param {Object} opts - map options
- *
- * @namespace
- * @alias Gp.Map
+ * @constructor
+ * @private
  */
 function IMap (opts) {
     if (!(this instanceof IMap)) {

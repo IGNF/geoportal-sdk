@@ -146,7 +146,7 @@ var locatedEvent = {
  * **Common 2D/3D event**
  *
  * Configured Event. Triggered when the map has finished to configure itself with the given apiKey at startup.<br/>
- * One can listen to this event with [Gp.Map.load()](module-Map.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
+ * One can listen to this event with [Gp.Map.load()](module-Utils_MapLoader.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
  * *NB* : for a full map availability at startup you'd better listen to {@link Gp.MapLoadedEvent}.
  *
  * @namespace
@@ -161,7 +161,7 @@ var configuredEvent = {
  * **Common 2D/3D event**
  *
  * Map Loaded Event. Triggered at startup when the map has finished to load and is ready to be commanded with {@link Gp.Map} object methods.<br/>
- * One can listen to this event with [Gp.Map.load()](module-Map.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
+ * One can listen to this event with [Gp.Map.load()](module-Utils_MapLoader.html) function through the **mapEventsOptions** property of {@link Gp.MapOptions} parameter.<br/>
  *
  * @namespace
  * @alias Gp.MapLoadedEvent
@@ -174,7 +174,7 @@ var mapLoadedEvent = {
 /**
  * Map options object.
  *
- * Holds options for map creation when using [Gp.Map.load()](module-Map.html) function.
+ * Holds options for map creation when using [Gp.Map.load()](module-Utils_MapLoader.html) function.
  *
  * Availables options are described below.
  *
@@ -193,7 +193,7 @@ var mapLoadedEvent = {
  * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects. |
  * | minZoom | Integer | optional | 0 | Zoom level beyond which the user can't zoom out. |
  * | maxZoom | Integer | optional | 21 | Zoom level beyond which the user can't zoom in. |
- * | configUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. |
+ * | configUrl or AutoConfUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. |
  * | proxyUrl | String | optional | | Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing. |
  * | noProxyDomains | Array.<String> | optional | | Proxy will not be used for this list of domain names. Only use if you know what you're doing. |
  *
@@ -227,7 +227,7 @@ var mapOptions = {
  *
  * Marker options object.
  *
- * Holds options for marker to display on the map at startup. To be used for map creation (See markersOptions property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Map.html) function).
+ * Holds options for marker to display on the map at startup. To be used for map creation (See markersOptions property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function).
  *
  * Available options to define a marker are described below.
  *
@@ -268,7 +268,7 @@ var autoPanOptions = {
 /**
  * Layer options object.
  *
- * Holds options for a specific layer present on the map. May be used at map creation (See **layersOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Map.html) function) or for map modification (See [Gp.Map.addLayers()](Gp.Map.html#addLayers) or [Gp.Map.modifyLayers()](Gp.Map.html#modifyLayers)).
+ * Holds options for a specific layer present on the map. May be used at map creation (See **layersOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addLayers()](Gp.Map.html#addLayers) or [Gp.Map.modifyLayers()](Gp.Map.html#modifyLayers)).
  *
  * Given a specific layer type, availables options are the following :
  *
@@ -414,7 +414,7 @@ var layerOptions = {
 /**
  * Control options object.
  *
- * Holds options for a specific control present on the map. May be used for map creation (See **controlsOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Map.html) function) or for map modification (See [Gp.Map.addControls()](Gp.Map.html#addControls) or [Gp.Map.modifyControls()](Gp.Map.html#modifyControls)).
+ * Holds options for a specific control present on the map. May be used for map creation (See **controlsOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addControls()](Gp.Map.html#addControls) or [Gp.Map.modifyControls()](Gp.Map.html#modifyControls)).
  *
  * Given a specific control, availables options are the following :
  *

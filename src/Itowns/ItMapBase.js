@@ -4,8 +4,11 @@ import Logger from "../Utils/LoggerByDefault";
 import {itownsExtended as Itowns} from "geoportal-extensions-itowns";
 
 /**
-* @param {Object} opts - map options
 * Itowns IMap implementation class.
+*
+* @param {Object} opts - map options
+* @constructor
+* @private
 */
 function ItMap (opts) {
     if (!(this instanceof ItMap)) {
