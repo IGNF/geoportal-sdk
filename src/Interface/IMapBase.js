@@ -215,7 +215,7 @@ IMap.DEFAULTOPTIONS = {
     },
     azimuth : 0,
     enableRotation : true,
-    tilt : 0,
+    tilt : 90,
     zoom : 10,
     minZoom : 0,
     maxZoom : 21,

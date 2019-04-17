@@ -89,9 +89,21 @@ ItMap.prototype._initMap = function () {
                 }, 1);
                 // FIXME en attendant que la variable positionOnGlobe puisse prendre
                 // un zoom / une echelle (et non une altitude) et les params necessaires.
-                self.setZoom(parseFloat(self.mapOptions.zoom) || 10);
+                if (parseFloat(self.mapOptions.zoom) > 14) {
+                    self.mapOptions.zoom = 14;
+                }
+
+                // self.setZoom(self.mapOptions.zoom);
+
                 self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
-                self.setTilt(parseFloat(self.mapOptions.tilt) || 0);
+                self.setAutoCenter(self.mapOptions.center, self.mapOptions.zoom);
+                
+                // if a tilt is set
+                if (self.mapOptions.tilt !== 90) {
+                    self.libMap.onCameraMoveStop(function () {
+                        self.setTilt(self.mapOptions.tilt);
+                    });
+                }
 
                 // evenements pour faire la distinction entre le click et le drag
                 var isDragging = false;
