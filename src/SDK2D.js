@@ -12,7 +12,7 @@ import { olExtended } from "geoportal-extensions-openlayers";
 var logger = Logger.getLogger("SDK2D");
 logger.log("Chargement SDK 2D...");
 
-function deepCopy (source, target) {
+function deepCopy (source, target, docopy) {
     for (var prop in source) {
         if (source.hasOwnProperty(prop)) {
             if (!target.hasOwnProperty(prop)) {
@@ -25,10 +25,10 @@ function deepCopy (source, target) {
 }
 
 // on fusionne les fonctionnalités openlayers / étendues
-// ol -> Gp.olExtended
-deepCopy(olDist, olExtended);
 // Gp.olExtended -> ol
 deepCopy(olExtended, olDist);
+// ol -> Gp.olExtended
+deepCopy(olDist, olExtended);
 
 export {
     Services,

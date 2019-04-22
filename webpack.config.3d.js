@@ -54,6 +54,7 @@ module.exports = env => {
                 // "geoportal-extensions-openlayers" : auto
                 // "ol-mapbox-style" : auto
                 // "ol" : auto
+                "ol" : path.join(__dirname, "lib", "openlayers", "ol"),
                 "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js"),
                 "itowns" : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
             }

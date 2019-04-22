@@ -1055,7 +1055,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         }
     } else if (layerId.indexOf("layerimport:WMTS") === 0) {
         options.format = "WMTS";
-    } else if (layerId.indexOf("layerimport:MapBox") === 0) {
+    } else if (layerId.indexOf("layerimport:MAPBOX") === 0) {
         options.format = "MAPBOX";
     }
     this._layers.push({

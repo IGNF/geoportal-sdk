@@ -49,25 +49,46 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                // "geoportal-extensions-openlayers" : auto (npm)
+                // "geoportal-extensions-openlayers" : auto/npm (dist !?)
+                // "geoportal-extensions-openlayers" : src (path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js"))
                 // "ol-mapbox-style" : auto (npm)
+                // "ol-mapbox-style" : dist (path.join(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js"))
                 // "ol" : auto (npm)
-                //        path.join(__dirname, "lib", "openlayers", "ol"),
+                // "ol" : local (path.join(__dirname, "lib", "openlayers", "ol"))
+                // Avec un export 'ol' mais demande de modifier le code (cf. externals)
+                "ol" : path.join(__dirname, "lib", "openlayers", "ol"),
+                // export double !!!
                 "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
-        externals : {
-            request : {
-                commonjs2 : "request",
-                commonjs : "request",
-                amd : "require"
-            },
-            xmldom : {
-                commonjs2 : "xmldom",
-                commonjs : "xmldom",
-                amd : "require"
+        externals : [
+            // uniquement si openlayers est local avec un export 'ol' !
+            // function(context, request, callback) {
+            //     if (/^ol\/.+$/.test(request) /* && !/node_modules/.test(o) */) {
+            //         console.log(context, request);
+            //         // hack with method 'inherits' !?
+            //         if (request === "ol/util") {
+            //             return callback(null, "ol");
+            //         }
+            //         // transform "ol/control/Control" to "ol.control.Control"
+            //         const replacedWith = request.replace(/\//g, '.');
+            //         return callback(null, replacedWith);
+            //     }
+            //     callback();
+            // },
+            {
+                request : {
+                    commonjs2 : "request",
+                    commonjs : "request",
+                    amd : "require"
+                },
+                xmldom : {
+                    commonjs2 : "xmldom",
+                    commonjs : "xmldom",
+                    amd : "require"
+                }
             }
-        },
+        ],
         devtool : (development) ? "eval-source-map" : false,
         module : {
             rules : [
@@ -106,6 +127,7 @@ module.exports = env => {
                 },
                 {
                     /** openlayers est exposé en global : ol ! */
+                    // fonctionne uniquement si openlayers est local avec un export 'ol' !
                     test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",

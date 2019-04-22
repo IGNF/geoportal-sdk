@@ -9,7 +9,7 @@ Cette branche est clonée sur [feature-mapbox] :
         gestion des erreurs (mapbox)
 
 
-> **INFO**
+> **FIXME**
 > Suite à un probleme de minification à cause de la version de Webpack 3 et ES6...
 > on utilise donc une version anterieur du package *uglifyjs-webpack-plugin* > 1.3.0 !
 > Lors du passage en Webpack 4, on pourra utiliser la version de minification incluse dans webpack.
@@ -23,21 +23,21 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] Migrer vers webpack 4
 
-* [ ] *FIXME* La taille des bundles trop elevée ?
-    - la migration vers webpack 4 devrait resoudre le pb de compression !?
+* [ ] *FIXME* La taille des bundles trop élevée ?
+    - la migration vers webpack 4 devrait résoudre le pb de compression !?
 
-* [ ] Tests à jouer & à creer
+* [ ] Tests à jouer & à créer
     > npm run test:serve
 
-    cf. BUG
+    cf. *BUG*
 
-* [ ] Exemples à jouer & à creer
+* [ ] Exemples à jouer & à créer
 
-    cf. BUG
+    cf. *BUG*
 
     >  **OK** webpack-dev-server et le proxy php déployé en local
 
-    - [ ] **PROGRESS** 2D
+    - [x] **OK** 2D
         > npm run sample:2d:serve
 
     - [x] **OK** 3D
@@ -77,15 +77,15 @@ Cette branche est clonée sur [feature-mapbox] :
     - [x] **FAIT** packaging de l'ensemble du SDK
         > npm pack
 
-    - [ ] **TODO** gestion auto de la version du package
+    - [x] **FAIT** gestion auto de la version du package
     - [ ] **TODO** gestion auto de la liste des dependances et les version des dependances
 
 * [x] **FAIT** changelog & draft
     > https://api.github.com/repos/IGNF/geoportal-sdk/releases
 
-* [ ] jsdoc pour la variable globale Gp / exports
+* [x] **FAIT** jsdoc pour la variable globale Gp / exports
 
-* [x] TOC dans les README
+* [x] **FAIT** TOC dans les README
 
 * [ ] capture d'ecran dans les README
 
@@ -167,7 +167,7 @@ x├── page-layersPosition-bundle-map.html
 x├── page-local-config-bundle-map.html
 
 !├── page-mapbox-accesstoken-bundle-map.html
-    - l'option queryable ne semble pas fonctionner !?
+    - **NOK** l'option queryable ne semble pas fonctionner !?
 
 x├── page-mapbox-geojson-bundle-map.html
 
@@ -247,10 +247,10 @@ x└── page-wmts-restful-bundle-map.html
 - [webpack] commentaires dans CSS !?
 - [webpack] minification/compression à revoir !?
 - [bug LayerImport MapBox]
+- [bug Projections]
 - *OK*  [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
 - *OK*  [bug GFI]
-- *NOK* [evol Attributions] les doublons (hack possible au niveau de l'API) !?
-- [bug Projections]
+- *NOK* [evol Attributions] les doublons (hack possible au niveau de l'API) ?
 
 ## BUG 3D !?
 

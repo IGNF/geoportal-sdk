@@ -73,10 +73,10 @@ function deepCopy (source, target) {
 }
 
 // fusion des fonctionnalités openlayers
-// ol -> Gp.olExtended
-deepCopy(olDist, olExtended);
 // Gp.olExtended -> ol
 deepCopy(olExtended, olDist);
+// ol -> Gp.olExtended
+deepCopy(olDist, olExtended);
 
 // ol extended + Services + Outils
 export {
