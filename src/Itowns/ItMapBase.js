@@ -97,12 +97,10 @@ ItMap.prototype._initMap = function () {
 
                 self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
                 self.setAutoCenter(self.mapOptions.center, self.mapOptions.zoom);
-                
+
                 // if a tilt is set
                 if (self.mapOptions.tilt !== 90) {
-                    self.libMap.onCameraMoveStop(function () {
-                        self.setTilt(self.mapOptions.tilt);
-                    });
+                    self.setTilt(self.mapOptions.tilt);
                 }
 
                 // evenements pour faire la distinction entre le click et le drag
