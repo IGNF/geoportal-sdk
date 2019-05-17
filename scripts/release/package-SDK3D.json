@@ -12,14 +12,14 @@
       "javascript"
    ],
    "version" : "3.0.0",
-   "main" : "src/SDK3D.js",
+   "module" : "src/SDK3D.js",
    "name" : "@ignf-geoportal/sdk-3d",
    "author" : "IGNF",
    "repository" : {
       "type" : "git",
       "url" : "https://github.com/IGNF/geoportal-sdk.git"
    },
-   "browser" : "dist/GpSDK3D-src.js",
+   "main" : "dist/GpSDK3D-src.js",
    "files" : [
       "dist/",
       "src/",

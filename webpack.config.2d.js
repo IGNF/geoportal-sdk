@@ -49,33 +49,19 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                // "geoportal-extensions-openlayers" : auto/npm (dist !?)
-                // "geoportal-extensions-openlayers" : src (path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "src", "OpenLayers", "GpPluginOpenLayers.js"))
-                // "ol-mapbox-style" : auto (npm)
-                // "ol-mapbox-style" : dist (path.join(__dirname, "node_modules", "ol-mapbox-style", "dist", "olms.js"))
-                // "ol" : auto (npm)
-                // "ol" : local (path.join(__dirname, "lib", "openlayers", "ol"))
-                // Avec un export 'ol' mais demande de modifier le code (cf. externals)
-                "ol" : path.join(__dirname, "lib", "openlayers", "ol"),
-                // export double !!!
+                // - import module es6 :
+                // "geoportal-extensions-openlayers",
+                // "ol",
+                // "ol-mapbox-style",
+                // - import bundle :
+                // "loglevel",
+                // - import forcé en mode bundle :
+                "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
+                // - import local :
                 "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : [
-            // uniquement si openlayers est local avec un export 'ol' !
-            // function(context, request, callback) {
-            //     if (/^ol\/.+$/.test(request) /* && !/node_modules/.test(o) */) {
-            //         console.log(context, request);
-            //         // hack with method 'inherits' !?
-            //         if (request === "ol/util") {
-            //             return callback(null, "ol");
-            //         }
-            //         // transform "ol/control/Control" to "ol.control.Control"
-            //         const replacedWith = request.replace(/\//g, '.');
-            //         return callback(null, replacedWith);
-            //     }
-            //     callback();
-            // },
             {
                 request : {
                     commonjs2 : "request",
@@ -97,7 +83,7 @@ module.exports = env => {
                     include : [
                         path.join(__dirname, "src")
                     ],
-                    // exclude : [/node_modules/],
+                    exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
@@ -113,43 +99,43 @@ module.exports = env => {
                     ],
                     exclude : [
                         /node_modules/,
-                        path.resolve(__dirname, "lib"),
-                        path.resolve(__dirname, "src", "Map.js")
+                        path.join(__dirname, "lib"),
+                        path.join(__dirname, "src", "Map.js")
                     ],
-                    use : [
-                        {
-                            loader : "eslint-loader",
-                            options : {
-                                emitWarning : true
-                            }
+                    use : [{
+                        loader : "eslint-loader",
+                        options : {
+                            emitWarning : true
                         }
-                    ]
+                    }]
                 },
                 {
-                    /** openlayers est exposé en global : ol ! */
-                    // fonctionne uniquement si openlayers est local avec un export 'ol' !
-                    test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
+                    test : require.resolve("proj4"),
+                    use : [{
+                        loader : "expose-loader",
+                        options : "proj4"
+                    }]
+                },
+                {
+                    test : path.join(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
                     }]
                 },
-                {
-                    /** ol-mapbox-style est exposé en global : olms !
-                    * (require.resolve("ol-mapbox-style"))
-                    */
-                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "olms"
-                    }]
-                },
+                // {
+                //     test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
+                //     use : [{
+                //         loader : "exports-loader",
+                //         options : "olms"
+                //     }]
+                // },
                 {
                     test : /\.css$/,
                     // exclude : [/node_modules/],
                     include : [
                         path.join(__dirname, "node_modules", "ol"),
-                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist"),
+                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
                         path.join(__dirname, "res", "OpenLayers")
                     ],
                     use : ExtractTextWebPackPlugin.extract({
@@ -167,6 +153,18 @@ module.exports = env => {
                             }
                         }
                     })
+                },
+                {
+                    test : /\.(png|jpg|gif|svg)$/,
+                    loader : "url-loader",
+                    options: {
+                        fallback : "responsive-loader",
+                        quality : 100
+                    },
+                    // exclude : [/node_modules/],
+                    include : [
+                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers")
+                    ]
                 }
             ]
         },

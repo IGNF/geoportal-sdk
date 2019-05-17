@@ -9,22 +9,19 @@ Cette branche est clonée sur [feature-mapbox] :
         gestion des erreurs (mapbox)
 
 
-> **FIXME**
-> Suite à un probleme de minification à cause de la version de Webpack 3 et ES6...
-> on utilise donc une version anterieur du package *uglifyjs-webpack-plugin* > 1.3.0 !
-> Lors du passage en Webpack 4, on pourra utiliser la version de minification incluse dans webpack.
-
-
 ## Avancements & TODOLIST
 
 * [x] **OK** Migrer vers ol v5.3.0
 
-* [x] **OK** Migrer vers olms 3.8.0
+* [x] **OK** Migrer vers olms 4.2.1
 
 * [ ] Migrer vers webpack 4
 
 * [ ] *FIXME* La taille des bundles trop élevée ?
     - la migration vers webpack 4 devrait résoudre le pb de compression !?
+
+* [ ] *FIXME* Les commentaires et les copyright sont supprimés dans les css/js minifiées !
+    - la migration vers webpack 4 ne semble pas resoudre le pb...
 
 * [ ] Tests à jouer & à créer
     > npm run test:serve
@@ -48,17 +45,15 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] integration du SDK dans le projet 3rd Party...
 
-* [ ] **PROGRESS** dependances des projets geoportal-extensions-* dans webpack
-
-    > *FIXME* sur les commentaires dans les css minifiées !
+* [x] dependances des projets geoportal-extensions-* dans webpack
 
     - [x] 2D : ça compile !
     - [x] 3D : ça compile !
-    - [ ] **PROGRESS** gestion des variables globales
+
+* [x] gestion des variables globales
         ex. Gp, ol, itowns, proj4
-        - ol et itowns doivent contenir nos evolutions
-        - *FIXME* Gp.olExtended doit elle être fusionnée avec ol ?
-        - *FIXME* Gp.olExtended ne devrait que contenir nos evolutions !?
+        - ol contient nos evolutions
+        - Gp.olExtended est fusionné avec ol
         - proj4 doit être fonctionnel avec nos CRS !
 
 * [x] **FAIT** intégrer le mode mixte dans le sdk = 3d !
@@ -189,7 +184,7 @@ x├── page-mapbox-geoportail-autoconf-bundle-map.html
     - non fonctionnel pour le moment...
 
 !├── page-mapbox-layerimport-bundle-map.html
-    - [bug LayerImport MapBox] ???
+    - **OK** [bug LayerImport MapBox]
 
 x├── page-mapbox-osm-bundle-map.html
 
@@ -244,10 +239,10 @@ x└── page-wmts-restful-bundle-map.html
     - [bug Attributions] la liste des attributions sur la couche photos contient des doublons
     === pb autoconf !
 
-- [webpack] commentaires dans CSS !?
+- [webpack] commentaires dans CSS/JS !?
 - [webpack] minification/compression à revoir !?
-- [bug LayerImport MapBox]
 - [bug Projections]
+- *OK*  [bug LayerImport MapBox]
 - *OK*  [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
 - *OK*  [bug GFI]
 - *NOK* [evol Attributions] les doublons (hack possible au niveau de l'API) ?

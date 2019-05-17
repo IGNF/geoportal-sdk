@@ -6,7 +6,7 @@
    "author" : "IGNF",
    "directories" : {},
    "version" : "3.0.0",
-   "main" : "src/SDK2D.js",
+   "module" : "src/SDK2D.js",
    "keywords" : [
       "openlayers",
       "geoportail",
@@ -23,7 +23,7 @@
       "README.md",
       "package.json"
    ],
-   "browser" : "dist/GpSDK2D-src.js",
+   "main" : "dist/GpSDK2D-src.js",
    "scripts" : {},
    "bugs" : {
       "url" : "https://github.com/IGNF/geoportal-sdk/issues"

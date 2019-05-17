@@ -8,6 +8,7 @@
 * Migration d'OpenLayers en version 5.3.0
 * Nouvelle fonctionnalité avec l'import de couche au format *vecteur tuilé* (MapBox)
 * Correctifs et amélioration suite au passage ES6
+* Migration Webpack en version > 4.0.0
 
 [semver] :
     - 2D : increment semver MAJOR version
@@ -17,8 +18,8 @@
 
 * [Changed]
 
-    - Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.0
-    - Mise à jour du package *geoportal-extensions-itowns* en version X.X.X
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.0
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version X.X.X
 
 * [Added]
 
@@ -28,7 +29,7 @@
 
 * [Deprecated]
 
-    - protocole HTTPS : ne plus executer les exemples sur un serveur en HTTP !
+    - [dev-workflow] protocole HTTPS : ne plus executer les exemples sur un serveur en HTTP !
 
 * [Removed]
 
@@ -40,4 +41,4 @@
 
 * [Security]
 
-    - Mise à jour des dependances (faille de sécurité)
+    - [dev-workflow] Mise à jour des dependances (faille de sécurité)
