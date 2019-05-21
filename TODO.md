@@ -84,6 +84,8 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] capture d'ecran dans les README
 
+* [ ] rubrique howto (ex. publication des releases)
+
 ## BUG 2D !?
 
 x├── page-azimuth-bundle-map.html

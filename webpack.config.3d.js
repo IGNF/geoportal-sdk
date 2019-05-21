@@ -50,13 +50,17 @@ module.exports = env => {
         },
         resolve : {
             alias : {
-                // "geoportal-extensions-itowns" : auto
-                // "geoportal-extensions-openlayers" : auto
-                // "ol-mapbox-style" : auto
-                // "ol" : auto
-                "ol" : path.join(__dirname, "lib", "openlayers", "ol"),
-                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js"),
-                "itowns" : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js")
+                // - import module es6 :
+                // "geoportal-extensions-openlayers",
+                // "ol",
+                // "ol-mapbox-style",
+                // - import bundle :
+                // "loglevel",
+                // - import forcé en mode bundle :
+                "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
+                // - import local :
+                "itowns" : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js"),
+                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : {
@@ -79,7 +83,7 @@ module.exports = env => {
                     include : [
                         path.join(__dirname, "src")
                     ],
-                    // exclude : [/node_modules/],
+                    exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
@@ -114,16 +118,6 @@ module.exports = env => {
                         options : "ol"
                     }]
                 },
-                {
-                    /** ol-mapbox-style est exposé en global : olms !
-                    * (require.resolve("ol-mapbox-style"))
-                    */
-                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "olms"
-                    }]
-                },
                 // {
                 //     test : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js"),
                 //     use : [{
@@ -135,8 +129,8 @@ module.exports = env => {
                     test : /\.css$/,
                     // exclude : [/node_modules/],
                     include : [
-                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist"),
-                        path.join(__dirname, "node_modules", "geoportal-extensions-itowns", "dist"),
+                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
+                        path.join(__dirname, "node_modules", "geoportal-extensions-itowns"),
                         path.join(__dirname, "node_modules", "ol"),
                         path.join(__dirname, "res", "Itowns"),
                         path.join(__dirname, "res", "OpenLayers")
@@ -160,7 +154,17 @@ module.exports = env => {
                 {
                     test : /\.(png|jpg|gif|svg)$/,
                     loader : "url-loader",
-                    exclude : /node_modules/
+                    options: {
+                        fallback : "responsive-loader",
+                        quality : 100
+                    },
+                    // exclude : [/node_modules/],
+                    include : [
+                        path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
+                        path.join(__dirname, "node_modules", "geoportal-extensions-itowns"),
+                        path.join(__dirname, "res", "Itowns"),
+                        path.join(__dirname, "res", "OpenLayers")
+                    ]
                 }
             ]
         },
