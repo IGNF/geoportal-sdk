@@ -9,12 +9,12 @@ var glob = require("glob");
 
 // -- plugins
 var DefineWebpackPlugin = webpack.DefinePlugin;
-var ExtractTextWebPackPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var BannerWebPackPlugin = webpack.BannerPlugin;
-var UglifyJsWebPackPlugin = require("uglifyjs-webpack-plugin");
-// var UglifyJsWebPackPlugin = webpack.optimize.UglifyJsPlugin;
+var TerserJsWebPackPlugin = require("terser-webpack-plugin");
+var OptimizeCSSAssetsWebPackPlugin = require("optimize-css-assets-webpack-plugin");
 var ReplaceWebpackPlugin = require("replace-bundle-webpack-plugin");
-var JsDocWebPackPlugin = require("jsdoc-webpack-plugin");
+var JsDocWebPackPlugin = require("./scripts/webpackPlugins/jsdoc-plugin");
 var HandlebarsPlugin = require("./scripts/webpackPlugins/handlebars-plugin");
 var HandlebarsLayoutPlugin = require("handlebars-layouts");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -26,23 +26,39 @@ var smp = new SpeedMeasurePlugin();
 // -- variables
 var pkg = require(path.join(__dirname, "package.json"));
 
-module.exports = env => {
-    // environnement d'execution
-    var production = (env) ? env.production : false;
-    var development = (env) ? env.development : false;
-
-    var _mode = (production) ? "" : (development) ? "-map" : "-src";
+module.exports = (env, argv) => {
+    // par defaut
+    var devMode = false;
+    var logMode = false;
+    var suffix = "";
+    if (argv.mode === "production") {
+        suffix = "";
+        logMode = false;
+        devMode = false;
+    }
+    if (argv.mode === "development") {
+        suffix = "-map";
+        logMode = true;
+        devMode = true;
+    }
+    if (argv.mode === "none") {
+        suffix = "-src";
+        logMode = true;
+        devMode = false;
+    }
 
     return smp.wrap({
         // attention : importance de l'ordre des css pour que la surcharge se fasse correctement
-        entry : [
-            path.join(__dirname, "node_modules", "ol", "ol.css"),
-            path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.css"),
-            path.join(__dirname, "src", "SDK2D")
-        ],
+        entry : {
+            "GpSDK2D" : [
+                path.join(__dirname, "node_modules", "ol", "ol.css"),
+                path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.css"),
+                path.join(__dirname, "src", "SDK2D")
+            ]
+        },
         output : {
             path : path.join(__dirname, "dist", "2d"),
-            filename : "GpSDK2D" + _mode + ".js",
+            filename : "GpSDK2D" + suffix + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true
@@ -75,7 +91,35 @@ module.exports = env => {
                 }
             }
         ],
-        devtool : (development) ? "eval-source-map" : false,
+        devtool : (devMode) ? "eval-source-map" : false,
+        optimization : {
+            /** MINIFICATION */
+            minimizer: [
+                new TerserJsWebPackPlugin({
+                    terserOptions: {
+                        output: {
+                            // FIXME supprime tous les commentaires
+                            // mais aussi les banner !
+                            comments: false,
+                            // drop_console: true
+                        },
+                        mangle: true
+                    }
+                }),
+                new OptimizeCSSAssetsWebPackPlugin({})
+            ],
+            /** EXTRACT CSS INTO SINGLE FILE */
+            splitChunks : {
+                cacheGroups : {
+                    styles : {
+                        name : "GpSDK2D",
+                        test : /\.css$/,
+                        chunks : "all",
+                        enforce : true
+                    }
+                }
+            }
+        },
         module : {
             rules : [
                 {
@@ -87,7 +131,7 @@ module.exports = env => {
                     use : {
                         loader : "babel-loader",
                         options : {
-                            presets : ["env"]
+                            presets : ["@babel/preset-env"]
                         }
                     }
                 },
@@ -123,13 +167,6 @@ module.exports = env => {
                         options : "ol"
                     }]
                 },
-                // {
-                //     test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
-                //     use : [{
-                //         loader : "exports-loader",
-                //         options : "olms"
-                //     }]
-                // },
                 {
                     test : /\.css$/,
                     // exclude : [/node_modules/],
@@ -138,21 +175,10 @@ module.exports = env => {
                         path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
                         path.join(__dirname, "res", "OpenLayers")
                     ],
-                    use : ExtractTextWebPackPlugin.extract({
-                        fallback : {
-                            loader : "style-loader",
-                            options : {
-                                sourceMap : false
-                            }
-                        },
-                        use : {
-                            loader : "css-loader",
-                            options : {
-                                sourceMap : true, // FIXME ?
-                                minimize : (production) ? true : false
-                            }
-                        }
-                    })
+                    use : [
+                        MiniCssExtractPlugin.loader,
+                        "css-loader"
+                    ]
                 },
                 {
                     test : /\.(png|jpg|gif|svg)$/,
@@ -183,12 +209,16 @@ module.exports = env => {
             ),
             /** GESTION DU LOGGER */
             new DefineWebpackPlugin({
-                __PRODUCTION__ : JSON.stringify(production),
+                __PRODUCTION__ : JSON.stringify(!logMode),
                 __SWITCH2D3D_ALLOWED__ : JSON.stringify(false)
             }),
             /** GENERATION DE LA JSDOC */
             new JsDocWebPackPlugin({
                 conf : path.join(__dirname, "doc/jsdoc.json")
+            }),
+            /** CSS / IMAGES */
+            new MiniCssExtractPlugin({
+                filename : "GpSDK2D" + suffix + ".css"
             }),
             /* COPIE DES RESSOURCES IMAGES JSDOC */
             new CopyWebpackPlugin([
@@ -198,8 +228,6 @@ module.exports = env => {
                     context : path.join(__dirname, "doc", "images")
                 }
             ]),
-            /** CSS / IMAGES */
-            new ExtractTextWebPackPlugin("GpSDK2D" + _mode + ".css"),
             /** HANDLEBARS TEMPLATES */
             new HandlebarsPlugin(
                 {
@@ -210,7 +238,7 @@ module.exports = env => {
                     output : {
                         path : path.join(__dirname, "samples", "2d"),
                         flatten : false,
-                        filename : "[name]" + _mode + ".html"
+                        filename : "[name]" + suffix + ".html"
                     },
                     helpers : [
                         HandlebarsLayoutPlugin
@@ -223,7 +251,7 @@ module.exports = env => {
                     context : [
                         path.join(__dirname, "samples-src", "config-2d.json"),
                         {
-                            mode : _mode
+                            mode : suffix
                         }
                     ]
                 }
@@ -234,7 +262,7 @@ module.exports = env => {
                     entry : path.join(__dirname, "samples-src", "pages", "index-2d.html"),
                     output : {
                         path : path.join(__dirname, "samples"),
-                        filename : "[name]" + _mode + ".html"
+                        filename : "[name]" + suffix + ".html"
                     },
                     context : {
                         samples : () => {
@@ -245,7 +273,7 @@ module.exports = env => {
                                 var label = relativePath.replace("/", " -- ");
                                 var pathObj = path.parse(relativePath);
                                 return {
-                                    filePath : path.join("2d", pathObj.dir, pathObj.name.concat(_mode).concat(pathObj.ext)),
+                                    filePath : path.join("2d", pathObj.dir, pathObj.name.concat(suffix).concat(pathObj.ext)),
                                     label : label
                                 };
                             });
@@ -263,25 +291,12 @@ module.exports = env => {
                 }
             ])
         ]
-        /** MINIFICATION */
-        .concat(
-            (production) ? [
-                new UglifyJsWebPackPlugin({
-                    uglifyOptions : {
-                        output : {
-                            comments : false,
-                            beautify : false
-                        },
-                        mangle : true,
-                        warnings : false,
-                        compress : false
-                    }
-                })] : []
-        )
         /** AJOUT DES LICENCES */
         .concat([
             new BannerWebPackPlugin({
-                banner : fs.readFileSync(path.join(__dirname, "licences", "licence-proj4js.txt"), "utf8"),
+                banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-proj4js.tmpl"), "utf8"), {
+                    __VERSION__ : pkg.devDependencies["proj4"],
+                }),
                 raw : true
             }),
             new BannerWebPackPlugin({
@@ -294,20 +309,20 @@ module.exports = env => {
             }),
             new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-openlayers.tmpl"), "utf8"), {
-                    __VERSION__ : pkg.dependencies.ol,
+                    __VERSION__ : pkg.devDependencies["ol"],
                 }),
                 raw : true
             }),
             new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-olms.tmpl"), "utf8"), {
-                    __VERSION__ : pkg.dependencies["ol-mapbox-style"],
+                    __VERSION__ : pkg.devDependencies["ol-mapbox-style"],
                 }),
                 raw : true
             }),
             new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-geoportal-extensions.tmpl"), "utf8"), {
                     __NAME__ : "geoportal-extensions-openlayers",
-                    __VERSION__ : pkg.dependencies["geoportal-extensions-openlayers"],
+                    __VERSION__ : pkg.devDependencies["geoportal-extensions-openlayers"],
                 }),
                 raw : true
             }),

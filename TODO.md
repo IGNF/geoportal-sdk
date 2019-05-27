@@ -8,6 +8,8 @@ Cette branche est clonée sur [feature-mapbox] :
 
         gestion des erreurs (mapbox)
 
+> **INFO**
+Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 ## Avancements & TODOLIST
 
@@ -15,13 +17,18 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [x] **OK** Migrer vers olms 4.2.1
 
-* [ ] Migrer vers webpack 4
+* [ ] **PROGRESS** Migrer vers webpack 4
 
-* [ ] *FIXME* La taille des bundles trop élevée ?
-    - la migration vers webpack 4 devrait résoudre le pb de compression !?
+    - [x] **OK**   2d
 
-* [ ] *FIXME* Les commentaires et les copyright sont supprimés dans les css/js minifiées !
-    - la migration vers webpack 4 ne semble pas resoudre le pb...
+    - [ ] **TODO** 3d
+
+    - [ ] *FIXME* La taille des bundles trop élevée ?
+    la migration vers webpack 4 devrait résoudre le pb de compression !?
+    une analyse du bundle est à faire...
+
+    - [ ] *FIXME* Les commentaires et les copyright sont supprimés dans les css/js minifiées ! la migration vers webpack 4 ne semble pas resoudre le pb...
+    trouver une solution !
 
 * [ ] Tests à jouer & à créer
     > npm run test:serve
@@ -45,12 +52,14 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [ ] integration du SDK dans le projet 3rd Party...
 
-* [x] dependances des projets geoportal-extensions-* dans webpack
+* [ ] integration du SDK dans le portail..
+
+* [x] **FAIT** dependances des projets geoportal-extensions-* dans webpack
 
     - [x] 2D : ça compile !
     - [x] 3D : ça compile !
 
-* [x] gestion des variables globales
+* [x] **FAIT** gestion des variables globales
         ex. Gp, ol, itowns, proj4
         - ol contient nos evolutions
         - Gp.olExtended est fusionné avec ol
@@ -63,7 +72,7 @@ Cette branche est clonée sur [feature-mapbox] :
 
 * [x] **FAIT** utilisation : npm-run-all
 
-* [x] maj du script de publication (package)
+* [x] **FAIT** maj du script de publication (package)
 
     - [x] **FAIT** script de packaging 2d & 3d
         > cd scripts/release/
@@ -73,6 +82,7 @@ Cette branche est clonée sur [feature-mapbox] :
         > npm pack
 
     - [x] **FAIT** gestion auto de la version du package
+
     - [ ] **TODO** gestion auto de la liste des dependances et les version des dependances
 
 * [x] **FAIT** changelog & draft
@@ -112,7 +122,11 @@ x├── page-controls-bundle-map.html
 
 x├── page-controlsOptions-bundle-map.html
 
-x├── page-div-bundle-map.html
+!├── page-div-bundle-map.html
+    - [bug twomaponsinglepage] la 1ere carte est vide !?
+    on a l'impression que la 1ere carte n'a pas eu le temps de s'instancier car
+    la 2eme carte a stoppé son deroulement !?
+    => **NOK** c'est un bug natif !?
 
 x├── page-drawing-bundle-map.html
 
@@ -180,12 +194,12 @@ x├── page-mapbox-geojson-multisources-bundle-map.html
 x├── page-mapbox-geojson-themes-object-bundle-map.html
 
 x├── page-mapbox-geojson-themes-url-bundle-map.html
-    - non fonctionnel pour le moment...
+    - **INFO** non fonctionnel pour le moment...
 
 x├── page-mapbox-geoportail-autoconf-bundle-map.html
-    - non fonctionnel pour le moment...
+    - **INFO** non fonctionnel pour le moment...
 
-!├── page-mapbox-layerimport-bundle-map.html
+x├── page-mapbox-layerimport-bundle-map.html
     - **OK** [bug LayerImport MapBox]
 
 x├── page-mapbox-osm-bundle-map.html
@@ -202,24 +216,26 @@ x├── page-measures-without-toolbox-bundle-map.html
 
 x├── page-modifyLayers-bundle-map.html
 
-!├── page-originators-bundle-map.html
+x├── page-originators-bundle-map.html
     - **OK** [bug Attributions] l'attribution OSM s'affiche sur la carte ainsi que dans le controle (fonctionnement natif d'openlayers) mais ça ne devrait pas être le cas pour les autres attributions.
 
 x├── page-osm-bundle-map.html
 
-!├── page-projection-bundle-map.html
-    - [bug Projections] hummm..., pb avec les projections !?
+x├── page-projection-bundle-map.html
+    - **OK** [bug Projections] hummm..., pb avec les projections !?
     les extends sur les projections ne sont pas renseignées...
 
 x├── page-removeLayers-bundle-map.html
 
 x├── page-styleOptions-bundle-map.html
 
-!├── page-wfs-bundle-map.html
+x├── page-wfs-bundle-map.html
     - pb avec cette couche !?
     > ERR_CONNECTION_TIMED_OUT
 
     curl 'https://demo.boundlessgeo.com/geoserver/wfs?service=WFS&request=GetFeature&version=1.1.0&typename=ne:ne_10m_roads&outputFormat=application/json&srsname=EPSG:3857&bbox=-15945375.59651405,9788831.59031281,-13988587.672413535,11256422.533388196,EPSG:3857&maxFeatures=200' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36' -H 'Referer: http://localhost/geoportal-sdk/samples/2d/page-wfs-bundle-map.html' -H 'Origin: http://localhost' --compressed
+
+    => **OK** changement de ressources !
 
 x├── page-wfs-geoportail-bundle-map.html
 
@@ -243,7 +259,8 @@ x└── page-wmts-restful-bundle-map.html
 
 - [webpack] commentaires dans CSS/JS !?
 - [webpack] minification/compression à revoir !?
-- [bug Projections]
+- *NOK* [bug twomaponsinglepage] natif, déjà présent sur la release !
+- *OK*  [bug Projections]
 - *OK*  [bug LayerImport MapBox]
 - *OK*  [bug ChangeLayerColor] Exception à tester sur d'autres navigateurs comme IE !
 - *OK*  [bug GFI]
@@ -300,3 +317,14 @@ x└── page-wmts-restful-bundle-map.html
 ├── page-zoom-bundle-map.html
 
 └── page-zoomInOut-bundle-map.html
+
+# EVOL
+
+- [ ] **PROGRESS** implementer l'option *queryable* pour le vecteur :
+le widget *getfeatureinfo* fait le boulot de requeter les features.
+sans ce widget, impossible de requeter le vecteur !
+avec ce widget, il est possible via l'option *queryable* de la couche de modifier
+le comportement par defaut du widget (false, no request !)
+donc attention :
+    si le widget est desactivé ou non instancié sur la carte, qqsoit l'option
+    queryable de la couche, pas de requetage des features !!!

@@ -219,10 +219,10 @@ IMap.prototype.setProjection = function (projection) {
  * Returns the current camera's tilt.
  *
  * @summary Specific 3D function
- * @returns {Number} - The current camera's tilt.
+ * @returns {Number} - The current camera's tilt. 90 by default.
  */
 IMap.prototype.getTilt = function () {
-    return 0;
+    return 90;
 };
 
 /**

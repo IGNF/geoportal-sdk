@@ -510,9 +510,22 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     var layerNames;
-    var maxScaleDenominator;
-    var minScaleDenominator;
+
     var boundingBox;
+    // itowns needs a bbox to display the layer
+    // if the layer is in PM, the bbox needs to be in planar coordinates
+    if (layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
+        boundingBox = new Itowns.Extent("EPSG:3857", layerOpts.bbox[0], layerOpts.bbox[2], layerOpts.bbox[1], layerOpts.bbox[3]);
+    } else if (layerOpts.bbox && layerOpts.projection === "EPSG:4326") {
+        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox[0], layerOpts.bbox[2], layerOpts.bbox[1], layerOpts.bbox[3]);
+    } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
+        // world bbox in PM (EPSG:3857)
+        boundingBox = new Itowns.Extent("EPSG:3857", -20026376.39, 20026376.39, 20048966.10, 20048966.10);
+    } else {
+        // world bbox in WGS84 (EPSG:4326)
+        boundingBox = new Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
+    }
+
     layerOpts.format = layerOpts.format.toLowerCase();
     switch (layerOpts.format.toUpperCase()) {
         case "WMS" :
@@ -530,62 +543,34 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layerNames = layerId;
                 layerOpts.layers = [layerId];
             }
-            // itowns needs a bbox to display the layer
-            // if the layer is in PM, the bbox needs to be in planar coordinates
-            if (layerOpts.bbox) {
-                boundingBox = {
-                    west : layerOpts.bbox[0],
-                    east : layerOpts.bbox[2],
-                    south : layerOpts.bbox[1],
-                    north : layerOpts.bbox[3]
-                };
-            } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
-                // world bbox in PM (EPSG:3857)
-                boundingBox = {
-                    west : -20026376.39,
-                    east : 20026376.39,
-                    south : -20048966.10,
-                    north : 20048966.10
-                };
-            } else {
-                // world bbox in WGS84 (EPSG:4326)
-                boundingBox = {
-                    west : -180,
-                    east : 180,
-                    south : -90,
-                    north : 90
-                };
-            }
+
+            var layer = {};
+
+            layer.type = "color";
+            layer.id = layerId;
+            layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
+            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+
             if (layerOpts.minZoom) {
-                maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
+                layer.maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
             }
             if (layerOpts.maxZoom) {
-                minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
+                layer.minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
             }
-            var layer = {
-                type : layerOpts.type || "color",
-                url : layerOpts.url,
+
+            layer.source = new Itowns.WMSSource({
                 protocol : layerOpts.format,
-                id : layerId,
+                version : layerOpts.version || "1.3.0",
+                url : layerOpts.url,
                 name : layerNames,
-                style : layerOpts.styleName || "",
-                title : (layerOpts.title === undefined) ? layerId : layerOpts.title,
-                visible : (layerOpts.visibility === undefined) ? true : layerOpts.visibility,
-                opacity : (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity,
                 projection : layerOpts.projection || "EPSG:4326",
-                extent : boundingBox,
+                style : layerOpts.styleName || "",
+                heightMapWidth : 256,
                 transparent : true,
                 waterMask : false,
                 featureInfoMimeType : "",
                 dateTime : "",
-                heightMapWidth : 256,
-                options : {
-                    mimetype : layerOpts.outputFormat,
-                    zoom : {
-                        min : layerOpts.minZoom || 1,
-                        max : layerOpts.maxZoom || 21
-                    }
-                },
                 networkOptions : {
                     crossOrigin : "omit"
                 },
@@ -593,8 +578,13 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                     type : 0,
                     options : {}
                 },
-                version : layerOpts.version || "1.3.0"
-            };
+                format : layerOpts.outputFormat,
+                zoom : {
+                    min : layerOpts.minZoom || 1,
+                    max : layerOpts.maxZoom || 21
+                },
+                extent : boundingBox
+            });
             break;
         case "WMTS" :
             this.logger.trace("ajout d'une couche WMTS");
@@ -604,74 +594,78 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             for (var opt in layerOpts) {
                 lOpts[opt] = layerOpts[opt];
             }
-            if (layerOpts.minZoom) {
-                maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
-            }
-            if (layerOpts.maxZoom) {
-                minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
-            }
+
             layerOpts = lOpts;
             if (!layerOpts.tileMatrixSetLimits) {
                 layerOpts.tileMatrixSetLimits = this._getTMSLimits(layerOpts.tileMatrixSet);
             }
-            layer = {
-                type : layerOpts.type || "color",
-                url : layerOpts.url,
-                protocol : layerOpts.format.toLowerCase(),
-                id : layerId,
-                title : (layerOpts.title === undefined) ? layerId : layerOpts.title,
-                visible : (layerOpts.visibility === undefined) ? true : layerOpts.visibility,
-                opacity : (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity,
-                updateStrategy : {
-                    type : "0",
-                    options : {}
-                },
-                networkOptions : {
-                    crossOrigin : "omit"
-                },
-                options : {
-                    tileMatrixSet : layerOpts.tileMatrixSet,
-                    tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
-                    mimetype : layerOpts.outputFormat,
-                    name : layerOpts.layer,
-                    style : layerOpts.styleName
-                },
-                version : layerOpts.version,
-                minScaleDenominator : minScaleDenominator || null,
-                maxScaleDenominator : maxScaleDenominator || null,
-                processingOptions : layerOpts.processingOptions
-            };
+
+            layer = {};
+            layer.type = "color";
+            layer.id = layerId;
+            layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
+            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+
+            // set min and max zoom regarding the layerOpts and the TMS Limits
+            var minZoom, maxZoom;
             if (layerOpts.minZoom && layerOpts.maxZoom) {
-                layer.options.zoom = {
-                    min : layerOpts.minZoom,
-                    max : layerOpts.maxZoom
-                };
+                minZoom = layerOpts.minZoom;
+                maxZoom = layerOpts.maxZoom;
             } else if (layerOpts.minZoom && !layerOpts.maxZoom) {
-                layer.options.zoom = {
-                    min : layerOpts.minZoom,
-                    max : Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)))
-                };
+                minZoom = layerOpts.minZoom;
+                maxZoom = Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
             } else if (!layerOpts.minZoom && layerOpts.maxZoom) {
-                layer.options.zoom = {
-                    min : Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number))),
-                    max : layerOpts.maxZoom
-                };
+                minZoom = Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
+                maxZoom = layerOpts.maxZoom;
+            } else {
+                minZoom = Math.min.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
+                maxZoom = Math.max.apply(null, (Object.keys(layerOpts.tileMatrixSetLimits).map(Number)));
             }
+
+            // compute max and minScaleDenominator
+            layer.maxScaleDenominator = this._getResolutionFromZoomLevel(minZoom) / 0.00028;
+            layer.minScaleDenominator = this._getResolutionFromZoomLevel(maxZoom) / 0.00028;
+
+            var updateStrategyOptions = {};
+            // depends on the levelsToLoad option
             if (layerOpts.levelsToLoad) {
-                layer.updateStrategy = {
+                updateStrategyOptions = {
                     type : 1,
                     options : {
                         groups : layerOpts.levelsToLoad
                     }
                 };
-            }
+            } else {
+                updateStrategyOptions = {
+                    type : "0",
+                    options : {}
+                };
+            };
+
+            layer.source = new Itowns.WMTSSource({
+                protocol : layerOpts.format.toLowerCase(),
+                version : layerOpts.version,
+                url : layerOpts.url,
+                tileMatrixSet : layerOpts.tileMatrixSet,
+                tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
+                format : layerOpts.outputFormat,
+                name : layerOpts.layer,
+                style : layerOpts.styleName,
+                updateStrategy : updateStrategyOptions,
+                zoom : {
+                    min : minZoom || 1,
+                    max : maxZoom || 21
+                },
+                extent : boundingBox
+            });
             break;
         default :
     }
     if (layer) {
         // le controle geoportalAttribution exploite la propriete options.originators
         if (layerOpts.hasOwnProperty("originators")) {
-            layer.options.originators = layerOpts.originators;
+            layer.source.attribution = layerOpts.originators;
         }
 
         // Dans le cas où aucune opacité n'est spécifiée
@@ -707,7 +701,15 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         }
         // we add the layer and refresh the itowns viewer
         // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
-        this.libMap.addLayer(layer);
+        switch (layer.type.toUpperCase()) {
+            case "ELEVATION" :
+                this.libMap.addLayer(new Itowns.ElevationLayer(layer.id, layer));
+                break;
+            case "COLOR" :
+                this.libMap.addLayer(new Itowns.ColorLayer(layer.id, layer));
+                break;
+            default :
+        };
     }
 };
 

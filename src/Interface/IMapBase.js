@@ -100,7 +100,7 @@ var switch2D3D = function (viewMode) {
             // proxyUrl
             // noProxyDomains
             // reloadConfig
-            // FIXME autoconfUrl ou configUrl ?
+            // autoconfUrl
             layersOptions : oldMap.layersOptions,
             controlsOptions : oldMap.controlsOptions
             // mapEventsOptions :
@@ -216,7 +216,7 @@ IMap.DEFAULTOPTIONS = {
     },
     azimuth : 0,
     enableRotation : true,
-    tilt : 0,
+    tilt : 90,
     zoom : 10,
     minZoom : 0,
     maxZoom : 21,

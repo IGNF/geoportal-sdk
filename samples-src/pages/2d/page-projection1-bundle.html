@@ -1,0 +1,39 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Projection</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap1 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre mapOptions.projection</h1>
+    <h2>CAS 1 : l'utilisateur veut afficher une carte en WebMercator.</h2>
+    <p>La projection de la carte est EPSG:3857.</p>
+    <div id="geoportalMap1"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap1',{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            projection : "EPSG:3857",
+            layersOptions : {
+                'maCoucheWMS1' : {
+                    format : "wms",
+                    title : "Cours d'eau",
+                    url : "http://services.sandre.eaufrance.fr/geo/zonage",
+                    layers : ["TronconHydrographique"]
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

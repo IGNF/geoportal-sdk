@@ -1,0 +1,43 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Projection</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+
+        #geoportalMap2 {
+          height: 400px;
+          width: 600px;
+        }
+
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre mapOptions.projection</h1>
+    <h2>CAS 2 : l'utilisateur veut afficher une carte en WGS84.</h2>
+    <p>La projection de la carte est EPSG:4326.</p>
+    <div id="geoportalMap2"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+
+        Gp.Map.load('geoportalMap2',{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            projection : "EPSG:4326",
+            layersOptions : {
+                'maCoucheWMS2' : {
+                    format : "wms",
+                    title : "Cours d'eau",
+                    url : "http://services.sandre.eaufrance.fr/geo/zonage",
+                    layers : ["TronconHydrographique"]
+                }
+            }
+        });
+
+    </script>
+{{/content}}
+{{/extend}}

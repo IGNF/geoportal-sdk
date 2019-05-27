@@ -1,0 +1,36 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Projection</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap4 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test du paramètre mapOptions.projection</h1>
+
+    <h2>CAS 4 : l'utilisateur veut afficher une carte en IGNF:LAMB93.</h2>
+    <p>La projection de la carte est IGNF:LAMB93.</p>
+    <div id="geoportalMap4"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+
+        Gp.Map.load('geoportalMap4',{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            projection : "IGNF:LAMB93",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO" : {}
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

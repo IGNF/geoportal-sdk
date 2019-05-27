@@ -36,21 +36,11 @@
 
 {{#content "js"}}
     <script>
-        Gp.Map.load('geoportalMap1', {
+        var map1 = Gp.Map.load('geoportalMap1', {
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            controlsOptions : {
-              "search" : {
-                 maximised : true
-               },
-               "layerswitcher" : {},
-               area : {},
-               length : {},
-               azimuth : {}
-            }
-        });
-
-        Gp.Map.load(document.getElementById('geoportalMap2'), {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            layersOptions : {
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {}
+            },
             controlsOptions : {
               "search" : {
                  maximised : true
@@ -59,8 +49,24 @@
                area : {}
             }
         });
+        console.log(map1);
 
-        Gp.Map.load('inconnu', {
+        var map2 = Gp.Map.load(document.getElementById('geoportalMap2'), {
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+            },
+            controlsOptions : {
+              "search" : {
+                 maximised : true
+               },
+               "layerswitcher" : {},
+               area : {}
+            }
+        });
+        console.log(map2);
+
+        var map3 = Gp.Map.load('inconnu', {
             apiKey : "{{apikey}}"
         });
     </script>
