@@ -76,11 +76,16 @@ module.exports = (env, argv) => {
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
                 // - import local :
-                "itowns" : path.resolve(__dirname, "lib", "Itowns", "init-itowns.js"),
                 "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : {
+            request : {
+                commonjs2 : "itowns",
+                commonjs : "itowns",
+                amd : "itowns",
+                root : "itowns"
+            },
             request : {
                 commonjs2 : "request",
                 commonjs : "request",
@@ -104,7 +109,7 @@ module.exports = (env, argv) => {
                             comments: false,
                             // drop_console: true
                         },
-                        mangle: true
+                        mangle: true // mettre à false pour le debug !
                     }
                 }),
                 new OptimizeCSSAssetsWebPackPlugin({})
@@ -213,6 +218,13 @@ module.exports = (env, argv) => {
                         replacement : function () {
                             return pkg.date;
                         }
+                    },
+                    {
+                        partten : /__VERSION_ITOWNS__/g,
+                        /** replacement de la clef __VERSION_ITOWNS__ par la version 3d d'itowns */
+                        replacement : function () {
+                            return pkg.dependencies["itowns"];
+                        }
                     }
                 ]
             ),
@@ -283,8 +295,8 @@ module.exports = (env, argv) => {
                     }
                 }
             ),
+            /* RESOURCES COPY FOR SAMPLES */
             new CopyWebpackPlugin([
-                /* RESOURCES COPY FOR SAMPLES */
                 {
                     from : path.join(__dirname, "samples-src", "resources", "**/*"),
                     to : path.join(__dirname, "samples", "resources"),

@@ -1,4 +1,4 @@
-import {OlMap} from "./OlMapBase";
+import { OlMap } from "./OlMapBase";
 import View from "ol/View";
 import {
     transform as olTransformProj,

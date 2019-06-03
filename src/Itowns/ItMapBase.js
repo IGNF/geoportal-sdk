@@ -1,7 +1,7 @@
-import {Engine3DLoader} from "../Utils/Engine3DLoader";
-import {IMap} from "../Interface/IMap";
+import { Engine3DLoader } from "../Utils/Engine3DLoader";
+import { IMap } from "../Interface/IMap";
 import Logger from "../Utils/LoggerByDefault";
-import {itownsExtended as Itowns} from "geoportal-extensions-itowns";
+import { itownsExtended as Itowns } from "geoportal-extensions-itowns";
 
 /**
 * Itowns IMap implementation class.
@@ -62,8 +62,10 @@ ItMap.prototype._initMap = function () {
             }
 
             // On fusionne les extensions et la librairie itowns
-            deepCopy(itowns, Itowns);
-            deepCopy(Itowns, itowns);
+            if (window.itowns) {
+                deepCopy(window.itowns, Itowns);
+                deepCopy(Itowns, window.itowns);
+            }
 
             // position à l'initialisation
             var positionOnGlobe = {
@@ -156,4 +158,4 @@ ItMap.prototype.getLibMap = function () {
     return this.libMap;
 };
 
-export {ItMap};
+export { ItMap };

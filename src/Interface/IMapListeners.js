@@ -1,4 +1,4 @@
-import {IMap} from "./IMapBase";
+import { IMap } from "./IMapBase";
 
 /**
  * cree un CustomEvent de maniere IE compatible

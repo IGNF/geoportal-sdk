@@ -3,4 +3,4 @@ import "./IMapControls";
 import "./IMapListeners";
 import "./IMapView";
 
-export {IMap} from "./IMapBase";
+export { IMap } from "./IMapBase";

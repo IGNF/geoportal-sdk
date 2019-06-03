@@ -1,5 +1,5 @@
 import Logger from "../Utils/LoggerByDefault";
-import {IMap} from "../Interface/IMap";
+import { IMap } from "../Interface/IMap";
 import View from "ol/View";
 import Map from "ol/Map";
 
@@ -73,4 +73,4 @@ OlMap.prototype.getLibMap = function () {
     return this.libMap;
 };
 
-export {OlMap};
+export { OlMap };

@@ -1,4 +1,4 @@
-import {IMap} from "./IMapBase";
+import { IMap } from "./IMapBase";
 
 /**
  * Options par défaut des styles des couches vecteur (KML, GPX, GeoJSON)

@@ -106,4 +106,4 @@ var MapLoader = {
     }
 };
 
-export {MapLoader};
+export { MapLoader };

@@ -44,16 +44,19 @@
 */
 
 import Pkg from "../package";
-import {MapLoader} from "./Utils/MapLoader";
-import {OlMap} from "./OpenLayers/OlMap";
-import {ItMap} from "./Itowns/ItMap";
 import Logger from "./Utils/LoggerByDefault";
+
+import { MapLoader } from "./Utils/MapLoader";
+import { OlMap } from "./OpenLayers/OlMap";
+import { ItMap } from "./Itowns/ItMap";
+
 // CSS
 import "../res/Itowns/ItMap.css";
 import "../res/OpenLayers/OlMap.css";
 
 // import openlayers
-import { default as olDist } from "ol-dist";
+import olDist from "ol-dist";
+
 // import des extensions openlayers
 import { olExtended } from "geoportal-extensions-openlayers";
 
@@ -72,12 +75,6 @@ function deepCopy (source, target) {
     }
 }
 
-// fusion des fonctionnalités openlayers
-// Gp.olExtended -> ol
-deepCopy(olExtended, olDist);
-// ol -> Gp.olExtended
-deepCopy(olDist, olExtended);
-
 // ol extended + Services + Outils
 export {
     Services,
@@ -93,7 +90,7 @@ export {
     olExtended
 } from "geoportal-extensions-openlayers";
 
-// only itowns extended
+// itowns extended
 export {
     itownsExtVersion, itownsExtDate,
     itownsExtended
@@ -101,10 +98,16 @@ export {
 
 MapLoader.__class2d = OlMap;
 MapLoader.__class3d = ItMap;
-export {MapLoader as Map};
+export { MapLoader as Map };
 
 export const sdkVersion = Pkg.SDK3DVersion;
 export const sdkDate = Pkg.date;
+
+// fusion des fonctionnalités openlayers
+// Gp.olExtended -> ol
+deepCopy(olExtended, olDist);
+// ol -> Gp.olExtended
+deepCopy(olDist, olExtended);
 
 // "ol" is exposed into window (for a build bundle) with webpack.
 if (window && window.ol) {

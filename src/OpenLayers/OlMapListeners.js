@@ -1,5 +1,5 @@
-import {OlMap} from "./OlMapBase";
-import {IMap} from "../Interface/IMap";
+import { OlMap } from "./OlMapBase";
+import { IMap } from "../Interface/IMap";
 import { unByKey as olObservableUnByKey } from "ol/Observable";
 
 /**

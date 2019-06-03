@@ -1,6 +1,6 @@
-import {OlMap} from "./OlMapBase";
-import {IMap} from "../Interface/IMap";
-import {olExtended as Ol} from "geoportal-extensions-openlayers";
+import { OlMap } from "./OlMapBase";
+import { IMap } from "../Interface/IMap";
+import { olExtended as Ol } from "geoportal-extensions-openlayers";
 import {
     Pointer as PointerInteraction,
     MouseWheelZoom as MouseWheelZoomInteraction,

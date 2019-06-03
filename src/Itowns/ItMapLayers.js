@@ -1,5 +1,5 @@
-import {ItMap} from "./ItMapBase";
-import {IMap} from "../Interface/IMap";
+import { ItMap } from "./ItMapBase";
+import { IMap } from "../Interface/IMap";
 
 /**
  * Proprietes observables des couches pour le SDK

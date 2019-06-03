@@ -1,6 +1,6 @@
-import {ItMap} from "./ItMapBase";
-import {itownsExtended as Itowns} from "geoportal-extensions-itowns";
-import {IMap} from "../Interface/IMap";
+import { ItMap } from "./ItMapBase";
+import { itownsExtended as Itowns } from "geoportal-extensions-itowns";
+import { IMap } from "../Interface/IMap";
 
 /**
 * Associate a function to trigger when an event is received.

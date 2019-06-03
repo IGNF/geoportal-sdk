@@ -1,4 +1,4 @@
-import {IMap} from "./IMapBase";
+import { IMap } from "./IMapBase";
 
 /**
  * Default autoPanOptions

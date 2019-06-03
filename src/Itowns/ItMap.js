@@ -3,4 +3,4 @@ import "./ItMapControls";
 import "./ItMapListeners";
 import "./ItMapView";
 
-export {ItMap} from "./ItMapBase";
+export { ItMap } from "./ItMapBase";

@@ -86,4 +86,4 @@ var Engine3DLoader = {
     }
 };
 
-export {Engine3DLoader};
+export { Engine3DLoader };

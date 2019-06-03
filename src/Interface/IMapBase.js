@@ -2,8 +2,8 @@
 
 import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
-import {Services, ProxyUtils} from "geoportal-extensions-openlayers";
-import {MapLoader} from "../Utils/MapLoader";
+import { Services, ProxyUtils } from "geoportal-extensions-openlayers";
+import { MapLoader } from "../Utils/MapLoader";
 
 /**
  * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
@@ -428,4 +428,4 @@ IMap.prototype = {
     }
 };
 
-export {IMap};
+export { IMap };

@@ -1,7 +1,7 @@
-import {OlMap} from "./OlMapBase";
-import {IMap} from "../Interface/IMap";
-import {Protocols, olExtended as Ol} from "geoportal-extensions-openlayers";
-import {applyStyle as applyStyleOlms} from "ol-mapbox-style";
+import { OlMap } from "./OlMapBase";
+import { IMap } from "../Interface/IMap";
+import { Protocols, olExtended as Ol } from "geoportal-extensions-openlayers";
+import { applyStyle as applyStyleOlms } from "ol-mapbox-style";
 
 import VectorTileLayer from "ol/layer/VectorTile";
 import VectorLayer from "ol/layer/Vector";

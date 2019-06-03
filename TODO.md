@@ -19,16 +19,20 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [ ] **PROGRESS** Migrer vers webpack 4
 
-    - [x] **OK**   2d
+    - [x] **OK** 2d
 
-    - [ ] **TODO** 3d
+    - [x] **OK** 3d
 
     - [ ] *FIXME* La taille des bundles trop élevée ?
     la migration vers webpack 4 devrait résoudre le pb de compression !?
-    une analyse du bundle est à faire...
+    => une analyse du bundle est à faire...
+    cf. https://webpack.js.org/configuration/devtool
 
     - [ ] *FIXME* Les commentaires et les copyright sont supprimés dans les css/js minifiées ! la migration vers webpack 4 ne semble pas resoudre le pb...
-    trouver une solution !
+    => trouver une solution !
+
+    - [x] *FIXME* em mode production, le bundle ne marche pas !?
+    > on avait oublié de rendre externe la lib. itowns dans webpack...
 
 * [ ] Tests à jouer & à créer
     > npm run test:serve
@@ -52,7 +56,10 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [ ] integration du SDK dans le projet 3rd Party...
 
-* [ ] integration du SDK dans le portail..
+* [ ] **PROGRESS** integration du SDK dans le portail..
+
+    - il faut charger les SRS étendues pour le controle MousePosition...
+    - le switch 2D/3D ne semble pas fonctionner car itowns n'est pas correctement initialisé...
 
 * [x] **FAIT** dependances des projets geoportal-extensions-* dans webpack
 

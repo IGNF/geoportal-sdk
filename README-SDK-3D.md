@@ -578,7 +578,7 @@ Les événements auxquels on peut s'abonner sont les suivants :
 var map = Gp.Map.load(
     "mapDiv",   // identifiant du conteneur HTML
     // options d'affichage de la carte (Gp.MapOptions)
-    {           
+    {
          ...
          mapEventsOptions : {
              // when map has finished to initialize and to render
@@ -587,12 +587,11 @@ var map = Gp.Map.load(
              }
          }
          ...
-    }    
+    }
 ) ;
 ```
 
 **Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/9fmLyhLL/embedded/result,js,html,css/)**
-
 
 *NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
@@ -610,15 +609,15 @@ Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cel
 
 L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html) permet de jouer sur d'autres paramètres de la carte lors de son initialisation avec la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html). Entre autres :
 
-* la projection
+- la projection
 
-* les niveaux de zoom courant, minimal et maximal
+- les niveaux de zoom courant, minimal et maximal
 
-* l'orientation (azimuth) de la carte
+- l'orientation (azimuth) de la carte
 
-* l'inclinaison (tilt) de la vue en 3D
+- l'inclinaison (tilt) de la vue en 3D
 
-* ...
+- ...
 
 <!--
 <a id="projections"/>
@@ -656,6 +655,6 @@ map = Gp.Map.load(
              "mapLoaded" : afterInitMap
          }
          ...
-    }    
+    }
 ) ;
 ```

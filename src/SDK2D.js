@@ -1,11 +1,11 @@
 import Pkg from "../package";
-import {MapLoader} from "./Utils/MapLoader";
-import {OlMap} from "./OpenLayers/OlMap";
+import { MapLoader } from "./Utils/MapLoader";
+import { OlMap } from "./OpenLayers/OlMap";
 import Logger from "./Utils/LoggerByDefault";
 // CSS
 import "../res/OpenLayers/OlMap.css";
 // import openlayers
-import { default as olDist } from "ol-dist";
+import olDist from "ol-dist";
 // import des extensions openlayers (et des CRS ?)
 import { olExtended } from "geoportal-extensions-openlayers";
 
@@ -45,7 +45,7 @@ export {
 } from "geoportal-extensions-openlayers";
 
 MapLoader.__class2d = OlMap;
-export {MapLoader as Map};
+export { MapLoader as Map };
 
 export const sdkVersion = Pkg.SDK2DVersion;
 export const sdkDate = Pkg.date;
