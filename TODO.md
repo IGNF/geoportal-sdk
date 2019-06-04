@@ -14,7 +14,7 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 ## Avancements & TODOLIST
 
 * [x] **OK** Migrer vers ol v5.3.0
-
+* [x] **OK** Migrer vers itowns v2.8.0
 * [x] **OK** Migrer vers olms 4.2.1
 
 * [ ] **PROGRESS** Migrer vers webpack 4
@@ -23,23 +23,42 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
     - [x] **OK** 3d
 
-    - [ ] *FIXME* La taille des bundles trop élevée ?
-    la migration vers webpack 4 devrait résoudre le pb de compression !?
+    - [ ] **PROGRESS** La taille des bundles trop élevée ?
     => une analyse du bundle est à faire...
-    cf. https://webpack.js.org/configuration/devtool
+    
+    cf. <https://webpack.js.org/configuration/devtool>
+    cf. <https://github.com/webpack/webpack/tree/master/examples/source-map>
 
-    - [ ] *FIXME* Les commentaires et les copyright sont supprimés dans les css/js minifiées ! la migration vers webpack 4 ne semble pas resoudre le pb...
-    => trouver une solution !
+    | NEW | 2D  | 3D  |
+    |-----|-----|-----|
+    |prod | 1.9 |**3.0** |
+    |map  | **16**  | **24**  |
+    |src  | 6.1 | 8.7 |
 
-    - [x] *FIXME* em mode production, le bundle ne marche pas !?
-    > on avait oublié de rendre externe la lib. itowns dans webpack...
+    | OLD | 2D  | 3D  |
+    |-----|-----|-----|
+    |prod | 1.4 | 1.4 |
+    |map  | 7.8 | 8.5 |
+    |src  | 2.9 | 3.2 |
+
+    > 3D : *FIXME* doublon des fichiers communs du DOM sur les extensions !?
+    > 3D : *FIXME* CSS sur les extensions openlayers ?
+
+    - [x]  Les commentaires et les copyright sont supprimés dans les css/js minifiées ! la migration vers webpack 4 ne semble pas resoudre le pb...
+    > **OK** on fait le choix de ne pas supprimer les banners mais certaines sont en doublons...
+
+    - [x] en mode production, le bundle ne marche pas !?
+    > **OK** on avait oublié de rendre externe la lib. itowns dans webpack...
 
 * [ ] Tests à jouer & à créer
     > npm run test:serve
 
-    cf. *BUG*
+    - [x] OlMAp
+    - [ ] ItMap : exceptions...
+    - [x] SDK2D
+    - [ ] SDK3D : exceptions...
 
-* [ ] Exemples à jouer & à créer
+* [x] Exemples à jouer & à créer
 
     cf. *BUG*
 
@@ -58,8 +77,9 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [ ] **PROGRESS** integration du SDK dans le portail..
 
-    - il faut charger les SRS étendues pour le controle MousePosition...
-    - le switch 2D/3D ne semble pas fonctionner car itowns n'est pas correctement initialisé...
+    - *FIXME* il faut charger les SRS étendues pour le controle MousePosition...
+    - *FIXME* warning et exceptions sur la 3D non bloquantes
+    - *FIXME* bug du tilt 3D
 
 * [x] **FAIT** dependances des projets geoportal-extensions-* dans webpack
 
@@ -99,9 +119,9 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [x] **FAIT** TOC dans les README
 
-* [ ] capture d'ecran dans les README
+* [ ] capture d'ecran dans les README ?
 
-* [ ] rubrique howto (ex. publication des releases)
+* [x] rubrique howto (ex. publication des releases)
 
 ## BUG 2D !?
 
@@ -264,8 +284,8 @@ x└── page-wmts-restful-bundle-map.html
     - [bug Attributions] la liste des attributions sur la couche photos contient des doublons
     === pb autoconf !
 
-- [webpack] commentaires dans CSS/JS !?
-- [webpack] minification/compression à revoir !?
+- *OK*  [webpack] commentaires dans CSS/JS !?
+- *OK*  [webpack] minification/compression à revoir !?
 - *NOK* [bug twomaponsinglepage] natif, déjà présent sur la release !
 - *OK*  [bug Projections]
 - *OK*  [bug LayerImport MapBox]

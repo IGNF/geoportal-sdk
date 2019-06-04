@@ -7,7 +7,7 @@
 └── geoportal-access-lib@2.1.2
 
 * "itowns"
-└── "itowns@2.3.0"
+└── "itowns@2.8.0"
 
 * "openlayers"
 └── "openlayers@5.3.0

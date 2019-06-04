@@ -130,32 +130,40 @@ build () {
 ################################################################################
 printTo "BEGIN"
 
-opts=`getopt -o h --long help,all,2d,3d -n 'build-pack.sh' -- "$@"`
+printTo "> "
+
+opts=`getopt -o ha23 --long help,all,2d,3d -n 'build-pack.sh' -- "$@"`
 eval set -- "${opts}"
 
 while true; do
     case "$1" in
         -h|--help)
+            echo "Il faut au prealable construire les binaires :"
+            echo "  > npm run build"
+            echo ""
+            echo "Attention, la date et la version sont extraites du package.json principal."
+            echo "Par contre, les dependances ne sont pas gérées par le script..."
+            echo ""
             echo "Usage :"
             echo "    `basename $0` - construction du package TGZ à publier dans NPM"
-            echo "    -h            Affiche cette aide."
-            echo "    --2d            build : 2D,"
-            echo "    --3d            build : 3D,"
-            echo "    --all           build : All."
-            echo "Par defaut, le repertoire n'est pas supprimé"
-            echo "(cf. l'option 'clean=true' dans le code)."
+            echo "    -h|--help          Affiche cette aide."
+            echo "    -2|--2d            build : 2D,"
+            echo "    -3|--3d            build : 3D,"
+            echo "    -a|--all           build : All."
+            echo ""
+            echo "Par defaut, les repertoires ne sont pas supprimés."
             echo "Le package validé, on se place dans le répertoire pour la publication :"
             echo "  > npm login"
             echo "  > npm publish"
             exit 0
             ;;
 
-        --2d)
+        -2|--2d)
             printTo "> Build 2d"
             build "2d"
             shift ;;
 
-        --3d)
+        -3|--3d)
             printTo "> Build 3d"
             build "3d"
             shift ;;

@@ -17,7 +17,7 @@
         "outputSourceFiles"     : true,
         "outputSourcePath"      : true,
         "systemName"            : "Geoportal SDK 2D/3D",
-        "footer"                : "API SDK version 1.1.0",
+        "footer"                : "API SDK",
         "copyright"             : "Geoportail - Copyright (c) IGN, released under the CECILL-B license",
         "navType"               : "inline",
         "theme"                 : "darkly",

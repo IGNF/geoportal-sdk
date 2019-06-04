@@ -95,12 +95,12 @@ Liste des targets disponibles :
 
     npm run <target>
         target : (clean), setup,
-                 build[:dev|:prod|:2d[:dev|:prod]|:3d[:dev|:prod]],
+                 build[:dev|:prod|src|:2d[:dev|:prod|src]|:3d[:dev|:prod|src]],
                  doc:serve,
                  test:serve
-        option : --env.production,
-                 --env.development,
-                 (--env.clean)
+        option : --mode=production,
+                 --mode=development
+                 --mode=none
 
 ### Installation des dépendances
 
@@ -128,16 +128,16 @@ Orienté developpement :
 ou par simple copie des bundles dans le répertoire *node_modules* :
 
     // version spécifique des extensions
-    cp pathTo/GpPluginOpenLayers*  node_modules/geopoartal-extensions-openlayers/dist/
-    cp pathTo/GpPluginItowns*  node_modules/geopoartal-extensions-itowns/dist/
-    cp pathTo/GpPluginOlItowns*  node_modules/geopoartal-extensions-openlayers-itowns/dist/
+    cp pathTo/GpPluginOpenLayers*  node_modules/geoportal-extensions-openlayers/dist/
+    cp pathTo/GpPluginItowns*  node_modules/geoportal-extensions-itowns/dist/
+    cp pathTo/GpPluginOlItowns*  node_modules/geoportal-extensions-openlayers-itowns/dist/
 
 Upgrade de version :
 
 **ouvrir une console :**
 
-    // publication openlayers en version 4.4.4
-    npm install openlayers@4.4.4 --no-save
+    // publication openlayers en version 6.0.0
+    npm install openlayers@6.0.0 --no-save
 
 
 ### Compilation
@@ -147,8 +147,8 @@ Upgrade de version :
     npm run build:2d
     ou npm run build:2d:prod
     ou npm run build:2d:dev
-    ou npm run build:2d -- --env.production
-    ou npm run build:2d -- --env.development
+    ou npm run build:2d -- --mode=production
+    ou npm run build:2d -- --mode=development
 
 Les *bundles* sont disponibles dans le répertoire :
 
@@ -169,7 +169,7 @@ Il est possible de lancer la génération des bundles pour l'ensemble des extens
     // génération des bundles en mode production
     npm run build:prod
     // génération des bundles en mode sources
-    npm run build
+    npm run build:src
 
 #### JSDOC
 

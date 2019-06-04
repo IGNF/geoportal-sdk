@@ -5,9 +5,7 @@ var webpack = require("webpack");
 // plugin
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var DefineWebpackPlugin = webpack.DefinePlugin;
-var ExtractTextWebPackPlugin = require("extract-text-webpack-plugin");
-
-var dependencies = "lib"; // node_modules en mode production !
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry : {
@@ -19,10 +17,7 @@ module.exports = {
         libraryTarget : "umd"
     },
     resolve : {
-        alias : {
-            "geoportal-extensions-openlayers" : path.resolve(__dirname, dependencies, "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.js"),
-            "geoportal-extensions-itowns" : path.resolve(__dirname, dependencies, "geoportal-extensions-itowns", "dist", "GpPluginItowns-src.js"),
-        }
+        alias : {}
     },
     externals : ["request", "xmldom"],
     devtool : "eval-source-map",
@@ -43,23 +38,20 @@ module.exports = {
     },
     module: {
         rules : [
-            // pour extraire les css
             {
-                test : /\.css$/,
-                include : path.resolve(__dirname, "res"),
-                use : ExtractTextWebPackPlugin.extract({
-                    fallback : {
-                        loader : "style-loader"
-                    },
-                    use : {
-                        loader : "css-loader"
-                    }
-                })
+                test: /\.css$/,
+                use: [
+                    'style-loader', 
+                    'css-loader'
+                ]
             },
             {
                 test : /\.(png|jpg|gif|svg)$/,
                 loader : "url-loader",
-                exclude : /node_modules/
+                options: {
+                    fallback : "responsive-loader",
+                    quality : 100
+                }
             }
         ]
     },
@@ -75,8 +67,6 @@ module.exports = {
             template : require.resolve(
                 "html-webpack-plugin/default_index.ejs"
             )
-        }),
-        // pour extraire les css (suite)
-        new ExtractTextWebPackPlugin("[name]")
+        })
     ]
 };

@@ -6,7 +6,7 @@
     "SDK3DVersion": "3.0.0",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
     "main": "dist/2d/GpSDK2D-src.js, dist/3d/GpSDK3d-src.js",
-    "module": "src/SDK2D.js, src/SDK3d.js",
+    "module": "src/SDK2D.js, src/SDK3D.js",
     "scripts": {
         "setup": "npm install",
         "clean": "echo \"Warning: target not yet implemented!\" && exit 0",
