@@ -50,18 +50,16 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     return;
                 }
                 if (itEvent.previous) {
-                    var oldCoords = itEvent.previous.cameraTarget.as("EPSG:4326");
                     centerChangedEvt.oldCenter = {
-                        x : oldCoords.longitude(),
-                        y : oldCoords.latitude()
+                        x : itEvent.previous.longitude(),
+                        y : itEvent.previous.latitude()
                     };
                 }
 
                 if (itEvent.new) {
-                    var newCoords = itEvent.new.cameraTarget.as("EPSG:4326");
                     centerChangedEvt.newCenter = {
-                        x : newCoords.longitude(),
-                        y : newCoords.latitude()
+                        x : itEvent.new.longitude(),
+                        y : itEvent.new.latitude()
                     };
                 }
                 action.call(context, centerChangedEvt);
@@ -69,43 +67,38 @@ ItMap.prototype.listen = function (eventId, action, context) {
             key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
             break;
         case "zoomChanged" :
-            var oldZoom = context.getZoom();
             var callbackZoomchange = function (itEvent) {
-                // on récupère le zoom
-                var newZoom = context.getZoom();
                 // si le zoom n'a pas changé, on sort
-                if (newZoom === oldZoom) {
+                if (itEvent.newZoom === itEvent.oldZoom) {
                     return;
                 }
                 action.call(context, {
-                    oldZoom : oldZoom,
-                    newZoom : newZoom
+                    oldZoom : itEvent.oldZoom,
+                    newZoom : itEvent.newZoom
                 });
-                // update the oldZoom vale
-                oldZoom = newZoom;
             };
             key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
         case "azimuthChanged" :
             var callbackAzimuthChange = function (itEvent) {
-                if (itEvent.new.heading === itEvent.previous.heading) {
+                if (itEvent.newAzimuth === itEvent.oldAzimuth) {
                     return;
                 }
                 action.call(context, {
-                    oldAzimuth : itEvent.previous.heading,
-                    newAzimuth : itEvent.new.heading
+                    oldAzimuth : itEvent.oldAzimuth,
+                    newAzimuth : itEvent.newAzimuth
                 });
             };
             key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
         case "tiltChanged" :
             var callbackTiltChange = function (itEvent) {
-                if (itEvent.new.tilt === itEvent.previous.tilt) {
+                if (itEvent.newTilt === itEvent.oldTilt) {
                     return;
                 }
                 action.call(context, {
-                    oldTilt : itEvent.previous.tilt,
-                    newTilt : itEvent.new.tilt
+                    oldTilt : itEvent.oldTilt,
+                    newTilt : itEvent.newTilt
                 });
             };
             key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
