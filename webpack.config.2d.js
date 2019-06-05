@@ -98,9 +98,8 @@ module.exports = (env, argv) => {
                 new TerserJsWebPackPlugin({
                     terserOptions: {
                         output: {
-                            // FIXME supprime tous les commentaires
-                            // mais aussi les banner !
-                            comments: false,
+                            // FIXME qq bug avec les banner !
+                            comments: "some",
                             // drop_console: true
                         },
                         mangle: true
