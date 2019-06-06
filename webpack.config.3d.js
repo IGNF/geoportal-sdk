@@ -176,6 +176,13 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    use : [{
+                        loader : "expose-loader",
+                        options : "olms"
+                    }]
+                },
+                {
                     test : /\.css$/,
                     // exclude : [/node_modules/],
                     include : [

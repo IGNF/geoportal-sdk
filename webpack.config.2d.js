@@ -160,6 +160,13 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    use : [{
+                        loader : "expose-loader",
+                        options : "olms"
+                    }]
+                },
+                {
                     test : path.join(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",
