@@ -53,7 +53,7 @@ describe("-- Test ItMap --", function () {
         //     });
         // });
 
-        it('Should correctly launch zoomChanged event', function (done) {
+        it('Should correctly launch zoomChanged event', (done) => {
             Utils.initContext().then((map) => {
                 map.listen("zoomChanged", function callback() {
                     assert.ok(true);
@@ -66,7 +66,7 @@ describe("-- Test ItMap --", function () {
             });
         });
 
-        it('Should correctly launch azimuthChanged event', function (done) {
+        it('Should correctly launch azimuthChanged event', (done) => {
             Utils.initContext().then((map) => {
                 map.listen("azimuthChanged", function callback() {
                     assert.ok(true);
@@ -79,7 +79,7 @@ describe("-- Test ItMap --", function () {
             });
         });
 
-        it('Should correctly launch layerChanged event', function (done) {
+        it('Should correctly launch layerChanged event', (done) => {
             Utils.initContext().then((map) => {
                 map.listen("layerChanged", function callback() {
                     assert.ok(true);
@@ -101,17 +101,15 @@ describe("-- Test ItMap --", function () {
 
     describe("-- Add controls --", function() {
 
-        it('Should correctly add the overview control to the map', () => {
-            return Utils.initContext().then((map) => {
-                var control = map.addOverviewControl({});
-                var addedControl = map.getLibMapControl("overview");
-
-                expect(control).to.equal(addedControl);
-                return Utils.cleanContextOnRenderingOverPromise(map);
-            });
+        it('Should correctly add the overview control to the map', async () => {
+            const map = await Utils.initContext();
+            var control = map.addOverviewControl({});
+            var addedControl = map.getLibMapControl("overview");
+            expect(control).to.equal(addedControl);
+            return Utils.cleanContextOnRenderingOverPromise(map);
         });
 
-        it('Should correctly add the graphic scale control to the map', () => {
+        it('Should correctly add the graphic scale control to the map', async () => {
             return Utils.initContext().then((map) => {
                 var control = map.addGraphicScaleControl({
                     units: "deg"
@@ -123,7 +121,7 @@ describe("-- Test ItMap --", function () {
             });
         });
 
-        it('Should correctly add the mouse position control to the map', () => {
+        it('Should correctly add the mouse position control to the map', async () => {
             return Utils.initContext().then((map) => {
                 var control = map.addMousePositionControl({
                     displayAltitude:false
@@ -135,7 +133,7 @@ describe("-- Test ItMap --", function () {
             });
         });
 
-        it('Should correctly add the attributions control to the map', () => {
+        it('Should correctly add the attributions control to the map', async () => {
             return Utils.initContext().then((map) => {
                 var addedControl = map.getLibMapControl("attributions");
 
@@ -144,7 +142,7 @@ describe("-- Test ItMap --", function () {
             });
         });
 
-        it('Should correctly add the layer switcher control to the map', () => {
+        it('Should correctly add the layer switcher control to the map', async () => {
             return Utils.initContext().then((map) => {
                 var control = map.addLayerSwitcherControl({});
                 var addedControl = map.getLibMapControl("layerswitcher");

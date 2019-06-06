@@ -61,10 +61,6 @@ describe("-- Test SDK 3D --", function () {
                 expect(SDK.itownsExtended).should.not.have.property('GlobeView');
 
 
-                // integration extension mixte ol/itowns
-                SDK.should.have.property('olItownsExtVersion');
-                SDK.should.have.property('olItownsExtDate');
-
                 // integration bibliotheque d'acces
                 SDK.should.have.property('servicesVersion');
                 SDK.should.have.property('servicesDate');

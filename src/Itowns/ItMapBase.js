@@ -50,15 +50,19 @@ ItMap.prototype._initMap = function () {
             this.logger.warn("Itowns engine, loaded...", itowns);
 
             function deepCopy (source, target) {
-                for (var prop in source) {
-                    if (source.hasOwnProperty(prop)) {
-                        if (!target.hasOwnProperty(prop)) {
-                            target[prop] = source[prop];
-                        } else if (typeof source[prop] === "object") {
-                            deepCopy(source[prop], target[prop]);
+                // Implementing Tail Call Elimination
+                function tce (source, target) {
+                    for (var prop in source) {
+                        if (source.hasOwnProperty(prop)) {
+                            if (!target.hasOwnProperty(prop)) {
+                                target[prop] = source[prop];
+                            } else if (typeof source[prop] === "object") {
+                                tce(source[prop], target[prop]);
+                            }
                         }
                     }
                 }
+                return tce(source, target);
             }
 
             // On fusionne les extensions et la librairie itowns

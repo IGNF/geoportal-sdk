@@ -12,16 +12,20 @@ import { olExtended } from "geoportal-extensions-openlayers";
 var logger = Logger.getLogger("SDK2D");
 logger.log("Chargement SDK 2D...");
 
-function deepCopy (source, target, docopy) {
-    for (var prop in source) {
-        if (source.hasOwnProperty(prop)) {
-            if (!target.hasOwnProperty(prop)) {
-                target[prop] = source[prop];
-            } else if (typeof source[prop] === "object") {
-                deepCopy(source[prop], target[prop]);
+function deepCopy (source, target) {
+    // Implementing Tail Call Elimination
+    function tce (source, target) {
+        for (var prop in source) {
+            if (source.hasOwnProperty(prop)) {
+                if (!target.hasOwnProperty(prop)) {
+                    target[prop] = source[prop];
+                } else if (typeof source[prop] === "object") {
+                    tce(source[prop], target[prop]);
+                }
             }
         }
     }
+    return tce(source, target);
 }
 
 // on fusionne les fonctionnalités openlayers / étendues

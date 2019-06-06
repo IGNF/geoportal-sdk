@@ -54,9 +54,11 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
     > npm run test:serve
 
     - [x] OlMAp
-    - [ ] ItMap : exceptions...
+    - [ ] ItMap : exceptions itowns...
     - [x] SDK2D
-    - [ ] SDK3D : exceptions...
+    - [ ] SDK3D : exceptions itowns...
+
+    cf. <https://github.com/iTowns/itowns/issues/1108>
 
 * [x] Exemples à jouer & à créer
 
@@ -95,7 +97,7 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 * [x] **FAIT** intégrer le mode mixte dans le sdk = 3d !
 
     > 3d avec les dependances geoportal-extensions-openlayers et
-    geoportal-extensions-itowns
+    geoportal-extensions-itowns, le mode mixte est abandonné !
 
 * [x] **FAIT** utilisation : npm-run-all
 
@@ -123,7 +125,7 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [x] rubrique howto (ex. publication des releases)
 
-## BUG 2D !?
+## BUG 2D
 
 x├── page-azimuth-bundle-map.html
 
@@ -293,7 +295,7 @@ x└── page-wmts-restful-bundle-map.html
 - *OK*  [bug GFI]
 - *NOK* [evol Attributions] les doublons (hack possible au niveau de l'API) ?
 
-## BUG 3D !?
+## BUG 3D
 
 ├── page-addRemoveControls-bundle-map.html
 
@@ -318,6 +320,9 @@ x└── page-wmts-restful-bundle-map.html
 ├── page-kml-bundle-map.html
 
 ├── page-layerSwitcher-bundle-map.html
+
+├── page-mapbox-bundle-map.html
+    - **INFO** non fonctionnel...
 
 ├── page-miniMap-bundle-map.html
 
@@ -355,3 +360,5 @@ le comportement par defaut du widget (false, no request !)
 donc attention :
     si le widget est desactivé ou non instancié sur la carte, qqsoit l'option
     queryable de la couche, pas de requetage des features !!!
+
+- [ ] implementer le format MapBox dans la 3D
