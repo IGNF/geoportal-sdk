@@ -121,6 +121,7 @@ IMap.prototype.centerGeolocate = function () {
 /**
  * Returns the current coordinates of the map's center in the current projection.
  *
+ * @alias Gp.Map.getCenter
  * @returns {Gp.Point} - The current map's center.
  */
 IMap.prototype.getCenter = function () {
@@ -131,9 +132,10 @@ IMap.prototype.getCenter = function () {
  * Sets new center to the map.<br/>
  *
  * * Use x, y and projection properties to center the map with coordinates;
- * * Use location and locationType properties to center the map thanks to [Geoportal geocoding web service](http://api.ign.fr/tech-docs-js/fr/developpeur/search.html).
+ * * Use location and locationType properties to center the map thanks to [Geoportal geocoding web service](https://geoservices.ign.fr/documentation/geoservices/geocodage.html).
  * * Use geolocate to center the map with user position.
  *
+ * @alias Gp.Map.setCenter
  * @param {Gp.Center} center - options for centering the map
  */
 IMap.prototype.setCenter = function (center) {
@@ -184,9 +186,10 @@ IMap.prototype.setAutoCenter = function (point) {
 /**
  * Returns the current bounding box of the map in the current projection.
  *
+ * @alias Gp.Map.getViewExtent
  * @summary Specific 2D function
  * @param {String} [projection=map projection] - Coordinate Reference System of returned extent.
- * @returns {Gp.BBox} - The current map's extent.
+ * @returns {Object} - The current map's extent.
  *
  */
 IMap.prototype.getViewExtent = function () {
@@ -196,6 +199,7 @@ IMap.prototype.getViewExtent = function () {
 /**
  * Returns the current map's projection code (EPSG or IGNF).
  *
+ * @alias Gp.Map.getProjection
  * @summary Specific 2D function
  * @returns {String} The current map's projection.
  */
@@ -218,6 +222,7 @@ IMap.prototype.setProjection = function (projection) {
 /**
  * Returns the current camera's tilt.
  *
+ * @alias Gp.Map.getTilt
  * @summary Specific 3D function
  * @returns {Number} - The current camera's tilt. 90 by default.
  */
@@ -228,6 +233,7 @@ IMap.prototype.getTilt = function () {
 /**
  * Sets a new camera's tilt (3D only).
  *
+ * @alias Gp.Map.setTilt
  * @summary Specific 3D function
  * @param {Float} tilt - The camera's tilt.
  */
@@ -237,6 +243,7 @@ IMap.prototype.setTilt = function (tilt) {
 /**
  * Returns the current map's azimuth.
  *
+ * @alias Gp.Map.getAzimuth
  * @returns {Number} - The current map's azimuth expressed in decimal degrees clockwise to the north.
  */
 IMap.prototype.getAzimuth = function () {
@@ -246,6 +253,7 @@ IMap.prototype.getAzimuth = function () {
 /**
  * Sets a new map's azimuth.
  *
+ * @alias Gp.Map.setAzimuth
  * @param {Float} azimuth - The new map's azimuth expressed in decimal degrees clockwise to the north.
  */
 IMap.prototype.setAzimuth = function (azimuth) {
@@ -254,6 +262,7 @@ IMap.prototype.setAzimuth = function (azimuth) {
 /**
  * Returns the current map's zoom level.
  *
+ * @alias Gp.Map.getZoom
  * @returns {Number} - The current map's zoom.
  */
 IMap.prototype.getZoom = function () {
@@ -263,6 +272,7 @@ IMap.prototype.getZoom = function () {
 /**
  * Sets a new map's zoom level.
  *
+ * @alias Gp.Map.setZoom
  * @param {Integer} zoom - The new map's zoom.
  */
 IMap.prototype.setZoom = function (zoom) {
@@ -271,6 +281,7 @@ IMap.prototype.setZoom = function (zoom) {
 /**
  * Increases the current map's zoom level by 1.
  *
+ * @alias Gp.Map.zoomIn
  */
 IMap.prototype.zoomIn = function () {
 };
@@ -278,6 +289,7 @@ IMap.prototype.zoomIn = function () {
 /**
  * Decreases the current map's zoom level by 1.
  *
+ * @alias Gp.Map.zoomOut
  */
 IMap.prototype.zoomOut = function () {
 };
@@ -285,6 +297,7 @@ IMap.prototype.zoomOut = function () {
 /**
  * Returns the current map's resolution.
  *
+ * @alias Gp.Map.getResolution
  * @summary Specific 2D function
  * @returns {Number} - The current map's resolution (in meter per pixel).
  */
@@ -295,6 +308,7 @@ IMap.prototype.getResolution = function () {
 /**
  * Sets a new map's resolution.
  *
+ * @alias Gp.Map.setResolution
  * @summary Specific 2D function
  * @param {Float} resolution - The new map's resolution (in meter per pixel).
  */

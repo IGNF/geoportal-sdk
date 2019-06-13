@@ -2,7 +2,7 @@
  * Map centering information object.
  *
  * * Use x,y and projection properties to center the map with coordinates ;
- * * Use location and locationType properties to center the map thanks to [Geoportal geocoding web service](http://api.ign.fr/tech-docs-js/fr/developpeur/search.html).
+ * * Use location and locationType properties to center the map thanks to [Geoportal geocoding web service](https://geoservices.ign.fr/documentation/geoservices/geocodage.html).
  * * Use geolocate to center the map with user position.
  *
  * @namespace
@@ -36,7 +36,7 @@ var point = {
  * **Common 2D/3D event**
  *
  * Center Changed Event. Triggered when the map's center has changed.<br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.CenterChangedEvent
@@ -65,7 +65,7 @@ var zoomChangedEvent = {
  * **Common 2D/3D event**
  *
  * Azimuth Changed Event. Triggered when the map's orientation has changed.<br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.AzimuthChangedEvent
@@ -80,7 +80,7 @@ var azimuthChangedEvent = {
  * **Specific 3D event**
  *
  * Tilt Changed Event. Triggered when the map's tilt has changed.<br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.TiltChangedEvent
@@ -99,7 +99,7 @@ var tiltChangedEvent = {
  * * If a layer has be added to the map, property **layerAdded** will host the added layer definition.
  * * If properties (among *visibility*, *opacity*, *position* and *grayScaled*) of a layer has changed, property **layerChanged** will host the modified layer definition and **property**, **oldValue** and **newValues** will host the modified property with its old and new value.
  * <br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.LayerChangedEvent
@@ -118,7 +118,7 @@ var layerChangedEvent = {
  * **Common 2D/3D object**
  *
  * Geolocated Event. Triggered when the map's center has changed by user geo-localization.<br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.GeolocatedEvent
@@ -132,7 +132,7 @@ var geolocatedEvent = {
  * **Common 2D/3D event**
  *
  * Located Event. Triggered when the map's center has changed by geocoding.<br/>
- * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#listen) method
+ * One can listen to this event with [Gp.Map.listen()](Gp.Map.html#.listen) method
  *
  * @namespace
  * @alias Gp.LocatedEvent
@@ -178,7 +178,7 @@ var mapLoadedEvent = {
  *
  * Availables options are described below.
  *
- * * ** Common 2D/3D properties**
+ * * **Common 2D/3D properties**
  *
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
@@ -268,13 +268,13 @@ var autoPanOptions = {
 /**
  * Layer options object.
  *
- * Holds options for a specific layer present on the map. May be used at map creation (See **layersOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addLayers()](Gp.Map.html#addLayers) or [Gp.Map.modifyLayers()](Gp.Map.html#modifyLayers)).
+ * Holds options for a specific layer present on the map. May be used at map creation (See **layersOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addLayers()](Gp.Map.html#.addLayers) or [Gp.Map.modifyLayers()](Gp.Map.html#.modifyLayers)).
  *
  * Given a specific layer type, availables options are the following :
  *
  * ### Common properties
  *
- * ** Common 2D/3D properties**
+ * **Common 2D/3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -287,13 +287,13 @@ var autoPanOptions = {
  * | minZoom | Integer | If the current zoom level is lower than the minZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the minZoom of the map. |
  * | maxZoom | Integer | If the current zoom level is upper than the maxZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the maxZoom of the map. |
  * | position | Number | The layer's position in map, compared to other layers positions. Allows to organize layers order explicitely. By default the layer will be displayed above other layers. |
- * | legends | Array[[Gp.Services.Config.Legend](https://depot.ign.fr/geoportail/bibacces/develop/doc/Gp.Services.Config.Legend.html)] | The layer's legends links. |
- * | metadata | Array[[Gp.Services.Config.Metadata](https://depot.ign.fr/geoportail/bibacces/develop/doc/Gp.Services.Config.Metadata.html)] | The layer's metadata links. |
- * | originators | Array[[Gp.Services.Config.Originator](https://depot.ign.fr/geoportail/bibacces/develop/doc/Gp.Services.Config.Originator.html)] | Options about the layers's providers. |
+ * | legends | Array[[Gp.Services.Config.Legend](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Legend.html)] | The layer's legends links. |
+ * | metadata | Array[[Gp.Services.Config.Metadata](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Metadata.html)] | The layer's metadata links. |
+ * | originators | Array[[Gp.Services.Config.Originator](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Originator.html)] | Options about the layers's providers. |
  *
  * ### WMTS specific properties
  *
- * ** Common 2D/3D properties**
+ * **Common 2D/3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -305,7 +305,7 @@ var autoPanOptions = {
  * | outputFormat | String | The output image format (Mime-type) |
  * | styleName | String | The layer's style name to apply (found in GetCapabilities response). |
  *
- * ** Specific 2D properties **
+ * **Specific 2D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -314,7 +314,7 @@ var autoPanOptions = {
  * | gfiFormat | String | If queryable == true, indicates the format mime-type of the response of GetFeatureInfo requests. default : "text/html". Not yet implemented for WMTS. |
  *
  *
- * ** Specific 3D properties **
+ * **Specific 3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -323,13 +323,13 @@ var autoPanOptions = {
  *
  * ### KML specific properties
  *
- * ** Common 2D/3D properties**
+ * **Common 2D/3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
  * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
  *
- * ** Specific 2D properties**
+ * **Specific 2D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -339,7 +339,7 @@ var autoPanOptions = {
  *
  * ### MapBox specific properties
  *
- * ** Common 2D/3D properties**
+ * **Common 2D/3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -356,8 +356,7 @@ var autoPanOptions = {
  *
  * ### WMS specific properties
  *
- *
- * ** Common 2D/3D properties**
+ * **Common 2D/3D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -406,6 +405,7 @@ var autoPanOptions = {
  *
  * @namespace
  * @alias Gp.LayerOptions
+ * @todo finish description for tile vector layer
  *
  */
 var layerOptions = {
@@ -414,13 +414,14 @@ var layerOptions = {
 /**
  * Control options object.
  *
- * Holds options for a specific control present on the map. May be used for map creation (See **controlsOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addControls()](Gp.Map.html#addControls) or [Gp.Map.modifyControls()](Gp.Map.html#modifyControls)).
+ * Holds options for a specific control present on the map. May be used for map creation (See **controlsOptions** property of {@link Gp.MapOptions} object used as a parameter of [Gp.Map.load()](module-Utils_MapLoader.html) function) or for map modification (See [Gp.Map.addControls()](Gp.Map.html#.addControls) or [Gp.Map.modifyControls()](Gp.Map.html#.modifyControls)).
  *
  * Given a specific control, availables options are the following :
  *
  * <a id="zoom"></a>
  *
  * ### Options for "zoom" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -460,6 +461,7 @@ var layerOptions = {
  * <a id="orientation"></a>
  *
  * ### Options for "orientation" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -525,6 +527,7 @@ var layerOptions = {
  * <a id="route"></a>
  *
  * ### Options for "route" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -539,12 +542,13 @@ var layerOptions = {
  * | markersOpts | Object | options to use your own markers. Object properties can be "departure", "stages" or "arrival". Corresponding value is an object with following properties : |
  * | markersOpts[property].url | String | marker base64 encoded url (ex "data:image/png;base64,...""). Mandatory for a custom marker |
  * | markersOpts[property].offset | Array | Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0].) |
- * | routeOptions | Object | route service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~route Gp.Services.route()} to know all route options. |
- * | autocompleteOptions | Object | autocomplete service options. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options. |
+ * | routeOptions | Object | route service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~route Gp.Services.route()} to know all route options. |
+ * | autocompleteOptions | Object | autocomplete service options. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options. |
  *
  * <a id="isocurve"></a>
  *
  * ### Options for "isocurve" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -560,12 +564,13 @@ var layerOptions = {
  * | directions | Array(String) | available directions to be proposed by control among "arrival" (isocurve to arrival point) and "departure" (isocruve from departure point). The first element of the array will be the default proposition of the control. |
  * | markerOpts | Object | options to use your own marker. Default is a lightOrange marker. |
  * | markerOpts.url | String | marker base64 encoded url (ex "data:image/png;base64,...""). Mandatory for a custom marker |
- * | markerOpts.offset | Array | Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see http://openlayers.org/en/latest/apidoc/ol.Overlay.html) |
- * | isocurveOptions | Object | isocurve service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options. |
+ * | markerOpts.offset | Array | Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see https://openlayers.org/en/latest/apidoc/module-ol_Overlay-Overlay.html) |
+ * | isocurveOptions | Object | isocurve service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options. |
  *
  * <a id="graticule"></a>
  *
  * ### Options for "graticule" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -575,9 +580,12 @@ var layerOptions = {
  * | strokeOpacity | Number | stroke opacity expressed between 0 and 1 (default : 0.2). |
  * | strokeWidth | Number | stroke width expressed in pixels (default : 1). |
  *
+ * There are other native options for "Graticule control": see {@link https://openlayers.org/en/latest/apidoc/module-ol_Graticule-Graticule.html ol/Graticule}.
+ *
  * <a id="layerswitcher"></a>
  *
  * ### Options for "layerswitcher" control
+ *
  * **Common 2D/3D options**
  *
  * | property | Type | Description |
@@ -588,6 +596,7 @@ var layerOptions = {
  * <a id="getfeatureinfo"></a>
  *
  * ### Options for "getfeatureinfo" control
+ *
  * **Specific 2D options**
  *
  * | Property | Type | Argument | Default | Description |
@@ -606,13 +615,14 @@ var layerOptions = {
  * <a id="layerimport"></a>
  *
  * ### Options for "layerimport" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
- * | layerTypes | Array | data types that could be imported : "KML", "GPX", "GeoJSON", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "GeoJSON", "WMS", "WMTS"] |
+ * | layerTypes | Array | data types that could be imported : "KML", "GPX", "GeoJSON", "MapBox", "WMS" and "WMTS". Values will be displayed in the same order in widget list. Default is : ["KML", "GPX", "GeoJSON", "WMS", "WMTS"] |
  * | webServicesOptions | Object | Options to import WMS or WMTS layers |
  * | webServicesOptions.proxyUrl | String | Proxy URL to avoid cross-domain problems, if not already set in mapOptions. Mandatory to import WMS and WMTS layer. |
  * | webServicesOptions.noProxyDomains | Array(String) | Proxy will not be used for this list of domain names. Only use if you know what you're doing (if not already set in mapOptions) |
@@ -642,10 +652,12 @@ var layerOptions = {
  * | defaultStyles.GeoJSON.strokeOpacity | Number | Stroke opacity for GeoJSON lines styling (alpha value between 0:transparent and 1:opaque). Default is 0.8 |
  * | defaultStyles.GeoJSON.polyFillColor | String | GeoJSON polygons fill color (RGB hex value). Default is "#00B798" |
  * | defaultStyles.GeoJSON.polyFillOpacity | Number | GeoJSON polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5 |
+ * | defaultStyles.MapBox | Object | Styles to apply by default to imported MapBox layers |
  *
  * <a id="length"></a>
  *
  * ### Options for "length" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -670,6 +682,7 @@ var layerOptions = {
  * <a id="area"></a>
  *
  * ### Options for "area" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -696,6 +709,7 @@ var layerOptions = {
  * <a id="azimuth"></a>
  *
  * ### Options for "azimuth" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -720,6 +734,7 @@ var layerOptions = {
  * <a id="elevationpath"></a>
  *
  * ### Options for "elevationpath" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -753,6 +768,7 @@ var layerOptions = {
  * <a id="searchctrl"></a>
  *
  * ### Options for "search" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -763,13 +779,14 @@ var layerOptions = {
  * | resources.geocode | Array(String) | resources geocoding, by default : ["PositionOfInterest", "StreetAddress"] |
  * | resources.autocomplete | Array(String) | resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"] |
  * | displayAdvancedSearch | Boolean | True to display advanced search tools. Default is false (not displayed) |
- * | advancedSearch | Object | advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~geocode) |
- * | geocodeOptions | Object | options of geocode service (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~geocode) |
- * | autocompleteOptions | Object | options of autocomplete service (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete) |
+ * | advancedSearch | Object | advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
+ * | geocodeOptions | Object | options of geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
+ * | autocompleteOptions | Object | options of autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete) |
  *
  * <a id="reversesearch"></a>
  *
  * ### Options for "reversesearch" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -779,11 +796,12 @@ var layerOptions = {
  * | resources | Array(String) | resources geocoding, by default : ["PositionOfInterest", "StreetAddress"] |
  * | displayAdvancedSearch | Boolean | False to disable advanced search tools (it will not be displayed). Default is true (displayed) |
  * | delimitations | Array(String) | delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list. |
- * | reverseGeocodeOptions | Object | reverse geocode service options. see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~reverseGeocode to know all reverse geocode options. |
+ * | reverseGeocodeOptions | Object | reverse geocode service options. see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~reverseGeocode to know all reverse geocode options. |
  *
  * <a id="drawing"></a>
  *
  * ### Options for "drawing" control
+ *
  * **Specific 2D options**
  *
  * | property | Type | Description |
@@ -837,7 +855,8 @@ var layerOptions = {
  * <a id="attributions"></a>
  *
  * ### Options for "attributions" control
- * ** Common 2D/3D options**
+ *
+ * **Common 2D/3D options**
  *
  * | property | Type | Description |
  * | - | - | - |
@@ -847,6 +866,7 @@ var layerOptions = {
  *
  * @namespace
  * @alias Gp.ControlOptions
+ * @todo finish description for tile vector format (layerimport control)
  *
  */
 var controlOptions = {
@@ -865,7 +885,6 @@ var controlOptions = {
 * | strokeOpacity | Number | Stroke opacity for lines or polygons border styling (alpha value between 0:transparent and 1:opaque). Default is 0.8. |
 * | polyFillColor | String | Polygons fill color (RGB hex value). Default is "#00B798". |
 * | polyFillOpacity | Number | Polygons fill opacity (alpha value between 0:transparent and 1:opaque). Default is 0.5. |
-*
 *
 * **Specific 2D properties**
 *

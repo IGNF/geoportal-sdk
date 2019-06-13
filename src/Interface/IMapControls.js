@@ -66,6 +66,7 @@ IMap.prototype._hexToRgba = function (hex, opacity) {
 /**
  * Returns the current control options. If controlIds is precised, returns just the options of the controls listed. If controlIds = null, returns the options of all the map's controls.<br/>
  *
+ * @alias Gp.Map.getControlsOptions
  * @param {Array.<String> | null} controlIds - A list of control's id or null.
  * @returns {Object} - The options of the map's controls : Associative Array, mapping given controls Ids with their {@link Gp.ControlOptions} properties.
  */
@@ -94,9 +95,10 @@ IMap.prototype.getControlsOptions = function (controlIds) {
 
 /**
  * Returns underlying implementation of the control identified by controlId. Can be :
- * - an [ol.control.Control](http://openlayers.org/en/latest/apidoc/ol.control.Control.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
+ * - an [ol.control.Control](https://openlayers.org/en/latest/apidoc/module-ol_control_Control-Control.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
  * - an [itowns.control.Widget](https://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/itowns.control.Widget.html) subclass with current OpenLayers 3 implementation if the current map is in 2D.
  *
+ * @alias Gp.Map.getLibMapControl
  * @param {String} controlId - identifier of the control
  * @returns {Object} - implementation object of the control if it is on the map. null otherwise.
  */
@@ -109,8 +111,8 @@ IMap.prototype.getLibMapControl = function (controlId) {
 /**
  * Add the list of controls to the map
  *
+ * @alias Gp.Map.addControls
  * @param {Object} controlsOptions - Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}).
- *
  *
  * **Common 2D/3D controls :**
  *
@@ -263,6 +265,7 @@ IMap.prototype.addControls = function (controlsOptions) {
 /**
  * Removes given controls from the map.
  *
+ * @alias Gp.Map.removeControls
  * @param {Array.<String>} controlIds - A list of control's id to be removed.
  */
 IMap.prototype.removeControls = function (controlIds) {
@@ -272,6 +275,7 @@ IMap.prototype.removeControls = function (controlIds) {
 /**
  * Modify the control'options listed to the map
  *
+ * @alias Gp.Map.modifyControls
  * @param {Object} controlsOptions - Controls to modify on the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See [Gp.Map.addControls()](Gp.Map.html#addControls) for availables controls keys.
  */
 IMap.prototype.modifyControls = function (controlsOptions) {
@@ -392,8 +396,8 @@ IMap.prototype.addMousePositionControl = function (controlOpts) {};
  * @param {Boolean} controlOpts.exclusions.bridge - proposing bridge exclusion. If true, this exclusion will be checked by default.
  * @param {Boolean} controlOpts.exclusions.tunnel - proposing tunnel exclusion. If true, this exclusion will be checked by default.
  * @param {Array.<String>} controlOpts.graphs - available graphs to be proposed by control among "Pieton" (pedestrian) and "Voiture" (car). The first element of the array will be the default proposition of the control.
- * @param {Object} controlOpts.routeOptions - route service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~route Gp.Services.route()} to know all route options.
- * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
+ * @param {Object} controlOpts.routeOptions - route service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~route Gp.Services.route()} to know all route options.
+ * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
  * @private
  */
 IMap.prototype.addRouteControl = function (controlOpts) {};
@@ -411,8 +415,8 @@ IMap.prototype.addRouteControl = function (controlOpts) {};
  * @param {Array.<String>} controlOpts.graphs - available graphs to be proposed by control among "Pieton" (pedestrian) and "Voiture" (car). The first element of the array will be the default proposition of the control.
  * @param {Array.<String>} controlOpts.methods - available methods of computation to be proposed by control among "time" (isochron) and "distance" (isodistance). The first element of the array will be the default proposition of the control.
  * @param {Array.<String>} controlOpts.directions - available directions to be proposed by control among "arrival" (isocurve to arrival point) and "departure" (isocruve from departure point). The first element of the array will be the default proposition of the control.
- * @param {Object} controlOpts.isocurveOptions - isocurve service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options.
- * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
+ * @param {Object} controlOpts.isocurveOptions - isocurve service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options.
+ * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
  * @private
  */
 IMap.prototype.addIsocurveControl = function (controlOpts) {};
@@ -580,6 +584,7 @@ IMap.prototype.addGetFeatureInfoControl = function (controlOpts) {};
 /**
  * Gets Layer Container div ID for a given layerId.
  *
+ * @alias Gp.Map.getLSLayerContainerDivId
  * @param {String} layerId - layer identifier
  * @returns {String} - Layer Container div Id in the LayerSwitcher
  */

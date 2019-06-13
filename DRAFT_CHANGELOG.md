@@ -27,12 +27,15 @@
     - Ajout du package *ol-mapbox-style* en version 4.2.1
     - Ajout de l'import de couche au format *vecteur tuilé* (MapBox)
     - Description de la variable globale **Gp** dans la jsdoc
+    - Ajout des options natives pour le controle *Graticule* (ex. showLabels)
 
 * [Deprecated]
 
     - [dev-workflow] protocole HTTPS : ne plus executer les exemples sur un serveur en HTTP !
 
 * [Removed]
+
+    - suppression des liens sur 'http://depot.ign.fr/' dans la jsdoc
 
 * [Fixed]
 

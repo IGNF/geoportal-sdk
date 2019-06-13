@@ -29,7 +29,7 @@ OlMap.prototype.getCenter = function () {
  * Returns the current bounding box of the map in the current projection.
  *
  * @param {String} [projection=map projection] - Coordinate Reference System of returned extent.
- * @returns {Gp.BBox} - The current map's extent.
+ * @returns {Object} - The current map's extent.
  */
 OlMap.prototype.getViewExtent = function (projection) {
     var bbox = {};

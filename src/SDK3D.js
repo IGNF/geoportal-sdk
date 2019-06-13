@@ -81,30 +81,76 @@ function deepCopy (source, target) {
 
 // ol extended + Services + Outils
 export {
+    /** Services
+    * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Services.html|geoportal-access-lib}
+    */
     Services,
+    /** Error
+     * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/Gp.Error.html|geoportal-access-lib}
+     */
     Error,
+    /** Helper
+     * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Helper.html|geoportal-access-lib}
+     */
     Helper,
+    /** Protocols
+     * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-XHR.html|geoportal-access-lib}
+     */
     Protocols,
-    servicesDate, servicesVersion,
+    /** servicesDate
+     * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Gp.html|geoportal-access-lib}
+     */
+    servicesDate,
+    /** servicesVersion
+     * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Gp.html|geoportal-access-lib}
+     */
+    servicesVersion,
+    /**
+     * @see {@link http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/module-LayerUtils.html|Layers utils}
+     */
     LayerUtils,
+    /**
+     * @see {@link http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/module-ProxyUtils.html|Proxy utils}
+     */
     ProxyUtils,
+    /**
+     * @see {@link http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/module-ColorUtils.html|Color utils}
+     */
     ColorUtils,
+    /**
+     * @see {@link http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/module-MathUtils.html|Math utils}
+     */
     MathUtils,
-    olUtils, olExtVersion, olExtDate,
+    /**
+     * @see {@link http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/module-Utils.html|Openlayers utils}
+     */
+    olUtils,
+    /** Version : geoportal extensions openlayers */
+    olExtVersion,
+    /** Publication date : geoportal extensions openlayers */
+    olExtDate,
+    /** Expose extensions openlayers extended */
     olExtended
 } from "geoportal-extensions-openlayers";
 
 // itowns extended
 export {
-    itownsExtVersion, itownsExtDate,
+    /** Version : geoportal extensions itowns */
+    itownsExtVersion,
+    /** Publication date : geoportal extensions itowns */
+    itownsExtDate,
+    /** Expose extensions itowns extended */
     itownsExtended
 } from "geoportal-extensions-itowns";
 
 MapLoader.__class2d = OlMap;
 MapLoader.__class3d = ItMap;
+/** Geoportal Map loader */
 export { MapLoader as Map };
 
+/** Version */
 export const sdkVersion = Pkg.SDK3DVersion;
+/** Publication date */
 export const sdkDate = Pkg.date;
 
 // fusion des fonctionnalités openlayers

@@ -3,7 +3,7 @@ import Logger from "./LoggerByDefault";
 /**
  * Geoportal map loader.
  *
- * Provide convenience method to create a Map (instance of {@link Gp.Map}) and attach it to a HTML element.
+ * Provide convenience method to create a Map and attach it to a HTML element.
  *
  * @module
  * @alias Gp.Map.load()
@@ -30,7 +30,7 @@ var MapLoader = {
      *              }
      *          }
      *      );
-     * @returns {Gp.Map} _ The Geoportal map.
+     * @returns {Gp.Map} - The Geoportal map.
      */
     load : function (div, mapOptions) {
         var logger = Logger.getLogger("MapLoader.load");

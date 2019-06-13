@@ -225,7 +225,7 @@ OlMap.prototype.addGraphicScaleControl = function (controlOpts) {
 /**
  * Adds graticule control to the map.
  *
- * @param {Object} controlOpts - control options
+ * @param {Object} controlOpts - control options (other native options for Graticule Control (see https://openlayers.org/en/latest/apidoc/module-ol_Graticule-Graticule.html))
  * @param {String} controlOpts.strokeColor - stroke color expressed in hex format (default : #000000)
  * @param {Number} controlOpts.strokeOpacity - stroke opacity expressed between 0 and 1 (default : 0.2).
  * @param {Number} controlOpts.strokeWidth - stroke width expressed in pixels (default : 1).
@@ -233,17 +233,22 @@ OlMap.prototype.addGraphicScaleControl = function (controlOpts) {
  * @return {Ol.Graticule} graticule
  */
 OlMap.prototype.addGraticuleControl = function (controlOpts) {
+    // TODO options redefined by default : lonLabelStyle & latLabelStyle
     var options = controlOpts || {};
-    options.strokeColor = options.strokeColor || "#000000";
-    options.strokeOpacity = options.strokeOpacity || 0.2;
-    options.strokeWidth = options.strokeWidth || 1;
-    var rgba = IMap.prototype._hexToRgba.call(this, options.strokeColor, options.strokeOpacity);
-    var graticule = new Graticule({
-        strokeStyle : new StrokeStyle({
+    // it's an openlayers component, and this control also takes all the native options
+    // "strokeStyle", detail of this option but redefined by default
+    if (!options.strokeStyle) {
+        options.strokeColor = options.strokeColor || "#000000";
+        options.strokeOpacity = options.strokeOpacity || 0.2;
+        options.strokeWidth = options.strokeWidth || 1;
+        var rgba = IMap.prototype._hexToRgba.call(this, options.strokeColor, options.strokeOpacity);
+        options.strokeStyle = new StrokeStyle({
             color : rgba,
             width : options.strokeWidth
-        })
-    });
+        });
+    }
+
+    var graticule = new Graticule(options);
     graticule.setMap(this.libMap);
     // ajout sauvage du graticule pour pouvoir le recuperer après
     // FIXME : trouver plus elegant...
@@ -333,9 +338,9 @@ OlMap.prototype.addMousePositionControl = function (controlOpts) {
  * @param {Array.<String>} controlOpts.graphs - available graphs to be proposed by control among "Pieton" (pedestrian) and "Voiture" (car). The first element of the array will be the default proposition of the control.
  * @param {Object} controlOpts.markersOpts - options to use your own markers. Object properties can be "departure", "stages" or "arrival". Corresponding value is an object with following properties :
  * @param {String} controlOpts.markersOpts[property].url - marker base64 encoded url (ex "data:image/png;base64, ...""). Mandatory for a custom marker
- * @param {Array} controlOpts.markersOpts[property].offset - Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see http://openlayers.org/en/latest/apidoc/ol.Overlay.html)
- * @param {Object} controlOpts.routeOptions - route service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~route Gp.Services.route()} to know all route options.
- * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
+ * @param {Array} controlOpts.markersOpts[property].offset - Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see https://openlayers.org/en/latest/apidoc/module-ol_Overlay-Overlay.html)
+ * @param {Object} controlOpts.routeOptions - route service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~route Gp.Services.route()} to know all route options.
+ * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
  *
  * @return {Ol.control.Route} control
  */
@@ -389,9 +394,9 @@ OlMap.prototype.addRouteControl = function (controlOpts) {
  * @param {Array.<String>} controlOpts.directions - available directions to be proposed by control among "arrival" (isocurve to arrival point) and "departure" (isocruve from departure point). The first element of the array will be the default proposition of the control.
  * @param {Object} controlOpts.markerOpts - options to use your own marker. Default is a lightOrange marker.
  * @param {String} controlOpts.markerOpts.url - marker base64 encoded url (ex "data:image/png;base64, ...""). Mandatory for a custom marker
- * @param {Array} controlOpts.markerOpts.offset - Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see http://openlayers.org/en/latest/apidoc/ol.Overlay.html)
- * @param {Object} controlOpts.isocurveOptions - isocurve service options. For advanced use only. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options.
- * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
+ * @param {Array} controlOpts.markerOpts.offset - Offsets in pixels used when positioning the overlay. The first element in the array is the horizontal offset. A positive value shifts the overlay right. The second element in the array is the vertical offset. A positive value shifts the overlay down. Default is [0, 0]. (see https://openlayers.org/en/latest/apidoc/module-ol_Overlay-Overlay.html)
+ * @param {Object} controlOpts.isocurveOptions - isocurve service options. For advanced use only. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~isocurve Gp.Services.isocurve()} to know all isocurve options.
+ * @param {Object} controlOpts.autocompleteOptions - autocomplete service options. See {@link https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete Gp.Services.autoComplete()} to know all autocomplete options.
  *
  * @return {Ol.control.Isocurve} control
  */
@@ -895,9 +900,9 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
  * @param {Array.<String>} controlOpts.resources.geocode - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
  * @param {Array.<String>} controlOpts.resources.autocomplete - resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"]
  * @param {Boolean} [controlOpts.displayAdvancedSearch = false] - True to display advanced search tools. Default is false (not displayed)
- * @param {Object} controlOpts.advancedSearch - advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~geocode)
- * @param {Object} [controlOpts.geocodeOptions = {}] - options of geocode service (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~geocode)
- * @param {Object} [controlOpts.autocompleteOptions = {}] - options of autocomplete service (see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~autoComplete)
+ * @param {Object} controlOpts.advancedSearch - advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
+ * @param {Object} [controlOpts.geocodeOptions = {}] - options of geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
+ * @param {Object} [controlOpts.autocompleteOptions = {}] - options of autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete)
  *
  * @return {Ol.control.SearchEngine} control
  */
@@ -945,7 +950,7 @@ OlMap.prototype.addSearchControl = function (controlOpts) {
  * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
  * @param {Array.<String>} controlOpts.resources - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
  * @param {Array.<String>} controlOpts.delimitations - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
- * @param {Object} [controlOpts.reverseGeocodeOptions = {}] - reverse geocode service options. see http://depot.ign.fr/geoportail/bibacces/develop/doc/module-Services.html#~reverseGeocode to know all reverse geocode options.
+ * @param {Object} [controlOpts.reverseGeocodeOptions = {}] - reverse geocode service options. see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~reverseGeocode to know all reverse geocode options.
  *
  * @return {Ol.control.ReverseGeocode} control
  */
@@ -1357,7 +1362,7 @@ OlMap.prototype._addMarkers = function (markersOptions) {
             // by default : autoPan true
             mo.autoPanOptions = {
                 autoPan : IMap.DEFAULT_AUTOPAN_OPTIONS.autoPan,
-                // properties of autoPanAnimation : https://openlayers.org/en/latest/apidoc/olx.html#.OverlayPanOptions
+                // properties of autoPanAnimation : https://openlayers.org/en/latest/apidoc/module-ol_Overlay.html#~PanOptions
                 autoPanAnimation : {
                     duration : IMap.DEFAULT_AUTOPAN_OPTIONS.duration
                 },

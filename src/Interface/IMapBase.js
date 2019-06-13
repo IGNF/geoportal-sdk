@@ -395,11 +395,10 @@ IMap.prototype = {
     /**
      * ajoute un proxy aux url des couches vecteurs si besoin.
      *
+     * @alias Gp.Map.setProxy
      * @param {String} url - url
      *
-     * @return {String} proxified url
-     *
-     * @private
+     * @returns {String} - proxified url
      */
     setProxy : function (url) {
         return ProxyUtils.proxifyUrl(url, this.mapOptions);
@@ -408,8 +407,8 @@ IMap.prototype = {
     /**
      * Returns the current viewing mode (either 2D or 3d).
      *
+     * @alias Gp.Map.getViewMode
      * @returns {String} - The current viewing mode
-     * @private
      */
     getViewMode : function () {
         return this.mapOptions.viewMode;
@@ -417,10 +416,11 @@ IMap.prototype = {
 
     /**
      * Returns wrapped map object implemented by the underlying library. Can be :
-     * - an [ol.Map](http://openlayers.org/en/latest/apidoc/ol.Map.html) object with current OpenLayers 3 implementation if the current map is in 2D.
-     * - an [Itowns.GlobeView](https://www.itowns-project.org/itowns/API_Doc/GlobeView.html) object, ie the iTowns GlobeView object overloaded by Geoportal Extension for iTowns, if the current map is in 3D.
+     * - an [ol.Map](https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html) object with current OpenLayers 3 implementation if the current map is in 2D.
+     * - an [Itowns.GlobeView](http://www.itowns-project.org/itowns/docs/#api/View/GlobeView) object, ie the iTowns GlobeView object overloaded by Geoportal Extension for iTowns, if the current map is in 3D.
      *
-     * @returns {Object} wrapped map object.
+     * @alias Gp.Map.getLibMap
+     * @returns {Object} - wrapped map object.
      */
     getLibMap : function () {
         // TO BE OVERRIDDEN

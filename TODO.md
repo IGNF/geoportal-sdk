@@ -79,9 +79,11 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [ ] **PROGRESS** integration du SDK dans le portail..
 
-    - *FIXME* il faut charger les SRS étendues pour le controle MousePosition...
-    - *FIXME* warning et exceptions sur la 3D non bloquantes
-    - *FIXME* bug du tilt 3D
+    - **FIXME** il faut charger les SRS étendues pour le controle MousePosition...
+        > Gp.olExtended.includeProjections()
+
+    - **FIXME** warning et exceptions sur la 3D non bloquantes
+    - **FIXME** bug du tilt 3D
 
 * [x] **FAIT** dependances des projets geoportal-extensions-* dans webpack
 
@@ -119,11 +121,18 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [x] **FAIT** jsdoc pour la variable globale Gp / exports
 
+* [ ] **TODO** jsdoc pour l'outil importlayer du format MapBox (ex. defaultstyle)
+
+    ```text
+    les options 'tools' sur l'edition des filtres, scales & styles sont elles à mettre en place dans le SDK ? Definies par defaut ?
+    idem pour l'édition ?
+    ```
+
+* [ ] **TODO** jsdoc pour la couche de type MapBox
+
 * [x] **FAIT** TOC dans les README
 
-* [ ] capture d'ecran dans les README ?
-
-* [x] rubrique howto (ex. publication des releases)
+* [x] **FAIT** rubrique howto (ex. publication des releases)
 
 ## BUG 2D
 
@@ -350,15 +359,81 @@ x└── page-wmts-restful-bundle-map.html
 
 └── page-zoomInOut-bundle-map.html
 
-# EVOL
+## EVOL
 
-- [ ] **PROGRESS** implementer l'option *queryable* pour le vecteur :
-le widget *getfeatureinfo* fait le boulot de requeter les features.
-sans ce widget, impossible de requeter le vecteur !
-avec ce widget, il est possible via l'option *queryable* de la couche de modifier
-le comportement par defaut du widget (false, no request !)
-donc attention :
-    si le widget est desactivé ou non instancié sur la carte, qqsoit l'option
-    queryable de la couche, pas de requetage des features !!!
+- [x] options pour le Graticule (ex. intervals & showLabels & ...)
+
+- [ ] implementer l'option *queryable* pour le vecteur tuilé :
+
+    ```text
+    le widget *getfeatureinfo* fait le boulot de requeter les features.
+    sans ce widget, impossible de requeter le vecteur !
+    avec ce widget, il est possible via l'option *queryable* de la couche de modifier
+    le comportement par defaut du widget (false, no request !)
+    donc attention :
+        si le widget est desactivé ou non instancié sur la carte, qqsoit l'option
+        queryable de la couche, pas de requetage des features !!!
+    ```
 
 - [ ] implementer le format MapBox dans la 3D
+
+- [ ] se conformer au CCTP sur l'implementation des options du vecteur tuilé :
+
+    ```text
+    ce que dit le CCTP sur les options du format vecteur tuilé  :
+        Format, 
+        UrlService, 
+        OutputFormat,
+        Projection, 
+        Queryable,
+        Name, DefaultThemeDescription, Url, QuicklookUrl,
+        Themes : [Name, DefaultThemeDescription, Url, QuicklookUrl]
+        Filters : [PropertyName, FilterName]
+    ```
+
+    ```text
+    ce qui est implementer pour le moment :
+        [ ] Format,
+            opts:format
+            valeurs : "MapBox" ou "MAPBOX" ou "mapbox"
+            > gerer les differentes casses ! 
+
+        [ ] UrlService,
+            opts:urlService
+            attention, ce n'est pas l'opts commune "url" : opts:url = style !
+            ```
+            si opts:url existe
+                si opts:urlService renseignée
+                    surcharger le fichier de styles
+                appliquer les styles
+            sinon
+                appliquer opts:stylesDefault
+            ```
+            > implementation à faire...
+
+        [ ] OutputFormat,
+            comment l'utiliser sur un service vecteur tuilé ???
+            opts:outputFormat
+            valeur : application/x-protobuf
+
+        [ ] Projection, 
+            comment l'utiliser sur un service vecteur tuilé ???
+            opts:projection
+
+        [ ] Queryable,
+            opts:queryable
+            option est dependante du controle GFI
+
+        [ ] Name, DefaultThemeDescription, Url, QuicklookUrl,
+            > revoir l'implementation : opts:style === opts:url !!!
+            > implementer opts:name, opts:description, opts:quicklookurl
+            attention, il existe une option quicklookurl pour l'image dans le LS !!!
+
+        [ ] Themes : [Name, DefaultThemeDescription, Url, QuicklookUrl]
+            > revoir l'implementation des noms :
+            [{image, label, desc, style}] -> [{QuicklookUrl, Name, DefaultThemeDescription, Url}]
+
+        [ ] Filters : [PropertyName, FilterName]
+            > revoir l'implementation :
+            [[]] -> [{PropertyName, FilterName, Options}]
+    ```

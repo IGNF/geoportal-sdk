@@ -948,7 +948,7 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
     var LayerClass = null;
     switch (layerOpts.format.toUpperCase()) {
         case "MAPBOX" :
-            this.logger.error("[_addGeoportalLayer] : not yet implemented !");
+            this.logger.warn("[_addGeoportalLayer] : Layer 'MapBox' not yet implemented !");
             break;
         case "WMTS" :
             LayerClass = Ol.layer.GeoportalWMTS;

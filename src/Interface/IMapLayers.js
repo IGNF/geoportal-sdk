@@ -112,6 +112,7 @@ IMap.prototype.getLayersOptions = function (layerIds) {
  * The properties associated to each ID are given as {@link Gp.LayerOptions} objects.<br/>
  * For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} object with properties you want to overide or an empty object if you don't want to overide anything.
  *
+ * @alias Gp.Map.addLayers
  * @param {Object} layersOptions - Layers to add to the map and their options. Associative array mapping ids of layers to add (keys) and their properties (values given as {@link Gp.LayerOptions}).
  */
 IMap.prototype.addLayers = function (layersOptions) {
@@ -168,7 +169,8 @@ IMap.prototype.addLayers = function (layersOptions) {
             }
             // ... puis MAPBOX GEOPORTAIL
             if (format == null || format.toUpperCase() === "MAPBOX") {
-                // FIXME statuer sur le formalisme du nom de la couche !
+                this.logger.warn("[IMap] addLayers : Format 'MapBox' not yet implemented !");
+                // FIXME statuer sur le formalisme du nom de la couche interne !
                 layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:MAPBOX");
                 if (layerConf) {
                     format = "MAPBOX";
@@ -241,6 +243,7 @@ IMap.prototype.addLayers = function (layersOptions) {
 /**
  * Remove layers from the map.
  *
+ * @alias Gp.Map.removeLayers
  * @param {Array.<String>} layerIds - A list of layer's id to be removed.
  * @returns {Boolean} - true if OK, false otherwise.
  */
@@ -258,8 +261,8 @@ IMap.prototype.removeLayers = function (layerIds) {
 /**
  * Modify the layers given with layersOptions parameter
  *
+ * @alias Gp.Map.modifyLayers
  * @param {Object} layersOptions - Layers to modify and their options. Associative array mapping official name of the Geoportal layer or the id of a personal layer (keys) with their properties (values given as {@link Gp.LayerOptions}). Only following options are modified : opacity, visibility, maxZoom and minZoom.
- *
  * @return {Boolean} indicates if the le parameter layersOptions has the correct format
  */
 IMap.prototype.modifyLayers = function (layersOptions) {
@@ -383,6 +386,9 @@ IMap.prototype._checkLayerParams = function (layerOpts) {
             if (!layerOpts.hasOwnProperty("typeNames") || typeof layerOpts.typeNames !== "string") {
                 missingParams.push("typeNames");
             }
+            break;
+        case "MAPBOX":
+            // TODO y'a t-il des options obligatoires (autre que url) ?
             break;
     }
     if (missingParams.length > 0) {

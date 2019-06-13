@@ -1,0 +1,62 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Graticule Control Option</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Ajout d'une carte avec Gp.Map.load() et l'ensemble des options possibles pour le controle Graticule </h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+<script>
+        var textStyle = new ol.style.Text({
+            font: '10px Calibri,sans-serif',
+            textBaseline: 'bottom',
+            fill: new ol.style.Fill({
+                color: 'rgba(0,0,0,1)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,255,255,1)',
+                width: 3,
+                opacity: 0.7
+            })
+        });
+        var map = Gp.Map.load('geoportalMap',{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            zoom : 12,
+            // proxyUrl : "{{ proxy }}?url=",
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                }
+            },
+            controlsOptions : {
+                graticule : {
+                    strokeWidth : 5,
+                    strokeOpacity : 0.7,
+                    strokeColor : "#ffffff",
+                    showLabels : true,
+                    lonLabelPosition:0,
+                    latLabelPosition:1,
+                    lonLabelStyle:textStyle,
+                    latLabelStyle:textStyle,
+                    // intervals:[90, 45, 30, 20, 10, 5, 2, 1]
+                },
+                layerSwitcher : {
+                    maximised : true
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

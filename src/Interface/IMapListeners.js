@@ -57,8 +57,7 @@ IMap.prototype.setSelectable = function (controlOpts) {};
  *
  * @param {String} eventId - The map's event listened. Possible values are :
  *
- *
- * ** Common 2D/3D events **
+ * **Common 2D/3D events**
  *
  * | eventId  | description |
  * |-|-|
@@ -71,13 +70,13 @@ IMap.prototype.setSelectable = function (controlOpts) {};
  * | azimuthChanged | fired when map orientation has changed. Callback function handles a {@link Gp.AzimuthChangedEvent} object |
  * | layerChanged | fired when map's layer(s) has changed someway. Callback function handles a {@link Gp.LayerChangedEvent} object |
  *
- * ** Specific 3D events **
+ * **Specific 3D events**
  *
  * | eventId  | description |
  * |-|-|
  * | tiltChanged | fired when map tilt has changed. Callback function handles a {@link Gp.TiltChangedEvent} object |
  *
- *
+ * @alias Gp.Map.listen
  * @param {Function} action - The function to execute when the event occures.
  * @param {Object} context - The object that will be used as "this" in the action function
  *
@@ -128,11 +127,12 @@ IMap.prototype.listen = function (eventId, action, context) {
 };
 
 /**
- * Cancels an event listening previousely set with [Gp.Map.listen()](Gp.Map.html#listen) method.
+ * Cancels an event listening previousely set with [Gp.Map.listen()](Gp.Map.html#.listen) method.
  *
+ * @alias Gp.Map.forget
  * @param {String} eventId - The map's event to forget. Possible values are :
  *
- * ** Common 2D/3D events **
+ * **Common 2D/3D events**
  *
  * | eventId  | description |
  * |-|-|
@@ -145,7 +145,7 @@ IMap.prototype.listen = function (eventId, action, context) {
  * | azimuthChanged | fired when map orientation has changed |
  * | layerChanged | fired when map's layer(s) has changed someway |
  *
- * ** Specific 3D events **
+ * **Specific 3D events**
  *
  * | eventId  | description |
  * |-|-|
