@@ -339,12 +339,20 @@ var autoPanOptions = {
  *
  * ### MapBox specific properties
  *
- * **Common 2D/3D properties**
+ * **Specific 2D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
+ * | urlService | String | - |
+ * | outputFormat | String | - |
+ * | projection | String | - |
+ * | url | String | - |
+ * | name | String | - |
+ * | thumbnail | String | - |
+ * | defaultThemeDescription | String | - |
  * | themes | {@link Gp.ThemesOptions} | options for layer styles |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
+ * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
@@ -405,7 +413,7 @@ var autoPanOptions = {
  *
  * @namespace
  * @alias Gp.LayerOptions
- * @todo finish description for tile vector layer
+ * @todo finish description for tile vector layer (MapBox)
  *
  */
 var layerOptions = {
@@ -906,17 +914,18 @@ var styleOptions = {
 
 /**
 *
-* Options for MapBox vector layers
+* Options for MapBox vector layers : Themes
 *
 * **Common 2D/3D properties**
 *
 * | property | Type | Description |
 * | - | - | - |
 * | description | String | - |
-* | styles | Array(Object) | - |
-* | styles.image | String | - |
-* | styles.label | String | - |
-* | styles.style | String | - |
+* | themes | Array(Object) | - |
+* | themes.name | String | - |
+* | themes.url | String | - |
+* | themes.thumbnail | String | - |
+* | themes.description | String | - |
 *
 * @namespace
 * @alias Gp.ThemesOptions
@@ -927,17 +936,17 @@ var themesOptions = {
 
 /**
 *
-* Options for MapBox vector layers
+* Options for MapBox vector layers : Filters
 *
 * **Common 2D/3D properties**
 *
 * | property | Type | Description |
 * | - | - | - |
 * | description | String | - |
-* | fields | Array(Array) | - |
-* | fields[] | String | field name of table or the field name with the table, eg "table.field" |
-* | fields[] | String | human description |
-* | fields[] | Boolean | configurable |
+* | filters | Array(Object) | - |
+* | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
+* | filters.filterName | String | human description |
+* | filters.configuration | Boolean | configurable |
 *
 * @namespace
 * @alias Gp.FiltersOptions

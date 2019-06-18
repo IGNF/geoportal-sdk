@@ -75,6 +75,7 @@ IMap.WMTSDEFAULTS = {
 /**
  * Returns the current layers options. If layerIds is precised, returns just the options of the layers listed. If layerIds = null, returns the options of all the map's layers.
  *
+ * @alias Gp.Map.getLayersOptions
  * @param {Array.<String> | null} layerIds - A list of layer's id or null.
  * @returns {Object} - The options of map's layers. Associative array mapping given layers ids with their {@link Gp.LayerOptions} properties.
  */
@@ -282,7 +283,6 @@ IMap.prototype.modifyLayers = function (layersOptions) {
  * Defautl options for WMTS layers
  *
  * @return {Object} wmts options
- *
  * @private
  */
 IMap.prototype._getWMTSDefaultOpts = function () {
@@ -359,7 +359,6 @@ IMap.prototype._addMarkers = function (markersOptions) {
  *
  * @param {Gp.LayerOptions} layerOpts - options of the layer
  * @returns {Boolean} true if parameters are OK, false otherwise
- *
  * @private
  */
 IMap.prototype._checkLayerParams = function (layerOpts) {
@@ -403,7 +402,6 @@ IMap.prototype._checkLayerParams = function (layerOpts) {
  *
  * @param {Object} layerObj - geoportalLayer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
- *
  * @private
  */
 IMap.prototype._addRasterLayer = function (layerObj) {
@@ -415,7 +413,6 @@ IMap.prototype._addRasterLayer = function (layerObj) {
  *
  * @param {Object} layerObj - geoportalLayer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
- *
  * @private
  */
 IMap.prototype._addVectorLayer = function (layerObj) {
@@ -427,7 +424,6 @@ IMap.prototype._addVectorLayer = function (layerObj) {
  *
  * @param {Object} layerObj - geoportalLayer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
- *
  * @private
  */
 IMap.prototype._addMapBoxLayer = function (layerObj) {
@@ -439,7 +435,6 @@ IMap.prototype._addMapBoxLayer = function (layerObj) {
  *
  * @param {Object} layerObj - geoportalLayer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
- *
  * @private
  */
 IMap.prototype._addGeoportalLayer = function (layerObj) {
@@ -452,7 +447,6 @@ IMap.prototype._addGeoportalLayer = function (layerObj) {
  *
  * @param {Gp.LayerOptions} layerOpts - options of the layer
  * @returns {Object} the modified implementation layer object
- *
  * @private
  */
 IMap.prototype._applyCommonLayerParams = function (layerOpts) {

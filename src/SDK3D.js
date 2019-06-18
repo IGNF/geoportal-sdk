@@ -64,7 +64,7 @@ var logger = Logger.getLogger("SDK3D");
 logger.log("Chargement SDK 3D...");
 
 function deepCopy (source, target) {
-    // Implementing Tail Call Elimination
+    // FIXME Implementing Tail Call Elimination
     function tce (source, target) {
         for (var prop in source) {
             if (source.hasOwnProperty(prop)) {

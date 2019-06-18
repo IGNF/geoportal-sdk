@@ -10,11 +10,12 @@ Cette branche est clonée sur [feature-mapbox] :
 
 > **INFO**
 Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
+**UPGRADE v2.9.0**
 
 ## Avancements & TODOLIST
 
 * [x] **OK** Migrer vers ol v5.3.0
-* [x] **OK** Migrer vers itowns v2.8.0
+* [x] **OK** Migrer vers itowns v2.8.0 = **UPGRADE EN v2.9.0**
 * [x] **OK** Migrer vers olms 4.2.1
 
 * [ ] **PROGRESS** Migrer vers webpack 4
@@ -133,6 +134,67 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 * [x] **FAIT** TOC dans les README
 
 * [x] **FAIT** rubrique howto (ex. publication des releases)
+
+* [ ] **PROGRESS** il faut se conformer au CCTP sur l'implementation des options du vecteur tuilé :
+
+    ```text
+    ce que dit le CCTP sur les options du format vecteur tuilé  :
+        Format,
+        UrlService,
+        OutputFormat,
+        Projection,
+        Queryable,
+        Name, DefaultThemeDescription, Url, QuicklookUrl,
+        Themes : [Name, DefaultThemeDescription, Url, QuicklookUrl]
+        Filters : [PropertyName, FilterName]
+    ```
+
+    ```text
+    ce qui est implementer pour le moment :
+        [ ] Format,
+            opts:format
+            valeurs : "MapBox" ou "MAPBOX" ou "mapbox"
+            > gerer les differentes casses !
+
+        [ ] UrlService,
+            opts:urlService
+            attention, ce n'est pas l'opts commune "url" : opts:url = style !
+            ```
+            si opts:url existe
+                si opts:urlService renseignée
+                    surcharger le fichier de styles
+                appliquer les styles
+            sinon
+                appliquer opts:stylesDefault
+            ```
+            > implementation à faire...
+
+        [ ] OutputFormat,
+            comment l'utiliser sur un service vecteur tuilé ???
+            opts:outputFormat
+            valeur : application/x-protobuf
+
+        [ ] Projection,
+            comment l'utiliser sur un service vecteur tuilé ???
+            opts:projection
+
+        [ ] Queryable,
+            opts:queryable
+            option est dependante du controle GFI
+
+        [ ] Name, DefaultThemeDescription (=>Description), Url, QuicklookUrl (=>Thumbnail),
+            > revoir l'implementation : opts:style === opts:url !!!
+            > implementer opts:name, opts:description, opts:thumbnail
+            attention, il existe une option quicklookurl pour l'image dans le LS !!!
+
+        [ ] Themes : [Name, DefaultThemeDescription (=>Description), Url, QuicklookUrl (=>Thumbnail)]
+            > revoir l'implementation des noms :
+            [{image, label, desc, style}] -> [{Thumbnail, Name, Description, Url}]
+
+        [ ] Filters : [PropertyName, FilterName]
+            > revoir l'implementation :
+            [[]] -> [{PropertyName, FilterName, Configuration?}]
+    ```
 
 ## BUG 2D
 
@@ -363,6 +425,8 @@ x└── page-wmts-restful-bundle-map.html
 
 - [x] options pour le Graticule (ex. intervals & showLabels & ...)
 
+- [ ] position dans le layerswitcher avec l'option position pour le vecteur tuilé !?
+
 - [ ] implementer l'option *queryable* pour le vecteur tuilé :
 
     ```text
@@ -377,63 +441,4 @@ x└── page-wmts-restful-bundle-map.html
 
 - [ ] implementer le format MapBox dans la 3D
 
-- [ ] se conformer au CCTP sur l'implementation des options du vecteur tuilé :
-
-    ```text
-    ce que dit le CCTP sur les options du format vecteur tuilé  :
-        Format, 
-        UrlService, 
-        OutputFormat,
-        Projection, 
-        Queryable,
-        Name, DefaultThemeDescription, Url, QuicklookUrl,
-        Themes : [Name, DefaultThemeDescription, Url, QuicklookUrl]
-        Filters : [PropertyName, FilterName]
-    ```
-
-    ```text
-    ce qui est implementer pour le moment :
-        [ ] Format,
-            opts:format
-            valeurs : "MapBox" ou "MAPBOX" ou "mapbox"
-            > gerer les differentes casses ! 
-
-        [ ] UrlService,
-            opts:urlService
-            attention, ce n'est pas l'opts commune "url" : opts:url = style !
-            ```
-            si opts:url existe
-                si opts:urlService renseignée
-                    surcharger le fichier de styles
-                appliquer les styles
-            sinon
-                appliquer opts:stylesDefault
-            ```
-            > implementation à faire...
-
-        [ ] OutputFormat,
-            comment l'utiliser sur un service vecteur tuilé ???
-            opts:outputFormat
-            valeur : application/x-protobuf
-
-        [ ] Projection, 
-            comment l'utiliser sur un service vecteur tuilé ???
-            opts:projection
-
-        [ ] Queryable,
-            opts:queryable
-            option est dependante du controle GFI
-
-        [ ] Name, DefaultThemeDescription, Url, QuicklookUrl,
-            > revoir l'implementation : opts:style === opts:url !!!
-            > implementer opts:name, opts:description, opts:quicklookurl
-            attention, il existe une option quicklookurl pour l'image dans le LS !!!
-
-        [ ] Themes : [Name, DefaultThemeDescription, Url, QuicklookUrl]
-            > revoir l'implementation des noms :
-            [{image, label, desc, style}] -> [{QuicklookUrl, Name, DefaultThemeDescription, Url}]
-
-        [ ] Filters : [PropertyName, FilterName]
-            > revoir l'implementation :
-            [[]] -> [{PropertyName, FilterName, Options}]
-    ```
+- [ ] implementer le flux Geoportal de type MapBox

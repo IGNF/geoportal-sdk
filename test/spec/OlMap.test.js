@@ -283,7 +283,26 @@ describe("-- Test OlMap --", function () {
 
     describe("-- Layers --", function() {
 
-        it('Layers are correctly added', function () {
+        it('Layers are correctly added', function (done) {
+
+            map.listen("mapLoaded", function callback() {
+                assert.ok(true);
+
+                var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
+
+                expect(layerOptions).to.be.an("Object");
+                expect(layerOptions).to.have.property("layerwms");
+                expect(layerOptions.layerwms).have.property("title");
+                expect(layerOptions.layerwms.title).to.equal("mylayerwms");
+
+                expect(layerOptions).have.property("layerwmts");
+                expect(layerOptions.layerwmts).have.property("title");
+                expect(layerOptions.layerwmts.title).to.equal("mylayerwmts");
+
+                map.forget( "mapLoaded", callback);
+                done();
+            });
+
             map.addLayers({
                 "layerwms" : {
                     title: "mylayerwms",
@@ -300,23 +319,22 @@ describe("-- Test OlMap --", function () {
                     styleName: "style"
                 }
             });
-
-            var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
-
-            expect(layerOptions).to.be.an("Object");
-            expect(layerOptions).to.have.property("layerwms");
-            expect(layerOptions.layerwms).have.property("title");
-            expect(layerOptions.layerwms.title).to.equal("mylayerwms");
-
-            expect(layerOptions).have.property("layerwmts");
-            expect(layerOptions.layerwmts).have.property("title");
-            expect(layerOptions.layerwmts.title).to.equal("mylayerwmts");
-
-            // test de l'ajout des couche dans openlayers
-            expect(map.getLibMap().getLayers().getLength()).to.equal(2);
         });
 
-        it('Layers are correctly removed', function () {
+        it('Layers are correctly removed', function (done) {
+
+            map.listen("mapLoaded", function callback() {
+                assert.ok(true);
+
+                var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
+                expect(layerOptions).to.be.an("Object");
+                expect(layerOptions).to.not.have.property("layerwms");
+                expect(layerOptions).to.not.have.property("layerwmts");
+
+                map.forget( "mapLoaded", callback);
+                done();
+            });
+            
             map.addLayers({
                 "layerwms" : {
                     title: "mylayerwms",
@@ -336,16 +354,32 @@ describe("-- Test OlMap --", function () {
 
             map.removeLayers(["layerwms", "layerwmts"]);
 
-            var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
-            expect(layerOptions).to.be.an("Object");
-            expect(layerOptions).to.not.have.property("layerwms");
-            expect(layerOptions).to.not.have.property("layerwmts");
-
-            // test de la suppression des couche dans openlayers
-            expect(map.getLibMap().getLayers().getLength()).to.equal(0);
         });
 
-        it('Layers are correctly modified', function () {
+        it('Layers are correctly modified', function (done) {
+
+            const opacityValue = 0.5;
+            const visibilityValue = false;
+            const positionValue = 2;
+            const minZoomValue = 5
+            const maxZoomValue = 17
+            const grayScaledValue = true;
+
+            map.listen("mapLoaded", function callback() {
+                assert.ok(true);
+
+                var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
+                expect(layerOptions.layerwms.opacity).to.equal(opacityValue);
+                expect(layerOptions.layerwms.visibility).to.equal(visibilityValue);
+                expect(layerOptions.layerwms.position).to.equal(positionValue);
+                expect(layerOptions.layerwms.minZoom).to.equal(minZoomValue);
+                expect(layerOptions.layerwms.maxZoom).to.equal(maxZoomValue);
+                expect(layerOptions.layerwms.grayScaled).to.equal(grayScaledValue);
+
+                map.forget( "mapLoaded", callback);
+                done();
+            });
+
             map.addLayers({
                 "layerwms" : {
                     title: "mylayerwms",
@@ -363,13 +397,6 @@ describe("-- Test OlMap --", function () {
                 }
             });
 
-            const opacityValue = 0.5;
-            const visibilityValue = false;
-            const positionValue = 2;
-            const minZoomValue = 5
-            const maxZoomValue = 17
-            const grayScaledValue = true;
-
             map.modifyLayers({
                 layerwms: {
                     opacity: opacityValue,
@@ -381,13 +408,6 @@ describe("-- Test OlMap --", function () {
                 }
             });
 
-            var layerOptions = map.getLayersOptions(["layerwms", "layerwmts"]);
-            expect(layerOptions.layerwms.opacity).to.equal(opacityValue);
-            expect(layerOptions.layerwms.visibility).to.equal(visibilityValue);
-            expect(layerOptions.layerwms.position).to.equal(positionValue);
-            expect(layerOptions.layerwms.minZoom).to.equal(minZoomValue);
-            expect(layerOptions.layerwms.maxZoom).to.equal(maxZoomValue);
-            expect(layerOptions.layerwms.grayScaled).to.equal(grayScaledValue);
         });
     });
 

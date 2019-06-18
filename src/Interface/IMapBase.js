@@ -301,9 +301,9 @@ IMap.prototype = {
                 onSuccess : function (configResponse) {
                     map._afterGetConfig(configResponse);
                 },
-                // fonction de rappel onSuccess
+                // fonction de rappel onFailure
                 onFailure : function (error) {
-                    this.logger.info(error);
+                    this.logger.error(error);
                     map._afterGetConfig(null);
                 }
             });

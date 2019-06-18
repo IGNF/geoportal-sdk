@@ -765,6 +765,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         return; // FIXME promise ?
                                     }
 
+                                    // FIXME gestion du zIndex si l'option position est renseignée !?
+
                                     // parametre à transmettre à la fonction auto-invoquée
                                     var params = {
                                         id : _glSourceId,
@@ -775,7 +777,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             visibility : layerOpts.visibility,
                                             queryable : layerOpts.queryable, // TODO !
                                             opacity : layerOpts.opacity,
-                                            position : layerOpts.position || 0, // FIXME !
+                                            position : layerOpts.position, // FIXME zIndex !
                                             url : layerOpts.url,
                                             format : layerOpts.format,
                                             themes : _themes,
@@ -948,6 +950,7 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
     var LayerClass = null;
     switch (layerOpts.format.toUpperCase()) {
         case "MAPBOX" :
+            // FIXME creation d'une instance Ol.layer.GeoportalVectorTile !?
             this.logger.warn("[_addGeoportalLayer] : Layer 'MapBox' not yet implemented !");
             break;
         case "WMTS" :
