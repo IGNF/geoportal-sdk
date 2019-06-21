@@ -141,6 +141,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
             // propriétés ajoutées par defaut
             expect(layerOptions.mapbox).have.property("opacity");
             expect(layerOptions.mapbox).have.property("visibility");
+            expect(layerOptions.mapbox).have.property("position");
             // propriétés metadonnées communes par défaut
             expect(layerOptions.mapbox).have.property("title");
             expect(layerOptions.mapbox).have.property("description");
@@ -158,6 +159,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
             expect(layerOptions.mapbox, "not yet implemented !").have.property("defaultThemeDescription");
             expect(layerOptions.mapbox, "not yet implemented !").have.property("queryable");
             // propriétés d'un theme
+            expect(layerOptions.mapbox).have.property("themesSummary");
             expect(layerOptions.mapbox).have.property("themes");
             expect(layerOptions.mapbox.themes, "not yet implemented !").to.deep.include({
                 thumbnail : "", 
@@ -166,6 +168,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
                 url : ""
             });
             // propriétés d'un filtre
+            expect(layerOptions.mapbox).have.property("filtersSummary");
             expect(layerOptions.mapbox).have.property("filters");
             expect(layerOptions.mapbox.filters, "not yet implemented !").to.deep.include({
                 propertyName : "", 
@@ -184,11 +187,14 @@ describe("-- Test vector tile with mapbox format json --", function() {
             "mapbox" : {
                 format: "MapBox",
                 urlService : "",
+                projection : "", // ???
+                outputFormat : "", // ???
+                thumbnail : "",
                 name : "", 
                 defaultThemeDescription : "", 
-                thumbnail : "",
                 url : "test/spec/mapbox/fixtures/mapbox.json",
                 queryable : true,
+                themesSummary : "",
                 themes : [
                     {
                         thumbnail : "", 
@@ -197,6 +203,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
                         url : ""
                     }
                 ],
+                filtersSummary : "",
                 filters : [
                     {
                         propertyName : "", 
@@ -206,6 +213,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
                 ],
                 opacity : 1,
                 visibility : true,
+                position : 0,
                 title : "",
                 description : "",
                 quicklookurl : "",

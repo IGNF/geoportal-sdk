@@ -521,6 +521,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
         // options
         var layerId = Object.keys(_layerObj)[0];
         var layerOpts = _layerObj[layerId];
+        // FIXME utilisation de cette méthode pour les options communes !
+        // self._applyCommonLayerParams(layerOpts);
 
         // url des styles
         // (proxification en fonction des options)
@@ -558,6 +560,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     var _originators = null;
                                     var _themes = null;
                                     var _filters = null;
+                                    var _position = null;
+                                    var _queryable = null;
 
                                     // on recherche si des informations sont disponibles
                                     // directement dans le fichier de style...
@@ -618,8 +622,17 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     _metadata = layerOpts.metadata;
                                     _legends = layerOpts.legends;
                                     _originators = layerOpts.originators;
-                                    _themes = layerOpts.themes; // FIXME url -> objet !
-                                    _filters = layerOpts.filters;
+                                    _position = layerOpts.position;
+                                    _queryable = (typeof layerOpts.queryable === "undefined") ? true : layerOpts.queryable;
+
+                                    // FIXME il est possible que les themes/filtres soient enregistrés sur une url
+                                    // vers un fichier json
+                                    if (Array.isArray(layerOpts.themes)) {
+                                        _themes = layerOpts.themes;
+                                    }
+                                    if (Array.isArray(layerOpts.filters)) {
+                                        _filters = layerOpts.filters;
+                                    }
 
                                     // source mapbox
                                     var _glSource = _glSources[_glSourceId];
@@ -655,9 +668,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
 
                                         if (_glTiles) {
                                             // service tuilé et/ou mapbox
-                                            vectorFormat = new MVT({ featureClass : RenderFeature });
+                                            vectorFormat = new MVT({
+                                                // dataProjection
+                                                // featureProjection
+                                                featureClass : RenderFeature
+                                            });
+                                            // cf. https://openlayers.org/en/latest/apidoc/module-ol_source_VectorTile-VectorTile.html
                                             vectorSource = new VectorTileSource({
                                                 attributions : _glSource.attribution,
+                                                // overlaps
+                                                // projection
                                                 format : vectorFormat,
                                                 tileGrid : olCreateXYZTileGrid({ // TODO scheme tms ?
                                                     extent : _glSource.bounds, // [minx, miny, maxx, maxy]
@@ -676,16 +696,20 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorLayer = new VectorTileLayer({
                                                 source : vectorSource,
                                                 visible : false,
-                                                // zIndex: 0, // FIXME gerer l'ordre sur des multisources ?
+                                                zIndex : _position, // FIXME gerer l'ordre sur des multisources ?
                                                 declutter : true // TODO utile ?
                                             });
                                             vectorLayer.id = _glSourceId;
                                         } else if (_glUrl) {
                                             // service avec un tilejson
-                                            vectorFormat = new MVT({ featureClass : RenderFeature });
+                                            vectorFormat = new MVT({
+                                                // dataProjection ?
+                                                // featureProjection ?
+                                                featureClass : RenderFeature
+                                            });
                                             vectorLayer = new VectorTileLayer({
                                                 visible : false,
-                                                // zIndex : 0
+                                                zIndex : _position,
                                                 declutter : true
                                             });
                                             vectorLayer.id = _glSourceId;
@@ -716,6 +740,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     vectorSource = new VectorTileSource({
                                                         attributions : vectorTileJson.getAttributions() || _tileJSONDoc.attribution,
                                                         format : vectorFormat,
+                                                        // overlaps ?
+                                                        // projection ?
                                                         tileGrid : olCreateXYZTileGrid({
                                                             extent : _glSource.bounds, // [minx, miny, maxx, maxy]
                                                             maxZoom : _tileJSONDoc.maxzoom || _glSource.maxzoom || 22,
@@ -741,9 +767,14 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // - cas avec une url relative ?
                                         var _glData = _glSource.data;
 
-                                        vectorFormat = new GeoJSON();
+                                        vectorFormat = new GeoJSON(
+                                            // dataProjection ?
+                                            // featureProjection ?
+                                        );
                                         vectorSource = new VectorTileSource({
                                             attributions : _glSource.attribution,
+                                            // overlaps ?
+                                            // projection ?
                                             format : vectorFormat,
                                             url : _glData
                                         });
@@ -756,7 +787,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         vectorLayer = new VectorTileLayer({
                                             source : vectorSource,
                                             visible : false,
-                                            // zIndex: 0, // FIXME gerer l'ordre sur des multisources ?
+                                            zIndex : _position, // FIXME gerer l'ordre sur des multisources ?
                                             declutter : true // TODO utile ?
                                         });
                                         vectorLayer.id = _glSourceId;
@@ -765,22 +796,28 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         return; // FIXME promise ?
                                     }
 
-                                    // FIXME gestion du zIndex si l'option position est renseignée !?
+                                    // FIXME gestion du zIndex (option position) sur du multi-source !?
+                                    // FIXME gestion de la projection
 
                                     // parametre à transmettre à la fonction auto-invoquée
                                     var params = {
                                         id : _glSourceId,
                                         styles : _glStyle,
                                         layer : vectorLayer,
-                                        // FIXME top pourri ! merge à faire...
+                                        // FIXME trop pourri !
                                         options : {
                                             visibility : layerOpts.visibility,
-                                            queryable : layerOpts.queryable, // TODO !
+                                            queryable : _queryable,
                                             opacity : layerOpts.opacity,
-                                            position : layerOpts.position, // FIXME zIndex !
+                                            position : _position,
                                             url : layerOpts.url,
+                                            defaultThemeName : layerOpts.defaultThemeName,
+                                            defaultThemeThumbnail : layerOpts.defaultThemeThumbnail,
+                                            defaultThemeDescription : layerOpts.defaultThemeDescription,
                                             format : layerOpts.format,
+                                            themesSummary : layerOpts.themesSummary,
                                             themes : _themes,
+                                            filtersSummary : layerOpts.filtersSummary,
                                             filters : _filters,
                                             title : _title,
                                             description : _description,
@@ -792,11 +829,12 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     };
                                     // fonction auto-invoquée
                                     (function (p) {
-                                        // TODO ajouter le style de type background !
+                                        // INFO faut il ajouter le style de type background ?
                                         // fonction de style de la couche
                                         var setStyle = function () {
                                             applyStyleOlms(p.layer, p.styles, p.id)
                                                 .then(function () {
+                                                    // gestion de la visibilité
                                                     var visibility = (typeof layerOpts.visibility === "undefined") ? true : layerOpts.visibility;
                                                     p.layer.setVisible(visibility);
                                                     p.layer.setOpacity(layerOpts.opacity || 1);
@@ -832,6 +870,44 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             setTimeout(function () {
                                                                 source.dispatchEvent("change");
                                                             }, 100);
+                                                        }
+                                                    }
+                                                })
+                                                .then(function () {
+                                                    // gestion du GFI
+                                                    // l'option 'queryable' ne fonctionne que si le controle GFI est
+                                                    // present sur la carte..., et actif !
+                                                    var GfiControl = self.getLibMapControl("GetFeatureInfo");
+                                                    if (GfiControl && GfiControl.isActive()) {
+                                                        var gfiLayers = GfiControl.getLayers();
+                                                        // par defaut, le controle GFI ne devrait pas ajouter pas les couches
+                                                        // vecteurs dans sa liste de couches requetables...
+                                                        // si on renseigne queryable:true, on doit ajouter cette couche de la liste...
+                                                        // mais, on verifie qu'elle n'exsite pas déjà !
+                                                        if (p.options.queryable === true) {
+                                                            var bfound = false;
+                                                            for (var i = 0; i < gfiLayers.length; i++) {
+                                                                if (gfiLayers[i].obj === p.layer) {
+                                                                    bfound = true;
+                                                                }
+                                                            }
+                                                            if (!bfound) {
+                                                                gfiLayers.push({
+                                                                    obj : p.layer,
+                                                                    event : "singleclick",
+                                                                    infoFormat : "" // peu importe !?
+                                                                });
+                                                            }
+                                                        }
+                                                        // si on renseigne queryable:false, on doit retirer cette couche de la liste...
+                                                        if (p.options.queryable === false) {
+                                                            var _layers = [];
+                                                            for (var ii = 0; ii < gfiLayers.length; ii++) {
+                                                                if (gfiLayers[ii].obj !== p.layer) {
+                                                                    _layers.push(gfiLayers[ii]);
+                                                                }
+                                                            }
+                                                            GfiControl.setLayers(_layers);
                                                         }
                                                     }
                                                 })
@@ -876,12 +952,18 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // ajout des differents themes de la couche
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
                                         // > layer.set("mapbox-themes")
-                                        p.layer.set("mapbox-themes", _themes);
+                                        p.layer.set("mapbox-themes", {
+                                            themesSummary : p.options.themesSummary,
+                                            themes : p.options.themes
+                                        });
 
                                         // ajout des differents filtres attributaires de la couche
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
                                         // > layer.set("mapbox-filters")
-                                        p.layer.set("mapbox-filters", _filters);
+                                        p.layer.set("mapbox-filters", {
+                                            filtersSummary : p.options.filtersSummary,
+                                            filters : p.options.filters
+                                        });
 
                                         // ajout du layer sur la carte
                                         map.addLayer(p.layer);

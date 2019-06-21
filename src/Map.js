@@ -350,7 +350,9 @@ var autoPanOptions = {
  * | name | String | - |
  * | thumbnail | String | - |
  * | defaultThemeDescription | String | - |
+ * | themesSummary | String | - |
  * | themes | {@link Gp.ThemesOptions} | options for layer styles |
+ * | filtersSummary | String | - |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  *
@@ -920,7 +922,6 @@ var styleOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | description | String | - |
 * | themes | Array(Object) | - |
 * | themes.name | String | - |
 * | themes.url | String | - |
@@ -942,7 +943,6 @@ var themesOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | description | String | - |
 * | filters | Array(Object) | - |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |

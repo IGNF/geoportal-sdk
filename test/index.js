@@ -5,8 +5,8 @@ if (module.hot) {
         true, // Skip recursive processing
         ///\.test.js$/ // Pick only files ending with .test.js
         ///OlMap\.test.js/
-        ///OlMapBox\.test.js/
-        /ItMap\.test.js/
+        /OlMapBox\.test.js/
+        ///ItMap\.test.js/
         ///SDK2D\.test.js/
         ///SDK3D\.test.js/
 

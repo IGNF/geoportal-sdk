@@ -33,7 +33,7 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
     | NEW | 2D  | 3D  |
     |-----|-----|-----|
     |prod | 1.9 |**3.0** |
-    |map  | **16**  | **24**  |
+    |map  | **16**  | **24**  | ???
     |src  | 6.1 | 8.7 |
 
     | OLD | 2D  | 3D  |
@@ -42,8 +42,8 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
     |map  | 7.8 | 8.5 |
     |src  | 2.9 | 3.2 |
 
-    > 3D : *FIXME* doublon des fichiers communs du DOM sur les extensions !?
-    > 3D : *FIXME* CSS sur les extensions openlayers ?
+    > 3D : **FIXME** doublon des fichiers communs du DOM sur les extensions !?
+    > 3D : **FIXME** CSS sur les extensions openlayers ?
 
     - [x]  Les commentaires et les copyright sont supprimés dans les css/js minifiées ! la migration vers webpack 4 ne semble pas resoudre le pb...
     > **OK** on fait le choix de ne pas supprimer les banners mais certaines sont en doublons...
@@ -51,13 +51,14 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
     - [x] en mode production, le bundle ne marche pas !?
     > **OK** on avait oublié de rendre externe la lib. itowns dans webpack...
 
-* [ ] Tests à jouer & à créer
+* [ ] **PROGRESS** Tests à jouer & à créer
     > npm run test:serve
 
     - [x] OlMAp
-    - [ ] ItMap : exceptions itowns...
+    - [ ] ItMap : **FIXME** exceptions itowns...
     - [x] SDK2D
-    - [ ] SDK3D : exceptions itowns...
+    - [ ] SDK3D : **FIXME** exceptions itowns...
+    - [ ] MabBox : ...
 
     cf. <https://github.com/iTowns/itowns/issues/1108>
 
@@ -80,11 +81,7 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
 * [ ] **PROGRESS** integration du SDK dans le portail..
 
-    - **FIXME** il faut charger les SRS étendues pour le controle MousePosition...
-        > Gp.olExtended.includeProjections()
-
-    - **FIXME** warning et exceptions sur la 3D non bloquantes
-    - **FIXME** bug du tilt 3D
+    cf. *BUG PORTAIL*
 
 * [x] **FAIT** dependances des projets geoportal-extensions-* dans webpack
 
@@ -129,7 +126,8 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
     idem pour l'édition ?
     ```
 
-* [ ] **TODO** jsdoc pour la couche de type MapBox
+* [ ] **TODO** jsdoc pour la couche de type MapBox : 
+    les clefs Ok mais il faut la description !
 
 * [x] **FAIT** TOC dans les README
 
@@ -151,14 +149,14 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 
     ```text
     ce qui est implementer pour le moment :
-        [ ] Format,
+        [x] Format,
             opts:format
             valeurs : "MapBox" ou "MAPBOX" ou "mapbox"
             > gerer les differentes casses !
 
         [ ] UrlService,
             opts:urlService
-            attention, ce n'est pas l'opts commune "url" : opts:url = style !
+            attention, ceci ne surcharge pas l'opts:url mais les urls des services contenues dans le style !
             ```
             si opts:url existe
                 si opts:urlService renseignée
@@ -175,25 +173,27 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
             valeur : application/x-protobuf
 
         [ ] Projection,
-            comment l'utiliser sur un service vecteur tuilé ???
+            il est possible de l'appliquer au format et source...
             opts:projection
 
-        [ ] Queryable,
+        [x] Queryable,
             opts:queryable
             option est dependante du controle GFI
 
-        [ ] Name, DefaultThemeDescription (=>Description), Url, QuicklookUrl (=>Thumbnail),
-            > revoir l'implementation : opts:style === opts:url !!!
+        [ ] Name, DefaultThemeDescription, Url, QuicklookUrl (=>Thumbnail),
+            > revoir l'implementation du style par defaut...
             > implementer opts:name, opts:description, opts:thumbnail
             attention, il existe une option quicklookurl pour l'image dans le LS !!!
 
-        [ ] Themes : [Name, DefaultThemeDescription (=>Description), Url, QuicklookUrl (=>Thumbnail)]
-            > revoir l'implementation des noms :
-            [{image, label, desc, style}] -> [{Thumbnail, Name, Description, Url}]
-
-        [ ] Filters : [PropertyName, FilterName]
+        [x] Themes : [Name, DefaultThemeDescription (=>Description), Url, QuicklookUrl (=>Thumbnail)]
             > revoir l'implementation :
-            [[]] -> [{PropertyName, FilterName, Configuration?}]
+            themesSummary : ""
+            themes : [{Thumbnail, Name, Description, Url}]
+
+        [x] Filters : [PropertyName, FilterName]
+            > revoir l'implementation :
+            filtersSummary : ""
+            filters : [{PropertyName, FilterName, Configuration?}]
     ```
 
 ## BUG 2D
@@ -201,6 +201,10 @@ Prise en compte des dev sur itowns 2.8.0 (branche itowns_v2.8.0)
 x├── page-azimuth-bundle-map.html
 
 x├── page-center-bundle-map.html
+    - [bug twomaponsinglepage] la 1ere carte est vide !?
+    on a l'impression que la 1ere carte n'a pas eu le temps de s'instancier car
+    la 2eme carte a stoppé son deroulement !?
+    => **NOK** c'est un bug natif !?
 
 x├── page-changeLayersColor-bundle-map.html
 
@@ -421,13 +425,24 @@ x└── page-wmts-restful-bundle-map.html
 
 └── page-zoomInOut-bundle-map.html
 
+## BUG PORTAIL
+
+- [x] il faut charger les SRS étendues pour le controle MousePosition...
+    > mettre en place : Gp.olExtended.includeProjections()
+
+- [ ] BUG : tilt 3D
+    > hack en cours...
+
+- [ ] warning et exceptions sur la 3D mais non bloquantes
+    > monter de version itowns vers 2.11.0 !
+
 ## EVOL
 
 - [x] options pour le Graticule (ex. intervals & showLabels & ...)
 
-- [ ] position dans le layerswitcher avec l'option position pour le vecteur tuilé !?
+- [x] BUG : position dans le layerswitcher avec l'option position pour le vecteur tuilé ne semble pas fonctionner !?
 
-- [ ] implementer l'option *queryable* pour le vecteur tuilé :
+- [x] implementer l'option *queryable* pour le vecteur tuilé :
 
     ```text
     le widget *getfeatureinfo* fait le boulot de requeter les features.
@@ -441,4 +456,4 @@ x└── page-wmts-restful-bundle-map.html
 
 - [ ] implementer le format MapBox dans la 3D
 
-- [ ] implementer le flux Geoportal de type MapBox
+- [ ] implementer un flux Geoportal de type MapBox
