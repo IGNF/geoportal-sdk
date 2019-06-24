@@ -66,9 +66,11 @@ ItMap.prototype._initMap = function () {
             }
 
             // On fusionne les extensions et la librairie itowns
-            if (window.itowns) {
-                deepCopy(window.itowns, Itowns);
-                deepCopy(Itowns, window.itowns);
+            if (itowns) {
+                deepCopy(itowns, Itowns);
+                deepCopy(Itowns, itowns);
+                // au cas où...
+                window.itowns = itowns;
             }
 
             // position à l'initialisation

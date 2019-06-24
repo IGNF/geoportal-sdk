@@ -75,10 +75,16 @@ var Engine3DLoader = {
         var _path = "";
         if (path) {
             var sep = "";
-            if (path.lastIndexOf("/") === path.length - 1) {
-                sep = "/";
+            // fichier avec extension js
+            if (path.substring(path.lastIndexOf(".")) === ".js") {
+                _path = path;
+            } else {
+                // si chemin sans "/" à la fin, on le rajoute...
+                if (path.lastIndexOf("/") === path.length - 1) {
+                    sep = "/";
+                }
+                _path = path + sep + "itowns.js";
             }
-            _path = path + sep + "itowns.js";
         } else {
             _path = this.getCurrentPath() + "itowns.js";
         }
