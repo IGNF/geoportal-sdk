@@ -49,17 +49,35 @@
                     title : "Test Style Mapbox GeoJSON",
                     description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des filtres utilisateurs...",
                     url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
-                    filters : {
-                        "description": "Filtres attributaires...",
-                        "fields" : [
-                            // field name of table, human description, type of value
-                            ["AREA_WATER", "Surface des etendues d'eaux (m3)", "numeric"],
-                            ["AREA_LAND", "Surface des états (m2)", "numeric"],
-                            ["PERSONS", "Nombre d'habitants", "numeric"],
-                            ["MALE", "Nombre d'hommes", "numeric"],
-                            ["FEMALE", "Nombre de femmes", "numeric"]
-                        ]
-                    }
+                    filtersSummary: "Filtres attributaires...",
+                    // field name of table, human description, type of value
+                    filters : [
+                        {
+                            propertyName : "AREA_WATER", 
+                            filterName : "Surface des etendues d'eaux (m3)", 
+                            configuration : "numeric"
+                        },
+                        {
+                            propertyName : "AREA_LAND", 
+                            filterName : "Surface des états (m2)", 
+                            configuration : "numeric"
+                        },
+                        {
+                            propertyName : "PERSONS", 
+                            filterName : "Nombre d'habitants", 
+                            configuration : "numeric"
+                        },
+                        {
+                            propertyName : "MALE", 
+                            filterName : "Nombre d'hommes", 
+                            configuration : "numeric"
+                        },
+                        {
+                            propertyName : "FEMALE", 
+                            filterName : "Nombre de femmes", 
+                            configuration : "numeric"
+                        }
+                    ]
                 }
             },
             zoom : 6

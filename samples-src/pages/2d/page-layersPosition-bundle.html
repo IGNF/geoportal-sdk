@@ -33,10 +33,11 @@
                     y : 48.860832558,
                     projection : "EPSG:4326"
                 },
-                zoom : 13,
+                zoom : 5,
                 layersOptions : {
                 },
                 controlsOptions : {
+                    mouseposition : {},
                     layerSwitcher : {
                         maximised : true
                     }
@@ -46,12 +47,19 @@
                         console.log("maploaded");
                         evt.map.addLayers({
                             'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
-                                position : 1,
+                                position : 2,
+                                title : "Cartes position=2"
                              },
                              'ORTHOIMAGERY.ORTHOPHOTOS': {
                                 position : 0,
                                 title : "Orthos position=0"
                              },
+                             'monMapBoxGeoJSONMultiple' : {
+                                position : 1,
+                                title : "GeoJson position=1",
+                                format : "MapBox",
+                                url : "{{resources}}/MAPBOX/geojson/mapbox-states-multisources.json"
+                             }
                         });
                     }
                 },

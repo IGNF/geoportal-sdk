@@ -49,31 +49,33 @@
                     title : "Test Style Mapbox GeoJSON",
                     description : "Mise en place d'un test avec Style Mapbox GeoJSON avec ajout des themes...",
                     url : "{{resources}}/MAPBOX/geojson/mapbox-states-without-metadata.json",
-                    themes : {
-                        "description": "Thèmes...",
-                        "styles" : [
-                            {
-                                "image" : "{{ resources }}/data/mapbox/themes/images/layer0.png",
-                                "label" : "standard0",
-                                "style" : "{{ resources }}/data/mapbox/themes/styles/style0.json"
-                            },
-                            {
-                                "image" : "{{ resources }}/data/mapbox/themes/images/layer1.png",
-                                "label" : "standard1",
-                                "style" : "{{ resources }}/data/mapbox/themes/styles/style1.json"
-                            },
-                            {
-                                "image" : "{{ resources }}/data/mapbox/themes/images/layer2.png",
-                                "label" : "standard2",
-                                "style" : "{{ resources }}/data/mapbox/themes/styles/style2.json"
-                            },
-                            {
-                                "image" : "{{ resources }}/data/mapbox/themes/images/layer3.png",
-                                "label" : "standard3",
-                                "style" : "{{ resources }}/data/mapbox/themes/styles/style3.json"
-                            }
-                        ]
-                    }
+                    themesSummary : "Thèmes...",
+                    themes : [
+                        {
+                            thumbnail : "{{ resources }}/data/mapbox/themes/images/layer0.png",
+                            name : "standard0",
+                            description : "",
+                            url : "{{ resources }}/data/mapbox/themes/styles/style0.json"
+                        },
+                        {
+                            thumbnail : "{{ resources }}/data/mapbox/themes/images/layer1.png",
+                            name : "standard1",
+                            description : "",
+                            url : "{{ resources }}/data/mapbox/themes/styles/style1.json"
+                        },
+                        {
+                            thumbnail : "{{ resources }}/data/mapbox/themes/images/layer2.png",
+                            name : "standard2",
+                            description : "",
+                            url : "{{ resources }}/data/mapbox/themes/styles/style2.json"
+                        },
+                        {
+                            thumbnail : "{{ resources }}/data/mapbox/themes/images/layer3.png",
+                            name : "standard3",
+                            description : "",
+                            url : "{{ resources }}/data/mapbox/themes/styles/style3.json"
+                        }
+                    ]
                 }
             },
             zoom : 6
