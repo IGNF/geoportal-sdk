@@ -508,9 +508,9 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     // itowns needs a bbox to display the layer
     // if the layer is in PM, the bbox needs to be in planar coordinates
     if (layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
-        boundingBox = new Itowns.Extent("EPSG:3857", layerOpts.bbox[0], layerOpts.bbox[2], layerOpts.bbox[1], layerOpts.bbox[3]);
+        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as("EPSG:3857");
     } else if (layerOpts.bbox && layerOpts.projection === "EPSG:4326") {
-        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox[0], layerOpts.bbox[2], layerOpts.bbox[1], layerOpts.bbox[3]);
+        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
         boundingBox = new Itowns.Extent("EPSG:3857", -20026376.39, 20026376.39, 20048966.10, 20048966.10);
@@ -696,10 +696,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
         switch (layer.type.toUpperCase()) {
             case "ELEVATION" :
-                this.libMap.addLayer(new Itowns.ElevationLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new Itowns.ElevationLayer(layer.id, layer));
                 break;
             case "COLOR" :
-                this.libMap.addLayer(new Itowns.ColorLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new Itowns.ColorLayer(layer.id, layer));
                 break;
             default :
         };
@@ -722,6 +722,8 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     if (layerConf) {
         layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
         layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat();
+        layerObj[layerId].projection = layerObj[layerId].projection || layerConf.defaultProjection;
+        layerObj[layerId].bbox = layerObj[layerId].bbox || layerConf.globalConstraint.bbox;
         // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
         if (layerObj[layerId].format === "WMS") {
             layerObj[layerId].version = layerObj[layerId].version || layerConf.serviceParams.version;

@@ -47,8 +47,8 @@
     },
     "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
     "dependencies": {
-        "itowns": "2.9.0",
-        "three": "^0.102.1",
+        "itowns": "2.11.1",
+        "three": "^0.105.2",
         "three.meshline": "^1.2.0"
     },
     "devDependencies": {
