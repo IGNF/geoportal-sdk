@@ -28,7 +28,7 @@
    "name" : "@ignf-geoportal/sdk-3d",
    "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
    "dependencies" : {
-      "itowns" : "2.8.0"
+      "itowns" : "2.11.1"
    },
    "main" : "dist/GpSDK3D-src.js",
    "author" : "IGNF",
