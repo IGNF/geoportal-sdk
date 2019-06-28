@@ -143,7 +143,9 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
  * @param {Object} controlOpts - control options
  * @param {HTMLElement} controlOpts.div - The HTML Element where the overview is put
  * @param {Boolean} controlOpts.maximised - Display or not the control
- * @param {String} controlOpts.position - The type of positionment of the overview element inside its container
+ * @param {String} controlOpts.layerId - The Geoportal layerId of the miniGlobeLayer (by default, "ORTHOIMAGERY.ORTHOPHOTOS")
+ * @param {Object} controlOpts.layer - The layer object formatted as expected by itowns (layerId ignored if layer param specified)
+ * @param {String} controlOpts.position - The type of positionment of the overview element inside its container ("relative or absolute", by default)
  * @param {Number} controlOpts.width - The width of the minimap (100px by default)
  * @param {Number} controlOpts.height - The height of the minimap (100px by default)
  * @param {Number} controlOpts.x - The position of the minimap from the left of the container div (20px by default)
@@ -161,6 +163,20 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
     }
     if (controlOpts.div) {
         ovControlOptions.target = controlOpts.div;
+    }
+    if (controlOpts.layer) {
+        ovControlOptions.layer = controlOpts.layer;
+    } else if (controlOpts.layerId) {
+        ovControlOptions.layer = new Itowns.layer.GeoportalWMTS({
+            layer : controlOpts.layerId,
+            ssl : true
+        });
+    } else {
+        // orthophotos layer by default on the miniglobe
+        ovControlOptions.layer = new Itowns.layer.GeoportalWMTS({
+            layer : "ORTHOIMAGERY.ORTHOPHOTOS",
+            ssl : true
+        });
     }
     var control = new Itowns.control.MiniGlobe(ovControlOptions);
     this.libMap.addWidget(control);
