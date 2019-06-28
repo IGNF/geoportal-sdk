@@ -679,7 +679,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             options : layerOpts,
             obj : layer
         });
-        if (layerOpts.isElevation === true) {
+        if (layerOpts.type === "elevation") {
             layer.type = "elevation";
             // we add the noDataValue if it is given
             if (layerOpts.noDataValue) {
@@ -722,7 +722,7 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     if (layerConf) {
         layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
         layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat();
-        layerObj[layerId].projection = layerObj[layerId].projection || layerConf.defaultProjection;
+        layerObj[layerId].projection = layerObj[layerId].projection || layerConf.defaultProjection;
         layerObj[layerId].bbox = layerObj[layerId].bbox || layerConf.globalConstraint.bbox;
         // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
         if (layerObj[layerId].format === "WMS") {

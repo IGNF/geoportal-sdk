@@ -132,7 +132,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     // au cas où la couche ajoutée est un MNT, on essaye pas de l'ajouter en 2D
-    if (layerOpts.isElevation !== true) {
+    if (layerOpts.type !== "elevation") {
         var constructorOpts = this._applyCommonLayerParams(layerOpts);
         switch (layerOpts.format.toUpperCase()) {
             case "WMS":

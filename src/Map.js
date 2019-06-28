@@ -319,7 +319,7 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | tileMatrixSetLimits | Object | Tiles limits of the tileMatrixSet used. |
- * | isElevation | Boolean | If true, the layer is displayed as an elevation layer (DTM) |
+ * | type | Boolean | If "elevation", the layer is displayed as an elevation layer (DTM). Else, set "color" |
  *
  * ### KML specific properties
  *
@@ -391,15 +391,15 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | bbox | Array[Float] | Bounding box where to display the layer. The array must be "[west, south, east, north]". If the layer is in PM, the bbox needs to be in planar coordinates. World extent by default |
- * | isElevation | Boolean | If true, the layer is displayed as an elevation layer (DTM) |
+ * | type | Boolean | If true, the layer is displayed as an elevation layer (DTM) |
  *
  * ### Elevation Layers specific properties
  *
- * **To add a Digital Terrain Model Layer (DTM) in WMS or WMTS, the property "isElevation" of the layerOptions must be set to true**
+ * **To add a Digital Terrain Model Layer (DTM) in WMS or WMTS, the property "type" of the layerOptions must be set to true**
  *
  * | property | Type | Description |
  * | - | - | - |
- * | isElevation | Boolean | If true, the layer is displayed as an elevation layer (DTM) in 3D, and hidden in 2D |
+ * | type | Boolean | If "elevation", the layer is displayed as an elevation layer (DTM) in 3D, and hidden in 2D (else, set "color") |
  *
  * ### WFS specific properties
  *
