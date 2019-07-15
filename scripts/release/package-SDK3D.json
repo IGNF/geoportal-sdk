@@ -24,7 +24,7 @@
       "package.json"
    ],
    "dependencies" : {
-      "itowns" : "2.11.1"
+      "itowns" : "2.12.0"
    },
    "author" : "IGNF",
    "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
