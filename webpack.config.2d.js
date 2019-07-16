@@ -153,6 +153,7 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    /** proj4 est exposé en global : proj4 ! */
                     test : require.resolve("proj4"),
                     use : [{
                         loader : "expose-loader",
@@ -160,6 +161,7 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    /** olms est exposé en global : olms ! */
                     test : /node_modules\/ol-mapbox-style\/index\.js$/,
                     use : [{
                         loader : "expose-loader",
@@ -167,6 +169,7 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    /** openlayers est exposé en global : ol ! */
                     test : path.join(__dirname, "lib", "openlayers", "index.js"),
                     use : [{
                         loader : "expose-loader",

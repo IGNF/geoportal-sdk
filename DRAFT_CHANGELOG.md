@@ -6,7 +6,7 @@
 ## Summary
 
 * Migration d'OpenLayers en version 5.3.0
-* Migration Itowns en version 2.8.0
+* Migration Itowns en version 2.12.0
 * Nouvelle fonctionnalité avec l'import de couche au format *vecteur tuilé* (MapBox)
 * Correctifs et amélioration suite au passage ES6
 * Migration Webpack en version > 4.0.0
@@ -21,6 +21,7 @@
 
     - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.0
     - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version 2.2.0
+    - [dev-workflow] Le moteur 3d d'itowns est intégré au bundle
 
 * [Added]
 

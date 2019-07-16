@@ -1,5 +1,5 @@
 import { ItMap } from "./ItMapBase";
-import { itownsExtended as Itowns } from "geoportal-extensions-itowns";
+import proj4 from "proj4";
 
 /**
  * Centers the map on the given coordinates at the specified zoom
@@ -21,16 +21,16 @@ ItMap.prototype.setXYCenter = function (point, zoom) {
         return;
     }
     // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
-    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS && Itowns.CRS[point.projection]) {
-        Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
+    if (point.hasOwnProperty("projection") && !proj4.defs(point.projection) && this.Itowns.CRS && this.Itowns.CRS[point.projection]) {
+        proj4.defs(point.projection, this.Itowns.CRS[point.projection]);
     }
-    if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
-        var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+    if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
+        var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
             x : wgs84Coords[0],
             y : wgs84Coords[1]
         };
-    } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) === undefined) {
+    } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) === undefined) {
         this.logger.trace("[ItMap] - setXYCenter(" + point.projection + " not handled ! )");
         return;
     }
@@ -64,16 +64,16 @@ ItMap.prototype.setAutoCenter = function (point, zoom) {
         return;
     }
     // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
-    if (point.hasOwnProperty("projection") && !Itowns.proj4.defs(point.projection) && Itowns.CRS && Itowns.CRS[point.projection]) {
-        Itowns.proj4.defs(point.projection, Itowns.CRS[point.projection]);
+    if (point.hasOwnProperty("projection") && !proj4.defs(point.projection) && this.Itowns.CRS && this.Itowns.CRS[point.projection]) {
+        proj4.defs(point.projection, this.Itowns.CRS[point.projection]);
     }
-    if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && Itowns.proj4.defs(point.projection)) {
-        var wgs84Coords = Itowns.proj4(point.projection, "EPSG:4326", [point.x, point.y]);
+    if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
+        var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);
         point = {
             x : wgs84Coords[0],
             y : wgs84Coords[1]
         };
-    } else if (point.hasOwnProperty("projection") && Itowns.proj4.defs(point.projection) === undefined) {
+    } else if (point.hasOwnProperty("projection") && proj4.defs(point.projection) === undefined) {
         this.logger.trace("[ItMap] - setAutoCenter(" + point.projection + " not handled ! )");
         return;
     }

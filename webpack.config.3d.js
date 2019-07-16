@@ -79,24 +79,29 @@ module.exports = (env, argv) => {
                 "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
-        externals : {
-            request : {
-                commonjs2 : "itowns",
-                commonjs : "itowns",
-                amd : "itowns",
-                root : "itowns"
-            },
-            request : {
-                commonjs2 : "request",
-                commonjs : "request",
-                amd : "require"
-            },
-            xmldom : {
-                commonjs2 : "xmldom",
-                commonjs : "xmldom",
-                amd : "require"
+        externals : [
+            {
+                // INFO : itowns est maintenant disponible en interne.
+                // Son chargement differé est optionnel.
+
+                // itowns : {
+                //     commonjs2 : "itowns",
+                //     commonjs : "itowns",
+                //     amd : "itowns",
+                //     root : "itowns"
+                // },
+                request : {
+                    commonjs2 : "request",
+                    commonjs : "request",
+                    amd : "require"
+                },
+                xmldom : {
+                    commonjs2 : "xmldom",
+                    commonjs : "xmldom",
+                    amd : "require"
+                }
             }
-        },
+        ],
         devtool : (devMode) ? "eval-source-map" : false,
         optimization : {
             /** MINIFICATION */
@@ -161,6 +166,7 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
+                    /** proj4 est exposé en global : proj4 ! */
                     test : require.resolve("proj4"),
                     use : [{
                         loader : "expose-loader",
@@ -176,10 +182,19 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
+                    /** olms est exposé en global : olms ! */
                     test : /node_modules\/ol-mapbox-style\/index\.js$/,
                     use : [{
                         loader : "expose-loader",
                         options : "olms"
+                    }]
+                },
+                {
+                    /** itowns est exposé en global : itowns ! */
+                    test : require.resolve("itowns"),
+                    use : [{
+                        loader : "expose-loader",
+                        options : "itowns"
                     }]
                 },
                 {

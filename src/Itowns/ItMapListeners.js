@@ -1,5 +1,4 @@
 import { ItMap } from "./ItMapBase";
-import { itownsExtended as Itowns } from "geoportal-extensions-itowns";
 import { IMap } from "../Interface/IMap";
 
 /**
@@ -64,7 +63,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
                 action.call(context, centerChangedEvt);
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
             break;
         case "zoomChanged" :
             var callbackZoomchange = function (itEvent) {
@@ -77,7 +76,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newZoom : itEvent.newZoom
                 });
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
         case "azimuthChanged" :
             var callbackAzimuthChange = function (itEvent) {
@@ -89,7 +88,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newAzimuth : itEvent.newAzimuth
                 });
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
         case "tiltChanged" :
             var callbackTiltChange = function (itEvent) {
@@ -101,7 +100,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newTilt : itEvent.newTilt
                 });
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
             break;
         case "projectionChanged" :
             // TODO  : interet ?
@@ -130,7 +129,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     position : layerIndex
                 });
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
             map._registerEvent(key, eventId, action, context);
 
             var callbackLayerRemoved = function (itevt) {
@@ -140,7 +139,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     layerRemoved : layerOpts
                 });
             };
-            key = map.libMap.listen(Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
+            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
             map._registerEvent(key, eventId, action, context);
 
             // abonnement à un changement de propriete sur chaque couche
@@ -166,9 +165,9 @@ ItMap.prototype.listen = function (eventId, action, context) {
                         });
                     };
 
-                    var type = (obsProperty === "visible") ? Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED
-                        : (obsProperty === "opacity") ? Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED
-                            : Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED;
+                    var type = (obsProperty === "visible") ? context.Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED
+                        : (obsProperty === "opacity") ? context.Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED
+                            : context.Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED;
 
                     key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
                     map._registerEvent(key, eventId, action, context);
@@ -508,15 +507,15 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     // itowns needs a bbox to display the layer
     // if the layer is in PM, the bbox needs to be in planar coordinates
     if (layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
-        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as("EPSG:3857");
+        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as("EPSG:3857");
     } else if (layerOpts.bbox && layerOpts.projection === "EPSG:4326") {
-        boundingBox = new Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
+        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
-        boundingBox = new Itowns.Extent("EPSG:3857", -20026376.39, 20026376.39, 20048966.10, 20048966.10);
+        boundingBox = new this.Itowns.Extent("EPSG:3857", -20026376.39, 20026376.39, 20048966.10, 20048966.10);
     } else {
         // world bbox in WGS84 (EPSG:4326)
-        boundingBox = new Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
+        boundingBox = new this.Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
     }
 
     layerOpts.format = layerOpts.format.toLowerCase();
@@ -552,7 +551,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layer.minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
             }
 
-            layer.source = new Itowns.WMSSource({
+            layer.source = new this.Itowns.WMSSource({
                 protocol : layerOpts.format,
                 version : layerOpts.version || "1.3.0",
                 url : layerOpts.url,
@@ -636,7 +635,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 };
             };
 
-            layer.source = new Itowns.WMTSSource({
+            layer.source = new this.Itowns.WMTSSource({
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
@@ -696,10 +695,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
         switch (layer.type.toUpperCase()) {
             case "ELEVATION" :
-                this.libMap.getGlobeView().addLayer(new Itowns.ElevationLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new this.Itowns.ElevationLayer(layer.id, layer));
                 break;
             case "COLOR" :
-                this.libMap.getGlobeView().addLayer(new Itowns.ColorLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new this.Itowns.ColorLayer(layer.id, layer));
                 break;
             default :
         };

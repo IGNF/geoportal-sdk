@@ -1,5 +1,4 @@
 import { ItMap } from "./ItMapBase";
-import { itownsExtended as Itowns } from "geoportal-extensions-itowns";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation
@@ -68,7 +67,7 @@ ItMap.prototype.addMousePositionControl = function (controlOpts) {
     if (controlOpts.altitude) {
         mpOpts.altitude = controlOpts.altitude;
     }
-    var control = new Itowns.control.MousePosition(mpOpts);
+    var control = new this.Itowns.control.MousePosition(mpOpts);
     this.libMap.addWidget(control);
     return control;
 };
@@ -132,7 +131,7 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     }
 
     this.logger.trace("[ItMap]  : layerSwitcher Opts  : ... ");
-    var control = new Itowns.control.LayerSwitcher(lsOpts);
+    var control = new this.Itowns.control.LayerSwitcher(lsOpts);
     this.libMap.addWidget(control);
     return control;
 };
@@ -167,18 +166,18 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
     if (controlOpts.layer) {
         ovControlOptions.layer = controlOpts.layer;
     } else if (controlOpts.layerId) {
-        ovControlOptions.layer = new Itowns.layer.GeoportalWMTS({
+        ovControlOptions.layer = new this.Itowns.layer.GeoportalWMTS({
             layer : controlOpts.layerId,
             ssl : true
         });
     } else {
         // orthophotos layer by default on the miniglobe
-        ovControlOptions.layer = new Itowns.layer.GeoportalWMTS({
+        ovControlOptions.layer = new this.Itowns.layer.GeoportalWMTS({
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             ssl : true
         });
     }
-    var control = new Itowns.control.MiniGlobe(ovControlOptions);
+    var control = new this.Itowns.control.MiniGlobe(ovControlOptions);
     this.libMap.addWidget(control);
     if (control.getElement()) {
         // hide the div if maximised option = false
@@ -237,7 +236,7 @@ ItMap.prototype.addGraphicScaleControl = function (controlOpts) {
     if (controlOpts.div) {
         scaleControlOptions.target = controlOpts.div;
     }
-    var control = new Itowns.control.Scale(scaleControlOptions);
+    var control = new this.Itowns.control.Scale(scaleControlOptions);
     this.libMap.addWidget(control);
     if (control.getElement()) {
         // hide the div if maximised option = false
@@ -271,7 +270,7 @@ ItMap.prototype.addAttributionsControl = function (controlOpts) {
         attOpts.options.target = controlOpts.div;
     }
     attOpts.options.collapsed = !controlOpts.maximised;
-    var control = new Itowns.control.Attributions(attOpts);
+    var control = new this.Itowns.control.Attributions(attOpts);
     this.libMap.addWidget(control);
     return control;
 };
