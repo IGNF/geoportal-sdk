@@ -50,15 +50,15 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
                 if (itEvent.previous) {
                     centerChangedEvt.oldCenter = {
-                        x : itEvent.previous.longitude(),
-                        y : itEvent.previous.latitude()
+                        x : itEvent.previous.x,
+                        y : itEvent.previous.y
                     };
                 }
 
                 if (itEvent.new) {
                     centerChangedEvt.newCenter = {
-                        x : itEvent.new.longitude(),
-                        y : itEvent.new.latitude()
+                        x : itEvent.new.x,
+                        y : itEvent.new.y
                     };
                 }
                 action.call(context, centerChangedEvt);
