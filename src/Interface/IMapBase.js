@@ -26,7 +26,6 @@ var switch2D3D = function (viewMode) {
     oldMap.controlsOptions = this.getControlsOptions();
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
-    oldMap.enginePath3d = this.mapOptions.enginePath3d || null;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
 
     // remove old controls and associated listeners
@@ -86,7 +85,6 @@ var switch2D3D = function (viewMode) {
         // récupére le paramétrage courant de la carte (par les librairies) et pas le paramétrage initial (par this.mapOptions)
         {
             apiKey : oldMap.apiKey,
-            enginePath3d : oldMap.enginePath3d,
             enableRotation : oldMap.enableRotation,
             projection : oldMap.projection,
             center : oldMap.center,
