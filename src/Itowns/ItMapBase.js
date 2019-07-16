@@ -67,30 +67,6 @@ ItMap.prototype._initMap = function () {
         return tce(source, target);
     }
 
-    // TODO chargement differé du moteur 3d ?
-    if (this.mapOptions.enginePath3d) {
-        this.logger.warn("Itowns engine, loading differed mode is not yet implemented !");
-
-        var _enginePath3d = Engine3DLoader.getEnginePath(this.mapOptions.enginePath3d);
-
-        Engine3DLoader.loadEngine(_enginePath3d,
-            function (itowns) {
-                this.logger.warn("Itowns engine, loaded...", itowns);
-
-                // FIXME il faudrait faire de l'import dynamique du module des extensions
-                // mais c'est assez difficile à realiser...
-                // import("geoportal-extensions-itowns").then(module => {
-                //     // do something with the translations
-                //     console.log("geoportal-extensions-itowns", module);
-                //     this.Itowns = module.itownsExtended;
-                // });
-            },
-            function (error) {
-                this.logger.warn("Itowns engine, failed...", error);
-            },
-            this);
-    }
-
     // On fusionne les extensions et la librairie itowns
     if (itowns) {
         deepCopy(itowns, this.Itowns);
