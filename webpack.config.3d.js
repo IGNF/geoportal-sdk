@@ -360,7 +360,7 @@ module.exports = (env, argv) => {
             }),
             new BannerWebPackPlugin({
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-itowns.tmpl"), "utf8"), {
-                    __VERSION__ : pkg.dependencies["itowns"],
+                    __VERSION__ : pkg.devDependencies["itowns"],
                 }),
                 raw : true
             }),
