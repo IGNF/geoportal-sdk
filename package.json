@@ -64,7 +64,7 @@
         "eslint-plugin-standard": "^4.0.0",
         "exports-loader": "^0.7.0",
         "expose-loader": "^0.7.5",
-        "geoportal-extensions-itowns": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/update-ol5/build/scripts/release/geoportal-extensions-itowns-2.2.0.tgz",
+        "geoportal-extensions-itowns": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/vectorTiles_itowns/build/scripts/release/geoportal-extensions-itowns-2.2.0.tgz",
         "geoportal-extensions-openlayers": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/update-ol5/build/scripts/release/geoportal-extensions-openlayers-3.0.0.tgz",
         "handlebars": "^4.1.2",
         "handlebars-layouts": "^3.1.4",
