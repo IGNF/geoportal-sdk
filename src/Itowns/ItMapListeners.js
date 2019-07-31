@@ -706,6 +706,44 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
 };
 
 /**
+ * Adds a mapbox Layer to the globe
+ *
+ * @param {Object} layerObj - vectorLayer layer to add.
+ * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ *
+ * @private
+ */
+ItMap.prototype._addMapBoxLayer = function (layerObj) {
+    var layerId = Object.keys(layerObj)[0];
+    var layerOpts = layerObj[layerId];
+
+    var createVectorTileLayer = function (style) {
+        return new this.Itowns.layer.VectorTileLayer({
+            id : layerId,
+            url : layerOpts.url,
+            style : style,
+            zoom : {
+                min : layerOpts.minZoom || 1,
+                max : layerOpts.maxZoom || 21
+            }
+        });
+    }.bind(this);
+
+    var addVectorTileLayer = function (layer) {
+        // on met à jour le tableau des couches
+        this._layers.push({
+            id : layerId,
+            options : layerOpts,
+            obj : layer
+        });
+        // on ajoute la couche
+        this.libMap.getGlobeView().addLayer(layer);
+    }.bind(this);
+
+    this.libMap.parseMapboxStyle(layerOpts.styleUrl).then(createVectorTileLayer).then(addVectorTileLayer);
+};
+
+/**
  * Adds a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.

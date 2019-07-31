@@ -36,7 +36,10 @@
                 },
                 'monMapBoxGeoJSON' : {
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/geojson/mapbox-states-with-metadata.json"
+                    url : "http://rok4server.ide.ign.fr/rok4/1.0.0/PYRAMIDE_ECRAN/${z}/${x}/${y}.pbf",
+                    styleUrl : "{{resources}}/MAPBOX/styles/ign-pyramide-ecran.json",
+                    minZoom : 10,
+                    maxZoom : 13
                 }
             },
             center : {
