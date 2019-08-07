@@ -639,6 +639,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
+                projection : layerOpts.projection || "EPSG:4326",
                 tileMatrixSet : layerOpts.tileMatrixSet,
                 tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
                 format : layerOpts.outputFormat,
