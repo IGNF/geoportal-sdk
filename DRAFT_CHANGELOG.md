@@ -1,6 +1,6 @@
 # SDK Geoportail 2D/3D, version 3.0.0
 
-**01/03/2019 : version 3.0.0**
+**06/09/2019 : version 3.0.0**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
