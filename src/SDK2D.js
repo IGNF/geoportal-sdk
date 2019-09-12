@@ -1,9 +1,9 @@
-import Pkg from "../package";
+import Pkg from "../package.json";
 import { MapLoader } from "./Utils/MapLoader";
 import { OlMap } from "./OpenLayers/OlMap";
 import Logger from "./Utils/LoggerByDefault";
 // CSS
-import "../res/OpenLayers/OlMap.css";
+import "./OpenLayers/CSS/OlMap.css";
 // import openlayers
 import olDist from "ol-dist";
 // import des extensions openlayers (et des CRS ?)

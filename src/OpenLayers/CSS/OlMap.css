@@ -1,0 +1,87 @@
+/**
+ * CSS spécifiques pour l'affichage dans le SDK.
+ */
+.ol-overviewmap {
+    bottom: 2.5em;
+    left: 0.5em;
+}
+.ol-rotate {
+    left: 2.5em;
+    top : 0.5em;
+    right: initial;
+}
+
+.ol-scale-line {
+    left : 48px;
+}
+
+/* searchEngine */
+[id^="GPsearchEngine-"] {
+    top: 8px;
+    left: 70px;
+}
+
+
+/* Feature info popup */
+.gp-features-content-div {
+  margin-right: 20px;
+}
+
+
+/* Surcharges à reverser dans extensions */
+
+/* Positionnement spécifique à droite des outils de mesures */
+
+div[id^="GPtoolbox-measure-main-"] {
+    float: right;
+    right: 8px;
+    left :auto;
+    top: 80px;
+    position: absolute;
+    display: inline-block;
+    z-index: 1;
+}
+div[id^="GPelevationPathPanel-"] {
+    position : absolute;
+    top : 6px;
+    left: auto;
+    right: 32px;
+    width: 280px;
+    float : right;
+}
+
+
+/* Gestion des z-index : cote droit */
+
+/* LayerSwitcher uber alles */
+div[id^="GPlayerSwitcher-"] {
+  z-index: 10;
+}
+
+/* Drawing zindex > toolbox */
+div[id^="GPdrawing-"] {
+  z-index: 8;
+}
+
+
+/* Gestion des z-index : cote gauche */
+
+/* Route zindex > isocurve */
+div[id^="GProute-"] {
+  z-index: 8;
+}
+
+/* Isocurve zindex > reverse */
+div[id^="GPisochron-"] {
+  z-index: 6;
+}
+
+/* Reverse zindex > import */
+div[id^="GPreverseGeocoding-"] {
+  z-index: 4;
+}
+
+/* Import zindex min */
+div[id^="GPimport-"] {
+  z-index: 2;
+}

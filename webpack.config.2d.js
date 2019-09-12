@@ -143,7 +143,8 @@ module.exports = (env, argv) => {
                     exclude : [
                         /node_modules/,
                         path.join(__dirname, "lib"),
-                        path.join(__dirname, "src", "Map.js")
+                        path.join(__dirname, "src", "Map.js"),
+                        path.resolve(__dirname, "src", "OpenLayers", "CSS")
                     ],
                     use : [{
                         loader : "eslint-loader",
@@ -182,7 +183,7 @@ module.exports = (env, argv) => {
                     include : [
                         path.join(__dirname, "node_modules", "ol"),
                         path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
-                        path.join(__dirname, "res", "OpenLayers")
+                        path.join(__dirname, "src", "OpenLayers", "CSS")
                     ],
                     use : [
                         MiniCssExtractPlugin.loader,
@@ -213,14 +214,27 @@ module.exports = (env, argv) => {
                         replacement : function () {
                             return pkg.date;
                         }
+                    },
+                    {
+                        partten : /__PRODUCTION__/g,
+                        replacement : function () {
+                            /** replacement de la clef __PRODUCTION__ pour le LOGGER */
+                            return !logMode;
+                        }
+                    },
+                    {
+                        partten : /__SWITCH2D3D_ALLOWED__/g,
+                        replacement : function () {
+                            return false;
+                        }
                     }
                 ]
             ),
             /** GESTION DU LOGGER */
-            new DefineWebpackPlugin({
-                __PRODUCTION__ : JSON.stringify(!logMode),
-                __SWITCH2D3D_ALLOWED__ : JSON.stringify(false)
-            }),
+            // new DefineWebpackPlugin({
+            //     __PRODUCTION__ : JSON.stringify(!logMode),
+            //     __SWITCH2D3D_ALLOWED__ : JSON.stringify(false)
+            // }),
             /** GENERATION DE LA JSDOC */
             new JsDocWebPackPlugin({
                 conf : path.join(__dirname, "doc/jsdoc.json")
