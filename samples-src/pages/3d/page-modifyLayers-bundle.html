@@ -27,7 +27,7 @@
     <div id="BoutonDiv">
         <input type="button" name="export" onclick="modifyLayers();" value="modifiyLayers(null)"/><br/>
         <input type="button" name="export" onclick="modifyLayers({'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {opacity : 0.5}});" value="modifyLayers(GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
-        <input type="button" name="export" onclick="modifyLayers({'ORTHOIMAGERY.ORTHOPHOTOS':{opacity : 0.2},'CADASTRALPARCELS.PARCELS':{visibility:false}});" value="modifyLayers(ORTHOIMAGERY.ORTHOPHOTOS,CADASTRALPARCELS.PARCELS)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'ORTHOIMAGERY.ORTHOPHOTOS':{opacity : 0.2},'CADASTRALPARCELS.PARCELS':{style:'bdparcellaire_o'}});" value="modifyLayers(ORTHOIMAGERY.ORTHOPHOTOS,CADASTRALPARCELS.PARCELS)"/><br/>
     </div>
 {{/content}}
 
@@ -42,7 +42,9 @@
                     maxZoom : 15
                 },
                 "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {},
-                "CADASTRALPARCELS.PARCELS" : {}
+                "CADASTRALPARCELS.PARCELS" : {
+                    styleName : "bdparcellaire_o"
+                }
             },
             controlsOptions : {
                 layerSwitcher : {
