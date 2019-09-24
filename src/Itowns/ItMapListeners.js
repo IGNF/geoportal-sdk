@@ -287,8 +287,8 @@ ItMap.prototype._features2html = function (features) {
     var content = document.createElement("div");
     features.forEach(function (f) {
         var props = {};
-        if (f.properties) {
-            props = f.properties;
+        if (f.geometry.properties) {
+            props = f.geometry.properties;
         }
         var nameDiv;
         nameDiv = document.createElement("div");
@@ -296,7 +296,7 @@ ItMap.prototype._features2html = function (features) {
         if (props.hasOwnProperty("name")) {
             nameDiv.innerHTML = props.name;
             content.appendChild(nameDiv);
-        } else if (f.properties.description) {
+        } else if (props.description) {
             nameDiv.innerHTML = props.description;
             content.appendChild(nameDiv);
         } else {
@@ -320,7 +320,7 @@ ItMap.prototype._features2html = function (features) {
             }
 
             // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
-            if (p === "stroke" || p === "stroke-opacity" || p === "stroke-width" || p === "fill" || p === "fill-opacity" || p === "_idx" || p === "_meshIdx" || p === "coordTimes") {
+            if (p === "stroke" || p === "stroke-opacity" || p === "stroke-width" || p === "fill" || p === "fill-opacity" || p === "_idx" || p === "_meshIdx" || p === "coordTimes" || p === "style") {
                 continue;
             }
 
@@ -404,49 +404,77 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
-    var layer;
+    var layer = {};
     var layerStyleOptions = layerOpts.styleOptions || {};
     var defaultMapOptions = this.mapOptions.defaultFeaturesStyle || {};
     var defaultOptions = IMap.DEFAULT_VECTORLAYERS_STYLES;
     layerOpts.format = layerOpts.format.toLowerCase();
     switch (layerOpts.format.toUpperCase()) {
         case "KML":
-        case "GEOJSON":
-            this.logger.trace("ajout d'une couche KML / GEOJSON");
-            layer = {
+            this.logger.trace("ajout d'une couche KML");
+            layer.source = new this.Itowns.FileSource({
                 url : layerOpts.url,
-                id : layerId,
-                type : "color",
-                protocol : "rasterizer",
-                visible : (layerOpts.visibility === undefined) ? true : layerOpts.visibility,
-                opacity : (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity
-            };
+                projection : "EPSG:4326",
+                fetcher : this.Itowns.Fetcher.xml,
+                parser : this.Itowns.KMLParser.parse
+            });
             // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
             if (this.mapOptions.extractStyles === true) {
                 layer.style = {};
             } else {
                 layer.style = {
-                    stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
-                    strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
-                    strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
-                    fill : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
-                    fillOpacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                    fill : {
+                        color : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
+                        opacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                    },
+                    stroke : {
+                        color : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                        opacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                        width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
+                    }
+                };
+            }
+            break;
+        case "GEOJSON":
+            this.logger.trace("ajout d'une couche GEOJSON");
+            layer.source = new this.Itowns.FileSource({
+                url : layerOpts.url,
+                projection : "EPSG:4326",
+                fetcher : this.Itowns.Fetcher.json,
+                parser : this.Itowns.GeoJsonParser.parse
+            });
+            // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the GeoJson style)
+            if (this.mapOptions.extractStyles === true) {
+                layer.style = {};
+            } else {
+                layer.style = {
+                    fill : {
+                        color : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
+                        opacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                    },
+                    stroke : {
+                        color : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                        opacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                        width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
+                    }
                 };
             }
             break;
         case "GPX":
             this.logger.trace("ajout d'une couche GPX");
-            layer = {
+            layer.source = new this.Itowns.FileSource({
                 url : layerOpts.url,
-                id : layerId,
-                type : "color",
-                protocol : "rasterizer",
-                visible : (layerOpts.visibility === undefined) ? true : layerOpts.visibility,
-                opacity : (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity,
-                style : {
-                    stroke : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
-                    strokeWidth : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth,
-                    strokeOpacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity
+                projection : "EPSG:4326",
+                fetcher : this.Itowns.Fetcher.xml,
+                parser : this.Itowns.GpxParser.parse
+            });
+            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+            layer.style = {
+                stroke : {
+                    color : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                    opacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                    width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
                 }
             };
             break;
@@ -486,7 +514,16 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             LSControl._addedLayerConf[layerId] = layerOpts;
         }
 
-        this.libMap.addLayer(layer);
+        // we add the layer and refresh the itowns viewer
+        // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
+
+        this.libMap.getGlobeView().addLayer(new this.Itowns.ColorLayer(layerId, {
+            name : layer.id,
+            transparent : true,
+            projection : "EPSG:4326",
+            source : layer.source,
+            style : layer.style
+        }));
     }
 };
 
