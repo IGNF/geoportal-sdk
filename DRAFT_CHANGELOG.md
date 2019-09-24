@@ -1,6 +1,6 @@
 # SDK Geoportail 2D/3D, version 3.0.1
 
-**12/09/2019 : version 3.0.1**
+**24/09/2019 : version 3.0.1**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
@@ -15,8 +15,8 @@
 
 * [Changed]
 
-    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.2
-    - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version 2.2.2
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.3
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version 2.2.3
 
 * [Fixed]
 
