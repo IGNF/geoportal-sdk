@@ -5,7 +5,7 @@ import Logger from "./Utils/LoggerByDefault";
 // CSS
 import "./OpenLayers/CSS/OlMap.css";
 // import openlayers
-import olDist from "ol-dist";
+import olDist from "./Utils/dist-openlayers/index";
 // import des extensions openlayers (et des CRS ?)
 import { olExtended } from "geoportal-extensions-openlayers";
 

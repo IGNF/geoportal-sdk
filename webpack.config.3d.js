@@ -76,7 +76,7 @@ module.exports = (env, argv) => {
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
                 // - import local :
-                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
+                // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : [
@@ -175,7 +175,8 @@ module.exports = (env, argv) => {
                 },
                 {
                     /** openlayers est exposé en global : ol ! */
-                    test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
+                    // test : path.join(__dirname, "lib", "openlayers", "index.js"),
+                    test : /src\/Utils\/dist-openlayers\/index.js$/,
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
