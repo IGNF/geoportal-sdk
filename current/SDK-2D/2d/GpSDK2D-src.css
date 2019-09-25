@@ -9,15 +9,15 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.0
- * @date 06/09/2019
+ * @version 3.0.1
+ * @date 24/09/2019
  *
  */
 
 /*!
  * geoportal-extensions-openlayers. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 3.0.1
+ * @version 3.0.3
  */
 
 /*!
@@ -355,8 +355,8 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.1
- * @date 05/09/2019
+ * @version 3.0.3
+ * @date 24/09/2019
  *
  */
 
@@ -4975,7 +4975,9 @@ span[id^=GPshowMousePositionOpen] {
 
 div[id^=GPmousePositionPanel-] {
     /* on desactive le mode draggable de la fenêtre : */
-    /* position: absolute;  */
+    position: absolute;
+    left: 10px;
+    top: calc(-8px + -118px); /* FIXME !?*/
 }
 
 div[id^=GPmousePositionPanelClose]  {
@@ -9782,7 +9784,9 @@ span[id^=GPshowMousePositionOpen] {
 
 div[id^=GPmousePositionPanel-] {
     /* on desactive le mode draggable de la fenêtre : */
-    /* position: absolute;  */
+    position: absolute;
+    left: 10px;
+    top: calc(-8px + -118px); /* FIXME !?*/
 }
 
 div[id^=GPmousePositionPanelClose]  {
