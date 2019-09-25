@@ -1,3 +1,4 @@
+/* global __SWITCH2D3D_ALLOWED__ */
 import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
 import { Services, ProxyUtils } from "geoportal-extensions-openlayers";
@@ -194,8 +195,7 @@ function IMap (opts) {
 
     // Substitute global constants configured at compile time
     // cf. webpack.config.js
-    // on masque cette constante afin d'eviter "referenceerror not defined"
-    if ("__SWITCH2D3D_ALLOWED__".match(/true/)) {
+    if (__SWITCH2D3D_ALLOWED__) {
         this.switch2D3D = switch2D3D.bind(this);
     }
 };

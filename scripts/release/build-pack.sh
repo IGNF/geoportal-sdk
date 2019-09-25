@@ -61,6 +61,15 @@ build () {
         doCmd "cp -r ../../src/Itowns/ ./${main_directory}/src/."
     }
 
+    # flag de compilation
+    [ ${name} == "2d" ] && {
+        doCmd 'find ./${main_directory}/src/ -type f -name "*.js" -exec sed -i "s/__SWITCH2D3D_ALLOWED__/false/g" {} +'
+    }
+    [ ${name} == "3d" ] && {
+        doCmd 'find ./${main_directory}/src/ -type f -name "*.js" -exec sed -i "s/__SWITCH2D3D_ALLOWED__/true/g" {} +'
+    }
+
+
     # package.json
     # lecture du package.json du projet
     export _PACKAGE_FIELD_NAME="SDK"${ucname}"Version"
