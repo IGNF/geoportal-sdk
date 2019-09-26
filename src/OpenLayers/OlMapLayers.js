@@ -977,6 +977,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         } else {
                                             p.layer.once("change:source", setStyle);
                                         }
+
+                                        // FIXME
+                                        // On est dans un thread async (à cause du fetch),
+                                        // et l'abonnement (cf. IMap.prototype.addLayers)
+                                        // est executé avant que la couche soit ajouté
+                                        // à l'objet this._layers...
+                                        // On realise donc un reabonnement à la volée
+                                        // dans ce thread afin d'être sûr d'avoir nos
+                                        // abonements corrects !
+                                        self._resetLayerChangedEvent();
                                     })(params);
                                 }
                             }
@@ -999,11 +1009,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
  * Add a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
- * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ * @param {Object} layerConf - options of the layer conf (Gp.Config)
  *
  * @private
  */
-OlMap.prototype._addGeoportalLayer = function (layerObj) {
+OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
     // parametres additionnels eventuels
@@ -1044,8 +1054,82 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
     var LayerClass = null;
     switch (layerOpts.format.toUpperCase()) {
         case "MAPBOX" :
-            // FIXME creation d'une instance Ol.layer.GeoportalVectorTile !?
-            this.logger.warn("[_addGeoportalLayer] : Layer 'MapBox' not yet implemented !");
+            // Il n'est pas possible de creer une instance pour le format MAPBOX
+            // car le type n'est determiné qu'après le téléchargement du style...
+            // Donc, il nous faut les infos suivantes :
+            //     format: "MapBox",
+            //     url : "", // -> autoconf
+            //     urlService : "", // -> opts
+            //     projection : "", // -> autoconf / opts
+            //     outputFormat : "", // -> autoconf / opts
+            //     defaultThemeThumbnail : "", // -> autoconf / opts
+            //     defaultThemeName : "", // -> autoconf / opts
+            //     defaultThemeDescription : "", // -> autoconf / opts
+            //     themesSummary : "", // not used !
+            //     themes : [ // -> autoconf / opts
+            //         {
+            //             thumbnail : "",
+            //             name : "",
+            //             description : "",
+            //             url : ""
+            //         }
+            //     ],
+            //     filtersSummary : "", // not used !
+            //     filters : [ // ->  opts
+            //         {
+            //             propertyName : "",
+            //             filterName : "",
+            //             configuration : ""
+            //         }
+            //     ],
+            //     opacity : 1, / opts
+            //     visibility : true, / opts
+            //     queryable : true, / opts
+            //     position : 0, / opts
+            //     title : "", // -> autoconf / opts
+            //     description : "", // -> autoconf / opts
+            //     quicklookurl : "", // -> autoconf / opts
+            //     metadata : [], // -> autoconf / opts
+            //     legends : [], // -> autoconf / opts
+            //     originators: [] // -> autoconf / opts
+            this.logger.info("[_addGeoportalLayer] --> [_addMapBoxLayer]...");
+            if (layerConf) {
+                var bfirst = true;
+                for (var i = 0; i < layerConf.styles.length; i++) {
+                    var s = layerConf.styles[i];
+                    if (s.current) {
+                        if (!layerOpts.hasOwnProperty("url")) {
+                            layerObj[layerId].url = s.url;
+                        }
+                        if (!layerOpts.hasOwnProperty("defaultThemeName")) {
+                            layerObj[layerId].defaultThemeName = s.name;
+                        }
+                        if (!layerOpts.hasOwnProperty("defaultThemeDescription")) {
+                            layerObj[layerId].defaultThemeDescription = s.title;
+                        }
+                        if (!layerOpts.hasOwnProperty("defaultThemeThumbnail")) {
+                            layerObj[layerId].defaultThemeThumbnail = s.thumbnail;
+                        }
+                    } else {
+                        // 1. false true -> true
+                        //    true false -> true ...
+                        // 2. true true  -> false
+                        if ((function (a, b) { return (a || b) && !(a && b); })(layerOpts.hasOwnProperty("themes"), bfirst)) {
+                            bfirst = false;
+                            if (!layerObj[layerId].themes) {
+                                layerObj[layerId].themes = [];
+                            }
+                            layerObj[layerId].themes.push({
+                                thumbnail : s.thumbnail,
+                                name : s.name,
+                                description : s.title,
+                                url : s.url
+                            });
+                        }
+                    }
+                }
+            }
+            this._addMapBoxLayer(layerObj);
             break;
         case "WMTS" :
             LayerClass = Ol.layer.GeoportalWMTS;

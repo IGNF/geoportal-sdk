@@ -1,23 +1,20 @@
-# SDK Geoportail 2D/3D, version 3.0.1
+# SDK Geoportail 2D, version 3.0.2
 
-**24/09/2019 : version 3.0.1**
-> Release SDK Geoportail 2D/3D
+**26/09/2019 : version 3.0.2**
+> Release SDK Geoportail 2D
 
 ## Summary
 
-* Correctifs et amélioration suite au passage ES6
+* Correctifs sur le vecteur tuilé sur la 2D
 
 [semver] :
     - 2D : increment semver MINOR version
-    - 3D : increment semver MINOR version
 
 ## Changelog
 
 * [Changed]
 
-    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.3
-    - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version 2.2.3
-
 * [Fixed]
 
-    - [#45](https://github.com/IGNF/geoportal-sdk/issues/45) - Dépendances manquantes ?
+    - abonnements (listeners) sur le vecteur tuilé
+    - mise en place d'une couche vecteur tuilé issue de l'autoconfiguration
