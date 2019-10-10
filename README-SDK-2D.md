@@ -92,10 +92,10 @@ L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `nod
 Vous pouvez aussi choisir d'utiliser des fichiers hébergés en ligne, pour y accéder directement, lors de vos tests par exemple. Cependant, pour une utilisation en production, nous vous conseillons de télécharger ces fichiers et de les héberger vous-même, sur le même serveur qui héberge votre application.
 Par exemple sur Github Pages :
 ```
-http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.js
-http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.css
-http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.js
-http://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.css
+https://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.js
+https://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.css
+https://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.js
+https://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D-src.css
 ```
 
 ### Intégration dans une page web
