@@ -39,7 +39,11 @@
             },
             mapEventsOptions : {
                 "configured" : function() {
-                    map.getLibMap().addControl(new ol.control.Drawing()) ;
+                    map.getLibMap().addControl(new ol.control.Drawing({
+                        tools : {
+                            measure : true
+                        }
+                    })) ;
                 }
             }
         });
