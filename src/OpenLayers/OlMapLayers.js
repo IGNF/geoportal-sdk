@@ -1,6 +1,10 @@
 import { OlMap } from "./OlMapBase";
 import { IMap } from "../Interface/IMap";
-import { Protocols, olExtended as Ol } from "geoportal-extensions-openlayers";
+import {
+    Protocols,
+    olUtils as Utils,
+    olExtended as Ol
+} from "geoportal-extensions-openlayers";
 import { applyStyle as applyStyleOlms } from "ol-mapbox-style";
 
 import VectorTileLayer from "ol/layer/VectorTile";
@@ -534,9 +538,25 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                 if (response.ok) {
                     response.json()
                         .then(function (_glStyle) {
+                            // merge des surcharges de mapboxOptions
+                            var _overwrite = layerOpts.mapboxOptions;
+                            if (_overwrite && Object.keys(_overwrite).length) {
+                                var _lyrs = _overwrite.layers;
+                                // layers only !
+                                if (_lyrs) {
+                                    var _idx = _glStyle.layers.reduce((acc, it) => (acc[it.id] = it, acc), {}); // eslint-disable-line
+                                    for (var i = 0; i < _lyrs.length; i++) {
+                                        if (_idx[_lyrs[i].id]) {
+                                            Utils.mergeParams(_idx[_lyrs[i].id], _lyrs[i]);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // les sources
                             var _glSources = _glStyle.sources;
 
-                            // multisources ?
+                            // les sources sont elles multiples ?
                             var _multiSources = (Object.keys(_glSources).length > 1) ? 1 : 0;
 
                             for (var _glSourceId in _glSources) {
@@ -548,7 +568,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                 var vectorLayer = null;
 
                                 if (_glSources.hasOwnProperty(_glSourceId)) {
-                                    // lecture des informations dans le style
+                                    // lecture des informations de métadonnées dans le style
                                     // ex. metadata : {
                                     //    geoportail:[title | description | quicklookUrl | legends | originators | metadata | ...]
                                     // }
@@ -563,7 +583,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     var _position = null;
                                     var _queryable = null;
 
-                                    // on recherche si des informations sont disponibles
+                                    // on recherche si des informations de metatdonnées sont disponibles
                                     // directement dans le fichier de style...
                                     if (_glStyle.metadata) {
                                         for (var ns in _glStyle.metadata) {
@@ -616,6 +636,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     if (!layerOpts.description) {
                                         layerOpts.description = "Couche MapBox";
                                     }
+                                    // et le reste des informations issues des options :
                                     _title = (_multiSources) ? layerOpts.title + "(" + _glSourceId + ")" : layerOpts.title;
                                     _description = layerOpts.description;
                                     _quicklookUrl = layerOpts.quicklookUrl;
@@ -625,11 +646,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     _position = layerOpts.position;
                                     _queryable = (typeof layerOpts.queryable === "undefined") ? true : layerOpts.queryable;
 
-                                    // FIXME il est possible que les themes/filtres soient enregistrés sur une url
-                                    // vers un fichier json
+                                    // TODO
+                                    // cas où les themes/filtres sont enregistrés sur une url
+                                    // ou vers un fichier json
+
+                                    // options de themes (tableau)
                                     if (Array.isArray(layerOpts.themes)) {
                                         _themes = layerOpts.themes;
                                     }
+                                    // options de filtres (tableau)
                                     if (Array.isArray(layerOpts.filters)) {
                                         _filters = layerOpts.filters;
                                     }
@@ -637,7 +662,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     // source mapbox
                                     var _glSource = _glSources[_glSourceId];
 
-                                    // construction de la couche en fonction du type
+                                    // type mapbox
+                                    // la construction de la couche est en fonction du type
                                     var _glType = _glSource.type;
 
                                     if (_glType === "vector") {
@@ -809,12 +835,14 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             visibility : layerOpts.visibility,
                                             queryable : _queryable,
                                             opacity : layerOpts.opacity,
+                                            grayScaled : layerOpts.grayScaled,
                                             position : _position,
                                             url : layerOpts.url,
                                             defaultThemeName : layerOpts.defaultThemeName,
                                             defaultThemeThumbnail : layerOpts.defaultThemeThumbnail,
                                             defaultThemeDescription : layerOpts.defaultThemeDescription,
                                             format : layerOpts.format,
+                                            mapboxOptions : layerOpts.mapboxOptions,
                                             themesSummary : layerOpts.themesSummary,
                                             themes : _themes,
                                             filtersSummary : layerOpts.filtersSummary,
@@ -829,7 +857,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     };
                                     // fonction auto-invoquée
                                     (function (p) {
-                                        // INFO faut il ajouter le style de type background ?
+                                        // FIXME faut il ajouter le style de type background ?
                                         // fonction de style de la couche
                                         var setStyle = function () {
                                             applyStyleOlms(p.layer, p.styles, p.id)
@@ -965,18 +993,18 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             filters : p.options.filters
                                         });
 
-                                        // ajout du layer sur la carte
-                                        map.addLayer(p.layer);
-
-                                        // maj du gestionnaire de couche
-                                        self._addLayerConfToLayerSwitcher(p.layer, p.options);
-
                                         // application du style
                                         if (p.layer.getSource()) {
                                             setStyle();
                                         } else {
                                             p.layer.once("change:source", setStyle);
                                         }
+
+                                        // ajout du layer sur la carte
+                                        map.addLayer(p.layer);
+
+                                        // maj du gestionnaire de couche
+                                        self._addLayerConfToLayerSwitcher(p.layer, p.options);
 
                                         // FIXME
                                         // On est dans un thread async (à cause du fetch),
@@ -985,7 +1013,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // à l'objet this._layers...
                                         // On realise donc un reabonnement à la volée
                                         // dans ce thread afin d'être sûr d'avoir nos
-                                        // abonements corrects !
+                                        // abonnements corrects !
                                         self._resetLayerChangedEvent();
                                     })(params);
                                 }

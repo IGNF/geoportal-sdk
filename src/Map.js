@@ -347,14 +347,15 @@ var autoPanOptions = {
  * | outputFormat | String | - |
  * | projection | String | - |
  * | url | String | - |
- * | name | String | - |
- * | thumbnail | String | - |
+ * | defaultThemeName | String | - |
+ * | defaultThemeThumbnail | String | - |
  * | defaultThemeDescription | String | - |
  * | themesSummary | String | - |
  * | themes | {@link Gp.ThemesOptions} | options for layer styles |
  * | filtersSummary | String | - |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
+ * | mapboxOptions | Object | - |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
