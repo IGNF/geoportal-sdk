@@ -22,3 +22,5 @@
 
     - abonnements (listeners) sur le vecteur tuilé
     - mise en place d'une couche vecteur tuilé issue de l'autoconfiguration
+    - [#42] PR Update README-SDK-3D.md
+    - [#41] PR Update README-SDK-2D.md 
