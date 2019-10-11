@@ -76,7 +76,7 @@ module.exports = (env, argv) => {
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
                 // - import local :
-                "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
+                // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
         },
         externals : [
@@ -175,7 +175,8 @@ module.exports = (env, argv) => {
                 },
                 {
                     /** openlayers est exposé en global : ol ! */
-                    test : path.resolve(__dirname, "lib", "openlayers", "index.js"),
+                    // test : path.join(__dirname, "lib", "openlayers", "index.js"),
+                    test : /src\/Utils\/dist-openlayers\/index.js$/,
                     use : [{
                         loader : "expose-loader",
                         options : "ol"
@@ -204,8 +205,8 @@ module.exports = (env, argv) => {
                         path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
                         path.join(__dirname, "node_modules", "geoportal-extensions-itowns"),
                         path.join(__dirname, "node_modules", "ol"),
-                        path.join(__dirname, "res", "Itowns"),
-                        path.join(__dirname, "res", "OpenLayers")
+                        path.join(__dirname, "src", "Itowns", "CSS"),
+                        path.join(__dirname, "src", "OpenLayers", "CSS")
                     ],
                     use : [
                         MiniCssExtractPlugin.loader,
@@ -223,8 +224,8 @@ module.exports = (env, argv) => {
                     include : [
                         path.join(__dirname, "node_modules", "geoportal-extensions-openlayers"),
                         path.join(__dirname, "node_modules", "geoportal-extensions-itowns"),
-                        path.join(__dirname, "res", "Itowns"),
-                        path.join(__dirname, "res", "OpenLayers")
+                        path.join(__dirname, "src", "Itowns", "CSS"),
+                        path.join(__dirname, "src", "OpenLayers", "CSS")
                     ]
                 }
             ]
@@ -246,14 +247,27 @@ module.exports = (env, argv) => {
                         replacement : function () {
                             return pkg.dependencies["itowns"];
                         }
+                    },
+                    {
+                        partten : /__PRODUCTION__/g,
+                        replacement : function () {
+                            /** replacement de la clef __PRODUCTION__ pour le LOGGER */
+                            return !logMode;
+                        }
+                    },
+                    {
+                        partten : /__SWITCH2D3D_ALLOWED__/g,
+                        replacement : function () {
+                            return true;
+                        }
                     }
                 ]
             ),
             /** GESTION DU LOGGER */
-            new DefineWebpackPlugin({
-                __PRODUCTION__ : JSON.stringify(!logMode),
-                __SWITCH2D3D_ALLOWED__ : JSON.stringify(true)
-            }),
+            // new DefineWebpackPlugin({
+            //     __PRODUCTION__ : JSON.stringify(!logMode),
+            //     __SWITCH2D3D_ALLOWED__ : JSON.stringify(true)
+            // }),
             /** GENERATION DE LA JSDOC */
             new JsDocWebPackPlugin({
                 conf : path.join(__dirname, "doc/jsdoc.json")

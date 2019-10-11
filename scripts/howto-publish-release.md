@@ -99,7 +99,54 @@ Pousser les modifications
 
 ## 2. Publication de la JSDOC
 
-TODO
+Sur la branche *gh-pages*
+
+Basculer sur la branche *gh-pages*
+
+    git checkout gh-pages
+    git pull origin gh-pages
+
+Créer un dossier *vx.y.z/*
+
+    mkdir -p vx.y.z/
+
+Copier le contenu de *./jsdoc/* dans *vx.y.z/jsdoc/*
+(doit contenir les fichiers html etc nécessaires à la consultation de la doc)
+
+    cp -r jsdoc/ v3.0.0/jsdoc
+
+Copier aussi le contenu des bundles générés (/dist) dans la bonne arborescence
+
+    cp -r dist/2d/ vx.y.z/dist/2d
+    cp -r dist/3d/ vx.y.z/dist/3d
+
+
+Modifier le lien symbolique *vx.y* pour qu'il pointe vers ce dossier :
+
+    ln -fsn vx.y.z/ vx.y
+
+Si besoin, modifier le lien symbolique *openlayers-latest* pour qu'il pointe vers le lien créé :
+
+    ln -fsn vx.y/ latest
+
+**IMPORTANT**
+> Vérifier que les liens ont été modifiés !
+
+Pousser les modifications
+
+    git add -A
+    git commit -m "update jsdoc and bundles to release SDK vx.y.z"
+    git push
+
+**IMPORTANT**
+> la nouvelle doc doit être disponible sur :
+https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html
+et
+https://ignf.github.io/geoportal-sdk/v3.0.0/jsdoc/Gp.LayerOptions.html
+
+> les nouveaux bundles doivent être disponibles sur :
+https://ignf.github.io/geoportal-sdk/latest/dist/2d/GpSDK2D.js
+https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.js
 
 ## 3. Publication sur le GitHub (release)
 

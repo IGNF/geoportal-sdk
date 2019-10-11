@@ -116,6 +116,7 @@
                     outputFormat : "image/jpeg",
                     url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
                     layer : "ORTHOIMAGERY.ORTHOPHOTOS",
+                    projection : "EPSG:3857",
                     tileMatrixSet : "PM",
                     tileMatrixSetLimits : {
                       "0": {
@@ -302,7 +303,7 @@
             center : {
                 x : 2.357,
                 y : 48.83,
-                projection : "CR:84"
+                projection : "CRS:84"
             }
         });
     </script>

@@ -1017,6 +1017,18 @@ OlMap.prototype._addGeoportalLayer = function (layerObj) {
     if (layerOpts.hasOwnProperty("position")) {
         olParams.zIndex = layerOpts.position;
     }
+    // transmission du style demandé au LayerWMTS/LayerWMS
+    // WMTS : styleName (string)
+    if (layerOpts.hasOwnProperty("styleName")) {
+        olParams.sourceParams = {};
+        olParams.sourceParams.style = layerOpts.styleName;
+    }
+    // WMS : styleNames (array[string]) --> on prend le premier style spécifié
+    if (layerOpts.hasOwnProperty("styleNames")) {
+        olParams.sourceParams = {};
+        olParams.sourceParams.params = {};
+        olParams.sourceParams.params.STYLES = layerOpts.styleNames[0];
+    }
     if (layerOpts.hasOwnProperty("minZoom") &&
         layerOpts.minZoom >= 0 &&
         layerOpts.minZoom <= 28) {

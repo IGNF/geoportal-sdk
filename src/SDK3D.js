@@ -43,7 +43,7 @@
 * > sdkDate: "YYYY-MM-DD"
 */
 
-import Pkg from "../package";
+import Pkg from "../package.json";
 import Logger from "./Utils/LoggerByDefault";
 
 import { MapLoader } from "./Utils/MapLoader";
@@ -51,11 +51,11 @@ import { OlMap } from "./OpenLayers/OlMap";
 import { ItMap } from "./Itowns/ItMap";
 
 // CSS
-import "../res/Itowns/ItMap.css";
-import "../res/OpenLayers/OlMap.css";
+import "./Itowns/CSS/ItMap.css";
+import "./OpenLayers/CSS/OlMap.css";
 
 // import openlayers
-import olDist from "ol-dist";
+import olDist from "./Utils/dist-openlayers/index";
 
 // import des extensions openlayers
 import { olExtended } from "geoportal-extensions-openlayers";

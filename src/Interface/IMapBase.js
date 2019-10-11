@@ -1,5 +1,4 @@
 /* global __SWITCH2D3D_ALLOWED__ */
-
 import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
 import { Services, ProxyUtils } from "geoportal-extensions-openlayers";
@@ -194,6 +193,8 @@ function IMap (opts) {
     // intialisation de la carte (à vide)
     this._initMap();
 
+    // Substitute global constants configured at compile time
+    // cf. webpack.config.js
     if (__SWITCH2D3D_ALLOWED__) {
         this.switch2D3D = switch2D3D.bind(this);
     }
