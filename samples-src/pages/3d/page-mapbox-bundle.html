@@ -36,10 +36,11 @@
                 },
                 'monMapBoxGeoJSON' : {
                     format : "MapBox",
-                    url : "http://rok4server.ide.ign.fr/rok4/1.0.0/PYRAMIDE_ECRAN/${z}/${x}/${y}.pbf",
-                    styleUrl : "{{resources}}/MAPBOX/styles/ign-pyramide-ecran.json",
-                    minZoom : 10,
-                    maxZoom : 13
+                    url : "https://vectortiles.ign.fr/rok4server/1.0.0/PLAN.IGN/${z}/${x}/${y}.pbf",
+                    styleUrl : "{{resources}}/MAPBOX/styles/planign.json"
+                },
+                "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
+                    type : "elevation"
                 }
             },
             center : {
