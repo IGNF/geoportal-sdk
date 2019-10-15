@@ -755,6 +755,11 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
 ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     // FIXME à faire ailleurs
     var layerId = Object.keys(layerObj)[0];
+    // FIXME verrue pour gestion projection MNT = IGNF:WGS84 dans autoconf...
+    // itowns ne gere que 3857 et 4326
+    if (layerConf.defaultProjection !== "EPSG:3857") {
+        layerConf.defaultProjection = "EPSG:4326";
+    }
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
     if (layerConf) {
         layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
