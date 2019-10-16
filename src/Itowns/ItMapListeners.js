@@ -578,7 +578,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            if (layerOpts.type.toUpperCase() !== "ELEVATION") {
+            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
                 layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
                 layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
             }
@@ -635,7 +635,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            if (layerOpts.type.toUpperCase() !== "ELEVATION") {
+            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
                 layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
                 layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
             }
@@ -722,7 +722,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             options : layerOpts,
             obj : layer
         });
-        if (layerOpts.type.toUpperCase() === "ELEVATION") {
+        if (layerOpts.type && layerOpts.type.toUpperCase() === "ELEVATION") {
             layer.type = "elevation";
             // we add the noDataValue if it is given
             if (layerOpts.noDataValue) {
