@@ -590,12 +590,21 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layer.minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
             }
 
+            // itowns only handles EPSG:4326 and EPSG:3857
+            if (!layerOpts.projection || (layerOpts.projection.toUpperCase() !== "EPSG:4326" && layerOpts.projection.toUpperCase() !== "EPSG:3857")) {
+                // EPSG:4326 by default
+                layerOpts.projection = "EPSG:4326";
+            } else {
+                // iTowns is case sensitive
+                layerOpts.projection = layerOpts.projection.toUpperCase();
+            }
+
             layer.source = new this.Itowns.WMSSource({
                 protocol : layerOpts.format,
                 version : layerOpts.version || "1.3.0",
                 url : layerOpts.url,
                 name : layerNames,
-                projection : layerOpts.projection || "EPSG:4326",
+                projection : layerOpts.projection,
                 style : layerOpts.styleName || "",
                 heightMapWidth : 256,
                 transparent : true,
@@ -676,11 +685,20 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 };
             };
 
+            // itowns only handles EPSG:4326 and EPSG:3857
+            if (!layerOpts.projection || (layerOpts.projection.toUpperCase() !== "EPSG:4326" && layerOpts.projection.toUpperCase() !== "EPSG:3857")) {
+                // EPSG:4326 by default
+                layerOpts.projection = "EPSG:4326";
+            } else {
+                // iTowns is case sensitive
+                layerOpts.projection = layerOpts.projection.toUpperCase();
+            }
+
             layer.source = new this.Itowns.WMTSSource({
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
-                projection : layerOpts.projection || "EPSG:4326",
+                projection : layerOpts.projection,
                 networkOptions : {
                     crossOrigin : "omit"
                 },
