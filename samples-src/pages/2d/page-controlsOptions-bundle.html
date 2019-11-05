@@ -35,6 +35,7 @@
 
 {{#content "js"}}
 <script>
+        Gp.olExtended.includeProjections();
         var map = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             azimuth : 45,
@@ -79,6 +80,18 @@
                             crs : "EPSG:3857",
                             label : "Coordonnées métriques",
                             type : "Metric"
+                        },
+                        {
+                            crs : "EPSG:32630",
+                            label : "UTM 30N (France m\u00e9tropolitaine)",
+                            type : "Metric",
+                            geoBBox : { left: -6.00, bottom : 0.00, right : 0.00, top : 84.00 }
+                        },
+                        {
+                            crs : "EPSG:32631",
+                            label : "UTM 31N (France m\u00e9tropolitaine)",
+                            type : "Metric",
+                            geoBBox : { left: 0.00, bottom : 0.00, right : 6.00, top : 84.00 }
                         }
                     ],
                     units : ["km","m","dms","rad","dec","gon"],
