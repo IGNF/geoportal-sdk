@@ -1,26 +1,24 @@
-# SDK Geoportail 2D, version 3.0.2
+# SDK Geoportail 2D/3D, version 3.0.2
 
-**03/10/2019 : version 3.0.2**
-> Release SDK Geoportail 2D
+**21/10/2019 : version 3.0.2**
+> Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Correctifs sur le vecteur tuilé sur la 2D
-* mise à jour des extensions *geoportal-extensions-itowns* en v2.2.4
-* mise à jour des extensions *geoportal-extensions-openlayers* en v3.0.4
-
-[semver] :
-    - 2D : increment semver MINOR version
+* Mise à jour des packages extensions geoportail pour openlayers et itowns
+* Mise à jour des README
+* Corrections de bugs mineurs sur le SDK 3D
 
 ## Changelog
 
 * [Changed]
 
-    - mise à jour de la jsdoc sur le vecteur tuilé
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.4
+    - [dev-workflow] Mise à jour du package *geoportal-extensions-itowns* en version 2.2.4
+    - [dev-workflow] Mise à jour de la dépendance *threejs* en version 0.109 compatible avec itowns 2.15.3 embarqué par *geoportal-extensions-itowns* 2.2.4
 
 * [Fixed]
 
-    - abonnements (listeners) sur le vecteur tuilé
-    - mise en place d'une couche vecteur tuilé issue de l'autoconfiguration
-    - [#42] PR Update README-SDK-3D.md
-    - [#41] PR Update README-SDK-2D.md 
+    - [#41](https://github.com/IGNF/geoportal-sdk/issues/41) - Mise à jour README-SDK-2D
+    - [#42](https://github.com/IGNF/geoportal-sdk/issues/42) - Mise à jour README-SDK-3D
+    - Retrait de paramètres inutiles ajoutés aux couches de type "elevation" (SDK-3D)

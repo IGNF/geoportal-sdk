@@ -544,12 +544,12 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     // itowns needs a bbox to display the layer
     // if the layer is in PM, the bbox needs to be in planar coordinates
     if (layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
-        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as("EPSG:3857");
+        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as(layerOpts.projection);
     } else if (layerOpts.bbox && layerOpts.projection === "EPSG:4326") {
-        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
+        boundingBox = new this.Itowns.Extent(layerOpts.projection, layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
-        boundingBox = new this.Itowns.Extent("EPSG:3857", -20026376.39, 20026376.39, 20048966.10, 20048966.10);
+        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, 20048966.10, 20048966.10);
     } else {
         // world bbox in WGS84 (EPSG:4326)
         boundingBox = new this.Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
@@ -578,8 +578,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
+                layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+                layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+            }
 
             if (layerOpts.minZoom) {
                 layer.maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
@@ -588,12 +590,21 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layer.minScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.maxZoom) / 0.00028;
             }
 
+            // itowns only handles EPSG:4326 and EPSG:3857
+            if (!layerOpts.projection || (layerOpts.projection.toUpperCase() !== "EPSG:4326" && layerOpts.projection.toUpperCase() !== "EPSG:3857")) {
+                // EPSG:4326 by default
+                layerOpts.projection = "EPSG:4326";
+            } else {
+                // iTowns is case sensitive
+                layerOpts.projection = layerOpts.projection.toUpperCase();
+            }
+
             layer.source = new this.Itowns.WMSSource({
                 protocol : layerOpts.format,
                 version : layerOpts.version || "1.3.0",
                 url : layerOpts.url,
                 name : layerNames,
-                projection : layerOpts.projection || "EPSG:4326",
+                projection : layerOpts.projection,
                 style : layerOpts.styleName || "",
                 heightMapWidth : 256,
                 transparent : true,
@@ -633,8 +644,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
+                layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+                layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+            }
 
             // set min and max zoom regarding the layerOpts and the TMS Limits
             var minZoom, maxZoom;
@@ -656,33 +669,44 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.maxScaleDenominator = this._getResolutionFromZoomLevel(minZoom) / 0.00028;
             layer.minScaleDenominator = this._getResolutionFromZoomLevel(maxZoom) / 0.00028;
 
-            var updateStrategyOptions = {};
+            layer.updateStrategy = {};
             // depends on the levelsToLoad option
             if (layerOpts.levelsToLoad) {
-                updateStrategyOptions = {
-                    type : 1,
+                layer.updateStrategy = {
+                    type : 0,
                     options : {
                         groups : layerOpts.levelsToLoad
                     }
                 };
             } else {
-                updateStrategyOptions = {
-                    type : "0",
+                layer.updateStrategy = {
+                    type : 0,
                     options : {}
                 };
             };
+
+            // itowns only handles EPSG:4326 and EPSG:3857
+            if (!layerOpts.projection || (layerOpts.projection.toUpperCase() !== "EPSG:4326" && layerOpts.projection.toUpperCase() !== "EPSG:3857")) {
+                // EPSG:4326 by default
+                layerOpts.projection = "EPSG:4326";
+            } else {
+                // iTowns is case sensitive
+                layerOpts.projection = layerOpts.projection.toUpperCase();
+            }
 
             layer.source = new this.Itowns.WMTSSource({
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
-                projection : layerOpts.projection || "EPSG:4326",
+                projection : layerOpts.projection,
+                networkOptions : {
+                    crossOrigin : "omit"
+                },
                 tileMatrixSet : layerOpts.tileMatrixSet,
                 tileMatrixSetLimits : layerOpts.tileMatrixSetLimits,
                 format : layerOpts.outputFormat,
                 name : layerOpts.layer,
                 style : layerOpts.styleName,
-                updateStrategy : updateStrategyOptions,
                 zoom : {
                     min : minZoom || 1,
                     max : maxZoom || 21
@@ -716,7 +740,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             options : layerOpts,
             obj : layer
         });
-        if (layerOpts.type === "elevation") {
+        if (layerOpts.type && layerOpts.type.toUpperCase() === "ELEVATION") {
             layer.type = "elevation";
             // we add the noDataValue if it is given
             if (layerOpts.noDataValue) {
@@ -755,6 +779,11 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
 ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     // FIXME à faire ailleurs
     var layerId = Object.keys(layerObj)[0];
+    // FIXME verrue pour gestion projection MNT = IGNF:WGS84 dans autoconf...
+    // itowns ne gere que 3857 et 4326
+    if (layerConf.defaultProjection !== "EPSG:3857") {
+        layerConf.defaultProjection = "EPSG:4326";
+    }
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
     if (layerConf) {
         layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
