@@ -811,6 +811,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             opacity : layerOpts.opacity,
                                             position : _position,
                                             url : layerOpts.url,
+                                            urlService : layerOpts.urlService,
                                             defaultThemeName : layerOpts.defaultThemeName,
                                             defaultThemeThumbnail : layerOpts.defaultThemeThumbnail,
                                             defaultThemeDescription : layerOpts.defaultThemeDescription,

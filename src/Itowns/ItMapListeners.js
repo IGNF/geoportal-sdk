@@ -764,7 +764,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var createVectorTileLayer = function (style) {
         return new this.Itowns.layer.VectorTileLayer({
             id : layerId,
-            url : layerOpts.url,
+            url : layerOpts.urlService,
             style : style,
             zoom : {
                 min : layerOpts.minZoom || 1,
@@ -784,7 +784,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         this.libMap.getGlobeView().addLayer(layer);
     }.bind(this);
 
-    this.libMap.parseMapboxStyle(layerOpts.styleUrl).then(createVectorTileLayer).then(addVectorTileLayer);
+    this.libMap.parseMapboxStyle(layerOpts.url).then(createVectorTileLayer).then(addVectorTileLayer);
 };
 
 /**
