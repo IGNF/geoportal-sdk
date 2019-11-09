@@ -26,8 +26,8 @@ import {
     Circle as CircleStyle
 } from "ol/style";
 import {
-    transform as olTransformProj,
-    get as olGetProj
+    transform as olTransformProj
+    // get as olGetProj
 } from "ol/proj";
 
 /**
@@ -291,11 +291,14 @@ OlMap.prototype.addMousePositionControl = function (controlOpts) {
         Array.isArray(controlOpts.systems) &&
         controlOpts.systems.length > 0) {
         for (var i = 0; i < controlOpts.systems.length; i++) {
-            if (!olGetProj(controlOpts.systems[i].crs)) {
-                // on retire les systèmes non définis
-                this.logger.trace("[OlMap] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found.");
-                continue;
-            }
+            // si la projection n'est pas reconnue, on laisse le controle
+            // ajouter cette projection... Le controle possede un mecanisme de
+            // verification et ajout des projections non definies...
+            // if (!olGetProj(controlOpts.systems[i].crs)) {
+            //     // on retire les systèmes non définis
+            //     this.logger.trace("[OlMap] addMousePositionControl : crs [" + controlOpts.systems[i].crs + "] not found.");
+            //     continue;
+            // }
             if (!mpOpts.systems) {
                 mpOpts.systems = [];
             }
