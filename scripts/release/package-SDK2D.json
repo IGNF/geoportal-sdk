@@ -23,7 +23,7 @@
       "geoportal-extensions-openlayers" : "3.0.5"
    },
    "scripts" : {},
-   "version" : "3.0.2",
+   "version" : "3.0.3",
    "module" : "src/SDK2D.js",
    "license" : "CECILL-B",
    "keywords" : [
@@ -32,6 +32,6 @@
       "webservice",
       "javascript"
    ],
-   "date" : "21/10/2019",
+   "date" : "18/11/2019",
    "author" : "IGNF"
 }
