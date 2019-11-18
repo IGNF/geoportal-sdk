@@ -9,15 +9,15 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.2
- * @date 21/10/2019
+ * @version 3.0.3
+ * @date 18/11/2019
  *
  */
 
 /*!
  * geoportal-extensions-openlayers. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 3.0.4
+ * @version 3.0.5
  */
 
 /*!
@@ -367,8 +367,8 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.4
- * @date 16/10/2019
+ * @version 3.0.5
+ * @date 18/11/2019
  *
  */
 
@@ -3987,6 +3987,10 @@ input[type="checkbox"]:checked + .GPEditorMapBoxLayerTitleLabel {
 .GPEditorMapBoxToolsVisibilityInput {
     display: none;
 }
+.GPEditorMapBoxToolsVisibilityInputDisable {
+    display: "block";
+}
+
 .GPEditorMapBoxToolsVisibilityLabel {
     width: 28px;
     height: 28px;
@@ -3996,6 +4000,10 @@ input[type="checkbox"]:checked + .GPEditorMapBoxLayerTitleLabel {
     background-position: -28px 0;
     /* background-color: white; */
 }
+.GPEditorMapBoxToolsVisibilityLabelDisable {
+    cursor: pointer;
+}
+
 input[type="checkbox"]:checked + .GPEditorMapBoxToolsVisibilityLabel {
   background-position: 0 0;
 }
@@ -4989,7 +4997,12 @@ div[id^=GPmousePositionPanel-] {
     /* on desactive le mode draggable de la fenêtre : */
     position: absolute;
     left: 10px;
-    top: calc(-8px + -118px); /* FIXME !?*/
+    top: calc(-8px + -118px);
+    /* transition: top 0.5s ease-out 0s;
+    transition-property: top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    transition-delay: 0s; */
 }
 
 div[id^=GPmousePositionPanelClose]  {
@@ -11841,6 +11854,10 @@ input[type="checkbox"]:checked + .GPEditorMapBoxLayerTitleLabel {
 .GPEditorMapBoxToolsVisibilityInput {
     display: none;
 }
+.GPEditorMapBoxToolsVisibilityInputDisable {
+    display: "block";
+}
+
 .GPEditorMapBoxToolsVisibilityLabel {
     width: 28px;
     height: 28px;
@@ -11850,6 +11867,10 @@ input[type="checkbox"]:checked + .GPEditorMapBoxLayerTitleLabel {
     background-position: -28px 0;
     /* background-color: white; */
 }
+.GPEditorMapBoxToolsVisibilityLabelDisable {
+    cursor: pointer;
+}
+
 input[type="checkbox"]:checked + .GPEditorMapBoxToolsVisibilityLabel {
   background-position: 0 0;
 }
@@ -12843,7 +12864,12 @@ div[id^=GPmousePositionPanel-] {
     /* on desactive le mode draggable de la fenêtre : */
     position: absolute;
     left: 10px;
-    top: calc(-8px + -118px); /* FIXME !?*/
+    top: calc(-8px + -118px);
+    /* transition: top 0.5s ease-out 0s;
+    transition-property: top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    transition-delay: 0s; */
 }
 
 div[id^=GPmousePositionPanelClose]  {
