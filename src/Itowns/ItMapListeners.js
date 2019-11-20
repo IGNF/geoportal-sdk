@@ -549,7 +549,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         boundingBox = new this.Itowns.Extent(layerOpts.projection, layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
-        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, 20048966.10, 20048966.10);
+        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, -20048966.10, 20048966.10);
     } else {
         // world bbox in WGS84 (EPSG:4326)
         boundingBox = new this.Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
