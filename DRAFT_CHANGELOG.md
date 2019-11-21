@@ -1,15 +1,21 @@
-# SDK Geoportail 2D/3D, version 3.0.3
+# SDK Geoportail 2D/3D, version 3.0.4
 
-**18/11/2019 : version 3.0.3**
+**21/11/2019 : version 3.0.4**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Correctif sur les projections (bug de proj4 qui ne gère pas les projections géocentriques)
-* SDK 3D : correction d'un bug mineur sur la prise en compte du paramètre *projection*
+* Correctif pour l'ajout de couches WMS en 3D
+* Correctif pour la gestion des styles KML en 3D
+* Mise à jour de la documentation pour les styles (2D et 3D)
 
 ## Changelog
 
-* [Changed]
+* [Fixed]
 
-    - [dev-workflow] Mise à jour du package *geoportal-extensions-openlayers* en version 3.0.5
+    - Ajout de couches WMS en 3D : correction de la BBOX par défaut
+    - Ajout de couches KML en 3D : correction du style par défaut
+
+    * [Changed]
+
+        - Mise à jour de la documentation pour les styles (2D et 3D)
