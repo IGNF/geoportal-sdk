@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D Interaction</title>
+    <style>
+        #geoportalMap {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Test de l'activation / desactivation des interactions</h1>
+    <p>Version 1.0 : bugs constatés : (1) Après activation puis desactivation de getfeatureinfo => erreur au clic. (2) activation / desactivation de la navigation au clavier ("keyboard") inopérante </p>
+    <div id="eventsDiv">
+        <input type="checkbox" name="draggable" onclick="toggle(this);"/>enable Mouse navigation<br/>
+        <input type="checkbox" name="keyboard" onclick="toggle(this);"/>enable keybord navigation<br/>
+        <input type="checkbox" name="getfeatureinfo" onclick="toggle(this);"/>enable feature selection<br/>
+    </div>
+    <div id="geoportalMap"></div>
+
+    <script>
+        var map = Gp.Map.load('geoportalMap', {
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            center:{
+                x : 837444,
+                y : 5856585
+            },
+            layersOptions : {
+                maCoucheKML : {
+                    format : "kml",
+                    url : "https://openlayers.org/en/latest/examples/data/kml/2012-02-10.kml",
+                    opacity : 0.5,
+                    extractStyles : true
+                }
+            },
+            zoom : 14,
+            controlsOptions : {
+                getfeatureinfo : {
+                    options : {
+                        auto : true,
+                        // hidden : true,
+                        active : false
+                    }
+                },
+                draggable : false,
+                keyboard : false
+            }
+        });
+        function toggle(elem) {
+            var controlsOptions = {} ;
+            if ( elem.name == "getfeatureinfo" ) {
+                controlsOptions[elem.name] = {
+                    options : {
+                        auto : true,
+                        active : elem.checked,
+                        // hidden : true
+                    }
+                } ;
+                map.modifyControls(controlsOptions) ;
+            } else {
+                controlsOptions[elem.name] = elem.checked
+                map.addControls(controlsOptions) ;
+            }
+        }
+    </script>
+    </body>
+</html>

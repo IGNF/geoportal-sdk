@@ -1,0 +1,29 @@
+{
+    "themesSummary": "Thèmes sur la couche 'TEST'",
+    "themes" : [
+        {
+            "thumbnail" : "{{ resources }}/data/mapbox/themes/images/layer0.png",
+            "name" : "standard0",
+            "description" : "",
+            "url" : "{{ resources }}/data/mapbox/themes/styles/style0.json"
+        },
+        {
+            "thumbnail" : "{{ resources }}/data/mapbox/themes/images/layer1.png",
+            "name" : "standard1",
+            "description" : "",
+            "url" : "{{ resources }}/data/mapbox/themes/styles/style1.json"
+        },
+        {
+            "thumbnail" : "{{ resources }}/data/mapbox/themes/images/layer2.png",
+            "name" : "standard2",
+            "description" : "",
+            "url" : "{{ resources }}/data/mapbox/themes/styles/style2.json"
+        },
+        {
+            "thumbnail" : "{{ resources }}/data/mapbox/themes/images/layer3.png",
+            "name" : "standard3",
+            "description" : "",
+            "url" : "{{ resources }}/data/mapbox/themes/styles/style3.json"
+        }
+    ]
+}

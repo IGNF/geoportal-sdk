@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-map.css" />
+        <script src="../../dist/2d/GpSDK2D-map.js"></script>
+
+    <title>Sample SDK 2D GPP Layer</title>
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Une carte affichant des couches Géoportail</h1>
+    <div id="geoportalMap"></div>
+
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {},
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS' :{
+                    opacity :0.3
+                },
+                'CADASTRALPARCELS.PARCELS' : {
+                    visibility:false
+                }
+            },
+            zoom : 10
+        });
+    </script>
+    </body>
+</html>

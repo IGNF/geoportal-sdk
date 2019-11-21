@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D.css" />
+        <script src="../../dist/2d/GpSDK2D.js"></script>
+
+    <title>Sample SDK 2D GFI WMS</title>
+    <style>
+        body {
+            width : 100% !important;
+        }
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Get Feature Info</h1>
+    <p>Exemple de mise en oeuvre du widget getFeatureInfo avec une couche WMS (école) et WMTS (photos).</p>
+    <p>Ici l'évènement par défault est le simple click.</p>
+    <div id="geoportalMap"></div>
+
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            // proxyUrl : "https://localhost/proxy/proxy.php?url=",
+            // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+            center : {
+                x : 22700,
+                y : 6395900
+            },
+            zoom : 15,
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "mousePosition" : {},
+                "getfeatureinfo" : {
+                    options : {
+                        active : true,
+                        hidden: false,
+                        defaultEvent : "singleclick",
+                        cursorStyle : "pointer"
+                    },
+                    layers : {
+                        'TN.RoadTransportNetwork' : {},
+                        'ORTHOIMAGERY.ORTHOPHOTOS' : {}
+                    }
+                }
+            },
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS' : {
+                    queryable : false
+                },
+                'TN.RoadTransportNetwork' : {
+                    queryable : true
+                }
+            }
+        });
+    </script>
+    </body>
+</html>

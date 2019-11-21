@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/3d/GpSDK3D.css" />
+        <script src="../../dist/3d/GpSDK3D.js"></script>
+
+    <title>Sample SDK 3D Azimuth</title>
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 1200px;
+          position : "relative";
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 3D</h1>
+    <h1>Test 3D</h1>
+    <h2>Carte 3D.</h2>
+    <div id="BoutonSwitchToItowns">
+        <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D"/><br/>
+    </div>
+    <div id="BoutonSwitchToOl" hidden>
+        <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
+    </div>
+    <div id="viewerDiv"></div>
+
+    <script>
+        var map = Gp.Map.load("viewerDiv",{
+            configUrl : "../resources/autoconf.js", // apiKey : "ptlp78g6fvz9daz5mg2fztvr",
+            viewMode : "2d",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+            },
+            center : {
+                x : 2.357,
+                y : 48.83
+            },
+            azimuth : 60
+        });
+
+        function switchTo3D() {
+            map = map.switch2D3D("3d");
+            document.getElementById("BoutonSwitchToOl").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        function switchTo2D() {
+            map = map.switch2D3D("2d");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl").style.display = "none";
+        };
+    </script>
+    </body>
+</html>

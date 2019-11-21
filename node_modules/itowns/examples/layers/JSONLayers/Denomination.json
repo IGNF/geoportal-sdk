@@ -1,0 +1,22 @@
+{
+  "id": "Denomination",
+  "title": "Geographical denomination in France",
+  "visible": false,
+  "opacity": 1,
+  "transparent": true,
+  "source": {
+    "url": "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts",
+    "projection": "EPSG:3857",
+    "tileMatrixSet": "PM",
+    "format": "image/png",
+    "name": "GEOGRAPHICALNAMES.NAMES",
+    "style": "normal",
+    "networkOptions": {
+      "crossOrigin": "omit"
+    },
+    "zoom": {
+      "min": 6,
+      "max": 20
+    }
+  }
+}

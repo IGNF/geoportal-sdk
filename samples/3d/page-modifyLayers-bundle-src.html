@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/3d/GpSDK3D-src.css" />
+        <script src="../../dist/3d/GpSDK3D-src.js"></script>
+
+    <title>Sample SDK 3D Modify Layers</title>
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 1200px;
+          position : "relative";
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 3D</h1>
+    <h1>Test 3D</h1>
+    <h2>Carte 3D.</h2>
+    <div id="BoutonSwitchToItowns" hidden>
+        <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D"/><br/>
+    </div>
+    <div id="BoutonSwitchToOl">
+        <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
+    </div>
+    <div id="viewerDiv"></div>
+    <div id="BoutonDiv">
+        <input type="button" name="export" onclick="modifyLayers();" value="modifiyLayers(null)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {opacity : 0.5}});" value="modifyLayers(GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'ORTHOIMAGERY.ORTHOPHOTOS':{opacity : 0.2},'CADASTRALPARCELS.PARCELS':{style:'bdparcellaire_o'}});" value="modifyLayers(ORTHOIMAGERY.ORTHOPHOTOS,CADASTRALPARCELS.PARCELS)"/><br/>
+    </div>
+
+    <script>
+        var map = Gp.Map.load("viewerDiv",{
+            configUrl : "../resources/autoconf.js", // apiKey : "ptlp78g6fvz9daz5mg2fztvr",
+            viewMode : "3d",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    minZoom : 1,
+                    maxZoom : 15
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {},
+                "CADASTRALPARCELS.PARCELS" : {
+                    styleName : "bdparcellaire_o"
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                }
+            },
+            center : {
+                x : 2.357,
+                y : 48.83
+            }
+        });
+
+        /**
+        * fonction de bascule vers 3D
+        */
+        function modifyLayers (layersOpts) {
+        map.modifyLayers(layersOpts) ;
+        };
+
+        /**
+        * fonction de bascule vers 3D
+        */
+        function switchTo3D () {
+        map = map.switch2D3D("3d");
+        document.getElementById("BoutonSwitchToOl").style.display = "inline";
+        document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        /**
+        * fonction de bascule vers 2D
+        */
+        function switchTo2D () {
+        map = map.switch2D3D("2d");
+        document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+        document.getElementById("BoutonSwitchToOl").style.display = "none";
+        };
+    </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D div Parameter</title>
+    <style>
+        #geoportalMap1 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap2 {
+          height: 400px;
+          width: 600px;
+        }
+        #geoportalMap3 {
+          height: 400px;
+          width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Test du paramètre div</h1>
+    <h2>CAS 1 : l'utilisateur connaît l'identifiant de l'élément HTML destiné à accueillir la carte</h2>
+    <p>Résultat attendu : La carte s'affiche dans la div.</p>
+    <div id="geoportalMap1"></div>
+    <h2>CAS 2 : l'utilisateur connaît l'élément HTML destiné à accueillir la carte</h2>
+    <p>Résultat attendu : La carte s'affiche dans la div.</p>
+    <div id="geoportalMap2"></div>
+    <h2>CAS 3 : L'élément HTML indiqué par l'utilisateur n'existe pas.</h2>
+    <p>Résultat attendu : La carte ne s'affiche pas.</p>
+    <div id="geoportalMap3"></div>
+
+    <script>
+        var map1 = Gp.Map.load('geoportalMap1', {
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            layersOptions : {
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {}
+            },
+            controlsOptions : {
+              "search" : {
+                 maximised : true
+               },
+               "layerswitcher" : {},
+               area : {}
+            }
+        });
+        console.log(map1);
+
+        var map2 = Gp.Map.load(document.getElementById('geoportalMap2'), {
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+            },
+            controlsOptions : {
+              "search" : {
+                 maximised : true
+               },
+               "layerswitcher" : {},
+               area : {}
+            }
+        });
+        console.log(map2);
+
+        var map3 = Gp.Map.load('inconnu', {
+            apiKey : "jhyvi0fgmnuxvfv0zjzorvdn"
+        });
+    </script>
+    </body>
+</html>

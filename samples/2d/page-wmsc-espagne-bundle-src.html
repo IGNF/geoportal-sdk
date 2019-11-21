@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D WMSC Espagne</title>
+    <style>
+        body {
+            width : 100% !important;
+        }
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>WMSC Géoportail comme WMS</h1>
+    <p>Ne marche pas : mauvais positionnement du tuilage à priori ("HTTP 400: X,Y values for the tile index were calculated to be {31.516983765983948, 23.381766524120494}  which had to be rounded to {32, 23}  and exceeds the threshold of 10%. Perhaps the client is using the wrong origin ?")</p>
+    <div id="geoportalMap"></div>
+
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            proxyUrl : "https://localhost/proxy/proxy.php?url=",
+            noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
+            center : {
+                x : 0,
+                y : 42.5,
+                projection : "EPSG:4326"
+            },
+            zoom : 9,
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "mousePosition" : {}
+            },
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {},
+                // Couche WMS-C externe proxyfiée...
+                "GEOGRAPHICALGRIDSYSTEMS.IDEE$EXTERNAL:OGC:EXTERNALWMS" : {
+                    format : "wms",
+                    version : "1.1.1",
+                    title : "Espagne-cartes (IDEE)",
+                    description : "Cette couche contient de l'information cartographique à l'échelle 1:25.000 et 1:200.000 sur l'Espagne.",
+                     url : "http://www.ign.es/wms-c/ign-base",
+                     outputFormat : "image/png",
+                     projection : "EPSG:4326",
+                     minZoom : 1,
+                     maxZoom : 16,
+                     layers : ["IGNBaseTodo"]
+                }
+            }
+        });
+    </script>
+    </body>
+</html>

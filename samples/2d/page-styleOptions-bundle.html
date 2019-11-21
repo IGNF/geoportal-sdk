@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D.css" />
+        <script src="../../dist/2d/GpSDK2D.js"></script>
+
+    <title>Sample SDK 2D Style Options</title>
+    <style>
+        #geoportalMap {
+            height: 600px;
+            width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Test des options des styles (dans les mapOptions ET dans les layerOptions)</h1>
+    <p>Une carte affichant des couches vecteur (KML, GPX, GeoJSON) avec ou sans le paramètre "styleOptions"</p>
+    <div id="geoportalMap"></div>
+
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            zoom : 4,
+            defaultFeaturesStyle : {
+                markerSrc : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAsCAYAAAAATWqyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABTtJREFUeNq8WGtsFUUU/rb3gtdCAykFG9AUDTQUKimhxUewEusrJYoBo4FfEgoqotHERH6oP9TGmJhIrIlWAf9hjAaEiME2pgFfVVpFii8sWqIQLLSx3EJLW7p+Z2Z2b2l7d/b23vZLTmZ2duacb2fmnDk7DlKA67rXs1hJKacsohRQppjXFygnKT9TDlH2O47zFzIFGnco91EOuqnjoBnr2Ow4FhIlLN6m3DykFTh3BGj/Doj/CfSe082xPCDnBmDWTUBeyXDVjZTHOUNHUiZCEs+weI0ySTV0/w0c2wa07gIungn+vOx8YN46oPhpYOp1Xms/5TmSeSMUERKImFnYqBoGuPRNL5LEW8BgX2rrmjWZZLYApS8BUW8r4T0zO5eTEjFr+S6lSjV0HgPqVwNdf6S30abNB+7aDeQWey3bKZtIxvU5DxvyrE/izJfAvuXpkxCIDtElOjWqjK2RM8LZWMbiG0oEnUc5kB7a14WMYvI04H56du5ieZKluZWz8r0/IyQh5TuKRH8cqFuTeRIC0Sm6xYbYok1j21+ahyhLVO3wC8D5VowbRLfY0FhibOulIavDLEoRZyD8sJDeMWBXKG5ZsIobsdDsg+OMq3u1m1u9KQo8zP45EqjRxOUpk6i50IRl4FuGjpZtwUoiMYa314GFj/EzIsN8n8v+C1e4kfvwcm+wnhsZY27xQ8oiWZpKrWRQB6tAElfxpKnjsCdGklDzG9HvpI/0DYLYEpsalVnmAAM6fgR62oMHl70C5N9mn3rpI32DILbEpkZ5ljlFgbPNFtebzij5VPhNKX1lTBASNtXSzPZ3cxCuvVOH7FTCu4yxeZDGbCES0z5+PniQ3uGpwTYmYTOWCPGTpgYP6u9OnYhtzBCbQkSH0NiM4EEdP6VOxDYmYbNLiJxQ1elFwYPaG3XQCn3QHddjgpCweUKI6K2bvzw4YROf//rJob6fZl/H2FRoFiINfqo3qyzYwD8MVIeYLw32J+8j76SP9A2C2BKbGg1CZL+EF/W4YKP9a3/fCeyhkrY9DOOXEu1SlzZ5J31sSNjqURm/OfQkY9qgvkYOvXhbuH0g505Oga7HT9rPF9+t5+pDL0ulwzt46FV5ROax+JUSRRtP0LoHMK64+xNg7iqVEVOKSKRVxRGpsKhRnaRD4SPjR0J0axKCGmP7ilQxm4X8d8xXmfvHJZlPkCR3WfODl9FLMlxCIhevSJ5Nwzo1XdKxYpe3hpmB6BKdmoS43VqPxIgsni+aWOg8biZ3f+nLmSMiuvKWek/P01az7QdLyNVT7lC/l59WAKcb0iMxhzpW1nvmvpDtSiKD1l9OkpnDgv8UyMWFU9wvTP8vdY6NhJwnD1JVtso2OiiLSeL0iJUbNfg6zikVVwRTyOn2HWOfjfLtHgnBhtFIJCViyNDZUatdmnGlaFPqJIoe1WM1aqlz71ivJbLNobgAA9zgu7nZ/vstHAk5WVdzaPRqmGC5lER6kjpV4OWJdq+1kkshSk4VH9izcy/bV66qSPQZV+0J9G7rTY6+XNmqHmYwyJVV24kse1X31dhKHdasygkzy+a64oC4nWr47F4e858nSbLv4V/KAe9JKpVDrx/SImLIXMOiRUKdujESl+49O8xVZxpXzVc/C/I/RxL/hgq8YYkYhev9q6kVO4d9B+sr3vdICNaHJTHWW8Ya/87wqy2uWwstUk/gTYw3aCRGOarMDfS67kfFWqSuIe9imAjQEC272nJHixYNaSvGRIIGN49ywbsZEw1zI11N6TZSHeaGORn+F2AAJtRIMx4t+hUAAAAASUVORK5CYII=",
+                markerXAnchor : 17,
+                markerYAnchor : 44,
+                strokeColor : "#E91E63",
+                polyFillColor : "#D50000"
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "layerimport" : {}
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    maxZoom : 20
+                },
+                maCoucheKML : {
+                    visibility : true,
+                    format : "KML",
+                    title : "couche KML sans styles",
+                    url : "../resources/KML/KML-sans-styles.kml"
+                },
+                maCoucheKMLstylee : {
+                    visibility : true,
+                    format : "KML",
+                    title : "couche KML avec styleOptions",
+                    url : "../resources/KML/KML-sans-styles.kml",
+                    extractStyles : true,
+                    showPointNames : false,
+                    styleOptions : {
+                        strokeOpacity : 0.3,
+                        strokeWidth : 6,
+                        strokeColor : "#1A5276", // bleu nuit
+                        polyFillColor : "#2874A6", // bleu
+                        polyFillOpacity : 0.8,
+                        markerXAnchor : 25.5,
+                        markerYAnchor : 38,
+                        markerSrc : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==" // marker rouge
+                    }
+                },
+                maCoucheGPX : {
+                    title : "couche GPX sans styleOptions",
+                    format : "gpx",
+                    visibility : true,
+                    url : "../resources/GPX/Campomoro-Tizzano-Sartene_3029.gpx"
+                },
+                maCoucheGPXStylee : {
+                    title : "couche GPX avec styleOptions",
+                    format : "gpx",
+                    visibility : true,
+                    url : "../resources/GPX/Campomoro-Tizzano-Sartene_3029.gpx",
+                    styleOptions : {
+                        strokeColor : "#48C9B0", // bleu vert
+                        strokeOpacity : 0.2,
+                        strokeWidth : 8,
+                        markerSrc : "../resources/img/marker.png", // marker turquoise
+                        markerXAnchor : 25.5,
+                        markerYAnchor : 38,
+                    }
+                },
+                monGeoJSON : {
+                    title : "couche GeoJSON styleOptions",
+                    format : "GeoJSON",
+                    url : "../resources/JSON/ex_ol.json"
+                },
+                monGeoJSONStylee : {
+                    title : "couche GeoJSON avec styleOptions",
+                    format : "GeoJSON",
+                    url : "../resources/JSON/ex_ol.json",
+                    styleOptions : {
+                        markerSrc : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAARrSURBVFiF3ZhNbFRVFMd/985H26m1VEoL0zj0Ayqi6IZElpiQ2MSgIeJCDZGFuEEXJH4bG9QN6spoImiMIaExbREEYoIxhgEb1CZNjFg6lHnTacNHW8QW7Mx0pjPvuKDVprR9X1MX/Jfvnv/5n/89N++d++AOgip2QolRQZAWhCeA9cAqYDlwHbiCcB7NcTKcVA8wUUztopmRQarI8wbwMlBmg5IGPkGzTzUwXowaimJGEmxHOADc44L+F7BLNXHEax3aC1kEJQatCB24M8I077DEeUfE2+Z6MkOCVuBdvHdYoXgPg7e9JXGJ6aPV4SXHPDARtqs1HHVDdlWIDLAMEwP3R2sxjOGnSa1mzCnR3TET3mJpjABUkedVN0THnZEYFQQYwd7r1y3STFLr9DvkvDNBWrBjRIfS1B6J0pAdolFyNGSHqD0cRZVlbKiEKOUxp6U5N3Pry26RNZRm9ZUE5ds2o4IRIIgKRih/ajOrr8RtGVI2dObKOiUA91tGrDjUjap8cH7FZRuoOfirZQ5hvdPC3JgJW0aEHm9cfP3JBsscYkNnDtyYWW4ZoYIrPa0DKKptVzQN52YUf1vGSG548YDcVRtKN+0V9B/cvABGLGPSJxKLrqeOJm0oWWzI7XBzzLotI0Z3PII5fm7eNXPsHKM7NxVFZw7cdOaUdUymjMHwGlKdUSQ3COSQ3CCp9iiD4bXIZKllDkXUaWnOJ4Be7qKUS0ClU64D3KCcOrWSlBOS485MjxhfOeU5xJdOjYDbqfnWFTkG1LjhW2AUP+v+t6l5WmiPG64N7HFjBDxerMSgDXjWS47ZKBT4unFLZLfWuqREpCyrVElAROULOgDg95lTea1NpVQmmM2mNly+PN4JhRm+VzOVwG9AvScXwERaj2/dFT5wadg/aVtfVEEJSb+Wn2LJZNLTPwDVxA1gB7N2xw1EkH37q445MQKglPjQ0pSH5+vr6+u9/dAAVBNdwIdecvzQVd7V/l1F0ksZPtOs82wGgCFaAeuxfh4MX/Ndfe2D6tNe5E0wC1obRTGjHiWPyXNgYwidhakpNfX6Ryu+SWWU+2MqklM+35FkMjlcnM4Aai0GwitOOG0nKk6e7Sm97lJSBPpKCoX9hmH8AUvx49ygA3jaKi5mBGNbXwy3u5DIiMjv+P09hmGMzl4ovpkLVGcLqr+kRKoWikmnVWrb7rrPEkN+WyOLiMqjJC5a90Yikb5oNJqfL87vtuiFoO7jz8s/653hmsK3zL9Z8vHBZcesjIioKY05oLTuNf2+WDwezwIkEgtflYremRkMdQXa7l01ddt0cLq77JcX3qz9fgFaBqUSGvoDoVBfb29vzonmkpkZOEVpZaW+UFVpRmaeXRvzXWvZGf785oTv32MikEbkol/r8w9t3Bjv7Ox0/WZbMjMAPcfLNj28bvKMzyeBfIHCS3trvvjxbGgEuIFScR/0PzMwcHEvmEtZR9HQfaz0/WxMZdo/vftQc2Pjlubm5jqWeBPvCPwD/KOH+jnO5aMAAAAASUVORK5CYII=", // marker jaune
+                        markerXAnchor : 25.5,
+                        markerYAnchor : 38,
+                        strokeColor : "#E67E22", // orange
+                        strokeWidth : 2,
+                        strokeOpacity : 1,
+                        polyFillColor : "#C70039", // rouge
+                        polyFillOpacity : 0.5
+                    }
+                }
+            }
+        });
+    </script>
+    </body>
+</html>

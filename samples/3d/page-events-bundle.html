@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/3d/GpSDK3D.css" />
+        <script src="../../dist/3d/GpSDK3D.js"></script>
+
+    <title>Sample SDK 3D Events</title>
+    <style>
+        #geoportalMap {
+          height: 400px;
+          width: 600px;
+          position: relative;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 3D</h1>
+    <h1>Abonnement aux evenements</h1>
+    <div id="BoutonSwitchToItowns" hidden>
+        <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D"/><br/>
+    </div>
+    <div id="BoutonSwitchToOl">
+        <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
+    </div>
+    <div id="geoportalMap"></div>
+    </br>
+    <div id="eventsDiv" style="float: right">
+        <input type="checkbox" name="azimuthChanged" onclick="listen(this);"/>azimuthChanged<br/>
+        <input type="checkbox" name="tiltChanged" onclick="listen(this);"/>tiltChanged<br/>
+        <input type="checkbox" name="zoomChanged" onclick="listen(this);"/>zoomChanged<br/>
+        <input type="checkbox" name="centerChanged" onclick="listen(this);"/>centerChanged<br/>
+        <input type="checkbox" name="layerChanged" onclick="listen(this);"/>layerChanged<br/>
+    </div>
+    <div id="outputDiv" style="text-align: center"></div>
+
+    <script>
+        var map = Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "ptlp78g6fvz9daz5mg2fztvr",
+            viewMode : "3d",
+            center : {
+                geolocate : true,
+                location : "Nimes",
+                locationTypes : ["PositionOfInterest"]
+            },
+            azimuth : 45,
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                }
+            },
+            controlsOptions : {
+                'layerSwitcher' : {
+                    maximised : true
+                }
+            },
+            mapEventsOptions : {
+                'centerChanged' : action,
+                'located' : action,
+                'geolocated' : action,
+                'layerChanged' : action,
+                'configured' : function () {
+                    map.addLayers({
+                        'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {}
+                    }) ;
+                }
+            },
+            zoom : 10
+        });
+
+        function action (evt) {
+            var outDivElem = document.getElementById("outputDiv") ;
+            outDivElem.innerHTML = "<p>" + JSON.stringify(evt) + "</p>";
+        }
+
+        function listen(elem) {
+            if (elem.checked) {
+                map.listen(elem.name,action) ;
+            } else {
+                map.forget(elem.name,action) ;
+            }
+        }
+
+        function switchTo3D() {
+            map = map.switch2D3D("3d");
+            document.getElementById("BoutonSwitchToOl").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        function switchTo2D() {
+            map = map.switch2D3D("2d");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl").style.display = "none";
+        };
+    </script>
+    </body>
+</html>

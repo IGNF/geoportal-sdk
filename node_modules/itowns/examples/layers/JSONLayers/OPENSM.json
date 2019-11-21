@@ -1,0 +1,14 @@
+{
+    "id": "OPENSM",
+    "source": {
+        "projection": "EPSG:3857",
+        "isInverted": true,
+        "format": "image/png",
+        "url": "http://osm.oslandia.io/styles/klokantech-basic/${z}/${x}/${y}.png",
+        "attribution": {
+            "name":"OpenStreetMap",
+            "url": "http://www.openstreetmap.org/"
+        },
+        "tileMatrixSet": "PM"
+    }
+}

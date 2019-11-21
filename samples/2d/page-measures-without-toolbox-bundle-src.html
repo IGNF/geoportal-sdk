@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D Measures Without Toolbox</title>
+    <style>
+        #geoportalMap {
+            height: 500px;
+            width: 100%;
+        }
+        #container-measure {
+          position: absolute;
+          top: 42px;
+          left: 16px;
+          z-index: 1;
+          bottom: auto;
+          right: auto;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Controles Mesures</h1>
+    <p>Ici, les outils de mesures sont positionnés dans une div indépendante de la carte (sans container).</p>
+    <div id="geoportalMap">
+      <div id="container-measure">
+        <!-- HERE : widgets tools measures -->
+      </div>
+    </div>
+
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            zoom : 12,
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : false
+                },
+                area : {
+                    div : 'container-measure'
+                },
+                length : {
+                    div : 'container-measure'
+                },
+                azimuth : {
+                    div : 'container-measure'
+                }
+            }
+        });
+    </script>
+    </body>
+</html>

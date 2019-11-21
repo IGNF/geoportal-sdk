@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D.css" />
+        <script src="../../dist/2d/GpSDK2D.js"></script>
+
+    <title>Sample SDK 2D Change Layers Color</title>
+    <style>
+        div#map {
+            max-width: 100%;
+            height: 500px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>changeLayerColor</h1>
+
+    <p>Mise en oeuvre de la fonctionnalité permettant le passage d'une couche WMS ou WMTS couleur en niveaux de gris.</p>
+    <p>Parmis les couches testées nous avons :</p>
+    <ul>
+        <li>une couche WFS (les couches vecteurs ne peuvent être passées en niveaux de gris)</li>
+        <li>une couche image Open Street Map</li>
+        <li>une couche WMS géoportail</li>
+        <li>une couche WMS dont les images ne sont pas approuvées par le CORS</li>
+        <li>une couche WMTS géoportail</li>
+        <li>un fond de carte géoportail</li>
+    </ul>
+
+    <div id="geoportalMap"></div>
+    <div id="BoutonDiv">
+        <input type="button" name="export" onclick="changeLayerColor('ORTHOIMAGERY.ORTHOPHOTOS');" value="changeLayerColor(maCoucheGP)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('maCoucheWFS');" value="changeLayerColor(maCoucheWFS)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS');" value="changeLayerColor(maCoucheWMS)"/><br/>
+        <!-- <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS_CORS');" value="changeLayerColor(maCoucheWMS_CORS)"/><br/> -->
+        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('maCoucheOSM');" value="changeLayerColor(maCoucheOSM)"/><br/>
+    </div>
+
+    <script>
+
+        var map = Gp.Map.load("geoportalMap",{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    title : "maCoucheGP"
+                },
+                maCoucheWFS : {
+                    title : "maCoucheWFS",
+                    format : "wfs",
+                    url : "https://wxs.ign.fr/jhyvi0fgmnuxvfv0zjzorvdn/geoportail/wfs",
+                    typeNames : "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:commune",
+                    version : "2.0.0",
+                    outputFormat : "application/json",
+                    maxFeatures : 200,
+                    projection : "EPSG:4326",
+                    visibility : true
+                },
+                maCoucheWMS : {
+                    title : "maCoucheWMS",
+                    format : "wms",
+                    queryable : true,
+                    tiled : false, // pour test
+                    url : "https://wxs.ign.fr/jhyvi0fgmnuxvfv0zjzorvdn/geoportail/v/wms",
+                    layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
+                    outputFormat : "image/png"
+                },
+                // maCoucheWMS_CORS : {
+                //     title : "maCoucheWMS_CORS",
+                //     format : "wms",
+                //     queryable : true,
+                //     tiled : true,
+                //     url : "http://services.data.shom.fr/INSPIRE/wms/r",
+                //     layers : ["BATHY-DALLE_PYR-PNG_3857_WMSR"],
+                //     outputFormat : "image/png"
+                // },
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : {
+                    title : "maCoucheWMTS",
+                    format : "wmts",
+                    minZoom : 0,
+                    maxZoom : 16,
+                    visibility : true,
+                    opacity : 0.7,
+                    url : "https://wxs.ign.fr/jhyvi0fgmnuxvfv0zjzorvdn/geoportail/wmts",
+                    layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+                    tileMatrixSet : "PM",
+                    styleName : "normal",
+                    outputFormat : "image/jpeg"
+                },
+                maCoucheOSM : {
+                    title : "maCoucheOSM",
+                    format : "osm",
+                    opacity : 0.7,
+                    minZoom : 8,
+                    maxZoom : 13,
+                    visibility : true,
+                    url : "http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png"
+                }
+            },
+            controlsOptions : {
+                "layerSwitcher" : {
+                    maximised : true
+                }
+            },
+            zoom : 10
+        });
+
+        var layerColored = {
+          "ORTHOIMAGERY.ORTHOPHOTOS" : false,
+          "maCoucheWFS" : false,
+          "maCoucheWMS" : false,
+          // "maCoucheWMS_CORS" : false,
+          "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : false,
+          "maCoucheOSM" : false,
+        }
+
+        /**
+         * Change layer color
+         */
+        function changeLayerColor (layerId) {
+            // map.changeLayerColor(layerColored[layerId],layerId) ;
+            var layersOptions = new Object();
+            layerColored[layerId] = !layerColored[layerId];
+            layersOptions[layerId] = {
+                grayScaled : layerColored[layerId]
+            };
+            map.modifyLayers(layersOptions);
+        }
+    </script>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D MapBox</title>
+    <style>
+        #geoportalMap {
+            height: 800px;
+            width: 800px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Une carte affichant une couche MapBox</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerimport" : {
+                    collapsed : true,
+                    layerTypes : ["MapBox"]
+                }
+            },
+            mapEventsOptions : {
+                "mapLoaded" : function (evt) {
+                    console.log("maploaded");
+                    var div = document.querySelector("input[id^=GPimportChoiceAltUrl-");
+                    div.click();
+                    var input = document.querySelector("input[id^=GPimportUrl-]");
+                    input.value = "../resources/MAPBOX/geojson/mapbox-states-editable.json";
+                }
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {}
+            },
+            zoom : 4
+        });
+    </script>
+    </body>
+</html>

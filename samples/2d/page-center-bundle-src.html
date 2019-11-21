@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D-src.css" />
+        <script src="../../dist/2d/GpSDK2D-src.js"></script>
+
+    <title>Sample SDK 2D Center</title>
+    <style>
+        #geoportalMap1 {
+            height: 400px;
+            width: 600px;
+        }
+        #geoportalMap2 {
+            height: 400px;
+            width: 600px;
+        }
+        #geoportalMap3 {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Centrage de la carte par coordonnées</h1>
+    <h2>Centrage par défaut</h2>
+    <p>La carte est centrée sur Paris.</p>
+    <div id="geoportalMap1"></div>
+    <h2>Centrage par coordonnées dans le système de la carte.</h2>
+    <p>La carte est centrée sur le Finistère.</p>
+    <div id="geoportalMap2"></div>
+    <h2>Centrage dans une projection différente de celle de la carte.</h2>
+    <p>La carte est centrée sur le Finistère.</p>
+    <div id="geoportalMap3"></div>
+
+    <script>
+        Gp.Map.load('geoportalMap1',{
+            // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            configUrl : "../resources/autoconf.js",
+        });
+        Gp.Map.load('geoportalMap2', {
+            // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            configUrl : "../resources/autoconf.js",
+            center : {
+                x : -511270,
+                y : 6151620
+            }
+        });
+        Gp.Map.load('geoportalMap3', {
+            // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            configUrl : "../resources/autoconf.js",
+            center : {
+                x : -4.620391,
+                y : 48.268698,
+                projection : "CRS:84"
+            }
+        });
+    </script>
+    </body>
+</html>

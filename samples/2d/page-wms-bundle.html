@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta charset="UTF-8"> 
+
+        <link rel="stylesheet" href="../../dist/2d/GpSDK2D.css" />
+        <script src="../../dist/2d/GpSDK2D.js"></script>
+
+    <title>Sample SDK 2D WMS</title>
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+
+    </head>
+    <body>
+        <h1>SDK Géoportail 2D</h1>
+    <h1>Une carte avec une couche WMS</h1>
+    <p>Serveur utilisé : url : "http://services.sandre.eaufrance.fr/geo/zonage", layers : ["TronconHydrographique", "RegionHydro"]</p>
+    <div id="geoportalMap"></div>
+
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "../resources/autoconf.js", // apiKey : "jhyvi0fgmnuxvfv0zjzorvdn",
+            controlsOptions : {
+                "layerSwitcher" : {}
+            },
+            layersOptions : {
+                maCoucheWMS : {
+                    opacity : 0.7,
+                    minZoom : 9,
+                    maxZoom : 13,
+                    visibility : true,
+                    format : "wms",
+                    title : "Cours d'eau",
+                    url : "http://services.sandre.eaufrance.fr/geo/zonage",
+                    layers : ["TronconHydrographique", "RegionHydro"],
+                    outputFormat : "image/jpeg",
+                    backgroundColor : "000F0F",
+                    tiled : true
+                }
+            },
+            zoom : 10
+        });
+    </script>
+    </body>
+</html>

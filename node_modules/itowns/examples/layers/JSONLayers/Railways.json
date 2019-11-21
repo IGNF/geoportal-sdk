@@ -1,0 +1,22 @@
+{
+  "id": "Railways",
+  "title": "Railways in France",
+  "visible": false,
+  "opacity": 1,
+  "transparent": true,
+  "source": {
+    "projection": "EPSG:3857",
+    "url": "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts",
+    "format": "image/png",
+    "networkOptions": {
+      "crossOrigin": "omit"
+    },
+    "tileMatrixSet": "PM",
+    "name": "TRANSPORTNETWORKS.RAILWAYS",
+    "style": "normal",
+    "zoom": {
+      "min": 5,
+      "max": 20
+    }
+  }
+}
