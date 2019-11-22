@@ -23,6 +23,7 @@
 			"layout": {
 				"visibility": "visible"
 			},
+			"filter" : ["in", "nature", "Collège", "Lycée"],
             "paint": {
                 "circle-radius" : 3,
                 "circle-color" : "#FF0000"

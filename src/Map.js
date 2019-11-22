@@ -356,6 +356,7 @@ var autoPanOptions = {
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  * | mapboxOptions | Object | - |
+ * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *

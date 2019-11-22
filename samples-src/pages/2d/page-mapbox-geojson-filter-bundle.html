@@ -42,6 +42,7 @@
                 },
                 'monMapBoxGeoJSON' : {
                     opacity : 0.7,
+                    zoomToExtent : true,
                     // minZoom : 8,
                     // maxZoom : 15,
                     visibility : true,
@@ -53,28 +54,28 @@
                     // field name of table, human description, type of value
                     filters : [
                         {
-                            propertyName : "AREA_WATER", 
-                            filterName : "Surface des etendues d'eaux (m3)", 
+                            propertyName : "AREA_WATER",
+                            filterName : "Surface des etendues d'eaux (m3)",
                             configuration : "numeric"
                         },
                         {
-                            propertyName : "AREA_LAND", 
-                            filterName : "Surface des états (m2)", 
+                            propertyName : "AREA_LAND",
+                            filterName : "Surface des états (m2)",
                             configuration : "numeric"
                         },
                         {
-                            propertyName : "PERSONS", 
-                            filterName : "Nombre d'habitants", 
+                            propertyName : "PERSONS",
+                            filterName : "Nombre d'habitants",
                             configuration : "numeric"
                         },
                         {
-                            propertyName : "MALE", 
-                            filterName : "Nombre d'hommes", 
+                            propertyName : "MALE",
+                            filterName : "Nombre d'hommes",
                             configuration : "numeric"
                         },
                         {
-                            propertyName : "FEMALE", 
-                            filterName : "Nombre de femmes", 
+                            propertyName : "FEMALE",
+                            filterName : "Nombre de femmes",
                             configuration : "numeric"
                         }
                     ]
