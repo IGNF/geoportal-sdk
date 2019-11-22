@@ -418,10 +418,8 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
                 fetcher : this.Itowns.Fetcher.xml,
                 parser : this.Itowns.KMLParser.parse
             });
-            // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the KML style)
-            if (this.mapOptions.extractStyles === true) {
-                layer.style = {};
-            } else {
+            // extractStyles from layerOpts is prioritary (if true, itowns will automatically retrieve the KML style)
+            if (layerOpts.extractStyles === false) {
                 layer.style = {
                     fill : {
                         color : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
@@ -443,22 +441,19 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
                 fetcher : this.Itowns.Fetcher.json,
                 parser : this.Itowns.GeoJsonParser.parse
             });
-            // if extractStyles is true, we do not specify a style for the layer (itowns will automatically retrieve the GeoJson style)
-            if (this.mapOptions.extractStyles === true) {
-                layer.style = {};
-            } else {
-                layer.style = {
-                    fill : {
-                        color : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
-                        opacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
-                    },
-                    stroke : {
-                        color : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
-                        opacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
-                        width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
-                    }
-                };
-            }
+
+            layer.style = {
+                fill : {
+                    color : layerStyleOptions.polyFillColor || defaultMapOptions.polyFillColor || defaultOptions.polyFillColor,
+                    opacity : layerStyleOptions.polyFillOpacity || defaultMapOptions.polyFillOpacity || defaultOptions.polyFillOpacity
+                },
+                stroke : {
+                    color : layerStyleOptions.strokeColor || defaultMapOptions.strokeColor || defaultOptions.strokeColor,
+                    opacity : layerStyleOptions.strokeOpacity || defaultMapOptions.strokeOpacity || defaultOptions.strokeOpacity,
+                    width : layerStyleOptions.strokeWidth || defaultMapOptions.strokeWidth || defaultOptions.strokeWidth
+                }
+            };
+
             break;
         case "GPX":
             this.logger.trace("ajout d'une couche GPX");
@@ -517,13 +512,20 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
         // we add the layer and refresh the itowns viewer
         // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
 
-        this.libMap.getGlobeView().addLayer(new this.Itowns.ColorLayer(layerId, {
+        var vectorLayerOptions = {
             name : layer.id,
             transparent : true,
             projection : "EPSG:4326",
-            source : layer.source,
-            style : layer.style
-        }));
+            source : layer.source
+        };
+
+        if (layer.style) {
+            vectorLayerOptions.style = layer.style;
+        }
+
+        var vectorLayer = new this.Itowns.ColorLayer(layerId, vectorLayerOptions);
+
+        this.libMap.getGlobeView().addLayer(vectorLayer);
     }
 };
 
@@ -549,7 +551,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         boundingBox = new this.Itowns.Extent(layerOpts.projection, layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
-        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, 20048966.10, 20048966.10);
+        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, -20048966.10, 20048966.10);
     } else {
         // world bbox in WGS84 (EPSG:4326)
         boundingBox = new this.Itowns.Extent("EPSG:4326", -180, 180, -90, 90);

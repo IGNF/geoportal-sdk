@@ -211,6 +211,7 @@ var mapLoadedEvent = {
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
  *
+ * 
  * @namespace
  * @alias Gp.MapOptions
  *
@@ -327,7 +328,7 @@ var autoPanOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
+ * | extractStyles | Boolean | If true, the styles of the features are recovered from the kml file. True by default |
  *
  * **Specific 2D properties**
  *
