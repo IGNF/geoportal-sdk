@@ -211,7 +211,7 @@ var mapLoadedEvent = {
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
  *
- * 
+ *
  * @namespace
  * @alias Gp.MapOptions
  *
@@ -930,6 +930,7 @@ var styleOptions = {
 * | themes.url | String | - |
 * | themes.thumbnail | String | - |
 * | themes.description | String | - |
+* | themes.selected | Boolean | - |
 *
 * @namespace
 * @alias Gp.ThemesOptions
@@ -949,6 +950,7 @@ var themesOptions = {
 * | filters | Array(Object) | - |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |
+* | filters.selected | Array | filters selected |
 * | filters.configuration | Boolean | configurable |
 *
 * @namespace

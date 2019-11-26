@@ -59,6 +59,94 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
 
     // les fonctions internes :
 
+    var _updateFilterEntryToMainStyles = function (styles, filtername, layersId, layersIdx, selected) {
+        // filtre inactif
+        var _rgxFilternameInactive = RegExp("__" + filtername + "__");
+        // filtre trouvé
+        var _bfound = false;
+        for (var n = 0; n < layersIdx.length; n++) {
+            var _mainlayer = styles.layers[layersIdx[n]];
+            if (_mainlayer && _mainlayer.id === layersId[n]) {
+                // on recheche la valeur du filtre dans les filtres
+                // des "layers" sous la forme :
+                // - ["in", key, value, ...]
+                // - ["===", key, value]
+                // - ["all", expr, expr, ...]
+
+                // FIXME
+                // fonction reccursive !
+                if (_mainlayer.filter) {
+                    for (var k = 0; k < _mainlayer.filter.length; k++) {
+                        if (_bfound) {
+                            break;
+                        }
+                        // cas où on a un ensemble de filtres
+                        // ["all", expr, expr, ...]
+                        if (Array.isArray(_mainlayer.filter[k])) {
+                            // à tester...
+                            for (var kk = 0; kk < _mainlayer.filter[k].length; kk++) {
+                                var _mainfiltername1 = _mainlayer.filter[k][kk];
+                                // a t on trouvé quelque chose ?
+                                if (_mainfiltername1.indexOf(filtername) !== -1) {
+                                    _bfound = true;
+                                    // target.checked === true
+                                    // > on active le filtre
+                                    // target.checked === false
+                                    // > on desactive le filtre
+                                    if (selected) {
+                                        // le filtre est inactif, on le reactive...
+                                        if (_rgxFilternameInactive.test(_mainfiltername1)) {
+                                            _mainlayer.filter[k][kk] = filtername;
+                                        }
+                                    } else {
+                                        // le filtre est actif, on le desactive...
+                                        _mainlayer.filter[k][kk] = "__" + filtername + "__";
+                                    }
+
+                                    if (_bfound) {
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            // la valeur recherché, c'est le nom du filtre,
+                            // ["in", key, value, ...] ou ["===", key, value]
+                            var _mainfiltername2 = _mainlayer.filter[k];
+                            // a t on trouvé quelque chose ?
+                            if (_mainfiltername2.indexOf(filtername) !== -1) {
+                                _bfound = true;
+                                // target.checked === true
+                                // > on active le filtre
+                                // target.checked === false
+                                // > on desactive le filtre
+                                if (selected) {
+                                    // le filtre est inactif, on le reactive...
+                                    if (_rgxFilternameInactive.test(_mainfiltername2)) {
+                                        _mainlayer.filter[k] = filtername;
+                                    }
+                                } else {
+                                    // le filtre est actif, on le desactive...
+                                    _mainlayer.filter[k] = "__" + filtername + "__";
+                                }
+
+                                if (_bfound) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // FIXME il n'existe pas de filtre !?
+                }
+            }
+        }
+
+        // on n'a pas trouvé de filtre !?
+        if (!_bfound) {
+            // TODO un message ?
+        }
+    };
+
     /** fonction pour generer un filtre
      * en fonction du typage postgres (string ou numerique), on le convertit en filtre
      * mapbox :
@@ -276,7 +364,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         var _tjsonid = o.id; // la table (postgres)
                         var _tjsongeometry = o.geometry; // le type de geometrie (postgres)
                         var _tjsontype = o.fields[_tjsonfield].type; // typage des valeurs (postgres)
-                        var _tjsonvalues = o.fields[_tjsonfield].values; // les valeurs
+                        var _tjsonvalues = o.fields[_tjsonfield].values.sort(); // les valeurs triées !
 
                         // si on a un nom de table dans le nom du champs,
                         // on recherche ce champ dans la bonne table.
@@ -300,8 +388,9 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                                     continue;
                                 }
                                 // FIXME cas particulier :
-                                // on ajoute une liste de filtres pour la configuration:2
-                                if (_nlayers === 1 && filter.configuration && filter.configuration === 2) {
+                                // on ajoute une liste de filtres pour la configuration:0...,
+                                // si on a qu'un seul "layers"...
+                                if (_nlayers === 1 && filter.configuration && filter.configuration === 0) {
                                     if (!l.filter) {
                                         l.filter = [];
                                         l.filter.push("in");
@@ -346,10 +435,8 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         //
                         // - configurable=0 (par defaut)
                         //      ...
-                        //      graphiquement, sur la carte, un affichage uniquement
-                        //      du filtre sélectionné.
-                        //      la selection du filtre est de type radio-boutton, donc
-                        //      une seule selection possible à la fois !
+                        //      graphiquement, sur la carte, affichage multiple
+                        //      des filtres.
                         //
                         // - configurable=1
                         //      ...
@@ -360,8 +447,10 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         //
                         // - configurable=2
                         //      ...
-                        //       graphiquement, sur la carte, affichage multiple
-                        //      des filtres.
+                        //      graphiquement, sur la carte, un affichage uniquement
+                        //      du filtre sélectionné.
+                        //      la selection du filtre est de type radio-boutton, donc
+                        //      une seule selection possible à la fois !
                         */
                         for (var j = 0; j < _tjsonvalues.length; j++) {
                             var _tjsonvalue = _tjsonvalues[j];
@@ -369,7 +458,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                             // tag du style par defaut...
                             var _tagPaint = null;
                             var _tagFilter = _addFilterTagEntry(_tjsontype, _tjsonfield, _tjsonvalue);
-                            var _tagVisible = "none"; // layout
+                            var _tagVisible = "visible"; // layout
                             // tag "metadata:geoportail" par defaut...
                             var _mtdFilterMode = 0; // configuration : 0, 1 ou 2
                             var _mtdFilterCategory = filter.filterName;
@@ -378,30 +467,33 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
+
+                                // gestion des filtres actifs
+                                // on applique le filtre sur le fichier de style afin
+                                // d'avoir un affichage correct...
+                                if (filter.selected && filter.selected.length) {
+                                    _updateFilterEntryToMainStyles(
+                                        styles,
+                                        _tjsonvalue,
+                                        _mtdLayersId,
+                                        _mtdLayersIdx,
+                                        filter.selected[j]
+                                    );
+                                }
                             } else if (filter.configuration === 1) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
+                                _tagVisible = "none";
                                 _tagPaint = _addPaintTagEntry(_tjsongeometry);
                                 _mtdFilterMode = 1;
                             } else if (filter.configuration === 2) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
-                                _tagVisible = "visible";
+                                _tagVisible = "none";
                                 _mtdFilterMode = 2;
                             } else {}
-
-                            // TODO gestion des filtres actifs
-                            // on applique les filtres sur le fichier de style afin
-                            // d'avoir un affichage correct...
-                            // _updateFilterEntryToMainStyles(
-                            //     styles,
-                            //     _tagFilter,
-                            //     _mtdLayersId,
-                            //     _mtdLayersIdx,
-                            //     (!filter.selected || (filter.selected && filter.selected.length && filter.selected[j] === 1)) ? 1 : 0
-                            // );
 
                             // gestion des filtres actifs
                             // on modifie la visibilité sur un filtre actif
@@ -540,12 +632,13 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
     // - map.set("mapbox-styles")
     //      objet
     //      enregistrement des styles mapbox de toutes les couches
+    //      (+ styles attributaires)
     //      accès > map.get("mapbox-styles")[layerID]
     //      lecture/ecriture
     //      maj à faire pour toute modification du fichier de style d'une couche !
     // - layer.set("mapbox-styles")
     //      objet
-    //      enregistrement du style mapbox de la couche
+    //      enregistrement du style mapbox de la couche uniquement
     //      lecture/ecriture
     //      maj à faire pour toute modification du fichier de style de la couche !
     // - layer.set("mapbox-themes")
@@ -1169,6 +1262,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                         }
                                                     }
                                                 })
+                                                .then(function () {
+                                                    // other stuff..
+                                                })
                                                 .catch(function (e) {
                                                     // TODO styles utilisateurs par defaut !
                                                     // throw new Error("Apply Style error = " + e.message);
@@ -1184,6 +1280,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             options : p.options
                                         });
 
+                                        // ajout du layer sur la carte
+                                        map.addLayer(p.layer);
+
                                         // etat des layers en cours
                                         self.logger.warn(p.layer, self._layers);
 
@@ -1198,15 +1297,24 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // (multisource === plusieurs couches !)
                                         // pour une utilisation eventuelle (ex. editeur)
                                         // > layer.set("mapbox-styles")
-                                        var _styles = Object.assign({}, p.styles); // clone
-                                        var _glLayers = _styles.layers;
+                                        var _stylesClone = JSON.parse(JSON.stringify(p.styles)); // clone
+                                        var _glLayers = _stylesClone.layers;
                                         for (var ii = 0; ii < _glLayers.length; ii++) {
                                             var _glLayer = _glLayers[ii];
+                                            // on ecarte les sources
                                             if (_glLayer.source !== p.id) {
-                                                delete _glLayer[ii];
+                                                _glLayers.splice(ii, 1);
+                                                continue;
+                                            }
+                                            // et, on ecarte les filtres attributaires
+                                            if (_glLayer.metadata &&
+                                                _glLayer.metadata.hasOwnProperty("geoportail:category") &&
+                                                _glLayer.metadata.hasOwnProperty("geoportail:filter")) {
+                                                _glLayers.splice(ii, 1);
+                                                continue;
                                             }
                                         }
-                                        p.layer.set("mapbox-styles", _styles);
+                                        p.layer.set("mapbox-styles", _stylesClone);
 
                                         // ajout des differents themes de la couche
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
@@ -1244,6 +1352,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             p.layer.once("change:source", setStyle);
                                         }
 
+                                        // maj du gestionnaire de couche
+                                        self._addLayerConfToLayerSwitcher(p.layer, p.options);
+
                                         // FIXME pb async !
                                         // On est dans un thread async (à cause du fetch),
                                         // et l'abonnement (cf. IMap.prototype.addLayers)
@@ -1253,12 +1364,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // dans ce thread afin d'être sûr d'avoir nos
                                         // abonnements corrects !
                                         self._resetLayerChangedEvent();
-
-                                        // ajout du layer sur la carte
-                                        map.addLayer(p.layer);
-
-                                        // maj du gestionnaire de couche
-                                        self._addLayerConfToLayerSwitcher(p.layer, p.options);
                                     })(params);
                                 }
                             }
