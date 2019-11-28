@@ -23,24 +23,6 @@ import { unByKey as olObservableUnByKey } from "ol/Observable";
 import { transform as olTransformProj } from "ol/proj";
 
 /******************************************************************************
-* Explications sur l'implementation
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*******************************************************************************/
-
-/******************************************************************************
 * Internals functions
 *******************************************************************************/
 /**
@@ -364,7 +346,10 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         var _tjsonid = o.id; // la table (postgres)
                         var _tjsongeometry = o.geometry; // le type de geometrie (postgres)
                         var _tjsontype = o.fields[_tjsonfield].type; // typage des valeurs (postgres)
-                        var _tjsonvalues = o.fields[_tjsonfield].values.sort(); // les valeurs triées !
+                        var _tjsonvalues = o.fields[_tjsonfield].values; // les valeurs !
+                        if (_tjsonvalues) {
+                            _tjsonvalues.sort(); // triées !
+                        }
 
                         // si on a un nom de table dans le nom du champs,
                         // on recherche ce champ dans la bonne table.
@@ -493,6 +478,10 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                                 */
                                 _tagVisible = "none";
                                 _mtdFilterMode = 2;
+                                // gestion des filtres actifs
+                                if (filter.selected && filter.selected.length) {
+                                    // TODO...
+                                }
                             } else {}
 
                             // gestion des filtres actifs
@@ -621,14 +610,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
     // - layer.set("mapbox-layers")
     //      tableau (string)
     //      enregistrement des ID layers
-    //      enregistrement des ID styles attributaires (FIXME !?)
+    //      enregistrement des ID styles attributaires (!?)
     //      lecture seule
     //      interne à openlayers
     // - layer.set("mapbox-filters")
     //      objet
     //      options:filters & options:filtersSummary
     //      enregistrement des styles attributaires (json mapbox)
-    //      lecture seule
+    //      lecture/ecriture
+    //      maj à faire pour toute modification des styles attributaires !
     // - map.set("mapbox-styles")
     //      objet
     //      enregistrement des styles mapbox de toutes les couches
@@ -874,8 +864,12 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // > [{k:categorie1, v: [0,1,0,1]},{k:categorie2, v:[0,0,0,0]}]
                                         for (var n = 0; n < layerOpts.filters.length; n++) {
                                             var f = layerOpts.filters[n];
-                                            // y'a t il une manipulation des selections des filtres ?
+                                            // à cette instant, si aucune selection n'est renseignée, on ne connait
+                                            // pas encore le nombre de valeurs pour un filtre.
+                                            // seul le fichier metadata.json peut nous fournir cette information !
+                                            // donc, il y'a une surcharge au niveau de la lecture du tileJSON...
                                             var selected = [];
+                                            // y'a t il une manipulation des selections des filtres ?
                                             if (f.selected && Array.isArray(f.selected)) {
                                                 if (f.selected.length) {
                                                     selected = f.selected;
@@ -989,7 +983,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // l'exception est trop brutale...,
                                                     // elle bloque l'afffichage des données !
                                                     // throw new Error("HTTP TileJSON error (metadata.json)");
-                                                    this.logger.error("HTTP TileJSON error (metadata.json)");
+                                                    console.error("HTTP TileJSON error (metadata.json)");
                                                 }
                                                 if (vectorTileJson.getState() === "ready") {
                                                     var tileJSONContent = vectorTileJson.getTileJSON();
@@ -1082,24 +1076,50 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             );
 
                                                             // some entries ?
-                                                            if (!_filterStyle.layers) {
+                                                            var _nlayers = _filterStyle.layers;
+                                                            if (!_nlayers) {
                                                                 break;
+                                                            }
+
+                                                            // les selections des valeurs du filtre sont elles renseignées ?
+                                                            // si oui, les valeurs sont donc déjà renseignées
+                                                            // si non, il est utile de mettre les valeurs par defaut.
+                                                            if (_filter.selected && Array.isArray(_filter.selected)) {
+                                                                if (_filter.selected.length) {
+                                                                    // nothing to do...
+                                                                }
+                                                            } else {
+                                                                // il n'existe pas d'information sur les valeurs des filtres
+                                                                // sélectionnées, on va donc mettre à jour cette information.
+                                                                if (_selectedFilters) {
+                                                                    // maj des selections par defaut
+                                                                    // conf:undef -> (1)
+                                                                    // conf:0 -> (1)
+                                                                    // conf:1 -> (0)
+                                                                    // conf:2 -> (0)
+                                                                    for (var jj = 0; jj < _selectedFilters.length; jj++) {
+                                                                        if (_selectedFilters[jj].k === _filter.filterName) {
+                                                                            // FIXME Array.fill() -> compatibilité IE ?
+                                                                            _selectedFilters[jj].v = Array(_nlayers).fill((_filter.configuration) ? 0 : 1);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
 
                                                             // on ajoute les styles créés à partir du filtre attributaire
                                                             // dans le style principale
                                                             for (var kk = 0; kk < _filterStyle.layers.length; kk++) {
                                                                 // FIXME
+                                                                // si les filtres et les "layers" portent le même identifiant,
                                                                 // l'ajout des filtres va automatiquement doublonner
                                                                 // la properties interne : "mapbox-layers"
-                                                                // si les filtres et les layers portent le même identifiant...
                                                                 _glStyle.layers.push(_filterStyle.layers[kk]);
                                                             }
 
-                                                            // FIXME ce n'est pas terible...
-                                                            // pour info,
-                                                            // on se garde sous le coude le style brute pour un filtre attributaire.
-                                                            // via les options, il sera archivé dans la properties "mapbox-filters"...
+                                                            // FIXME
+                                                            // on se garde sous le coude le style brute pour un filtre attributaire
+                                                            // via les options, ce style sera archivé dans la properties "mapbox-filters"...
                                                             _filterOptions.style = _filterStyle;
                                                         }
                                                     }
@@ -1301,7 +1321,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         var _glLayers = _stylesClone.layers;
                                         for (var ii = 0; ii < _glLayers.length; ii++) {
                                             var _glLayer = _glLayers[ii];
-                                            // on ecarte les sources
+                                            // on ecarte les sources differentes : 1 source = 1 layer
                                             if (_glLayer.source !== p.id) {
                                                 _glLayers.splice(ii, 1);
                                                 continue;
