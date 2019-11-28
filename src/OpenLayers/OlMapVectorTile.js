@@ -25,6 +25,66 @@ import { transform as olTransformProj } from "ol/proj";
 /******************************************************************************
 * Internals functions
 *******************************************************************************/
+
+/**
+ * TODO ...
+ * @param {Object} style - ...
+ * @returns {Object} style ...
+ * @sample
+ */
+var _transformGrayStyle = function (style) {
+    // modifier le style du layer ou des features avec une fonction de conversion des
+    // couleurs en N/B
+    var strStyle = JSON.stringify(style);
+
+    // fonction de conversion decimal -> hexa
+    function hex (number) {
+        if (number > 255) {
+            throw new Error("'" + number + "'' is greater than 255(0xff);");
+        }
+        var str = Number(number).toString(16);
+        return ("0" + str).slice(-2);
+    }
+    // fonction de conversion en NB
+    function nb (col) {
+        var r = col >> 16;
+        var g = (col >> 8) & 0xff;
+        var b = col & 0xff;
+        // https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
+        // https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
+        // luminosity : 0.21 R + 0.72 G + 0.07 B
+        var bnw = (r * 0.2126 + g * 0.7152 + b * 0.0722) & 0xff;
+        var num = (bnw << 16) | (bnw << 8) | bnw;
+        return num.toString(16);
+    }
+
+    // recherche valeurs en rgba pour conversion en hexa
+    var regex4rgba = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(0?.?\d+)\s*)?\)/gm;
+    var style4hexa = strStyle.replace(regex4rgba, function (corespondance, p1, p2, p3, decalage) {
+        var p = hex(p1) + hex(p2) + hex(p3);
+        return "#" + p;
+    });
+    // recherche des valeurs en hexa3 pour conversion en hexa
+    var regex4hexa3 = /"#([a-f\d])([a-f\d])([a-f\d])"/igm;
+    var style4hexa3 = style4hexa.replace(regex4hexa3, function (corespondance, p1, p2, p3, decalage) {
+        var p = p1 + p1 + p2 + p2 + p3 + p3;
+        return "\"#" + p + "\"";
+    });
+    // recherche des valeurs en hexa pour conversion en NB
+    var regex4hexa = /#([a-f\d]{2}[a-f\d]{2}[a-f\d]{2})/igm;
+    var style4nb = style4hexa3.replace(regex4hexa, function (corespondance, p, decalage) {
+        var subst4nb = nb(parseInt(p, 16));
+        return "#" + subst4nb;
+    });
+
+    // style en NB
+    try {
+        return JSON.parse(style4nb);
+    } catch (err) {
+        return null;
+    }
+};
+
 /**
  * TODO ...
  * @param {String} source - ...
@@ -1164,7 +1224,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     }
 
                                     // FIXME gestion du zIndex (option position) sur du multi-source !?
-                                    // FIXME gestion de la projection ?
 
                                     // parametre à transmettre à la fonction auto-invoquée
                                     var params = {
@@ -1364,6 +1423,18 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             "layers" : p.selectedLayers, // TODO !
                                             "filters" : p.selectedFilters
                                         });
+
+                                        // gestion du style N/B
+                                        if (p.options.grayScaled) {
+                                            // transformation du json en N/B
+                                            // le style "gray" n'est pas enregistré dans
+                                            // les properties !
+                                            // c'est un style temporaire...
+                                            p.styles = _transformGrayStyle(_stylesClone);
+                                            if (!p.styles) {
+                                                console.error("Erreur de transformation en N/B !?");
+                                            }
+                                        }
 
                                         // application du style
                                         if (p.layer.getSource()) {

@@ -11,4 +11,6 @@
 
 * [Fixed]
 
+    - gestion de l'option "grayScaled" sur le vecteur tuilé
+
 * [Changed]
