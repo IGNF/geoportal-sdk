@@ -761,30 +761,35 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
 
-    var createVectorTileLayer = function (style) {
-        return new this.Itowns.layer.VectorTileLayer({
-            id : layerId,
-            url : layerOpts.urlService,
-            style : style,
-            zoom : {
-                min : layerOpts.minZoom || 1,
-                max : layerOpts.maxZoom || 21
-            }
-        });
-    }.bind(this);
+    // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
+    var vectorTileSource = new this.Itowns.VectorTilesSource({
+        style : layerOpts.url,
+        filter : function (layer) {
+            return ["fill", "line"].includes(layer.type);
+        },
+        zoom : {
+            min : 2,
+            max : 16
+        }
+    });
 
-    var addVectorTileLayer = function (layer) {
-        // on met à jour le tableau des couches
-        this._layers.push({
-            id : layerId,
-            options : layerOpts,
-            obj : layer
-        });
-        // on ajoute la couche
-        this.libMap.getGlobeView().addLayer(layer);
-    }.bind(this);
+    var vectorTileLayer = new this.Itowns.ColorLayer(layerId, {
+        // FIXME wait for next itowns release to remove this
+        isValidData : function () {
+            return false;
+        },
+        source : vectorTileSource
+        // fx : 2.5,
+    });
 
-    this.libMap.parseMapboxStyle(layerOpts.url).then(createVectorTileLayer).then(addVectorTileLayer);
+    // on met à jour le tableau des couches
+    this._layers.push({
+        id : layerId,
+        options : layerOpts,
+        obj : vectorTileLayer
+    });
+
+    this.libMap.getGlobeView().addLayer(vectorTileLayer);
 };
 
 /**
