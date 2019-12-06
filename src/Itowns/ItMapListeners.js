@@ -770,6 +770,49 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
 };
 
 /**
+ * Adds a mapbox Layer to the globe
+ *
+ * @param {Object} layerObj - vectorLayer layer to add.
+ * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ *
+ * @private
+ */
+ItMap.prototype._addMapBoxLayer = function (layerObj) {
+    var layerId = Object.keys(layerObj)[0];
+    var layerOpts = layerObj[layerId];
+
+    // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
+    var vectorTileSource = new this.Itowns.VectorTilesSource({
+        style : layerOpts.url,
+        filter : function (layer) {
+            return ["fill", "line"].includes(layer.type);
+        },
+        zoom : {
+            min : 2,
+            max : 16
+        }
+    });
+
+    var vectorTileLayer = new this.Itowns.ColorLayer(layerId, {
+        // FIXME wait for next itowns release to remove this
+        isValidData : function () {
+            return false;
+        },
+        source : vectorTileSource
+        // fx : 2.5,
+    });
+
+    // on met à jour le tableau des couches
+    this._layers.push({
+        id : layerId,
+        options : layerOpts,
+        obj : vectorTileLayer
+    });
+
+    this.libMap.getGlobeView().addLayer(vectorTileLayer);
+};
+
+/**
  * Adds a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
