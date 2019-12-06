@@ -1,0 +1,83 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D MapBox</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 800px;
+            width: 800px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une couche MapBox avec un TileJson</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var globalMap = Gp.Map.load('geoportalMap',{
+            configUrl : "{{resources}}/autoconf.js",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerimport" : {}
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                },
+                'planign' : {
+                    opacity : 0.7,
+                    zoomToExtent : true,
+                    visibility : true,
+                    format : "MapBox",
+                    title : "Test Style Mapbox",
+                    description : "Mise en place d'un test avec Style Mapbox...",
+                    url : "{{resources}}/MAPBOX/styles/planign/planign.json",
+                    themes : [
+                        {
+                            "name" : "style 'gris'",
+                            // "url" : "https://vectortiles.ign.fr/demonstrateur/styles/gris.json"
+                            "url" : "{{resources}}/MAPBOX/styles/planign/gris.json"
+                        },
+                        {
+                            "name" : "style 'muet'",
+                            // "url" : "https://vectortiles.ign.fr/demonstrateur/styles/muet.json",
+                            "url" : "{{resources}}/MAPBOX/styles/planign/muet.json",
+                            "selected" : true
+                        },
+                    ],
+                    filtersSummary : "Filtres",
+                    filters : [
+                       {
+                           propertyName:"bati_ponc.symbo",
+                           filterName:"Batiments ponctuels",
+                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                       },
+                       {
+                           propertyName:"bati_surf.symbo",
+                           filterName:"Batiments surfaciques",
+                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                       }
+                    ]
+                }
+            },
+            zoom : 6
+        });
+    </script>
+{{/content}}
+{{/extend}}

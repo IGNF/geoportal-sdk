@@ -1,0 +1,59 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D MapBox</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 800px;
+            width: 800px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une couche MapBox</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "{{resources}}/autoconf.js",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerimport" : {
+                    collapsed : true,
+                    layerTypes : ["MapBox"]
+                }
+            },
+            mapEventsOptions : {
+                "mapLoaded" : function (evt) {
+                    console.log("maploaded");
+                    var div = document.querySelector("input[id^=GPimportChoiceAltUrl-");
+                    div.click();
+                    var input = document.querySelector("input[id^=GPimportUrl-]");
+                    input.value = location.href.substring(0, location.href.lastIndexOf('/') + 1) + "{{resources}}/MAPBOX/styles/enseignements.json";
+                }
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {}
+            },
+            zoom : 4
+        });
+    </script>
+{{/content}}
+{{/extend}}

@@ -1,0 +1,78 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D MapBox</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 800px;
+            width: 800px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Une carte affichant une couche MapBox (Enseignements)</h1>
+    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('geoportalMap',{
+            configUrl : "{{resources}}/autoconf.js",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
+            controlsOptions : {
+                "layerSwitcher" : {},
+                "getfeatureInfo" : {
+                    options : {
+                        auto : true,
+                        hidden: true
+                    }
+                },
+                "layerimport" : {}
+            },
+            layersOptions : {
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                },
+                'monMapBoxEnseignements' : {
+                    opacity : 0.7,
+                    zoomToExtent : true,
+                    // minZoom : 8,
+                    // maxZoom : 15,
+                    visibility : true,
+                    format : "MapBox",
+                    title : "Enseignements",
+                    description : "...",
+                    url : "{{resources}}/MAPBOX/styles/enseignements.json",
+                    quicklookUrl : "https://wxs.ign.fr/static/pictures/test.jpg",
+                    metadata : [
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=TEST1.xml"},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=TEST2.xml"}
+                    ],
+                    legends : [
+                        {
+                           format : "image/jpg",
+                           url : "http://www.geoportail.gouv.fr/depot/fiches/test.png",
+                           minScaleDenominator: null
+                        }
+                    ],
+                    htmlAdditionalContent : "Contenu additionnel de test...",
+                    originators: [{
+                            "name":"Test",
+                            "attribution":"Test",
+                            "url":"http://www.test.fr",
+                        }
+                    ]
+                }
+            },
+            zoom : 6
+        });
+    </script>
+{{/content}}
+{{/extend}}

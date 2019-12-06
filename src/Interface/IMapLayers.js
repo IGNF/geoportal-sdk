@@ -170,9 +170,7 @@ IMap.prototype.addLayers = function (layersOptions) {
             }
             // ... puis MAPBOX GEOPORTAIL
             if (format == null || format.toUpperCase() === "MAPBOX") {
-                this.logger.warn("[IMap] addLayers : Format 'MapBox' not yet implemented !");
-                // FIXME statuer sur le formalisme du nom de la couche interne !
-                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:MAPBOX");
+                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:GPP:TMS");
                 if (layerConf) {
                     format = "MAPBOX";
                 }
@@ -235,6 +233,13 @@ IMap.prototype.addLayers = function (layersOptions) {
                 break;
         }
     }
+
+    // FIXME
+    // Dans le cas particulier du vecteur tuilé, on est dans un thread async
+    // (à cause du fetch), et l'abonnement ci dessous est executé avant
+    // que la couche MapBox soit ajouté à l'objet this._layers...
+    // On prefere donc realiser le reabonnement à la volée directement dans le
+    // thread du vecteur tuilé afin d'être sûr d'avoir nos abonements corrects !
 
     // re-abonnement à l'evenement layerChanged
     // nécessaire pour ecouter les changements de propriétés sur la nouvelle couche
@@ -434,10 +439,10 @@ IMap.prototype._addMapBoxLayer = function (layerObj) {
  * Add a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
- * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
+ * @param {Object} layerConf - options of the layer conf (Gp.Config)
  * @private
  */
-IMap.prototype._addGeoportalLayer = function (layerObj) {
+IMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     // Abstract method to be overridden
 };
 

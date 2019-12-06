@@ -28,41 +28,70 @@
 
 {{#content "js"}}
     <script>
-        var map = Gp.Map.load("geoportalMap1",{
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            /*layersOptions : {
-                "ORTHOIMAGERY.ORTHOPHOTOS" : {
+            var map = Gp.Map.load("geoportalMap1",{
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                /*layersOptions : {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    },
+                    "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                    }
+                },*/
+                layersOptions : {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {
+                    }/*,
+                    "HY.PhysicalWaters" : {
+                    },
+                    "TN.RoadTransportNetwork" : {
+                    }*/
                 },
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                controlsOptions : {
+                    layerSwitcher : {
+                        maximised : true
+                    },
+                    layerimport : {},
+                    mousePosition : {
+                        // div : "extControlDiv",
+                        maximised : false,
+                        systems : [
+                        {
+                            crs : "EPSG:4326",
+                            label : "Coordonnées géographiques",
+                            type : "Geographical"
+                        },
+                        {
+                            crs : "EPSG:3857",
+                            label : "Coordonnées métriques",
+                            type : "Metric"
+                        },
+                        {
+                            crs : "EPSG:32630",
+                            label : "UTM 30N (France m\u00e9tropolitaine)",
+                            type : "Metric",
+                            geoBBox : { left: -6.00, bottom : 0.00, right : 0.00, top : 84.00 }
+                        },
+                        {
+                            crs : "EPSG:32631",
+                            label : "UTM 31N (France m\u00e9tropolitaine)",
+                            type : "Metric",
+                            geoBBox : { left: 0.00, bottom : 0.00, right : 6.00, top : 84.00 }
+                        }
+                        ]
+                    },
                 }
-            },*/
-            layersOptions : {
-                "ORTHOIMAGERY.ORTHOPHOTOS" : {
-                }/*,
-                "HY.PhysicalWaters" : {
-                },
-                "TN.RoadTransportNetwork" : {
-                }*/
-            },
-            controlsOptions : {
-                layerSwitcher : {
-                    maximised : true
-                },
-                layerimport : {}
-            }
-        });
+            });
 
-        function switchTo3D() {
-            map = map.switch2D3D("3d");
-            document.getElementById("BoutonSwitchToOl").style.display = "inline";
-            document.getElementById("BoutonSwitchToIt").style.display = "none";
-        };
+            function switchTo3D() {
+                map = map.switch2D3D("3d");
+                document.getElementById("BoutonSwitchToOl").style.display = "inline";
+                document.getElementById("BoutonSwitchToIt").style.display = "none";
+            };
 
-        function switchTo2D() {
-            map = map.switch2D3D("2d");
-            document.getElementById("BoutonSwitchToIt").style.display = "inline";
-            document.getElementById("BoutonSwitchToOl").style.display = "none";
-        };
+            function switchTo2D() {
+                map = map.switch2D3D("2d");
+                document.getElementById("BoutonSwitchToIt").style.display = "inline";
+                document.getElementById("BoutonSwitchToOl").style.display = "none";
+            };
+
     </script>
 {{/content}}
 {{/extend}}

@@ -211,6 +211,7 @@ var mapLoadedEvent = {
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
  *
+ *
  * @namespace
  * @alias Gp.MapOptions
  *
@@ -327,7 +328,7 @@ var autoPanOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | extractStyles | Boolean | If true, the styles of the features are recovered from the file. |
+ * | extractStyles | Boolean | If true, the styles of the features are recovered from the kml file. True by default |
  *
  * **Specific 2D properties**
  *
@@ -347,14 +348,16 @@ var autoPanOptions = {
  * | outputFormat | String | - |
  * | projection | String | - |
  * | url | String | - |
- * | name | String | - |
- * | thumbnail | String | - |
+ * | defaultThemeName | String | - |
+ * | defaultThemeThumbnail | String | - |
  * | defaultThemeDescription | String | - |
  * | themesSummary | String | - |
  * | themes | {@link Gp.ThemesOptions} | options for layer styles |
  * | filtersSummary | String | - |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
+ * | mapboxOptions | Object | - |
+ * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
@@ -927,6 +930,7 @@ var styleOptions = {
 * | themes.url | String | - |
 * | themes.thumbnail | String | - |
 * | themes.description | String | - |
+* | themes.selected | Boolean | - |
 *
 * @namespace
 * @alias Gp.ThemesOptions
@@ -946,6 +950,7 @@ var themesOptions = {
 * | filters | Array(Object) | - |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |
+* | filters.selected | Array | filters selected |
 * | filters.configuration | Boolean | configurable |
 *
 * @namespace
