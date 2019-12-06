@@ -296,12 +296,6 @@ ItMap.prototype._features2html = function (features) {
         if (props.hasOwnProperty("name")) {
             nameDiv.innerHTML = props.name;
             content.appendChild(nameDiv);
-        } else if (props.description) {
-            nameDiv.innerHTML = props.description;
-            content.appendChild(nameDiv);
-        } else {
-            nameDiv.innerHTML = "UNKNOWN FEATURE NAME";
-            content.appendChild(nameDiv);
         }
         if (props.hasOwnProperty("description")) {
             var descDiv = document.createElement("div");
