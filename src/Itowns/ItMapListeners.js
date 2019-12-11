@@ -574,10 +574,8 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
-                layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-                layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
-            }
+            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
 
             if (layerOpts.minZoom) {
                 layer.maxScaleDenominator = this._getResolutionFromZoomLevel(layerOpts.minZoom) / 0.00028;
@@ -640,10 +638,8 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.type = "color";
             layer.id = layerId;
             layer.title = (layerOpts.title === undefined) ? layerId : layerOpts.title;
-            if (layerOpts.type && layerOpts.type.toUpperCase() !== "ELEVATION") {
-                layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-                layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
-            }
+            layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+            layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
 
             // set min and max zoom regarding the layerOpts and the TMS Limits
             var minZoom, maxZoom;
