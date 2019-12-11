@@ -34,11 +34,49 @@
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {
                 },
-                'monMapBoxGeoJSON' : {
+                'coucheMapBoxIgnThemesPLANIGN' : {
+                    visibility : true,
+                    queryable : true,
+                    grayScaled : true,
+                    title : "Themes PLANIGN",
+                    description : "Mise en place des themes avec des filtres attributaires pour la couche PLANIGN...",
                     format : "MapBox",
-                    urlService : "https://vectortiles.ign.fr/rok4server/1.0.0/PLAN.IGN/${z}/${x}/${y}.pbf",
-                    url : "{{resources}}/MAPBOX/styles/planign.json"
-                },
+                    position : 2,
+                    projection : "EPSG:3857",
+                    tileMatrixSet : "PM",
+                    // url : "https://vectortiles.ign.fr/demonstrateur/styles/planign.json",
+                    url : "{{resources}}/MAPBOX/styles/planign.json",
+                    themes : [
+                        {
+                            "name" : "style 'gris'",
+                            "url" : "https://vectortiles.ign.fr/demonstrateur/styles/gris.json",
+                            // "url" : "data/planign/gris.json"
+                            // "selected" : true
+                        },
+                        {
+                            "name" : "style 'muet'",
+                            "url" : "https://vectortiles.ign.fr/demonstrateur/styles/muet.json",
+                            // "url" : "data/planign/muet.json",
+                        },
+                    ],
+                    filtersSummary : "Filtres",
+                    filters : [
+                       {
+                           propertyName:"bati_ponc.symbo",
+                           filterName:"Batiments ponctuels",
+                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                       },
+                       {
+                           propertyName:"bati_surf.symbo",
+                           filterName:"Batiments surfaciques",
+                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                       }]
+                    },
+                // 'monMapBoxGeoJSON' : {
+                //     format : "MapBox",
+                //     urlService : "https://vectortiles.ign.fr/rok4server/1.0.0/PLAN.IGN/${z}/${x}/${y}.pbf",
+                //     url : "{{resources}}/MAPBOX/styles/planign.json"
+                // },
                 "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
                     type : "elevation"
                 }

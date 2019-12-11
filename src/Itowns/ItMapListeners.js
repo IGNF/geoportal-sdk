@@ -775,9 +775,58 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
 
+    var _urlDefaultOrSelected = layerOpts.url;
+
+    /* Gestion de l'url selectionnée :
+    // Les options nous donnent l'url du style par defaut.
+    // Mais, il faut aussi gerer le cas où un theme est sélectionné via les options,
+    // car c'est bien l'url du style (ou theme) sélectionné qui doit être utilisé par la suite !
+    // De plus, on recherche si le style par defaut a été placé dans la liste des themes.
+    // Si le style par defaut n'existe pas dans la liste des themes, on l'ajoute pour simplifier
+    // les traitements ulterieurs...
+    */
+    if (Array.isArray(layerOpts.themes)) {
+        var foundDefaultStyle = false; // recherche du style par defaut
+        var foundSelectedStyle = false; // recherche du theme sélectionné
+
+        _urlDefaultOrSelected = layerOpts.url;
+
+        for (var i = 0; i < layerOpts.themes.length; i++) {
+            var t = layerOpts.themes[i];
+            // algo assez simpliste... car on compare juste les urls
+            // mais les urls devraient être uniques...
+            if (t.url === layerOpts.url) {
+                // le theme par defaut est dans la liste,
+                // on prend donc en compte les valeurs
+                // "name", "thumbnail", "url", "description" de la liste des
+                // themes (à defaut des options "defaultTheme*") !
+                foundDefaultStyle = true;
+            }
+            if (t.selected) {
+                // l'url selectionnée devient l'url par defaut
+                _urlDefaultOrSelected = t.url;
+                foundSelectedStyle = true;
+            }
+        }
+        // le style par defaut n'est pas dans la liste, alors on l'ajoute dans
+        // dans la liste des themes...
+        if (!foundDefaultStyle) {
+            var _url = layerOpts.url;
+            var _thumbnail = layerOpts.defaultThemeThumbnail || null;
+            var _name = layerOpts.defaultThemeName || "Style par défaut";
+            var _description = layerOpts.defaultThemeDescription || "Style par défaut";
+            layerOpts.themes.unshift({
+                thumbnail : _thumbnail,
+                name : _name,
+                url : _url,
+                description : _description,
+                selected : !foundSelectedStyle
+            });
+        }
+    }
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
     var vectorTileSource = new this.Itowns.VectorTilesSource({
-        style : layerOpts.url,
+        style : _urlDefaultOrSelected,
         filter : function (layer) {
             return ["fill", "line"].includes(layer.type);
         },
