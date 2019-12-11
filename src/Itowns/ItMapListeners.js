@@ -68,36 +68,36 @@ ItMap.prototype.listen = function (eventId, action, context) {
         case "zoomChanged" :
             var callbackZoomchange = function (itEvent) {
                 // si le zoom n'a pas changé, on sort
-                if (itEvent.newZoom === itEvent.oldZoom) {
+                if (itEvent.new === itEvent.previous) {
                     return;
                 }
                 action.call(context, {
-                    oldZoom : itEvent.oldZoom,
-                    newZoom : itEvent.newZoom
+                    oldZoom : itEvent.previous,
+                    newZoom : itEvent.new
                 });
             };
             key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
         case "azimuthChanged" :
             var callbackAzimuthChange = function (itEvent) {
-                if (itEvent.newAzimuth === itEvent.oldAzimuth) {
+                if (itEvent.new.heading === itEvent.previous.heading) {
                     return;
                 }
                 action.call(context, {
-                    oldAzimuth : itEvent.oldAzimuth,
-                    newAzimuth : itEvent.newAzimuth
+                    oldAzimuth : itEvent.previous.heading,
+                    newAzimuth : itEvent.new.heading
                 });
             };
             key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
         case "tiltChanged" :
             var callbackTiltChange = function (itEvent) {
-                if (itEvent.newTilt === itEvent.oldTilt) {
+                if (itEvent.new.tilt === itEvent.previous.tilt) {
                     return;
                 }
                 action.call(context, {
-                    oldTilt : itEvent.oldTilt,
-                    newTilt : itEvent.newTilt
+                    oldTilt : itEvent.previous.tilt,
+                    newTilt : itEvent.new.tilt
                 });
             };
             key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
