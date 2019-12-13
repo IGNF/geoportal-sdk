@@ -23,6 +23,9 @@
     <div id="BoutonSwitchToOl">
         <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
     </div>
+    <div id="Geolocate">
+        <input type="button" name="geoloc" onclick="geolocate();" value="Geolocate on position" /><br />
+    </div>
     <div id="viewerDiv"></div>
 {{/content}}
 
@@ -36,6 +39,15 @@
                 location : "Biarritz"
             }
         });
+
+        /**
+          * geolocalisation
+          */
+          function geolocate() {
+            map.setCenter({
+                geolocate : true
+            });
+        };
 
         /**
           * fonction de bascule vers 3D
