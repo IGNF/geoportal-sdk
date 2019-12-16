@@ -89,10 +89,17 @@ ItMap.prototype.setAutoCenter = function (point, zoom) {
         position.zoom = zoom;
     }
     // set the camera aimed point on the specified coords
-    this.libMap.onCameraMoveStop(function () {
+    // if the camera doesn't move, we set the center
+    if (this.libMap._globeView.controls.isPaused()) {
         this.libMap.setCameraTargetGeoPosition(position);
-    }.bind(this));
-    this.logger.trace("[ItMap] - setAutoCenter(" + point.x + "," + point.y + ")");
+        this.logger.trace("[ItMap] - setAutoCenter(" + point.x + "," + point.y + ")");
+    } else {
+        // else, if the camera is moving, we wait for the end of the movement
+        this.libMap.onCameraMoveStop(function () {
+            this.libMap.setCameraTargetGeoPosition(position);
+        }.bind(this));
+        this.logger.trace("[ItMap] - setAutoCenter(" + point.x + "," + point.y + ")");
+    }
 };
 
 /**
