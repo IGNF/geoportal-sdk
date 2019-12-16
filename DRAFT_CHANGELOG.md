@@ -17,3 +17,4 @@
 * [Fixed]
 	- [SDK3D] fix interface avec listeners iTowns
 	- [SDK3D] fix mauvais test "layer.type" qui cassait switch portail 
+	- [SDK3D] setAutoCenter se declenche correctement meme si camera immobile
