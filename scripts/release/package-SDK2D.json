@@ -1,5 +1,5 @@
 {
-   "version" : "3.0.5",
+   "version" : "3.0.6",
    "keywords" : [
       "openlayers",
       "geoportail",
@@ -12,7 +12,7 @@
    },
    "dependencies" : {
       "ol" : "5.3.0",
-      "geoportal-extensions-openlayers" : "3.0.5"
+      "geoportal-extensions-openlayers" : "3.0.6"
    },
    "module" : "src/SDK2D.js",
    "author" : "IGNF",
@@ -26,7 +26,7 @@
    ],
    "license" : "CECILL-B",
    "scripts" : {},
-   "date" : "06/12/2019",
+   "date" : "17/12/2019",
    "repository" : {
       "type" : "git",
       "url" : "https://github.com/IGNF/geoportal-sdk.git"
