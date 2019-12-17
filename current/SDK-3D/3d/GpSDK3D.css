@@ -9,15 +9,15 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.5
- * @date 06/12/2019
+ * @version 3.0.6
+ * @date 17/12/2019
  *
  */
 
 /*!
  * geoportal-extensions-openlayers. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 3.0.5
+ * @version 3.0.6
  */
 
 /*!
@@ -116,8 +116,8 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.5
- * @date 18/11/2019
+ * @version 3.0.6
+ * @date 17/12/2019
  *
  */
 
@@ -159,6 +159,14 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * @version 1.8.4
+ */
+
+/*!
+ * @overview  Fetch - window.fetch polyfill
+ * @copyright Copyright (c) 2014-2016 GitHub, Inc.
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/github/fetch/master/LICENSE
+ * @version   ^3.0.0
  */
 
 /*!
