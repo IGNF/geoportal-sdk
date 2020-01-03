@@ -5,7 +5,9 @@
 
 ## Summary
 
-* [patch:1] compatibilité IE10/11
+semver : [patch:1]
+
+* compatibilité IE10/11
 
 ## Changelog
 
@@ -16,6 +18,8 @@
 * [Removed]
 
 * [Fixed]
+
+- compatibilité IE10/11
 
 * [Deprecated]
 
