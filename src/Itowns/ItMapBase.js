@@ -105,12 +105,27 @@ ItMap.prototype._initMap = function () {
             deepCopy(this.Itowns, itowns);
         }
 
+        var center;
+        if (this.mapOptions.center) {
+            center = new itowns.Coordinates('EPSG:4326', this.mapOptions.center.x, this.mapOptions.center.y, 0);
+        } else {
+            center = new itowns.Coordinates('EPSG:4326', 2, 48, 0);
+        }
+
         // position à l'initialisation
         var positionOnGlobe = {
-            longitude : this.mapOptions.center.x || 2,
-            latitude : this.mapOptions.center.y || 48,
-            altitude : 25000000
+            coord: center,
+            zoom: this.mapOptions.zoom || 10,
+            tilt: this.mapOptions.tilt || 45,
+            heading: this.mapOptions.azimuth || 0
         };
+
+        // const positionOnGlobe = {
+        //     coord: new itowns.Coordinates('EPSG:4326', 2.3465, 48.88, 0),
+        //     zoom: 10,
+        //     tilt: 45,
+        //     heading: 0
+        // };
 
         var viewerDiv = this.div;
 
@@ -132,19 +147,20 @@ ItMap.prototype._initMap = function () {
             }, 1);
             // FIXME en attendant que la variable positionOnGlobe puisse prendre
             // un zoom / une echelle (et non une altitude) et les params necessaires.
-            if (parseFloat(self.mapOptions.zoom) > 14) {
-                self.mapOptions.zoom = 14;
-            }
+
+            // if (parseFloat(self.mapOptions.zoom) > 14) {
+            //     self.mapOptions.zoom = 14;
+            // }
 
             // self.setZoom(self.mapOptions.zoom);
 
-            self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
-            self.setAutoCenter(self.mapOptions.center, self.mapOptions.zoom);
+            // self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
+            // self.setAutoCenter(self.mapOptions.center, self.mapOptions.zoom);
 
             // if a tilt is set
-            if (self.mapOptions.tilt !== 90) {
-                self.setTilt(self.mapOptions.tilt);
-            }
+            //if (self.mapOptions.tilt !== 90) {
+            //    self.setTilt(self.mapOptions.tilt);
+            //}
 
             // evenements pour faire la distinction entre le click et le drag
             var isDragging = false;
