@@ -134,14 +134,23 @@ module.exports = (env, argv) => {
             rules : [
                 {
                     test : /\.js$/,
-                    include : [
-                        path.join(__dirname, "src")
-                    ],
-                    exclude : [/node_modules/],
+                    // include : [
+                    //     path.join(__dirname, "src")
+                    // ],
+                    // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
-                            presets : ["@babel/preset-env"]
+                            presets : [
+                                [
+                                    "@babel/preset-env", {
+                                        "debug":true,
+                                        "targets": {
+                                            "ie" : "10"
+                                        }
+                                    }
+                                ]
+                            ]
                         }
                     }
                 },
