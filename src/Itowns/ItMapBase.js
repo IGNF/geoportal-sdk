@@ -107,29 +107,22 @@ ItMap.prototype._initMap = function () {
 
         var center;
         if (this.mapOptions.center) {
-            center = new itowns.Coordinates('EPSG:4326', this.mapOptions.center.x, this.mapOptions.center.y, 0);
+            center = new this.Itowns.Coordinates("EPSG:4326", this.mapOptions.center.x, this.mapOptions.center.y, 0);
         } else {
-            center = new itowns.Coordinates('EPSG:4326', 2, 48, 0);
+            center = new this.Itowns.Coordinates("EPSG:4326", 2, 48, 0);
         }
 
-        // position à l'initialisation
+        // position à l'initialisation (si tilt == 90, on est dans le cas d'un switch 2d->3d, on incline à 45)
         var positionOnGlobe = {
-            coord: center,
-            zoom: this.mapOptions.zoom || 10,
-            tilt: this.mapOptions.tilt || 45,
-            heading: this.mapOptions.azimuth || 0
+            coord : center,
+            zoom : this.mapOptions.zoom || 10,
+            tilt : this.mapOptions.tilt !== 90 ? this.mapOptions.tilt : 45,
+            heading : this.mapOptions.azimuth || 0
         };
-
-        // const positionOnGlobe = {
-        //     coord: new itowns.Coordinates('EPSG:4326', 2.3465, 48.88, 0),
-        //     zoom: 10,
-        //     tilt: 45,
-        //     heading: 0
-        // };
 
         var viewerDiv = this.div;
 
-        // creation de la map vide
+        // creation de la map vide avec les paramètres de positionnement de la caméra
         this.libMap = new this.Itowns.GlobeViewExtended(viewerDiv, positionOnGlobe, {
             // to display the last zoom level of Ortho layer
             maxSubdivisionLevel : 18
@@ -145,22 +138,6 @@ ItMap.prototype._initMap = function () {
             window.setTimeout(function () {
                 self.div.style.visibility = "";
             }, 1);
-            // FIXME en attendant que la variable positionOnGlobe puisse prendre
-            // un zoom / une echelle (et non une altitude) et les params necessaires.
-
-            // if (parseFloat(self.mapOptions.zoom) > 14) {
-            //     self.mapOptions.zoom = 14;
-            // }
-
-            // self.setZoom(self.mapOptions.zoom);
-
-            // self.setAzimuth(parseFloat(self.mapOptions.azimuth) || 0);
-            // self.setAutoCenter(self.mapOptions.center, self.mapOptions.zoom);
-
-            // if a tilt is set
-            //if (self.mapOptions.tilt !== 90) {
-            //    self.setTilt(self.mapOptions.tilt);
-            //}
 
             // evenements pour faire la distinction entre le click et le drag
             var isDragging = false;
