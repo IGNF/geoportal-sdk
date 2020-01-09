@@ -257,7 +257,9 @@ IMap.prototype = {
         this.listen("layerChanged", this._onLayerChanged, this);
 
         // centrage avec les coordonnées x, y (s'il y en a)
-        this.setXYCenter(this.mapOptions.center);
+        if (this.getViewMode() === "2d") {
+            this.setXYCenter(this.mapOptions.center);
+        }
 
         // FIXME Config est créé en runtime dans la variable globale Gp
         var scope = typeof window !== "undefined" ? window : {};
@@ -358,8 +360,9 @@ IMap.prototype = {
         }
 
         // Centrage de la carte avec les options demandées
-        this.setCenter(this.mapOptions.center);
-
+        if (this.getViewMode() === "2d") {
+            this.setCenter(this.mapOptions.center);
+        }
         // ajout des markers : TODO
         if (this.mapOptions.hasOwnProperty("markersOptions")) {
             this._addMarkers(this.mapOptions.markersOptions);
