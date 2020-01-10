@@ -1144,10 +1144,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             // les selections des valeurs du filtre sont elles renseignées ?
                                                             // si oui, les valeurs sont donc déjà renseignées
                                                             // si non, il est utile de mettre les valeurs par defaut.
-                                                            if (_filter.selected && Array.isArray(_filter.selected)) {
-                                                                if (_filter.selected.length) {
-                                                                    // nothing to do...
-                                                                }
+                                                            if (_filter.selected && Array.isArray(_filter.selected) && _filter.selected.length) {
+                                                                // nothing to do...
                                                             } else {
                                                                 // il n'existe pas d'information sur les valeurs des filtres
                                                                 // sélectionnées, on va donc mettre à jour cette information.
@@ -1159,8 +1157,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                                     // conf:2 -> (0)
                                                                     for (var jj = 0; jj < _selectedFilters.length; jj++) {
                                                                         if (_selectedFilters[jj].k === _filter.filterName) {
-                                                                            // FIXME Array.fill() -> compatibilité IE ?
-                                                                            _selectedFilters[jj].v = Array(_nlayers).fill((_filter.configuration) ? 0 : 1);
+                                                                            // Array.fill() -> pas compatibilité IE 11 !
+                                                                            _selectedFilters[jj].v = Array(_nlayers.length).fill((_filter.configuration) ? 0 : 1);
                                                                             break;
                                                                         }
                                                                     }

@@ -1,11 +1,11 @@
 # SDK Geoportail 2D/3D, version 3.0.6
 
-**03/01/2020 : version 3.0.6-patch1**
+**06/01/2020 : version 3.0.6-patch2**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-semver : [patch:1]
+semver : [patch:2]
 
 * compatibilité IE10/11
 

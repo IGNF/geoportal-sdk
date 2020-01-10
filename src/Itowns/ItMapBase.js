@@ -107,9 +107,9 @@ ItMap.prototype._initMap = function () {
 
         var center;
         if (this.mapOptions.center) {
-            center = new itowns.Coordinates('EPSG:4326', this.mapOptions.center.x, this.mapOptions.center.y, 0);
+            center = new this.Itowns.Coordinates('EPSG:4326', this.mapOptions.center.x, this.mapOptions.center.y, 0);
         } else {
-            center = new itowns.Coordinates('EPSG:4326', 2, 48, 0);
+            center = new this.Itowns.Coordinates('EPSG:4326', 2, 48, 0);
         }
 
         // position à l'initialisation

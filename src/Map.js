@@ -341,11 +341,11 @@ var autoPanOptions = {
  * ### MapBox specific properties
  *
  * **Common 2D/3D properties**
- * 
+ *
  * | property | Type | Description |
  * | - | - | - |
  * | url | String | The url to the style file of the layer (style.json) |
- * 
+ *
  * **Specific 2D properties**
  *
  * | property | Type | Description |
