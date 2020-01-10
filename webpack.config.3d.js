@@ -103,6 +103,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
+        stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [
@@ -135,19 +136,26 @@ module.exports = (env, argv) => {
                 {
                     test : /\.js$/,
                     // include : [
-                    //     path.join(__dirname, "src")
+                    //     path.join(__dirname, "src"),
+                    //     /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
+                    //     ///node_modules\/itowns/,
+                    //     /node_modules\/geoportal-extensions-openlayers/,
+                    //     ///node_modules\/geoportal-extensions-itowns/,
+                    //     /node_modules\/geoportal-access-lib/,
                     // ],
                     // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
+                            // plugins : ["array-includes"],
                             presets : [
                                 [
                                     "@babel/preset-env", {
+                                        // "useBuiltIns": "entry",
                                         "debug":true,
-                                        "targets": {
-                                            "ie" : "10"
-                                        }
+                                        // "targets": {
+                                        //     "ie" : "10"
+                                        // }
                                     }
                                 ]
                             ]
@@ -194,10 +202,31 @@ module.exports = (env, argv) => {
                 {
                     /** olms est exposé en global : olms ! */
                     test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "olms"
-                    }]
+                    include : [
+                        /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
+                    ],
+                    use : [
+                        {
+                            loader : "expose-loader",
+                            options : "olms"
+                        },
+                        {
+                            loader : "babel-loader",
+                            options : {
+                                presets : [
+                                    [
+                                        "@babel/preset-env", {
+                                            // "useBuiltIns": "entry",
+                                            "debug":true,
+                                            // "targets": {
+                                            //     "ie" : "10"
+                                            // }
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
                 },
                 {
                     /** itowns est exposé en global : itowns ! */

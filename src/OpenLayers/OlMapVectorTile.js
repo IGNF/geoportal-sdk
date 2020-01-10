@@ -456,6 +456,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         }
 
                         if (!_mtdLayersId) {
+                            // eslint-disable-next-line no-console
                             console.warn("Filtres utilisateurs : auncune association possible !?");
                             break;
                         }
@@ -467,6 +468,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                         // c'est possible que les valeurs ne soient pas renseignées dans le metadata.json,
                         // car trop de valeurs..., du coup, on ne peut pas gerer ce type d'informations.
                         if (!_tjsonvalues) {
+                            // eslint-disable-next-line no-console
                             console.warn("Filtres utilisateurs : auncune valeurs !?");
                             continue;
                         }
@@ -594,6 +596,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
     }
 
     if (_style.layers.length === 0) {
+        // eslint-disable-next-line no-console
         console.warn("Filtres utilisateurs : aucun 'layers' !?");
     }
 
@@ -693,7 +696,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
     //      maj à faire pour toute modification du fichier de style de la couche !
     // - layer.set("mapbox-themes")
     //      objet
-    //      options:themes & options:themesSummary
+    //      options:styles & options:stylesSummary
     //      lecture seule
     // - layer.set("mapbox-status")
     //      objet
@@ -727,11 +730,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
         // Si le style par defaut n'existe pas dans la liste des themes, on l'ajoute pour simplifier
         // les traitements ulterieurs...
         */
-        if (Array.isArray(layerOpts.themes)) {
+        if (Array.isArray(layerOpts.styles)) {
             var foundDefaultStyle = false; // recherche du style par defaut
             var foundSelectedStyle = false; // recherche du theme sélectionné
-            for (var i = 0; i < layerOpts.themes.length; i++) {
-                var t = layerOpts.themes[i];
+            for (var i = 0; i < layerOpts.styles.length; i++) {
+                var t = layerOpts.styles[i];
                 // algo assez simpliste... car on compare juste les urls
                 // mais les urls devraient être uniques...
                 if (t.url === layerOpts.url) {
@@ -751,10 +754,10 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
             // dans la liste des themes...
             if (!foundDefaultStyle) {
                 var _url = layerOpts.url;
-                var _thumbnail = layerOpts.defaultThemeThumbnail || null;
-                var _name = layerOpts.defaultThemeName || "Style par défaut";
-                var _description = layerOpts.defaultThemeDescription || "Style par défaut";
-                layerOpts.themes.unshift({
+                var _thumbnail = layerOpts.defaultStyleThumbnail || null;
+                var _name = layerOpts.defaultStyleName || "Style par défaut";
+                var _description = layerOpts.defaultStyleDescription || "Style par défaut";
+                layerOpts.styles.unshift({
                     thumbnail : _thumbnail,
                     name : _name,
                     url : _url,
@@ -855,12 +858,12 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                         _originators = layerOpts.originators = _glStyle.metadata[ns];
                                                         continue;
                                                     }
-                                                    if (key === "themes" && !layerOpts.themes) {
-                                                        _themes = layerOpts.themes = _glStyle.metadata[ns];
+                                                    if (key === "styles" && !layerOpts.styles) {
+                                                        _themes = layerOpts.styles = _glStyle.metadata[ns];
                                                         continue;
                                                     }
                                                     if (key === "filters" && !layerOpts.filters) {
-                                                        _themes = layerOpts.filters = _glStyle.metadata[ns];
+                                                        _filters = layerOpts.filters = _glStyle.metadata[ns];
                                                         continue;
                                                     }
                                                 }
@@ -893,15 +896,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                     // gestion des themes avec les selections utilisateur.
                                     var _selectedTheme = {};
                                     // options de themes (tableau)
-                                    if (Array.isArray(layerOpts.themes)) {
+                                    if (Array.isArray(layerOpts.styles)) {
                                         // enregistrement des options sur les themes
-                                        _themes = layerOpts.themes;
+                                        _themes = layerOpts.styles;
                                         // selections utilisateurs (options selected)
                                         // > { key: null, index: 0 }
                                         var idxSelectedStyle = null; // index du style sélectionné (par defaut : 0)
                                         var keySelectedStyle = null; // la clef = nom du fichier de style sans l'extension
-                                        for (var p = 0; p < layerOpts.themes.length; p++) {
-                                            var t = layerOpts.themes[p];
+                                        for (var p = 0; p < layerOpts.styles.length; p++) {
+                                            var t = layerOpts.styles[p];
                                             if (t.selected) {
                                                 idxSelectedStyle = p;
                                                 keySelectedStyle = t.url.match(/([^/]+)(?=\.\w+$)/)[1];
@@ -1043,6 +1046,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // l'exception est trop brutale...,
                                                     // elle bloque l'afffichage des données !
                                                     // throw new Error("HTTP TileJSON error (metadata.json)");
+                                                    // eslint-disable-next-line no-console
                                                     console.error("HTTP TileJSON error (metadata.json)");
                                                 }
                                                 if (vectorTileJson.getState() === "ready") {
@@ -1144,10 +1148,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             // les selections des valeurs du filtre sont elles renseignées ?
                                                             // si oui, les valeurs sont donc déjà renseignées
                                                             // si non, il est utile de mettre les valeurs par defaut.
-                                                            if (_filter.selected && Array.isArray(_filter.selected)) {
-                                                                if (_filter.selected.length) {
-                                                                    // nothing to do...
-                                                                }
+                                                            if (_filter.selected && Array.isArray(_filter.selected) && _filter.selected.length) {
+                                                                // nothing to do...
                                                             } else {
                                                                 // il n'existe pas d'information sur les valeurs des filtres
                                                                 // sélectionnées, on va donc mettre à jour cette information.
@@ -1159,8 +1161,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                                     // conf:2 -> (0)
                                                                     for (var jj = 0; jj < _selectedFilters.length; jj++) {
                                                                         if (_selectedFilters[jj].k === _filter.filterName) {
-                                                                            // FIXME Array.fill() -> compatibilité IE ?
-                                                                            _selectedFilters[jj].v = Array(_nlayers).fill((_filter.configuration) ? 0 : 1);
+                                                                            // Array.fill() -> pas compatibilité IE 11 !
+                                                                            _selectedFilters[jj].v = Array(_nlayers.length).fill((_filter.configuration) ? 0 : 1);
                                                                             break;
                                                                         }
                                                                     }
@@ -1242,13 +1244,13 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             position : _position,
                                             zoomToExtent : layerOpts.zoomToExtent,
                                             url : layerOpts.url,
-                                            defaultThemeName : layerOpts.defaultThemeName,
-                                            defaultThemeThumbnail : layerOpts.defaultThemeThumbnail,
-                                            defaultThemeDescription : layerOpts.defaultThemeDescription,
+                                            defaultStyleName : layerOpts.defaultStyleName,
+                                            defaultStyleThumbnail : layerOpts.defaultStyleThumbnail,
+                                            defaultStyleDescription : layerOpts.defaultStyleDescription,
                                             format : layerOpts.format,
                                             mapboxOptions : layerOpts.mapboxOptions,
-                                            themesSummary : layerOpts.themesSummary,
-                                            themes : _themes,
+                                            stylesSummary : layerOpts.stylesSummary,
+                                            styles : _themes,
                                             filtersSummary : layerOpts.filtersSummary,
                                             filters : _filters,
                                             title : _title,
@@ -1399,8 +1401,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
                                         // > layer.set("mapbox-themes")
                                         p.layer.set("mapbox-themes", {
-                                            themesSummary : p.options.themesSummary,
-                                            themes : p.options.themes
+                                            stylesSummary : p.options.stylesSummary,
+                                            styles : p.options.styles
                                         });
 
                                         // ajout des differents filtres attributaires de la couche
@@ -1432,6 +1434,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // c'est un style temporaire...
                                             p.styles = _transformGrayStyle(_stylesClone);
                                             if (!p.styles) {
+                                                // eslint-disable-next-line no-console
                                                 console.error("Erreur de transformation en N/B !?");
                                             }
                                         }

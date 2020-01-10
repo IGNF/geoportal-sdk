@@ -555,11 +555,11 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
             //     urlService : "", // -> opts
             //     projection : "", // -> autoconf / opts
             //     outputFormat : "", // -> autoconf / opts
-            //     defaultThemeThumbnail : "", // -> autoconf / opts
-            //     defaultThemeName : "", // -> autoconf / opts
-            //     defaultThemeDescription : "", // -> autoconf / opts
-            //     themesSummary : "", // not used !
-            //     themes : [ // -> autoconf / opts
+            //     defaultStyleThumbnail : "", // -> autoconf / opts
+            //     defaultStyleName : "", // -> autoconf / opts
+            //     defaultStyleDescription : "", // -> autoconf / opts
+            //     stylesSummary : "", // not used !
+            //     styles : [ // -> autoconf / opts
             //         {
             //             thumbnail : "",
             //             name : "",
@@ -594,25 +594,25 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
                         if (!layerOpts.hasOwnProperty("url")) {
                             layerObj[layerId].url = s.url;
                         }
-                        if (!layerOpts.hasOwnProperty("defaultThemeName")) {
-                            layerObj[layerId].defaultThemeName = s.name;
+                        if (!layerOpts.hasOwnProperty("defaultStyleName")) {
+                            layerObj[layerId].defaultStyleName = s.name;
                         }
-                        if (!layerOpts.hasOwnProperty("defaultThemeDescription")) {
-                            layerObj[layerId].defaultThemeDescription = s.title;
+                        if (!layerOpts.hasOwnProperty("defaultStyleDescription")) {
+                            layerObj[layerId].defaultStyleDescription = s.title;
                         }
-                        if (!layerOpts.hasOwnProperty("defaultThemeThumbnail")) {
-                            layerObj[layerId].defaultThemeThumbnail = s.thumbnail;
+                        if (!layerOpts.hasOwnProperty("defaultStyleThumbnail")) {
+                            layerObj[layerId].defaultStyleThumbnail = s.thumbnail;
                         }
                     } else {
                         // 1. false true -> true
                         //    true false -> true ...
                         // 2. true true  -> false
-                        if ((function (a, b) { return (a || b) && !(a && b); })(layerOpts.hasOwnProperty("themes"), bfirst)) {
+                        if ((function (a, b) { return (a || b) && !(a && b); })(layerOpts.hasOwnProperty("styles"), bfirst)) {
                             bfirst = false;
-                            if (!layerObj[layerId].themes) {
-                                layerObj[layerId].themes = [];
+                            if (!layerObj[layerId].styles) {
+                                layerObj[layerId].styles = [];
                             }
-                            layerObj[layerId].themes.push({
+                            layerObj[layerId].styles.push({
                                 thumbnail : s.thumbnail,
                                 name : s.name,
                                 description : s.title,

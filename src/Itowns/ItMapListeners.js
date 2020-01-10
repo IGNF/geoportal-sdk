@@ -824,6 +824,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var vectorTileSource = new this.Itowns.VectorTilesSource({
         style : _urlDefaultOrSelected,
         filter : function (layer) {
+            // Array.includes() -> pas compatibilité IE 11 !
             return ["fill", "line"].includes(layer.type);
         },
         zoom : {

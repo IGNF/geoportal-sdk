@@ -341,11 +341,11 @@ var autoPanOptions = {
  * ### MapBox specific properties
  *
  * **Common 2D/3D properties**
- * 
+ *
  * | property | Type | Description |
  * | - | - | - |
  * | url | String | The url to the style file of the layer (style.json) |
- * 
+ *
  * **Specific 2D properties**
  *
  * | property | Type | Description |
@@ -353,14 +353,15 @@ var autoPanOptions = {
  * | urlService | String | - |
  * | outputFormat | String | - |
  * | projection | String | - |
- * | defaultThemeName | String | - |
- * | defaultThemeThumbnail | String | - |
- * | defaultThemeDescription | String | - |
- * | themesSummary | String | - |
- * | themes | {@link Gp.ThemesOptions} | options for layer styles |
+ * | defaultStyleName | String | - |
+ * | defaultStyleThumbnail | String | - |
+ * | defaultStyleDescription | String | - |
+ * | stylesSummary | String | - |
+ * | styles | {@link Gp.MapboxStylesOptions} | options for layer styles |
  * | filtersSummary | String | - |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
+ * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | mapboxOptions | Object | - |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
@@ -924,24 +925,24 @@ var styleOptions = {
 
 /**
 *
-* Options for MapBox vector layers : Themes
+* Options for MapBox vector layers : Styles
 *
 * **Common 2D/3D properties**
 *
 * | property | Type | Description |
 * | - | - | - |
-* | themes | Array(Object) | - |
-* | themes.name | String | - |
-* | themes.url | String | - |
-* | themes.thumbnail | String | - |
-* | themes.description | String | - |
-* | themes.selected | Boolean | - |
+* | styles | Array(Object) | - |
+* | styles.name | String | - |
+* | styles.url | String | - |
+* | styles.thumbnail | String | - |
+* | styles.description | String | - |
+* | styles.selected | Boolean | - |
 *
 * @namespace
-* @alias Gp.ThemesOptions
+* @alias Gp.MapboxStylesOptions
 * @todo finish description
 */
-var themesOptions = {
+var mapboxStylesOptions = {
 };
 
 /**

@@ -51,6 +51,7 @@ module.exports = (env, argv) => {
         // attention : importance de l'ordre des css pour que la surcharge se fasse correctement
         entry : {
             "GpSDK2D" : [
+                "whatwg-fetch",
                 path.join(__dirname, "node_modules", "ol", "ol.css"),
                 path.join(__dirname, "node_modules", "geoportal-extensions-openlayers", "dist", "GpPluginOpenLayers-src.css"),
                 path.join(__dirname, "src", "SDK2D")
@@ -92,6 +93,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
+        stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [
@@ -122,21 +124,34 @@ module.exports = (env, argv) => {
         module : {
             rules : [
                 {
+                    // test : (value) => {
+                    //     if (/\.js$/.test(value)) {
+                    //         console.log("#### IN : ", value);
+                    //         return value;
+                    //     }
+                    //     console.log("#### OUT : ", value);
+                    // },
                     test : /\.js$/,
                     // include : [
-                    //     path.join(__dirname, "src")
+                    //     path.join(__dirname, "src"),
+                    //     /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
+                    //     /node_modules\/ol-mapbox-style/,
+                    //     /node_modules\/geoportal-extensions-openlayers/,
+                    //     /node_modules\/geoportal-access-lib/,
                     // ],
                     // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
+                            // plugins : ["@babel/plugin-transform-template-literals"],
                             presets : [
                                 [
                                     "@babel/preset-env", {
+                                        // "useBuiltIns": "usage",
                                         "debug":true,
-                                        "targets": {
-                                            "ie" : "10"
-                                        }
+                                        // "targets": {
+                                        //     "ie" : "10"
+                                        // }
                                     }
                                 ]
                             ]
@@ -172,11 +187,34 @@ module.exports = (env, argv) => {
                 },
                 {
                     /** olms est exposé en global : olms ! */
-                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "olms"
-                    }]
+                    test : require.resolve("ol-mapbox-style"),
+                    include : [
+                        /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
+                    ],
+                    // test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
+                    // test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    use : [
+                        {
+                            loader : "expose-loader",
+                            options : "olms"
+                        },
+                        {
+                            loader : "babel-loader",
+                            options : {
+                                presets : [
+                                    [
+                                        "@babel/preset-env", {
+                                            // "useBuiltIns": "usage",
+                                            "debug":true,
+                                            // "targets": {
+                                            //     "ie" : "10"
+                                            // }
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
                 },
                 {
                     /** openlayers est exposé en global : ol ! */
