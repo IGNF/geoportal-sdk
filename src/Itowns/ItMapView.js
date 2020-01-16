@@ -90,7 +90,7 @@ ItMap.prototype.setAutoCenter = function (point, zoom) {
     }
     // set the camera aimed point on the specified coords
     // if the camera doesn't move, we set the center
-    if (this.libMap._globeView.controls.isPaused()) {
+    if (this.libMap._globeView.controls.isPaused) {
         this.libMap.setCameraTargetGeoPosition(position);
         this.logger.trace("[ItMap] - setAutoCenter(" + point.x + "," + point.y + ")");
     } else {
