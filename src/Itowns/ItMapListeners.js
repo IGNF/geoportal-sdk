@@ -781,21 +781,21 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     // Si le style par defaut n'existe pas dans la liste des themes, on l'ajoute pour simplifier
     // les traitements ulterieurs...
     */
-    if (Array.isArray(layerOpts.themes)) {
+    if (Array.isArray(layerOpts.styles)) {
         var foundDefaultStyle = false; // recherche du style par defaut
         var foundSelectedStyle = false; // recherche du theme sélectionné
 
         _urlDefaultOrSelected = layerOpts.url;
 
-        for (var i = 0; i < layerOpts.themes.length; i++) {
-            var t = layerOpts.themes[i];
+        for (var i = 0; i < layerOpts.styles.length; i++) {
+            var t = layerOpts.styles[i];
             // algo assez simpliste... car on compare juste les urls
             // mais les urls devraient être uniques...
             if (t.url === layerOpts.url) {
                 // le theme par defaut est dans la liste,
                 // on prend donc en compte les valeurs
                 // "name", "thumbnail", "url", "description" de la liste des
-                // themes (à defaut des options "defaultTheme*") !
+                // themes (à defaut des options "defaultStyle*") !
                 foundDefaultStyle = true;
             }
             if (t.selected) {
@@ -808,10 +808,10 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         // dans la liste des themes...
         if (!foundDefaultStyle) {
             var _url = layerOpts.url;
-            var _thumbnail = layerOpts.defaultThemeThumbnail || null;
-            var _name = layerOpts.defaultThemeName || "Style par défaut";
-            var _description = layerOpts.defaultThemeDescription || "Style par défaut";
-            layerOpts.themes.unshift({
+            var _thumbnail = layerOpts.defaultStyleThumbnail || null;
+            var _name = layerOpts.defaultStyleName || "Style par défaut";
+            var _description = layerOpts.defaultStyleDescription || "Style par défaut";
+            layerOpts.styles.unshift({
                 thumbnail : _thumbnail,
                 name : _name,
                 url : _url,
