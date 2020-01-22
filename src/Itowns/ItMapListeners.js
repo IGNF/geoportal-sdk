@@ -804,6 +804,13 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
                 foundSelectedStyle = true;
             }
         }
+
+        // si les mapbox options ne sont pas données par les options de la couche, 
+        // on crée quand même la propriété
+        if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
+            layerOpts.mapboxOptions = {};
+        }
+
         // le style par defaut n'est pas dans la liste, alors on l'ajoute dans
         // dans la liste des themes...
         if (!foundDefaultStyle) {
