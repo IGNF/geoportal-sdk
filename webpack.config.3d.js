@@ -75,6 +75,7 @@ module.exports = (env, argv) => {
                 // "loglevel",
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
+                "itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -135,27 +136,36 @@ module.exports = (env, argv) => {
             rules : [
                 {
                     test : /\.js$/,
-                    // include : [
-                    //     path.join(__dirname, "src"),
-                    //     /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
-                    //     ///node_modules\/itowns/,
-                    //     /node_modules\/geoportal-extensions-openlayers/,
-                    //     ///node_modules\/geoportal-extensions-itowns/,
-                    //     /node_modules\/geoportal-access-lib/,
-                    // ],
+                    include : [
+                        path.join(__dirname, "src"),
+                        /node_modules\/geoportal-extensions-openlayers\//,
+                        /node_modules\/geoportal-extensions-itowns\//,
+                        /node_modules\/geoportal-access-lib\//,
+                        // /node_modules\/loglevel\//,
+                        // /node_modules\/ol\//,
+                        // /node_modules\/ol-mapbox-style\//,
+                        // /node_modules\/@mapbox\/mapbox-gl-style-spec\//,
+                        // /node_modules\/itowns\//,
+                        // /node_modules\/three\//,
+                        // /node_modules\/proj4\//,
+                        /node_modules\/@mapbox\/mapbox-gl-style-spec\/deref.js/,
+                        /node_modules\/ol-mapbox-style\//,
+                    ],
                     // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
                         options : {
-                            // plugins : ["array-includes"],
+                            // plugins : [["@babel/plugin-transform-runtime", { corejs: 3 }]],
+                            compact : false,
                             presets : [
                                 [
                                     "@babel/preset-env", {
-                                        // "useBuiltIns": "entry",
+                                        "useBuiltIns": "usage",
+                                        "corejs": { version: '3.6', proposals: true },
                                         "debug":true,
-                                        // "targets": {
-                                        //     "ie" : "10"
-                                        // }
+                                        "targets": {
+                                            // "ie" : "10"
+                                        }
                                     }
                                 ]
                             ]
@@ -201,10 +211,14 @@ module.exports = (env, argv) => {
                 },
                 {
                     /** olms est exposé en global : olms ! */
-                    test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    include : [
-                        /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
-                    ],
+                    test : require.resolve("ol-mapbox-style"),
+                    // test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    // include : [
+                    //     /node_modules\/ol\//,
+                    //     /node_modules\/ol-mapbox-style\//,
+                    //     // /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/,
+                    //     /node_modules\/@mapbox\/mapbox-gl-style-spec\//
+                    // ],
                     use : [
                         {
                             loader : "expose-loader",
@@ -213,14 +227,16 @@ module.exports = (env, argv) => {
                         {
                             loader : "babel-loader",
                             options : {
+                                // plugins : [["@babel/plugin-transform-runtime", { corejs: 3 }]],
                                 presets : [
                                     [
                                         "@babel/preset-env", {
-                                            // "useBuiltIns": "entry",
+                                            "useBuiltIns": "usage",
+                                            "corejs": { version: '3.6', proposals: true },
                                             "debug":true,
-                                            // "targets": {
-                                            //     "ie" : "10"
-                                            // }
+                                            "targets": {
+                                                // "ie" : "10"
+                                            }
                                         }
                                     ]
                                 ]
@@ -230,11 +246,32 @@ module.exports = (env, argv) => {
                 },
                 {
                     /** itowns est exposé en global : itowns ! */
-                    test : require.resolve("itowns"),
+                    // test : require.resolve("itowns"),
+                    test : /node_modules\/itowns\/dist\/itowns.js/,
                     use : [{
                         loader : "expose-loader",
                         options : "itowns"
-                    }]
+                    },
+                    // {
+                    //     loader : "babel-loader",
+                    //     options : {
+                    //         // plugins : [["@babel/plugin-transform-runtime", { corejs: 3 }]],
+                    //         compact : true,
+                    //         presets : [
+                    //             [
+                    //                 "@babel/preset-env", {
+                    //                     "useBuiltIns": "usage",
+                    //                     "corejs": { version: '3.6', proposals: true },
+                    //                     "debug":true,
+                    //                     "targets": {
+                    //                         // "ie" : "10"
+                    //                     }
+                    //                 }
+                    //             ]
+                    //         ]
+                    //     }
+                    // }
+                ]
                 },
                 {
                     test : /\.css$/,

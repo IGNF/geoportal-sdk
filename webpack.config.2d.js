@@ -73,7 +73,7 @@ module.exports = (env, argv) => {
                 // - import bundle :
                 // "loglevel",
                 // - import forcé en mode bundle :
-                "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
+                "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js")
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -132,13 +132,18 @@ module.exports = (env, argv) => {
                     //     console.log("#### OUT : ", value);
                     // },
                     test : /\.js$/,
-                    // include : [
-                    //     path.join(__dirname, "src"),
-                    //     /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
-                    //     /node_modules\/ol-mapbox-style/,
-                    //     /node_modules\/geoportal-extensions-openlayers/,
-                    //     /node_modules\/geoportal-access-lib/,
-                    // ],
+                    include : [
+                        path.join(__dirname, "src"),
+                        /node_modules\/geoportal-extensions-openlayers\//,
+                        /node_modules\/geoportal-access-lib\//,
+                        // /node_modules\/eventbusjs\//,
+                        // /node_modules\/loglevel\//,
+                        // /node_modules\/ol\//,
+                        // cf. https://github.com/openlayers/ol-mapbox-style/issues/246
+                        // /node_modules\/@mapbox\/mapbox-gl-style-spec\//, <!-- exceptions !? -->
+                        /node_modules\/@mapbox\/mapbox-gl-style-spec\/deref.js/,
+                        /node_modules\/ol-mapbox-style\//,
+                    ],
                     // exclude : [/node_modules/],
                     use : {
                         loader : "babel-loader",
@@ -147,7 +152,8 @@ module.exports = (env, argv) => {
                             presets : [
                                 [
                                     "@babel/preset-env", {
-                                        // "useBuiltIns": "usage",
+                                        "useBuiltIns": "usage",
+                                        "corejs": { version: '3.6', proposals: true },
                                         "debug":true,
                                         // "targets": {
                                         //     "ie" : "10"
@@ -188,11 +194,14 @@ module.exports = (env, argv) => {
                 {
                     /** olms est exposé en global : olms ! */
                     test : require.resolve("ol-mapbox-style"),
-                    include : [
-                        /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
-                    ],
-                    // test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
                     // test : /node_modules\/ol-mapbox-style\/index\.js$/,
+                    // test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
+                    // include : [
+                    //     /node_modules\/ol\//,
+                    //     /node_modules\/@mapbox\/mapbox-gl-style-spec\//,
+                    //     /node_modules\/ol-mapbox-style\//,
+                    //     // /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
+                    // ],
                     use : [
                         {
                             loader : "expose-loader",
@@ -204,7 +213,8 @@ module.exports = (env, argv) => {
                                 presets : [
                                     [
                                         "@babel/preset-env", {
-                                            // "useBuiltIns": "usage",
+                                            "useBuiltIns": "usage",
+                                            "corejs": { version: '3.6', proposals: true },
                                             "debug":true,
                                             // "targets": {
                                             //     "ie" : "10"
