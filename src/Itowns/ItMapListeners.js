@@ -840,7 +840,9 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         }
     });
 
-    var vectorTileLayer = new this.Itowns.ColorLayer(layerId, {
+    var vectorTileLayer = {};
+
+    vectorTileLayer = new this.Itowns.ColorLayer(layerId, {
         // FIXME wait for next itowns release to remove this
         isValidData : function () {
             return false;
@@ -848,6 +850,10 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         source : vectorTileSource
         // fx : 2.5,
     });
+
+    // definition de l'opacité et de la visibilité de la couche
+    vectorTileLayer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
+    vectorTileLayer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
 
     // on met à jour le tableau des couches
     this._layers.push({
