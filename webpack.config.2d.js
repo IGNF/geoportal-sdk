@@ -149,15 +149,18 @@ module.exports = (env, argv) => {
                         loader : "babel-loader",
                         options : {
                             // plugins : ["@babel/plugin-transform-template-literals"],
+                            compact : true,
                             presets : [
                                 [
                                     "@babel/preset-env", {
                                         "useBuiltIns": "usage",
-                                        "corejs": { version: '3.6', proposals: true },
-                                        "debug":true,
-                                        // "targets": {
-                                        //     "ie" : "10"
-                                        // }
+                                        "corejs": { version: '3.6', proposals: false },
+                                        "debug": true,
+                                        // "loose": true,
+                                        "exclude": ['transform-typeof-symbol'],
+                                        "targets": {
+                                            "ie" : "10"
+                                        }
                                     }
                                 ]
                             ]
@@ -210,15 +213,18 @@ module.exports = (env, argv) => {
                         {
                             loader : "babel-loader",
                             options : {
+                                compact : true,
                                 presets : [
                                     [
                                         "@babel/preset-env", {
                                             "useBuiltIns": "usage",
-                                            "corejs": { version: '3.6', proposals: true },
+                                            "corejs": { version: '3.6', proposals: false },
+                                            "exclude": ['transform-typeof-symbol'],
                                             "debug":true,
-                                            // "targets": {
-                                            //     "ie" : "10"
-                                            // }
+                                            // "loose": true,
+                                            "targets": {
+                                                "ie" : "10"
+                                            }
                                         }
                                     ]
                                 ]

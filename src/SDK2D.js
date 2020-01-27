@@ -12,6 +12,21 @@ import { olExtended } from "geoportal-extensions-openlayers";
 var logger = Logger.getLogger("SDK2D");
 logger.log("Chargement SDK 2D...");
 
+// function IsIE () {
+//     if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+//         return true;
+//     }
+//     return false;
+// }
+
+// IE11 has somme issue about setter with deep recursion
+// with Symbol polyfill. We need to use the useSimple
+// option from core-js
+
+// if (IsIE()) {
+//     Symbol.useSimple();
+// }
+
 function deepCopy (source, target) {
     // FIXME Implementing Tail Call Elimination
     function tce (source, target) {
