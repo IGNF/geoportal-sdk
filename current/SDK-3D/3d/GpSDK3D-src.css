@@ -9,7 +9,7 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.6-patch7
+ * @version 3.0.6-patch8
  * @date 20/01/2020
  *
  */
@@ -17,13 +17,13 @@
 /*!
  * geoportal-extensions-openlayers. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 3.0.6
+ * @version 3.0.7
  */
 
 /*!
  * geoportal-extensions-itowns. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 2.2.5
+ * @version 2.2.6
  */
 
 /*!
@@ -102,7 +102,7 @@
  * @copyright Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/proj4js/proj4js/master/LICENSE.md
- * @version   ^2.6.0
+ * @version   2.5.0
  */
 .ol-box {
   box-sizing: border-box;
@@ -367,8 +367,8 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.6
- * @date 17/12/2019
+ * @version 3.0.7
+ * @date 24/01/2020
  *
  */
 
@@ -5286,8 +5286,8 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 2.2.5
- * @date 05/12/2019
+ * @version 2.2.6
+ * @date 24/01/2020
  *
  */
 
