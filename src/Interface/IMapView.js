@@ -110,7 +110,7 @@ IMap.prototype.centerGeolocate = function () {
                         info += "Erreur inconnue";
                         break;
                 }
-                this.logger.info(info);
+                map.logger.info(info);
             }
         );
     } else {
