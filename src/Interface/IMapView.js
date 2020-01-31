@@ -72,26 +72,26 @@ IMap.prototype.centerGeocode = function (opts) {
  * @private
  */
 IMap.prototype.centerGeolocate = function () {
-    var map = this;
+    var self = this;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             // callback pour geolocalisation OK
             function (position) {
-                map.logger.trace("[IMap] found center by geolocation (" + position.coords.longitude + ", " + position.coords.latitude + ")");
+                self.logger.trace("[IMap] found center by geolocation (" + position.coords.longitude + ", " + position.coords.latitude + ")");
                 var point = {
                     x : position.coords.longitude,
                     y : position.coords.latitude,
                     projection : "EPSG:4326"
                 };
                 // paramater zoomLevel (=17 by default) used for 3D setAutoCenter function only
-                map.setAutoCenter(point, 17);
+                self.setAutoCenter(point, 17);
                 // declenchement de l'evenement "geolocated"
                 var e = IMap.CustomEvent("geolocated", {
                     detail : {
                         position : point
                     }
                 });
-                map.div.dispatchEvent(e);
+                self.div.dispatchEvent(e);
             },
             // callback pour geolocalisation nOK
             function (error) {
@@ -104,13 +104,27 @@ IMap.prototype.centerGeolocate = function () {
                         info += "Vous n’avez pas donné la permission";
                         break;
                     case error.POSITION_UNAVAILABLE:
+                        // FIXME :
+                        // La geolocalisation ne semble plus fonctionner sous FireFox,
+                        // ce message personnalisé est envoyé dans les log...
+                        // Il semble que l'API sous jacent ne reponde plus.
+                        //  Geolocation error:
+                        //    Network location provider at 'https://www.googleapis.com/' :
+                        //      Returned error code 403
+                        // Test :
+                        //   about:config "geo.wifi.uri" is set to :
+                        //     https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_API_KEY%
+                        //   modify to set :
+                        //      https://location.services.mozilla.com/v1/geolocate?key=test
+                        // Console :
+                        //   navigator.geolocation.getCurrentPosition(function(r){console.log("response", r);}, function(e){console.log("error", e);});
                         info += "La position n’a pu être déterminée";
                         break;
                     case error.UNKNOWN_ERROR:
                         info += "Erreur inconnue";
                         break;
                 }
-                map.logger.info(info);
+                self.logger.info(info);
             }
         );
     } else {
