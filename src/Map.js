@@ -956,8 +956,9 @@ var mapboxStylesOptions = {
 * | filters | Array(Object) | - |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |
-* | filters.selected | Array | filters selected |
-* | filters.configuration | Boolean | configurable |
+* | filters.configuration | Object | - |
+* | filters.configuration.type | Boolean | configurable |
+* | filters.configuration.selected | Array | filters selected |
 *
 * @namespace
 * @alias Gp.FiltersOptions

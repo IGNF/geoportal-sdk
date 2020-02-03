@@ -51,7 +51,7 @@
                             "name" : "style 'gris'",
                             "url" : "https://vectortiles.ign.fr/demonstrateur/styles/gris.json",
                             // "url" : "data/planign/gris.json"
-                            // "selected" : true
+                            "selected" : true
                         },
                         {
                             "name" : "style 'muet'",
@@ -64,12 +64,18 @@
                        {
                            propertyName:"bati_ponc.symbo",
                            filterName:"Batiments ponctuels",
-                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                           configuration : {
+                               type : 0,
+                               selected:[0,1,1,1,1,1,1,1]
+                           }
                        },
                        {
                            propertyName:"bati_surf.symbo",
                            filterName:"Batiments surfaciques",
-                           // selected:[0,1,1,1,1,1,1,1], // TODO
+                           configuration : {
+                               type : 0,
+                               selected:[0,1,1,1,1,1,1,1]
+                           }
                        }]
                     },
                 // 'monMapBoxGeoJSON' : {

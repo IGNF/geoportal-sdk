@@ -435,7 +435,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                                 // FIXME cas particulier :
                                 // on ajoute une liste de filtres pour la configuration:0...,
                                 // si on a qu'un seul "layers"...
-                                if (_nlayers === 1 && filter.configuration && filter.configuration === 0) {
+                                if (_nlayers === 1 && filter.type && filter.type === 0) {
                                     if (!l.filter) {
                                         l.filter = [];
                                         l.filter.push("in");
@@ -510,7 +510,7 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                             var _mtdFilterMode = 0; // configuration : 0, 1 ou 2
                             var _mtdFilterCategory = filter.filterName;
 
-                            if (filter.configuration === 0) {
+                            if (filter.type === 0) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
@@ -527,14 +527,14 @@ var _createFilterStyle = function (source, urls, filter, tilejson, styles) {
                                         filter.selected[j]
                                     );
                                 }
-                            } else if (filter.configuration === 1) {
+                            } else if (filter.type === 1) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
                                 _tagVisible = "none";
                                 _tagPaint = _addPaintTagEntry(_tjsongeometry);
                                 _mtdFilterMode = 1;
-                            } else if (filter.configuration === 2) {
+                            } else if (filter.type === 2) {
                                 /* TODO Explication sur la configuration :
                                 // ...
                                 */
@@ -933,9 +933,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // donc, il y'a une surcharge au niveau de la lecture du tileJSON...
                                             var selected = [];
                                             // y'a t il une manipulation des selections des filtres ?
-                                            if (f.selected && Array.isArray(f.selected)) {
-                                                if (f.selected.length) {
-                                                    selected = f.selected;
+                                            if (f.configuration && f.configuration.selected && Array.isArray(f.configuration.selected)) {
+                                                if (f.configuration.selected.length) {
+                                                    selected = f.configuration.selected;
                                                 }
                                             }
                                             _selectedFilters.push({
@@ -1096,13 +1096,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                         for (var ii = 0; ii < layerOpts.filters.length; ii++) {
                                                             var _filterOptions = layerOpts.filters[ii];
 
+                                                            var _conf = _filterOptions.configuration || {};
+                                                            var _selected = (_conf) ? _conf.selected : [];
+                                                            var _type = (_conf) ? _conf.type : 0;
                                                             // filtre courant
                                                             var _filter = {
                                                                 tableName : null, // recherche sur une table : ex. "table.champ"
                                                                 propertyName : _filterOptions.propertyName,
                                                                 filterName : _filterOptions.filterName,
-                                                                selected : _filterOptions.selected || [],
-                                                                configuration : _filterOptions.configuration || 0 // configuration des filtres !
+                                                                selected : _selected,
+                                                                type : _type
                                                             };
 
                                                             // le champ "propertyName" contient il le nom d'une table ?
@@ -1162,7 +1165,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                                     for (var jj = 0; jj < _selectedFilters.length; jj++) {
                                                                         if (_selectedFilters[jj].k === _filter.filterName) {
                                                                             // Array.fill() -> pas compatibilité IE 11 !
-                                                                            _selectedFilters[jj].v = Array(_nlayers.length).fill((_filter.configuration) ? 0 : 1);
+                                                                            _selectedFilters[jj].v = Array(_nlayers.length).fill((_filter.type) ? 0 : 1);
                                                                             break;
                                                                         }
                                                                     }
