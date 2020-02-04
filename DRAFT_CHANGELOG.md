@@ -1,13 +1,11 @@
-# SDK Geoportail 2D/3D, version 3.0.6
+# SDK Geoportail 2D/3D, version 3.0.7
 
-**03/02/2020 : version 3.0.6-patch9**
+**04/02/2020 : version 3.0.7**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-semver : [patch:9]
-
-* modification des options mapbox
+Meilleure gestion des options pour les couches mapBox, fix de compatibilité avec internet explorer, et mise à jour d'iTowns en version 2.17
 
 ## Changelog
 
