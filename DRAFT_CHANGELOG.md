@@ -15,11 +15,18 @@ semver : [patch:9]
 
 * [Changed]
 
-    - modification des options mapbox
+    - [SDK2D/3D] modification des options et de l'interface pour les couches mapbox
+    - [SDK2D/3D] modifications des options pour la gestion des filtres pour les couches mapbox
+    - [SDK3D] iTowns v2.17
+    - [SDK3D] adaptation/simplification centrage 3D
 
 * [Removed]
 
 * [Fixed]
+
+    - [SDK2D/3D] meilleure gestion de la compatibilité IE10/11 (polyfill)
+    - [SDK3D] meilleure gestion des paramètres pour les couches mapbox en 3D
+    - [SDK2D/3D] correctif d'une exception sur la fonction de geolocalisation
 
 * [Deprecated]
 
