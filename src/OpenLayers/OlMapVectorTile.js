@@ -1449,6 +1449,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             p.layer.once("change:source", setStyle);
                                         }
 
+                                        // Maintenant que la couche mapBox a été ajoutée de manière asynchrone,
+                                        // on s'assure de bien remettre à jour les indexs des couches et de 
+                                        // reordonner les couches correctement (desynchro dans le cas d'un switch 3D->2D)
+                                        for (var i = 0; i < self._layers.length; i++) {
+                                            var layerName = self._layers[i].id;
+                                            self._layers[i].options.position = self.mapOptions.layersOptions[layerName].position;
+                                            self._layers[i].obj.setZIndex(self._layers[i].options.position);
+                                        }
+
                                         // maj du gestionnaire de couche
                                         self._addLayerConfToLayerSwitcher(p.layer, p.options);
 
