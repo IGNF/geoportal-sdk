@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <!-- !meta IGN -->
 
-    <title>Index</title>
+    <title>Module: Gp</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -1317,93 +1317,309 @@
 
     <section class="content">
         <label class="openLeftMenu" for="showLeftMenu" title="Ouvrir le menu latéral"></label>
-        <h1 class="page-title" data-filename="index.html">Index</h1>
+        <h1 class="page-title" data-filename="module-Gp.html">Module: Gp</h1>
         
 
 
+
+<section>
+ 
+<!--   
+<header>
+-->
+    <h1>
+    <span class="main-title" data-classname=Gp> Gp </span>
+    </h1>
     
-
-
+    
 <!--
-    <h3> </h3>
+</header>  
 -->
 
-
-
-
-
-
-
-
-
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>This is the global variable that is exposed in the browser environment.<br>
+Content is composed of constructor, functions and properties...</p>
+<blockquote>
+<p>Config:  (...)</p>
+</blockquote>
+<blockquote>
+<p>ColorUtils: (...)<br>
+LayerUtils: (...)<br>
+MathUtils: (...)<br>
+ProxyUtils: (...)</p>
+</blockquote>
+<blockquote>
+<p>olExtended: (...)<br>
+olUtils: (...)<br>
+olExtDate: &quot;YYYY-MM-DD&quot;<br>
+olExtVersion: &quot;X.X.X&quot;</p>
+</blockquote>
+<blockquote>
+<p>Error: (...)<br>
+Helper: (...)<br>
+Protocols: (...)<br>
+Services: (...)<br>
+servicesDate: &quot;YYYY-MM-DD&quot;<br>
+servicesVersion: &quot;X.X.X&quot;</p>
+</blockquote>
+<blockquote>
+<p>itownsExtended: (...)<br>
+itownsExtVersion: &quot;X.X.X&quot;<br>
+itownsExtDate: &quot;YYYY-MM-DD&quot;</p>
+</blockquote>
+<blockquote>
+<p>Map: (...)<br>
+sdkVersion: &quot;X.X.X&quot;<br>
+sdkDate: &quot;YYYY-MM-DD&quot;</p>
+</blockquote></div>
+        
+        
+        
+<dl class="details">
+    
+        
+    
+    
     
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".itownsExtVersion"><span class="type-signature static">static</span>module:Gp.itownsExtVersion</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Version : geoportal extensions itowns</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    <section>
-        <article class="readme"><h1>Geoportal SDK API Reference</h1>
-<p>The Geoportal SDK (Software Developement Kit) is an integrated javascript API that allows web application developpers to easyly integrate dynamic geoportal based maps on a web page.</p>
-<p>It is a wrapper over the following libraries :</p>
-<ul>
-<li>
-<p><a href="http://openlayers.org/"> OpenLayers </a></p>
-</li>
-<li>
-<p><a href="http://www.itowns-project.org/"> iTowns </a></p>
-</li>
-<li>
-<p><a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md"> Geoportal extension for OpenLayers </a></p>
-</li>
-<li>
-<p><a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md"> Geoportal extension for iTowns </a></p>
-</li>
-</ul>
-<h2>Basic usage</h2>
-<p>Create a Map and attach it to your web page with the Gp.Map.load() function. It returns a <a href="Gp.Map.html">Gp.Map</a> object which provides methods to interact with the created map.</p>
-<p>Example :</p>
-<pre class="prettyprint source lang-javascript"><code>var map = Gp.map.load(
-    &quot;mapDiv&quot;,                     // html element id  where to attach the map
-    {                             // mapOptions
-        apiKey : &quot;YOUR_API_KEY&quot;,  // geoportal access key
-        viewMode : &quot;3d&quot;,          // &quot;2d&quot; by default.
-        center : {                // -> map center params
-            location : &quot;73 avenue de Paris, Saint-Mandé&quot;
-        },
-        zoom : 16,                // -> zoom level
-        layersOptions : {         // -> map layers params
-            &quot;ORTHOIMAGERY.ORTHOPHOTOS&quot; : {}
-        }
-    }
-) ;
+    
+    
+</dd>
 
-</code></pre>
-<h2>Functionalities</h2>
-<p>Geoportal SDK provides a simple Application Programmation Interface that allows developers to create a map with the following possibilities :</p>
-<h3>Map and view positionning (center, orientation and zoom).</h3>
-<p>See <a href="Gp.MapOptions.html">Gp.MapOptions properties</a> : <strong>center</strong>, <strong>azimuth</strong>, <strong>zoom</strong>, ... and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#.setCenter">Gp.Map.setCenter()</a>, <a href="Gp.Map.html#.setAzimuth">Gp.Map.setAzimuth()</a>, <a href="Gp.Map.html#.setZoom">Gp.Map.setZoom()</a>, ...</p>
-<h3>Map composition (layers composition and markers positioning)</h3>
-<p>See <a href="Gp.MapOptions.html">Gp.MapOptions properties</a> : <strong>layerOptions</strong> and  <strong>markerOptions</strong> and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#.addLayers">Gp.Map.addLayers()</a>, <a href="Gp.Map.html#.modifyLayers">Gp.Map.modifyLayers()</a>, <a href="Gp.Map.html#.removeLayers">Gp.Map.removeLayers()</a>, ...</p>
-<p>See <a href="Gp.LayerOptions.html">Gp.LayerOptions</a> to have a overview of layer types availables.</p>
-<h3>Providing various interaction tools for end users</h3>
-<p>See <a href="Gp.MapOptions.html">Gp.MapOptions property</a> : <strong>controlsOptions</strong>  and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#.addControls">Gp.Map.addControls()</a>, <a href="Gp.Map.html#.modifyControls">Gp.Map.modifyControls()</a>, <a href="Gp.Map.html#.removeControls">Gp.Map.removeControls()</a>, ...</p>
-<p>See <a href="Gp.ControlOptions.html">Gp.ControlOptions</a> to have a list of tools availables.</p>
-<h3>Being able to react to end users interactions with the map.</h3>
-<p>See <a href="Gp.MapOptions.html">Gp.MapOptions property</a> : <strong>mapEventsOptions</strong> and <a href="Gp.Map.html">Gp.Map</a> dedicated methods : <a href="Gp.Map.html#.listen">Gp.Map.listen()</a>, <a href="Gp.Map.html#.forget">Gp.Map.forget()</a>.</p>
-<h2>Advanced Functionalities</h2>
-<p>If you want more functionalities, you will then have to use those offered by :</p>
-<ul>
-<li>
-<p><a href="http://openlayers.org/en/latest/apidoc/">OpenLayers API</a> and its <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-openlayers.md">dedicated Geoportal extension</a> which are part of the Geoportal SDK.</p>
-</li>
-<li>
-<p><a href="http://www.itowns-project.org/itowns/docs/">iTowns API</a> and its <a href="https://github.com/IGNF/geoportal-extensions/blob/master/build/jsdoc/README-itowns.md">dedicated Geoportal extension</a> which are part of the Geoportal SDK.</p>
-</li>
-</ul>
-<p>Also note that the <a href="https://github.com/IGNF/geoportal-access-lib">Geoportal Access library API</a> is also available with the Geoportal SDK.</p></article>
-    </section>
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".sdkDate"><span class="type-signature static">static,constant</span>module:Gp.sdkDate</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Publication date</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".sdkVersion"><span class="type-signature static">static,constant</span>module:Gp.sdkVersion</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Version</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".Services"><span class="type-signature static">static</span>module:Gp.Services</h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Services</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Services.html">geoportal-access-lib</a></li>
+        </ul>
+    </dd>
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+    
+    
+</article>
+
+</section>  
 
 
 
