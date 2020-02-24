@@ -4,7 +4,7 @@
 
 * De la dernière version stable publiée (release) :
 
-  [http://ignf.github.io/geoportal-sdk/latest/jsdoc/](http://ignf.github.io/geoportal-sdk/latest/jsdoc/)
+  [https://ignf.github.io/geoportal-sdk/latest/jsdoc/](https://ignf.github.io/geoportal-sdk/latest/jsdoc/)
 
 * De la version courante, en cours de développement (branche master) : 
 
