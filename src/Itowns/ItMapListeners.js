@@ -855,6 +855,12 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     vectorTileLayer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
     vectorTileLayer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
 
+    var LSControl = this.getLibMapControl("layerswitcher");
+    // if the LS already exists, we have to save the conf of the layer to add it to the LS
+    if (LSControl) {
+        LSControl._addedLayerConf[layerId] = layerOpts;
+    }
+
     // on met à jour le tableau des couches
     this._layers.push({
         id : layerId,
