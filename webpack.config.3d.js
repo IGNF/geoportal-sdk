@@ -104,7 +104,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
-        stats : "verbose",
+        // stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [
