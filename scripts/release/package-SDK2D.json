@@ -18,8 +18,8 @@
       "type" : "git"
    },
    "module" : "src/SDK2D.js",
-   "version" : "3.0.7",
-   "date" : "04/02/2020",
+   "version" : "3.0.7-codereview-mapbox",
+   "date" : "29/02/2020",
    "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
    "scripts" : {},
    "name" : "@ignf-geoportal/sdk-2d",

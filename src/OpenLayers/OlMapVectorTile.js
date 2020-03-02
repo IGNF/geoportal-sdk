@@ -130,9 +130,10 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                 // fonction reccursive !
                 if (_mainlayer.filter) {
                     for (var k = 0; k < _mainlayer.filter.length; k++) {
-                        if (_bfound) {
-                            break;
-                        }
+                        // on s'arrete au 1er filtre trouvé !?
+                        // if (_bfound) {
+                        //     break;
+                        // }
                         // cas où on a un ensemble de filtres
                         // ["all", expr, expr, ...]
                         if (Array.isArray(_mainlayer.filter[k])) {
@@ -156,9 +157,10 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                         _mainlayer.filter[k][kk] = "__" + filtername + "__";
                                     }
 
-                                    if (_bfound) {
-                                        break;
-                                    }
+                                    // on s'arrete au 1er trouvé !?
+                                    // if (_bfound) {
+                                    //     break;
+                                    // }
                                 }
                             }
                         } else {
@@ -182,9 +184,10 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                     _mainlayer.filter[k] = "__" + filtername + "__";
                                 }
 
-                                if (_bfound) {
-                                    break;
-                                }
+                                // on s'arrete au 1er trouvé !?
+                                // if (_bfound) {
+                                //     break;
+                                // }
                             }
                         }
                     }
@@ -818,51 +821,49 @@ OlMap.MAPBOXPROPERTIES = {
     extensions : "mapbox-extensions"
 };
 
-// FIXME les callback ne sont pas toujours lancées !?
-
 /**
 * callback sur la propriété observable : mapbox-filters
-* @param {Object} e - {type, target, key, oldValue}
+* @param {Object} e - {type, target} layer
 * @private
 */
-OlMap._callbackMapBoxObservableFilters = function (e) {
-    console.warn(e);
+OlMap.prototype._callbackMapBoxObservableFilters = function (e) {
+    // console.error("DEBUG:ObservableFilters", e, this.get(OlMap.MAPBOXPROPERTIES["filters"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-status
-* @param {Object} e - {type, target, key, oldValue}
+* @param {Object} e - {type, target} layer
 * @private
 */
-OlMap._callbackMapBoxObservableStatus = function (e) {
-    console.warn(e);
+OlMap.prototype._callbackMapBoxObservableStatus = function (e) {
+    // console.error("DEBUG:ObservableStatus", e, this.get(OlMap.MAPBOXPROPERTIES["status"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-themes
-* @param {Object} e - {type, target, key, oldValue}
+* @param {Object} e - {type, target} layer
 * @private
 */
-OlMap._callbackMapBoxObservableThemes = function (e) {
-    console.warn(e);
+OlMap.prototype._callbackMapBoxObservableThemes = function (e) {
+    // console.error("DEBUG:ObservableThemes", e, this.get(OlMap.MAPBOXPROPERTIES["themes"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-styles
-* @param {Object} e - {type, target, key, oldValue}
+* @param {Object} e - {type, target} layer
 * @private
 */
-OlMap._callbackMapBoxObservableStyles = function (e) {
-    console.warn(e);
+OlMap.prototype._callbackMapBoxObservableStyles = function (e) {
+    // console.error("DEBUG:ObservableStyles", e, this.get(OlMap.MAPBOXPROPERTIES["styles"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-extensions
-* @param {Object} e - {type, target, key, oldValue}
+* @param {Object} e - {type, target} layer
 * @private
 */
-OlMap._callbackMapBoxObservableExtensions = function (e) {
-    console.warn(e);
+OlMap.prototype._callbackMapBoxObservableExtensions = function (e) {
+    // console.error("DEBUG:ObservableExtensions", e, this.get(OlMap.MAPBOXPROPERTIES["extensions"]));
 };
 
 /******************************************************************************
@@ -1241,7 +1242,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // eventuelle (ex. editeur)
                                                     // > map.set("mapbox-extensions")
                                                     vectorLayer.set(OlMap.MAPBOXPROPERTIES["extensions"], tileJSONContent);
-                                                    vectorLayer.on("change:" + OlMap.MAPBOXPROPERTIES["extensions"], OlMap._callbackMapBoxObservableExtensions);
+                                                    vectorLayer.on("change:" + OlMap.MAPBOXPROPERTIES["extensions"], self._callbackMapBoxObservableExtensions);
+                                                    // debug
+                                                    vectorLayer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["extensions"]);
 
                                                     // services de tuiles
                                                     // il est possible qu'il ait plusieurs services de tuiles !
@@ -1278,9 +1281,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // les filtres sont ajoutés directement dans l'objet _glStyle.
                                                     // on peut aussi gérer les filtres sélectionnés.
                                                     if (Array.isArray(layerOpts.filters)) {
+                                                        // on clone les options car on ne veut pas les modifier
+                                                        var _filterOptionsClone = JSON.parse(JSON.stringify(layerOpts.filters)); // clone
                                                         // on boucle sur les filtres utilisateurs
-                                                        for (var ii = 0; ii < layerOpts.filters.length; ii++) {
-                                                            var _filterOptions = layerOpts.filters[ii];
+                                                        for (var ii = 0; ii < _filterOptionsClone.length; ii++) {
+                                                            var _filterOptions = _filterOptionsClone[ii];
 
                                                             var _conf = _filterOptions.configuration || {};
                                                             var _selected = (_conf) ? _conf.selected : [];
@@ -1358,21 +1363,56 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             //     }
                                                             // }
 
+                                                            // ajout du style de la couche uniquement
+                                                            // (multisource === plusieurs couches !)
+                                                            // pour une utilisation eventuelle (ex. editeur)
+                                                            // > layer.set("mapbox-styles")
+                                                            var _stylesClone = JSON.parse(JSON.stringify(_styles)); // clone
+                                                            var _layers = _stylesClone.layers;
+                                                            for (var a = 0; a < _layers.length; a++) {
+                                                                var _layer = _layers[a];
+                                                                // FIXME
+                                                                // on ecarte les sources differentes : 1 source = 1 layer
+                                                                // mais si on a du multi source, en surpprimant des entrées, on risque
+                                                                // de rendre les indexes foireux !
+                                                                if (_layer.source !== _source) {
+                                                                    _layers.splice(a, 1);
+                                                                    a--;
+                                                                    continue;
+                                                                }
+                                                                // et, on ecarte aussi les filtres attributaires
+                                                                if (_layer.metadata &&
+                                                                    _layer.metadata.hasOwnProperty("geoportail:category") &&
+                                                                    _layer.metadata.hasOwnProperty("geoportail:filter")) {
+                                                                    _layers.splice(a, 1);
+                                                                    a--;
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            vectorLayer.set(OlMap.MAPBOXPROPERTIES["styles"], _stylesClone);
+
                                                             // on ajoute les styles créés à partir du filtre attributaire
                                                             // dans le style principale
+                                                            // utile !?
                                                             for (var kk = 0; kk < _filterStyle.layers.length; kk++) {
                                                                 // FIXME
                                                                 // si les filtres et les "layers" portent le même identifiant,
                                                                 // l'ajout des filtres va automatiquement doublonner
                                                                 // la properties interne : "mapbox-layers"
-                                                                _glStyle.layers.push(_filterStyle.layers[kk]);
+                                                                _styles.layers.push(_filterStyle.layers[kk]);
                                                             }
 
-                                                            // FIXME
-                                                            // on se garde sous le coude le style brute pour un filtre attributaire
-                                                            // via les options, ce style sera archivé dans la properties "mapbox-filters"...
+                                                            // on se garde sous le coude le style brute pour un filtre attributaire,
+                                                            // ce style sera archivé dans la properties "mapbox-filters"...
                                                             _filterOptions.style = _filterStyle;
                                                         }
+                                                        // ajout des differents filtres attributaires de la couche
+                                                        // pour une utilisation eventuelle (ex. portail ou editeur)
+                                                        // > layer.set("mapbox-filters")
+                                                        vectorLayer.set(OlMap.MAPBOXPROPERTIES["filters"], {
+                                                            filtersSummary : layerOpts.filtersSummary,
+                                                            filters : _filterOptionsClone
+                                                        });
                                                     }
 
                                                     olObservableUnByKey(_key);
@@ -1410,7 +1450,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         });
                                         vectorLayer.id = _glSourceId;
                                     } else {
-                                        self.logger.warn("Type MapBox format unknown !");
+                                        // self.logger.warn("DEBUG:Type MapBox format unknown !");
                                         return; // FIXME promise ?
                                     }
 
@@ -1538,7 +1578,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                 .catch(function (e) {
                                                     // TODO styles utilisateurs par defaut !
                                                     // throw new Error("Apply Style error = " + e.message);
-                                                    self.logger.warn("Apply Style error = " + e.message);
+                                                    // self.logger.warn("DEBUG:Apply Style error = " + e.message);
                                                 });
                                         };
 
@@ -1556,12 +1596,20 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // etat des layers en cours
                                         self.logger.warn(p.layer, self._layers);
 
+                                        // FIXME
+                                        // le tilejson est async donc les informations ne sont pas encore disponibles
+                                        // pour les properties mapbox-*
+                                        // ce fichier met à jour les filtres attributaires du style princial !!!
+
                                         // ajout du style complet dans la carte pour une utilisation
                                         // eventuelle (ex. editeur)
                                         // > map.set("mapbox-styles")
                                         var _allStyles = map.get(OlMap.MAPBOXPROPERTIES["styles"]) || {};
                                         _allStyles[_id] = p.styles;
                                         map.set(OlMap.MAPBOXPROPERTIES["styles"], _allStyles);
+                                        map.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableStyles);
+                                        // debug
+                                        map.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["styles"]);
 
                                         // ajout du style de la couche uniquement
                                         // (multisource === plusieurs couches !)
@@ -1574,6 +1622,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // on ecarte les sources differentes : 1 source = 1 layer
                                             if (_glLayer.source !== p.id) {
                                                 _glLayers.splice(ii, 1);
+                                                ii--;
                                                 continue;
                                             }
                                             // et, on ecarte les filtres attributaires
@@ -1581,11 +1630,14 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                 _glLayer.metadata.hasOwnProperty("geoportail:category") &&
                                                 _glLayer.metadata.hasOwnProperty("geoportail:filter")) {
                                                 _glLayers.splice(ii, 1);
+                                                ii--;
                                                 continue;
                                             }
                                         }
                                         p.layer.set(OlMap.MAPBOXPROPERTIES["styles"], _stylesClone);
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], OlMap._callbackMapBoxObservableStyles);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableStyles);
+                                        // debug
+                                        p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["styles"]);
 
                                         // ajout des differents themes de la couche
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
@@ -1594,7 +1646,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             stylesSummary : p.options.stylesSummary,
                                             styles : p.options.styles
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["themes"], OlMap._callbackMapBoxObservableThemes);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["themes"], self._callbackMapBoxObservableThemes);
+                                        // debug
+                                        p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["themes"]);
 
                                         // ajout des differents filtres attributaires de la couche
                                         // pour une utilisation eventuelle (ex. portail ou editeur)
@@ -1603,7 +1657,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             filtersSummary : p.options.filtersSummary,
                                             filters : p.options.filters
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["filters"], OlMap._callbackMapBoxObservableFilters);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["filters"], self._callbackMapBoxObservableFilters);
+                                        // debug
+                                        p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["filters"]);
 
                                         // ajout des statuts
                                         // - themes,
@@ -1617,7 +1673,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             "layers" : p.selectedLayers, // TODO !
                                             "filters" : p.selectedFilters
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["status"], OlMap._callbackMapBoxObservableStatus);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["status"], self._callbackMapBoxObservableStatus);
+                                        // debug
+                                        p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["status"]);
 
                                         // gestion du style N/B
                                         if (p.options.grayScaled) {
@@ -1690,12 +1748,12 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
     return fetch(options.url)
         .then(function (response) {
             // debug
-            self.logger.warn("DEBUG:response", response);
+            // self.logger.warn("DEBUG:response", response);
             if (response.ok) {
                 return response.json()
                     .then(function (style) {
                         // debug
-                        self.logger.warn("DEBUG:style", style);
+                        // self.logger.warn("DEBUG:style", style);
 
                         var source = layer.get(OlMap.MAPBOXPROPERTIES["source"]);
 
@@ -1704,21 +1762,34 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                         return applyStyleOlms(layer, style, source)
                             .then(function () {
                                 // maj des styles du layer : mapbox-styles
-                                var _style = Object.assign({}, style); // clone
+                                // si on change de theme, il faut donc mettre à jour
+                                // les styles
+                                var _style = JSON.parse(JSON.stringify(style)); // clone
                                 var _layers = _style.layers;
                                 for (var ii = 0; ii < _layers.length; ii++) {
                                     var _layer = _layers[ii];
+                                    // on ecarte les sources differentes : 1 source = 1 layer
                                     if (_layer.source !== layer.id) {
-                                        delete _layer[ii];
+                                        _layers.splice(ii, 1);
+                                        ii--;
+                                        continue;
+                                    }
+                                    // et, on ecarte les filtres attributaires
+                                    if (_layer.metadata &&
+                                        _layer.metadata.hasOwnProperty("geoportail:category") &&
+                                        _layer.metadata.hasOwnProperty("geoportail:filter")) {
+                                        _layers.splice(ii, 1);
+                                        ii--;
+                                        continue;
                                     }
                                 }
                                 layer.set(OlMap.MAPBOXPROPERTIES["styles"], _style);
-                                // debug
-                                self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["styles"], _style);
                             })
                             .then(function () {
                                 var map = self.getLibMap();
                                 // maj des styles de la carte : mapbox-styles
+                                // si on change de theme, il faut donc mettre à jour
+                                // les styles attributaires ainsi que les styles
                                 var _extensions = layer.get(OlMap.MAPBOXPROPERTIES["extensions"]);
                                 var _urls = layer.getSource().urls;
                                 var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
@@ -1732,47 +1803,21 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                     _style
                                 );
                                 map.set(OlMap.MAPBOXPROPERTIES["styles"], _styles);
-                                // debug
-                                self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["styles"], _styles);
                             })
                             .then(function () {
                                 // maj des styles attributaires du layer : mapbox-filters
                                 // maj au même moment que MAPBOXPROPERTIES["styles"] !
+                                // si on change de theme, il faut donc mettre à jour
+                                // les styles attributaires
                                 var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
                                 if (_filters) {
                                     layer.set(OlMap.MAPBOXPROPERTIES["filters"], _filters);
                                 }
-                                // debug
-                                self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["filters"], _filters);
-                            })
-                            .then(function () {
-                                // maj du statut : mapbox-status
-                                var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
-                                var _status = layer.get(OlMap.MAPBOXPROPERTIES["status"]);
-                                if (_status) {
-                                    var filters = [];
-                                    for (var n = 0; n < _filters["filters"].length; n++) {
-                                        var f = _filters["filters"][n];
-                                        filters.push({
-                                            k : f.filterName,
-                                            v : []
-                                        });
-                                    }
-                                    var o = {
-                                        "theme" : {
-                                            index : options.index,
-                                            key : options.url.match(/([^/]+)(?=\.\w+$)/)[1]
-                                        },
-                                        "layers" : _status.layers,
-                                        "filters" : filters
-                                    };
-                                    layer.set(OlMap.MAPBOXPROPERTIES["status"], o);
-                                }
-                                // debug
-                                self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["status"], _status);
                             })
                             .then(function () {
                                 // maj des themes : mapbox-themes
+                                // si on change de theme, il faut donc mettre à jour
+                                // le theme selectionné
                                 var _themes = layer.get(OlMap.MAPBOXPROPERTIES["themes"]);
                                 if (_themes) {
                                     for (var i = 0; i < _themes.styles.length; i++) {
@@ -1786,14 +1831,43 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                     }
                                     layer.set(OlMap.MAPBOXPROPERTIES["themes"], _themes); // FIXME ce listeners ne se lance pas !?
                                 }
-                                // debug
-                                self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["themes"], _themes);
+                            })
+                            .then(function () {
+                                // maj du statut : mapbox-status
+                                // si on change de theme, il faut donc mettre à jour
+                                // le theme (index et id) ainsi que le statut des filtres
+                                // sélectionnés
+                                var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
+                                var _status = layer.get(OlMap.MAPBOXPROPERTIES["status"]);
+                                if (_status) {
+                                    var filters = [];
+                                    for (var n = 0; n < _filters["filters"].length; n++) {
+                                        var f = _filters["filters"][n];
+                                        filters.push({
+                                            k : f.filterName,
+                                            v : f.configuration.selected
+                                        });
+                                    }
+                                    var o = {
+                                        "theme" : {
+                                            index : options.index,
+                                            key : options.url.match(/([^/]+)(?=\.\w+$)/)[1]
+                                        },
+                                        "layers" : _status.layers,
+                                        "filters" : filters
+                                    };
+                                    layer.set(OlMap.MAPBOXPROPERTIES["status"], o);
+                                }
                             })
                             .catch(function (error) {
                                 self.logger.error(error);
                             });
                     });
             }
+        })
+        .catch(function (e) {
+            // FIXME ?
+            // console.error(e.message);
         });
 };
 
@@ -1815,7 +1889,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
 OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
     var self = this;
 
-    var map = this.libMap;
+    var map = this.getLibMap();
     var source = layer.get(OlMap.MAPBOXPROPERTIES["source"]);
     var style = map.get(OlMap.MAPBOXPROPERTIES["styles"])[id];
     if (source !== options.data.source) {
@@ -2002,20 +2076,46 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
     // Retour d'une promise mais sans données...
     return applyStyleOlms(layer, style, source)
         .then(function () {
+            // TODO
             // maj des styles attributaires du layer : mapbox-filters
+            // si on change la visibilité, il faut donc mettre à jour les styles
+            // attributaires
+            var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
+            if (_filters) {
+                for (var i = 0; i < _filters.filters.length; i++) {
+                    var _f = _filters.filters[i];
+                    if (_f.filterName === options.category) {
+                        if (_f.configuration && _f.configuration.selected) {
+                            _f.configuration.selected = options.status;
+                        } else {
+                            _f.configuration = {
+                                selected : options.status,
+                                type : 0
+                            };
+                        }
+                        break;
+                    }
+                }
+                layer.set(OlMap.MAPBOXPROPERTIES["filters"], _filters);
+            }
         })
         .then(function () {
+            // TODO
             // maj des styles du layer : mapbox-styles
             // si on change la visibilité, il faut donc mettre à jour les styles
-            // de la map et du layer
+            // du layer : les styles impactés par le filtre
         })
         .then(function () {
+            // TODO
             // maj des styles de la carte : mapbox-styles
             // si on change la visibilité, il faut donc mettre à jour les styles
-            // de la map et du layer
+            // de la map : les styles attributaires ainsi que les styles impactés
+            // par le filtre
         })
         .then(function () {
             // maj du statut : mapbox-status
+            // si on change la visibilité, il faut donc mettre à jour le statut
+            // des filtres
             var _status = layer.get(OlMap.MAPBOXPROPERTIES["status"]);
             if (_status) {
                 // [{k:categorie1, v: [0,1,0,1]},{k:categorie2, v:[0,0,0,0]}]
@@ -2032,10 +2132,62 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
                 };
                 layer.set(OlMap.MAPBOXPROPERTIES["status"], o);
             }
-            // debug
-            self.logger.warn("DEBUG:" + OlMap.MAPBOXPROPERTIES["status"], _status);
         })
-        .catch(function (error) {
-            self.logger.error(error);
+        .catch(function (e) {
+            self.logger.error(e);
+        });
+};
+
+/**
+ * Update a vector Layer MapBox to the map with a gray style action
+ *
+ * @param {Object} layer - ...
+ * @param {String} id - ...
+ * @param {Object} options - {active:...,}
+ * @returns {Object} Promise
+ *
+ * @sample
+ * this._updateGrayScaledMapBoxLayer({ ... })
+ *  .then (() => { ... })
+ *  .catch ((error) => { ... });
+ *
+ * @private
+ */
+OlMap.prototype._updateGrayScaledMapBoxLayer = function (layer, id, options) {
+    var self = this;
+
+    var map = this.getLibMap();
+    var source = layer.get(OlMap.MAPBOXPROPERTIES["source"]);
+    var style = map.get(OlMap.MAPBOXPROPERTIES["styles"])[id];
+
+    // on modifie l'option grayScaled du layer
+    this._layers.forEach(function (l) {
+        if (l.id === id) {
+            l.options.grayScaled = options.active;
+        }
+    });
+
+    var _style = null;
+    if (options.active) {
+        // modifier le style du layer
+        _style = _transformGrayStyle(style);
+        if (!_style) {
+            return new Promise((resolve, reject) => {
+                reject(); // TODO message
+            });
+        }
+    } else {
+        // reprendre la style par defaut de la couche...
+        _style = style;
+    }
+
+    // Retour d'une promise mais sans données...
+    return applyStyleOlms(layer, _style, source)
+        .then(function () {
+            // le style NB est temporaire..., il n'est pas sauvegarder dans les
+            // propriétés de la couche ou de la carte.
+        })
+        .catch(function (e) {
+            self.logger.error(e);
         });
 };

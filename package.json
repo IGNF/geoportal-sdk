@@ -1,9 +1,9 @@
 {
     "name": "geoportal-sdk",
-    "version": "3.0.7",
-    "date": "04/02/2020",
-    "SDK2DVersion": "3.0.7",
-    "SDK3DVersion": "3.0.7",
+    "version": "3.0.7-codereview-mapbox",
+    "date": "02/03/2020",
+    "SDK2DVersion": "3.0.7-codereview-mapbox",
+    "SDK3DVersion": "3.0.7-codereview-mapbox",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
     "main": "dist/2d/GpSDK2D-src.js, dist/3d/GpSDK3d-src.js",
     "module": "src/SDK2D.js, src/SDK3D.js",
@@ -47,15 +47,12 @@
     },
     "homepage": "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
     "dependencies": {
-        "@babel/runtime": "^7.8.3",
         "whatwg-fetch": "^3.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.8.3",
         "@babel/plugin-transform-runtime": "^7.8.3",
-        "@babel/polyfill": "^7.8.3",
         "@babel/preset-env": "^7.8.3",
-        "@babel/runtime-corejs3": "^7.8.3",
         "babel-loader": "^8.0.5",
         "chai": "^4.2.0",
         "chalk": "^2.4.2",
