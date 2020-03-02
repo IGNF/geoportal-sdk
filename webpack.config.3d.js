@@ -104,7 +104,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
-        stats : "verbose",
+        // stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [
@@ -157,17 +157,17 @@ module.exports = (env, argv) => {
                         options : {
                             // plugins : [["@babel/plugin-transform-runtime", { corejs: 3 }]],
                             compact : false,
-                            presets : [
-                                [
-                                    "@babel/preset-env", {
-                                        "useBuiltIns": "usage",
-                                        "corejs": { version: '3.6', proposals: true },
-                                        "debug":true,
-                                        "targets": {
-                                            // "ie" : "10"
-                                        }
-                                    }
-                                ]
+                            presets : ["@babel/preset-env"
+                                // [
+                                //     "@babel/preset-env", {
+                                //         "useBuiltIns": "usage",
+                                //         "corejs": { version: '3.6', proposals: true },
+                                //         "debug":true,
+                                //         "targets": {
+                                //             // "ie" : "10"
+                                //         }
+                                //     }
+                                // ]
                             ]
                         }
                     }
@@ -195,52 +195,21 @@ module.exports = (env, argv) => {
                 {
                     /** proj4 est exposé en global : proj4 ! */
                     test : require.resolve("proj4"),
-                    use : [{
-                        loader : "expose-loader",
-                        options : "proj4"
-                    }]
+                    use : [
+                        {
+                            loader : "expose-loader",
+                            options : "proj4"
+                        }
+                    ]
                 },
                 {
                     /** openlayers est exposé en global : ol ! */
                     // test : path.join(__dirname, "lib", "openlayers", "index.js"),
                     test : /src\/Utils\/dist-openlayers\/index.js$/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "ol"
-                    }]
-                },
-                {
-                    /** olms est exposé en global : olms ! */
-                    test : require.resolve("ol-mapbox-style"),
-                    // test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    // include : [
-                    //     /node_modules\/ol\//,
-                    //     /node_modules\/ol-mapbox-style\//,
-                    //     // /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/,
-                    //     /node_modules\/@mapbox\/mapbox-gl-style-spec\//
-                    // ],
                     use : [
                         {
                             loader : "expose-loader",
-                            options : "olms"
-                        },
-                        {
-                            loader : "babel-loader",
-                            options : {
-                                // plugins : [["@babel/plugin-transform-runtime", { corejs: 3 }]],
-                                presets : [
-                                    [
-                                        "@babel/preset-env", {
-                                            "useBuiltIns": "usage",
-                                            "corejs": { version: '3.6', proposals: true },
-                                            "debug":true,
-                                            "targets": {
-                                                // "ie" : "10"
-                                            }
-                                        }
-                                    ]
-                                ]
-                            }
+                            options : "ol"
                         }
                     ]
                 },
@@ -248,10 +217,11 @@ module.exports = (env, argv) => {
                     /** itowns est exposé en global : itowns ! */
                     // test : require.resolve("itowns"),
                     test : /node_modules\/itowns\/dist\/itowns.js/,
-                    use : [{
-                        loader : "expose-loader",
-                        options : "itowns"
-                    },
+                    use : [
+                        {
+                            loader : "expose-loader",
+                            options : "itowns"
+                        },
                     // {
                     //     loader : "babel-loader",
                     //     options : {
@@ -271,7 +241,7 @@ module.exports = (env, argv) => {
                     //         ]
                     //     }
                     // }
-                ]
+                    ]
                 },
                 {
                     test : /\.css$/,

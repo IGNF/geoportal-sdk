@@ -1,10 +1,10 @@
 {
-   "directories" : {},
-   "main" : "dist/GpSDK2D-src.js",
-   "date" : "20/01/2020",
-   "name" : "@ignf-geoportal/sdk-2d",
-   "scripts" : {},
-   "version" : "3.0.6-patch8",
+   "date" : "02/03/2020",
+   "version" : "3.0.7-codereview-mapbox",
+   "dependencies" : {
+      "geoportal-extensions-openlayers" : "3.0.7",
+      "ol" : "5.3.0"
+   },
    "module" : "src/SDK2D.js",
    "files" : [
       "dist/",
@@ -13,25 +13,25 @@
       "README.md",
       "package.json"
    ],
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
+   "scripts" : {},
+   "main" : "dist/GpSDK2D-src.js",
+   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
+   "directories" : {},
+   "name" : "@ignf-geoportal/sdk-2d",
+   "author" : "IGNF",
    "description" : "French Geoportal SDK based on OpenLayers (2D)",
+   "repository" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk.git",
+      "type" : "git"
+   },
    "keywords" : [
       "openlayers",
       "geoportail",
       "webservice",
       "javascript"
    ],
-   "repository" : {
-      "type" : "git",
-      "url" : "https://github.com/IGNF/geoportal-sdk.git"
-   },
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
-   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "license" : "CECILL-B",
-   "dependencies" : {
-      "geoportal-extensions-openlayers" : "3.0.6",
-      "ol" : "5.3.0"
-   },
-   "author" : "IGNF"
+   "license" : "CECILL-B"
 }

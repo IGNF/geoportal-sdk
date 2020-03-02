@@ -4,7 +4,6 @@
 * The following variables are aslo global :
 *   - proj4 (exposed by geoportal extensions dependance),
 *   - ol,
-*   - olms,
 *   - itowns,
 *   - eventbus (exposed by geoportal extensions dependance)
 *

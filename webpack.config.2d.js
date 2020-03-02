@@ -93,7 +93,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
-        stats : "verbose",
+        // stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [
@@ -148,19 +148,19 @@ module.exports = (env, argv) => {
                     use : {
                         loader : "babel-loader",
                         options : {
-                            // plugins : ["@babel/plugin-transform-template-literals"],
-                            compact : true,
+                            plugins : ["@babel/plugin-transform-template-literals"],
+                            compact : false,
                             presets : [
                                 [
                                     "@babel/preset-env", {
-                                        "useBuiltIns": "usage",
-                                        "corejs": { version: '3.6', proposals: false },
-                                        "debug": true,
+                                        // "useBuiltIns": "usage",
+                                        // "corejs": { version: '3.6', proposals: false },
+                                        // "debug": true,
                                         // "loose": true,
-                                        "exclude": ['transform-typeof-symbol'],
-                                        "targets": {
-                                            "ie" : "10"
-                                        }
+                                        // "exclude": ['transform-typeof-symbol'],
+                                        // "targets": {
+                                        //     "ie" : "10"
+                                        // }
                                     }
                                 ]
                             ]
@@ -193,44 +193,6 @@ module.exports = (env, argv) => {
                         loader : "expose-loader",
                         options : "proj4"
                     }]
-                },
-                {
-                    /** olms est exposé en global : olms ! */
-                    test : require.resolve("ol-mapbox-style"),
-                    // test : /node_modules\/ol-mapbox-style\/index\.js$/,
-                    // test : /node_modules\/ol-mapbox-style\/dist\/olms\.js$/,
-                    // include : [
-                    //     /node_modules\/ol\//,
-                    //     /node_modules\/@mapbox\/mapbox-gl-style-spec\//,
-                    //     /node_modules\/ol-mapbox-style\//,
-                    //     // /node_modules\/(?!(ol|@mapbox\/mapbox-gl-style-spec)\/)/
-                    // ],
-                    use : [
-                        {
-                            loader : "expose-loader",
-                            options : "olms"
-                        },
-                        {
-                            loader : "babel-loader",
-                            options : {
-                                compact : true,
-                                presets : [
-                                    [
-                                        "@babel/preset-env", {
-                                            "useBuiltIns": "usage",
-                                            "corejs": { version: '3.6', proposals: false },
-                                            "exclude": ['transform-typeof-symbol'],
-                                            "debug":true,
-                                            // "loose": true,
-                                            "targets": {
-                                                "ie" : "10"
-                                            }
-                                        }
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
                 },
                 {
                     /** openlayers est exposé en global : ol ! */

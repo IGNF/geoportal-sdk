@@ -805,7 +805,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             }
         }
 
-        // si les mapbox options ne sont pas données par les options de la couche, 
+        // si les mapbox options ne sont pas données par les options de la couche,
         // on crée quand même la propriété
         if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
             layerOpts.mapboxOptions = {};
