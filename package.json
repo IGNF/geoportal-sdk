@@ -1,9 +1,9 @@
 {
     "name": "geoportal-sdk",
-    "version": "3.0.7-portail-mapbox",
-    "date": "02/03/2020",
-    "SDK2DVersion": "3.0.7-portail-mapbox",
-    "SDK3DVersion": "3.0.7-portail-mapbox",
+    "version": "3.0.8",
+    "date": "06/03/2020",
+    "SDK2DVersion": "3.0.8",
+    "SDK3DVersion": "3.0.8",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
     "main": "dist/2d/GpSDK2D-src.js, dist/3d/GpSDK3d-src.js",
     "module": "src/SDK2D.js, src/SDK3D.js",
