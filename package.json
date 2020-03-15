@@ -90,6 +90,7 @@
         "replace-bundle-webpack-plugin": "^1.0.0",
         "requirejs": "^2.3.6",
         "responsive-loader": "^1.2.0",
+        "shelljs": "^0.8.3",
         "speed-measure-webpack-plugin": "^1.3.0",
         "string-template": "^1.0.0",
         "style-loader": "^0.23.1",
