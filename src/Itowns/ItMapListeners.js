@@ -771,6 +771,18 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
 
+    // si les mapbox options ne sont pas données par les options de la couche,
+    // on crée quand même la propriété
+    if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
+        layerOpts.mapboxOptions = {};
+    }
+
+    // déclaration des variables style par défaut
+    var _url;
+    var _thumbnail;
+    var _name;
+    var _description;
+
     var _urlDefaultOrSelected = layerOpts.url;
 
     /* Gestion de l'url selectionnée :
@@ -805,19 +817,13 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             }
         }
 
-        // si les mapbox options ne sont pas données par les options de la couche,
-        // on crée quand même la propriété
-        if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
-            layerOpts.mapboxOptions = {};
-        }
-
         // le style par defaut n'est pas dans la liste, alors on l'ajoute dans
         // dans la liste des themes...
         if (!foundDefaultStyle) {
-            var _url = layerOpts.url;
-            var _thumbnail = layerOpts.defaultStyleThumbnail || null;
-            var _name = layerOpts.defaultStyleName || "Style par défaut";
-            var _description = layerOpts.defaultStyleDescription || "Style par défaut";
+            _url = layerOpts.url;
+            _thumbnail = layerOpts.defaultStyleThumbnail || null;
+            _name = layerOpts.defaultStyleName || "Style par défaut";
+            _description = layerOpts.defaultStyleDescription || "Style par défaut";
             layerOpts.styles.unshift({
                 thumbnail : _thumbnail,
                 name : _name,
@@ -826,6 +832,22 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
                 selected : !foundSelectedStyle
             });
         }
+    } else {
+        // pas de styles spécifiés en options : nous ajouton l'url de la couche comme style par défaut
+        // en réglant le paramètre "selected" à true (seul style, donc selectionné)
+        _url = layerOpts.url;
+        _thumbnail = layerOpts.defaultStyleThumbnail || null;
+        _name = layerOpts.defaultStyleName || "Style par défaut";
+        _description = layerOpts.defaultStyleDescription || "Style par défaut";
+        layerOpts.styles = [
+            {
+                thumbnail : _thumbnail,
+                name : _name,
+                url : _url,
+                description : _description,
+                selected : true
+            }
+        ];
     }
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
     var vectorTileSource = new this.Itowns.VectorTilesSource({
