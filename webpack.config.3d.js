@@ -6,6 +6,9 @@ var path = require("path");
 var webpack = require("webpack");
 var header = require("string-template");
 var glob = require("glob");
+var shell = require('shelljs');
+
+shell.config.silent = true;
 
 // -- plugins
 var DefineWebpackPlugin = webpack.DefinePlugin;
@@ -441,7 +444,11 @@ module.exports = (env, argv) => {
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-ign.tmpl"), "utf8"), {
                     __BRIEF__ : pkg.description,
                     __VERSION__ : pkg.SDK3DVersion,
-                    __DATE__ : pkg.date
+                    __DATE__ : pkg.date,
+                    __BUILD_DATE__ : new Date().toLocaleString("fr-FR", { timeZone: 'UTC' }),
+                    __GIT_BRANCH__ : shell.exec('git name-rev --name-only HEAD').stdout.trim(),
+                    __GIT_COMMIT__ : shell.exec('git rev-parse --short HEAD').stdout.trim(),
+                    __GIT_STATUS__ : shell.exec('git status -s -uall').stdout.trim().length > 0
                 }),
                 raw : true,
                 entryOnly : true
