@@ -1,8 +1,8 @@
 ## Pull request checklist
 
-Verifiez que votre Pull Request remplie les conditions suivantes :
-- [ ] Des tests ont été ajoutés pour les changements (pour les bug fixes ou features)
-- [ ] De la documentation a été mise à jour ou ajoutée si nécessaire (pour les bug fixes ou features)
+Verifiez que votre Pull Request remplit les conditions suivantes :
+- [ ] Des tests ont été ajoutés pour les changements (corrections de bugs ou features)
+- [ ] De la documentation a été mise à jour ou ajoutée si nécessaire (corrections de bugs ou features)
 - [ ] Un build (`npm run build`) a été lancé localement et s'est correctement déroulé
 - [ ] Les exemples impactés par les modifications (`npm run samples`) ont été testés et validés localement
 - [ ] Les tests (`npm run test`) sont passés localement
@@ -10,9 +10,9 @@ Verifiez que votre Pull Request remplie les conditions suivantes :
 
 ## Type de Pull request
 
-<!-- Please do not submit updates to dependencies unless it fixes an issue. --> 
+<!-- Attention à ne pas mettre à jour les dépendances, à moins que ce soit l'objet de la PR --> 
 
-<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. --> 
+<!-- Essayer autant que faire se peut de se limiter à un type de changement par PR. --> 
 
 Quel type de changement cette Pull Request introduit-elle :
 - [ ] Bugfix
@@ -42,9 +42,9 @@ Numéro du ticket : N/A
 - [ ] Oui
 - [ ] Non
 
-<!-- Si Oui, décrire l'impact et la marche à suivre pour adapter les applications existantes. -->
+<!-- Si Oui, décrire l'impact et la marche à suivre pour adapter les applications existantes à ces BC. -->
 
 
 ## Autres informations
 
-<!-- Autres informations importantes concernant cette PR comme la liste des tickets concerné, ou des screenshots illustrant les changements introduits par cette PR. -->
+<!-- Autres informations importantes concernant cette PR comme la liste des tickets concernés, ou des screenshots qui illustrent les changements introduits par cette PR. -->
