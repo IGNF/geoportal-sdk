@@ -69,7 +69,7 @@
         "exports-loader": "^0.7.0",
         "expose-loader": "^0.7.5",
         "fs-extra": "^8.1.0",
-        "geoportal-extensions-itowns": "2.2.7",
+        "geoportal-extensions-itowns": "2.2.8",
         "geoportal-extensions-openlayers": "3.0.7",
         "handlebars": "^4.7.2",
         "handlebars-layouts": "^3.1.4",
