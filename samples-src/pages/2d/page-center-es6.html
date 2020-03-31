@@ -37,24 +37,44 @@
 {{#content "js"}}
     <script type="module">
         import * as Gp from "{{ baseurl }}/dist/2d/GpSDK2D{{ mode }}.js";
+        
         self.Gp.Map.load('geoportalMap1',{
-            apiKey : "{{apikey}}",
-        });
-        self.Gp.Map.load('geoportalMap2', {
-            apiKey : "{{apikey}}",
-            center : {
-                x : -511270,
-                y : 6151620
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
+            mapEventsOptions : {
+                "mapLoaded" : function () {
+                    loadMap2()
+                }
             }
         });
-        self.Gp.Map.load('geoportalMap3', {
-            apiKey : "{{apikey}}",
-            center : {
-                x : -4.620391,
-                y : 48.268698,
-                projection : "CRS:84"
-            }
-        });
+
+        function loadMap2() {
+            Gp.Map.load('geoportalMap2', {
+                // apiKey : "{{apikey}}",
+                configUrl : "{{resources}}/autoconf.js",
+                center : {
+                    x : -511270,
+                    y : 6151620
+                },
+                mapEventsOptions : {
+                    "mapLoaded" : function () {
+                        loadMap3()
+                    }
+                }
+            });
+        }
+
+        function loadMap3() {
+            Gp.Map.load('geoportalMap3', {
+                // apiKey : "{{apikey}}",
+                configUrl : "{{resources}}/autoconf.js",
+                center : {
+                    x : -4.620391,
+                    y : 48.268698,
+                    projection : "CRS:84"
+                }
+            });
+        }
     </script>
 {{/content}}
 {{/extend}}

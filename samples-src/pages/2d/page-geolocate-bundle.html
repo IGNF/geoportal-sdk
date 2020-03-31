@@ -40,25 +40,40 @@
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             center : {
                 geolocate : true
-            }
-        });
-        Gp.Map.load('geoportalMap2', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            center : {
-                geolocate : true,
-                x : -511270,
-                y : 6151620
+            },
+            mapEventsOptions : {
+                "mapLoaded" : function () {
+                    loadMap2()
+                }
             }
         });
 
-        Gp.Map.load('geoportalMap3', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            center : {
-                geolocate : true,
-                location : "Nimes",
-                locationType : ["PositionOfInterest"]
-            }
-        });
+        function loadMap2() {
+            Gp.Map.load('geoportalMap2', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                center : {
+                    geolocate : true,
+                    x : -511270,
+                    y : 6151620
+                },
+                mapEventsOptions : {
+                    "mapLoaded" : function () {
+                        loadMap3()
+                    }
+                }
+            });
+        }
+
+        function loadMap3() {
+            Gp.Map.load('geoportalMap3', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                center : {
+                    geolocate : true,
+                    location : "Nimes",
+                    locationType : ["PositionOfInterest"]
+                }
+            });
+        }
     </script>
 {{/content}}
 {{/extend}}
