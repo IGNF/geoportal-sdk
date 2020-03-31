@@ -958,7 +958,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
         }
 
         // traitements des styles/couches
-        return fetch(_urlDefaultOrSelected)
+        return fetch(_urlDefaultOrSelected, {
+            credentials : "same-origin"
+        })
             .then(function (response) {
                 if (response.ok) {
                     response.json()
@@ -1759,7 +1761,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
 OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
     var self = this;
 
-    return fetch(options.url)
+    return fetch(options.url, {
+        credentials : "same-origin"
+    })
         .then(function (response) {
             // debug
             // self.logger.warn("DEBUG:response", response);
