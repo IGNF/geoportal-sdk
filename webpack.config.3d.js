@@ -112,6 +112,7 @@ module.exports = (env, argv) => {
             /** MINIFICATION */
             minimizer: [
                 new TerserJsWebPackPlugin({
+                    extractComments: false,
                     terserOptions: {
                         output: {
                             // FIXME qq bug avec les banner !
