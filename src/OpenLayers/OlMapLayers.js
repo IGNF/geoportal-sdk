@@ -273,6 +273,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
  * @private
  */
 OlMap.prototype._addVectorLayer = function (layerObj) {
+    var self = this
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
@@ -354,7 +355,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                         },
                         // callback on failure
                         onFailure : function (error) {
-                            this.logger.info("[_addVectorLayer] : Kml request failed : ", error);
+                            self.logger.info("[_addVectorLayer] : Kml request failed : ", error);
                         }
                     });
                 }

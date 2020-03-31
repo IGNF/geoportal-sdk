@@ -34,16 +34,24 @@
             maxZoom : 15,
             controlsOptions:{
                 'zoom':{}
+            },
+            mapEventsOptions : {
+                "mapLoaded" : function () {
+                    loadMap2()
+                }
             }
         });
 
-        Gp.Map.load('geoportalMap2', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            minZoom : 5,
-            controlsOptions:{
-                'zoom':{}
-            }
-        });
+        function loadMap2() {
+            Gp.Map.load('geoportalMap2', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                minZoom : 5,
+                controlsOptions:{
+                    'zoom':{}
+                }
+            });
+        }
+
     </script>
 {{/content}}
 {{/extend}}
