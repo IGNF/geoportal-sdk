@@ -9,25 +9,25 @@
  * @copyright copyright (c) IGN
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.10
- * @date 01/04/2020
+ * @version 3.0.11
+ * @date 02/04/2020
  * @build
- *    date   : 2020-4-1 20:17:24
+ *    date   : 2020-4-2 19:25:44
  *    branch : master
- *    commit : e34e0c8
- *    dirty  : true
+ *    commit : 55a3a8f
+ *    dirty  : false
  */
 
 /*!
  * geoportal-extensions-openlayers. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 3.0.9
+ * @version 3.0.10
  */
 
 /*!
  * geoportal-extensions-itowns. See https://github.com/IGNF/geoportal-extensions
  * @license https://github.com/IGNF/geoportal-extensions/blob/master/LICENCE.md
- * @version 2.2.8
+ * @version 2.2.9
  */
 
 /*!
@@ -41,7 +41,7 @@
  * @copyright Copyright (c) 2016 openlayers
  * @license   BSD 2-Clause "Simplified" License
  *            See https://raw.githubusercontent.com/openlayers/ol-mapbox-style/master/LICENSE
- * @version   ^4.2.1
+ * @version   4.2.1
  */
 
 /*!
@@ -49,7 +49,7 @@
  * @copyright  Copyright 2005-present, OpenLayers Contributors All rights reserved.
  * @license    BSD 2-Clause "Simplified" License
  *             See https://raw.githubusercontent.com/openlayers/openlayers/master/LICENCE.md
- * @version    ^5.3.0
+ * @version    5.3.0
  */
 
 /*!
@@ -106,7 +106,7 @@
  * @copyright Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/proj4js/proj4js/master/LICENSE.md
- * @version   2.5.0
+ * @version   2.6.0
  */
 .ol-box {
   box-sizing: border-box;
@@ -371,8 +371,8 @@
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 3.0.9
- * @date 01/04/2020
+ * @version 3.0.10
+ * @date 02/04/2020
  *
  */
 
@@ -381,7 +381,7 @@
  * @copyright Copyright (c) 2016 openlayers
  * @license   BSD 2-Clause "Simplified" License
  *            See https://raw.githubusercontent.com/openlayers/ol-mapbox-style/master/LICENSE
- * @version   ^4.3.0
+ * @version   4.2.1
  */
 
 /*!
@@ -421,7 +421,7 @@
  * @copyright Copyright (c) 2014-2016 GitHub, Inc.
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/github/fetch/master/LICENSE
- * @version   ^3.0.0
+ * @version   3.0.0
  */
 
 /*!
@@ -429,7 +429,7 @@
  * @copyright Copyright (c) 2014 Krasimir Tsonev
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/krasimir/EventBus/master/LICENSE
- * @version   ^0.2.0
+ * @version   0.2.0
  */
 
 /*!
@@ -454,7 +454,7 @@
  * @copyright Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/proj4js/proj4js/master/LICENSE.md
- * @version   ^2.5.0
+ * @version   2.6.0
  */
 
 /* MOUSE POSITION */
@@ -5290,8 +5290,8 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * @copyright copyright (c) IGN 
  * @license CeCILL-B
  * @author IGN
- * @version 2.2.8
- * @date 26/03/2020
+ * @version 2.2.9
+ * @date 02/04/2020
  *
  */
 
@@ -5349,7 +5349,7 @@ div[id^=GPtoolbox-measure-main]:hover button[id^=GPtoolbox-measure-button] {
  * @copyright Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/proj4js/proj4js/master/LICENSE.md
- * @version   ^2.5.0
+ * @version   2.6.0
  */
 
 /* MOUSE POSITION */
