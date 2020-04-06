@@ -1,5 +1,9 @@
 import {ItMap} from "../../src/Itowns/ItMap";
 import {enginePath3d, apiKey, mapViewDivId as divId} from "../config";
+import {
+    MAIN_LOOP_EVENTS as IT_MAIN_LOOP_EVENTS
+} from "itowns";
+import { itownsExtended } from "geoportal-extensions-itowns";
 
 var ItUtils = {
 
@@ -7,7 +11,7 @@ var ItUtils = {
         if( map.getLibMap().isInitialized() ) {
             callBack();
         }else{
-            map.getLibMap().listen( itowns.GlobeViewExtended.EVENTS.GLOBE_INITIALIZED, function() {
+            map.getLibMap().listen( itownsExtended.EVENTS.GLOBE_INITIALIZED, function() {
                 callBack();
             })
         }
@@ -21,11 +25,11 @@ var ItUtils = {
         }
 
         function superCallBack() {
-            map.getLibMap().getGlobeView().removeFrameRequester(itowns.MAIN_LOOP_EVENTS.AFTER_RENDER, handler);
+            map.getLibMap().getGlobeView().removeFrameRequester(IT_MAIN_LOOP_EVENTS.AFTER_RENDER, handler);
             callBack();
         }
 
-        map.getLibMap().getGlobeView().addFrameRequester(itowns.MAIN_LOOP_EVENTS.AFTER_RENDER, handler);
+        map.getLibMap().getGlobeView().addFrameRequester(IT_MAIN_LOOP_EVENTS.AFTER_RENDER, handler);
     },
 
     onRenderingOverPromise : function onRenderingOverPromise(map) {

@@ -1,20 +1,12 @@
 import * as SDK from "../../dist/3d/GpSDK3D";
 import Utils from "../utils/ItUtils";
-import {enginePath3d, apiKey} from "../config";
+import {apiKey} from "../config";
 
 import {assert, expect, should} from "chai";
 
 should();
 
 describe("-- Test SDK 3D --", function () {
-
-    before( () => {
-        Utils.cleanGlobalItowns();
-    });
-
-    after( () => {
-        Utils.cleanGlobalItowns();
-    });
 
     describe("-- Test Integration composants SDK, itowns --", () => {
 
@@ -57,9 +49,8 @@ describe("-- Test SDK 3D --", function () {
                 SDK.itownsExtended.layer.should.have.property('GeoportalWMS');
                 SDK.itownsExtended.layer.should.have.property('GeoportalWMTS');
 
-                // ...mais itowns n'est pas encore chargé
-                expect(SDK.itownsExtended).should.not.have.property('GlobeView');
-
+                // itowns est chargé
+                SDK.itownsExtended.should.have.property('GlobeView');
 
                 // integration bibliotheque d'acces
                 SDK.should.have.property('servicesVersion');
@@ -73,57 +64,30 @@ describe("-- Test SDK 3D --", function () {
 
         describe("-- Namespace itowns --", () => {
 
-            it("itowns doesn't exists yet", () => {
-                var scope = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : {};
-
-                expect(scope.itowns).to.not.exist ;
-            });
-
-            it("itowns exists after Map loading", function (done) {
-                this.timeout(20000);
+            it("itowns exists and is integrated", function () {
+                this.timeout(2000);
 
                 var scope = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : {};
 
-                expect(scope.itowns).to.not.exist ;
+                // itowns est chargé
+                expect(scope.itowns).to.exist ;
+                scope.itowns.should.have.property('GlobeView');
 
-                var div = Utils.createDiv();
-                var map = SDK.Map.load(
-                    div,
-                    {
-                        apiKey : apiKey,
-                        viewMode : "3d",
-                        enginePath3d : enginePath3d
-                    }
-                );
+                // les éléments de surchage sont présents
+                scope.itowns.should.have.property('GlobeViewExtended');
+                expect(scope.itowns.GlobeViewExtended).to.be.an('Function');
 
-                var key = map.listen("mapLoaded", function callback() {
-                    map.forget( "mapLoaded", callback);
+                scope.itowns.should.have.property('control');
+                scope.itowns.control.should.have.property('Attributions');
+                scope.itowns.control.should.have.property('LayerSwitcher');
+                scope.itowns.control.should.have.property('MiniGlobe');
+                scope.itowns.control.should.have.property('MousePosition');
+                scope.itowns.control.should.have.property('Scale');
 
-                    // itowns est chargé
-                    expect(scope.itowns).to.exist ;
-                    expect(scope.itowns).should.not.have.property('GlobeView');
-
-                    // les éléments de surchage sont présents
-                    scope.itowns.should.have.property('GlobeViewExtended');
-                    expect(scope.itowns.GlobeViewExtended).to.be.an('Function');
-
-                    scope.itowns.should.have.property('control');
-                    scope.itowns.control.should.have.property('Attributions');
-                    scope.itowns.control.should.have.property('LayerSwitcher');
-                    scope.itowns.control.should.have.property('MiniGlobe');
-                    scope.itowns.control.should.have.property('MousePosition');
-                    scope.itowns.control.should.have.property('Scale');
-
-                    scope.itowns.should.have.property('layer');
-                    scope.itowns.layer.should.have.property('GeoportalElevation');
-                    scope.itowns.layer.should.have.property('GeoportalWMS');
-                    scope.itowns.layer.should.have.property('GeoportalWMTS');
-
-                    Utils.onRenderingOver(map, () => {
-                        document.body.removeChild(div);
-                        done();
-                    });
-                });
+                scope.itowns.should.have.property('layer');
+                scope.itowns.layer.should.have.property('GeoportalElevation');
+                scope.itowns.layer.should.have.property('GeoportalWMS');
+                scope.itowns.layer.should.have.property('GeoportalWMTS');
             });
         });
     });

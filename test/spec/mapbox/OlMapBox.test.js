@@ -3,6 +3,14 @@ import {apiKey} from "../../config.js";
 
 import {assert, expect, should} from "chai";
 
+should();
+
+//plugin chai
+require("chai").use(function (_chai, _) {
+    _chai.Assertion.addMethod('withMessage', function (msg) {
+        _.flag(this, 'message', msg);
+    });
+});
 
 var map = null;
 var div = null;
@@ -53,6 +61,7 @@ function cleanContext() {
     // filters : [propertyname, filtername, configuration]
 
 describe("-- Test vector tile with mapbox format json --", function() {
+    this.timeout(30000);
 
     beforeEach(() => {
         initContext();
@@ -64,37 +73,34 @@ describe("-- Test vector tile with mapbox format json --", function() {
     
     it("Add a vector tile layer with options by default", (done) => {
 
-        var eventFired = false;
-        setTimeout(function () {
-            if (!eventFired) {
-                assert(eventFired, message);
-                done(message);
-            }
+        var timeOut = setTimeout(function () {
+            assert(false, message);
+            done(message);
         }, 1500); //timeout with an error in one second
 
         map.listen("layerChanged", function callback() {
             // event fired !
-            eventFired = true;
-            assert.ok(eventFired);
+            clearTimeout(timeOut)
+            assert.ok(true);
 
             var layerOptions = this.getLayersOptions(["mapbox"]);
             expect(layerOptions).to.be.an("Object");
-            expect(layerOptions).to.have.property("mapbox");
+            layerOptions.should.have.property("mapbox");
             // propriétés ajoutées par defaut
-            expect(layerOptions.mapbox).have.property("opacity");
-            expect(layerOptions.mapbox).have.property("visibility");
+            layerOptions.mapbox.should.have.property("opacity");
+            layerOptions.mapbox.should.have.property("visibility");
             // propriétés metadonnées communes par défaut
-            expect(layerOptions.mapbox).have.property("title");
-            expect(layerOptions.mapbox).have.property("description");
-            expect(layerOptions.mapbox).have.property("quicklookUrl");
-            expect(layerOptions.mapbox).have.property("metadata");
-            expect(layerOptions.mapbox).have.property("legends");
-            expect(layerOptions.mapbox).have.property("originators");
-            expect(layerOptions.mapbox).have.property("position");
+            layerOptions.mapbox.should.have.property("title");
+            layerOptions.mapbox.should.have.property("description");
+            layerOptions.mapbox.should.have.property("quicklookUrl");
+            layerOptions.mapbox.should.have.property("metadata");
+            layerOptions.mapbox.should.have.property("legends");
+            layerOptions.mapbox.should.have.property("originators");
+            layerOptions.mapbox.should.have.property("position");
             // propriétés metadonnées spécifiques par défaut
-            expect(layerOptions.mapbox).have.property("queryable");
-            expect(layerOptions.mapbox).have.property("filters");
-            expect(layerOptions.mapbox).have.property("themes");
+            layerOptions.mapbox.should.have.property("queryable");
+            layerOptions.mapbox.should.have.property("filters");
+            layerOptions.mapbox.should.have.property('themes');
             // titre / description par defaut :
             expect(layerOptions.mapbox.title).to.equal("Couche MapBox");
             expect(layerOptions.mapbox.description).to.equal("Couche MapBox");
@@ -117,50 +123,49 @@ describe("-- Test vector tile with mapbox format json --", function() {
                 // originators: []
             }
         });
+
+        
         
     });
 
     it("Add a vector tile layer with all options", (done) => {
 
-        // var eventFired = false;
-        // setTimeout(function () {
-        //     //if (!eventFired) {
-        //         assert(eventFired, message);
-        //         done(message);
-        //     //}
-        // }, 2000); //timeout with an error in one second
+        var timeOut = setTimeout(function () {
+            assert(false, message);
+            done(message);
+        }, 1500); //timeout with an error in one second
 
         map.listen("layerChanged", function callback() {
             // event fired !
-            // eventFired = true;
+            clearTimeout(timeOut)
             assert.ok(true);
 
             var layerOptions = this.getLayersOptions(["mapbox"]);
             expect(layerOptions).to.be.an("Object");
-            expect(layerOptions).to.have.property("mapbox");
+            layerOptions.should.have.property("mapbox");
             // propriétés ajoutées par defaut
-            expect(layerOptions.mapbox).have.property("opacity");
-            expect(layerOptions.mapbox).have.property("visibility");
-            expect(layerOptions.mapbox).have.property("position");
+            layerOptions.mapbox.should.have.property("opacity");
+            layerOptions.mapbox.should.have.property("visibility");
+            layerOptions.mapbox.should.have.property("position");
             // propriétés metadonnées communes par défaut
-            expect(layerOptions.mapbox).have.property("title");
-            expect(layerOptions.mapbox).have.property("description");
-            expect(layerOptions.mapbox).have.property("quicklookUrl");
-            expect(layerOptions.mapbox).have.property("metadata");
-            expect(layerOptions.mapbox).have.property("legends");
-            expect(layerOptions.mapbox).have.property("originators");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("position");
+            layerOptions.mapbox.should.have.property("title");
+            layerOptions.mapbox.should.have.property("description");
+            layerOptions.mapbox.should.have.property("quicklookUrl");
+            layerOptions.mapbox.should.have.property("metadata");
+            layerOptions.mapbox.should.have.property("legends");
+            layerOptions.mapbox.should.have.property("originators");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("position");
             // propriétés metadonnées spécifiques par défaut
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("urlService");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("outputFormat");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("projection");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("name");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("thumbnail");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("defaultThemeDescription");
-            expect(layerOptions.mapbox, "not yet implemented !").have.property("queryable");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("urlService");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("outputFormat");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("projection");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("name");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("thumbnail");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("defaultThemeDescription");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("queryable");
             // propriétés d'un theme
-            expect(layerOptions.mapbox).have.property("themesSummary");
-            expect(layerOptions.mapbox).have.property("themes");
+            layerOptions.mapbox.should.have.property("themesSummary");
+            layerOptions.mapbox.should.have.property("themes");
             expect(layerOptions.mapbox.themes, "not yet implemented !").to.deep.include({
                 thumbnail : "", 
                 name : "", 
@@ -168,8 +173,8 @@ describe("-- Test vector tile with mapbox format json --", function() {
                 url : ""
             });
             // propriétés d'un filtre
-            expect(layerOptions.mapbox).have.property("filtersSummary");
-            expect(layerOptions.mapbox).have.property("filters");
+            layerOptions.mapbox.should.have.property("filtersSummary");
+            layerOptions.mapbox.should.have.property("filters");
             expect(layerOptions.mapbox.filters, "not yet implemented !").to.deep.include({
                 propertyName : "", 
                 filterName : "", 
