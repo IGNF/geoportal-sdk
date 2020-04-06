@@ -40,7 +40,7 @@ var ItUtils = {
 
     createDiv : function createDiv() {
         var div = document.createElement("div");
-        // div.style.display = 'none';
+        div.style.display = 'none';
         div.id = divId
         div.style.width = "500px";
         div.style.height = "500px";
