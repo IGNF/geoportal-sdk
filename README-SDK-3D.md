@@ -157,12 +157,6 @@ var map = Gp.Map.load(
          // chargement de la cartographie en 3D avec la librairie itowns
          viewMode : "3d",
 
-         // localisation du fichier itowns.js pour le chargement du moteur 3d
-         // en ligne, en pointant vers la dernière version compatible disponible (voir fichier DEPENDENCIES.md)
-         enginePath3d : "https://github.com/iTowns/itowns/releases/download/v2.3.0/",
-         // ou en local, exemple :
-         // enginePath3d : "chemin/vers/le/dossier/contenant/itowns.js/",
-
          // centrage de la carte
          center : {
              location : "73 avenue de Paris, Saint-Mandé"
