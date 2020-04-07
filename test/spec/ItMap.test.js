@@ -1,7 +1,6 @@
-import {ItMap} from "../../src/Itowns/ItMap";
 import Utils from "../utils/ItUtils"
 
-import {assert, expect, should} from "chai";
+import {assert, expect} from "chai";
 
 describe("-- Test ItMap --", function () {
     this.timeout(10000);
@@ -421,7 +420,7 @@ describe("-- Test ItMap --", function () {
 
                 return Utils.onRenderingOverPromise(map).then(() => {
                     var azimuth = map.getAzimuth();
-                    //expect(60).should.be.closeTo(60, 1.0);
+                    expect(azimuth).to.be.closeTo(azimuthValue, 1.0);
                     Utils.cleanContext(map);
                 });
             });
@@ -436,7 +435,7 @@ describe("-- Test ItMap --", function () {
 
                 return Utils.onRenderingOverPromise(map).then(() => {
                     var zoom = map.getZoom();
-                    //expect(zoom).to.equal(zoomValue);
+                    expect(zoom).to.equal(zoomValue);
                     Utils.cleanContext(map);
                 });
             });
@@ -448,7 +447,7 @@ describe("-- Test ItMap --", function () {
 
                 var promise = Utils.onRenderingOverPromise(map).then(() => {
                     var resolution = map.getResolution();
-                    //expect(resolution).to.equal(resolutionValue);
+                    // expect(resolution).to.equal(resolutionValue);
                     Utils.cleanContext(map);
                 });
 

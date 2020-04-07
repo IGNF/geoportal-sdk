@@ -78,7 +78,7 @@ module.exports = (env, argv) => {
                 // "loglevel",
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
-                "itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
+                //"itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -220,7 +220,7 @@ module.exports = (env, argv) => {
                 {
                     /** itowns est exposé en global : itowns ! */
                     // test : require.resolve("itowns"),
-                    test : /node_modules\/itowns\/dist\/itowns.js/,
+                    test : /node_modules\/itowns\/lib\/MainBundle.js/,
                     use : [
                         {
                             loader : "expose-loader",
@@ -385,11 +385,6 @@ module.exports = (env, argv) => {
                     from : path.join(__dirname, "samples-src", "resources", "**/*"),
                     to : path.join(__dirname, "samples", "resources"),
                     context : path.join(__dirname, "samples-src", "resources")
-                },
-                /* COPY ITOWNS LIBRARY IN DIST DIR */
-                {
-                    from : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
-                    to : path.join(__dirname, "dist", "3d")
                 }
             ])
         ]

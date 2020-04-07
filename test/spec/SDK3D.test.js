@@ -1,8 +1,6 @@
 import * as SDK from "../../dist/3d/GpSDK3D";
-import Utils from "../utils/ItUtils";
-import {apiKey} from "../config";
 
-import {assert, expect, should} from "chai";
+import {expect, should} from "chai";
 
 should();
 
