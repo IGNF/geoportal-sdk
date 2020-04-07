@@ -23,8 +23,8 @@ function OlMap (opts) {
     /**
      * Mode de visualisation (heritage)
      */
-    if (!opts.mapOptions) opts.mapOptions = {}
-    if (!opts.mapOptions.viewMode) opts.mapOptions.viewMode = "2d"
+    if (!opts.mapOptions) opts.mapOptions = {};
+    if (!opts.mapOptions.viewMode) opts.mapOptions.viewMode = "2d";
 
     // appel du constructeur par heritage.
     IMap.apply(this, arguments);

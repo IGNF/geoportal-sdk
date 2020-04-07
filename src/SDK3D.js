@@ -65,7 +65,6 @@ import * as itowns from "itowns/lib/MainBundle";
 // import des extensions itowns
 import { itownsExtended } from "geoportal-extensions-itowns";
 
-
 var logger = Logger.getLogger("SDK3D");
 logger.log("Chargement SDK 3D...");
 

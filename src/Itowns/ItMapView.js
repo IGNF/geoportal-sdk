@@ -1,6 +1,6 @@
 import { ItMap } from "./ItMapBase";
 import proj4 from "proj4";
-import { CRS } from "itowns"
+import { CRS } from "itowns";
 
 /**
  * Centers the map on the given coordinates at the specified zoom
@@ -23,7 +23,7 @@ ItMap.prototype.setXYCenter = function (point, zoom) {
     }
     // si le proj4 d'itowns ne connait pas la projection demandée, on lui rajoute si elle est definie dans les CRS
     if (point.hasOwnProperty("projection") && !proj4.defs(point.projection) && CRS && CRS[point.projection]) {
-        proj4.defs(point.projection,CRS[point.projection]);
+        proj4.defs(point.projection, CRS[point.projection]);
     }
     if (point.hasOwnProperty("projection") && point.projection !== "EPSG:4326" && proj4.defs(point.projection)) {
         var wgs84Coords = proj4(point.projection, "EPSG:4326", [point.x, point.y]);

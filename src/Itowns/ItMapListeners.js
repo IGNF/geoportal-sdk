@@ -1,6 +1,6 @@
 import { ItMap } from "./ItMapBase";
 import { IMap } from "../Interface/IMap";
-import { 
+import {
     Extent,
     WMSSource,
     WMTSSource,
@@ -11,7 +11,7 @@ import {
     Fetcher,
     KMLParser,
     GeoJsonParser,
-    GpxParser 
+    GpxParser
 } from "itowns";
 import { itownsExtended } from "geoportal-extensions-itowns";
 

@@ -24,8 +24,8 @@ function ItMap (opts) {
     /**
      * Mode de visualisation (heritage)
      */
-    if (!opts.mapOptions) opts.mapOptions = {}
-    if (!opts.mapOptions.viewMode) opts.mapOptions.viewMode = "3d"
+    if (!opts.mapOptions) opts.mapOptions = {};
+    if (!opts.mapOptions.viewMode) opts.mapOptions.viewMode = "3d";
 
     // appel du constructeur par heritage,
     IMap.apply(this, arguments);

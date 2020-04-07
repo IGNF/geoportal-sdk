@@ -273,7 +273,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
  * @private
  */
 OlMap.prototype._addVectorLayer = function (layerObj) {
-    var self = this
+    var self = this;
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
