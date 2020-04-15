@@ -355,10 +355,9 @@ var autoPanOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | outputFormat | String | - |
- * | projection | String | - |
- * | stylesSummary | String | - |
- * | filtersSummary | String | - |
+ * | urlService | String | (Parameter not available, coming soon) overloads the url of the service of the requested mapbox layer |
+ * | stylesSummary | String | styles description, can be displayed in the mapbox layer styles editor |
+ * | filtersSummary | String | filters description, can be displayed in the mapbox layer filters editor |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
