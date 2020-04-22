@@ -178,6 +178,8 @@ IMap.prototype.addControls = function (controlsOptions) {
                 controlObj = this.setKeyboard(controlOpts);
                 break;
             case "selectable":
+                // à quoi sert cette interaction !?
+                // inactive par defaut...
                 controlObj = this.setSelectable(controlOpts);
                 break;
             case "zoom":

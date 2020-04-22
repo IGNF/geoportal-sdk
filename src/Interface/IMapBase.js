@@ -223,7 +223,7 @@ IMap.DEFAULTOPTIONS = {
     controlsOptions : {
         draggable : true,
         keyboard : true,
-        selectable : true
+        selectable : false
     },
     mapEventsOptions : {},
     noProxyDomains : ["wxs.ign.fr"]
