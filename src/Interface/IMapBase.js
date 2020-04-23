@@ -26,6 +26,7 @@ var switch2D3D = function (viewMode) {
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
+    oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
     // remove old controls and associated listeners
     for (var controlId in oldMap.controlsOptions) {
@@ -88,8 +89,8 @@ var switch2D3D = function (viewMode) {
             // reloadConfig
             // autoconfUrl
             layersOptions : oldMap.layersOptions,
-            controlsOptions : oldMap.controlsOptions
-            // mapEventsOptions :
+            controlsOptions : oldMap.controlsOptions,
+            mapEventsOptions : oldMap.mapEventsOptions
         }
     );
     return newMap;
