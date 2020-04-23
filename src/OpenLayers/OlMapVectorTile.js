@@ -1863,7 +1863,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                         var f = _filters["filters"][n];
                                         filters.push({
                                             k : f.filterName,
-                                            v : f.configuration.selected
+                                            v : (f.configuration && f.configuration.selected) ? f.configuration.selected : []
                                         });
                                     }
                                     var o = {
