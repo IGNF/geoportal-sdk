@@ -345,24 +345,22 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | url | String | The url to the style file of the layer (style.json) |
+ * | styles | {@link Gp.MapboxStylesOptions} | options for layer styles |
+ * | defaultStyleName | String | Name of the style by default of the layer |
+ * | defaultStyleThumbnail | String | Thumbnail of the style by default of the layer |
+ * | defaultStyleDescription | String | Description of the style by default of the layer |
+ * | mapboxOptions | Object | - |
  *
  * **Specific 2D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
- * | urlService | String | - |
- * | outputFormat | String | - |
- * | projection | String | - |
- * | defaultStyleName | String | - |
- * | defaultStyleThumbnail | String | - |
- * | defaultStyleDescription | String | - |
- * | stylesSummary | String | - |
- * | styles | {@link Gp.MapboxStylesOptions} | options for layer styles |
- * | filtersSummary | String | - |
+ * | urlService | String | (Parameter not available, coming soon) overloads the url of the service of the requested mapbox layer |
+ * | stylesSummary | String | styles description, can be displayed in the mapbox layer styles editor |
+ * | filtersSummary | String | filters description, can be displayed in the mapbox layer filters editor |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
- * | mapboxOptions | Object | - |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
@@ -931,16 +929,15 @@ var styleOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | styles | Array(Object) | - |
-* | styles.name | String | - |
-* | styles.url | String | - |
-* | styles.thumbnail | String | - |
-* | styles.description | String | - |
-* | styles.selected | Boolean | - |
+* | styles | Array(Object) | Styles available for the mapbox layer |
+* | styles.name | String | Name of the style as it should appears on the layerSwitcher |
+* | styles.url | String | Url to the json file describing the style |
+* | styles.thumbnail | String | Thumbnail of the style |
+* | styles.description | String | Description of the style |
+* | styles.selected | Boolean | True if the style must be selected by default |
 *
 * @namespace
 * @alias Gp.MapboxStylesOptions
-* @todo finish description
 */
 var mapboxStylesOptions = {
 };
@@ -953,7 +950,7 @@ var mapboxStylesOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | filters | Array(Object) | - |
+* | filters | Array(Object) | Filters available for the mapbox layer |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |
 * | filters.configuration | Object | - |
@@ -962,7 +959,6 @@ var mapboxStylesOptions = {
 *
 * @namespace
 * @alias Gp.FiltersOptions
-* @todo finish description
 */
 var filtersOptions = {
 };

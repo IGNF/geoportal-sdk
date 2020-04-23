@@ -1,11 +1,11 @@
-# SDK Geoportail 2D/3D, version 3.0.11
+# SDK Geoportail 2D/3D, version 3.0.12
 
-**02/04/2020 : version 3.0.11**
+**23/04/2020 : version 3.0.12**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-Mise à jour des librairies sous-jacentes et corrections sur le controle d'edition des styles mapbox.
+Correctifs divers et mises à jour des tests et du processus de build.
 
 ## Changelog
 
@@ -13,15 +13,16 @@ Mise à jour des librairies sous-jacentes et corrections sur le controle d'editi
 
 * [Changed]
 
-    - mise à jour de l'extension géoportail pour openlayers en version 3.0.10
-    - mise à jour de l'extension géoportail pour itowns en version 2.2.9
-    - mise à jour de la dépendance ol-mapbox-style en version 4.2.1
+    - utilisation des sources ES6 d'itowns pour la construction du bundle 3D (#54)
 
 * [Removed]
 
 * [Fixed]
 
-    - fix sur le widget editor
+    - mise à jour et corrections des tests unitaires
+    - mise à jour de la documentation pour l'ajout de couches mapBox (#55)
+    - fix sur les interactions du control de getFeatureInfo
+    - fix sur la mise à jour du statut des styles mapbox
 
 * [Deprecated]
 

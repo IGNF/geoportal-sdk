@@ -59,6 +59,12 @@ import olDist from "./Utils/dist-openlayers/index";
 // import des extensions openlayers
 import { olExtended } from "geoportal-extensions-openlayers";
 
+// import itowns
+import * as itowns from "itowns/lib/MainBundle";
+
+// import des extensions itowns
+import { itownsExtended } from "geoportal-extensions-itowns";
+
 var logger = Logger.getLogger("SDK3D");
 logger.log("Chargement SDK 3D...");
 
@@ -161,4 +167,15 @@ deepCopy(olDist, olExtended);
 // "ol" is exposed into window (for a build bundle) with webpack.
 if (window && window.ol) {
     window.ol = olDist;
+}
+
+// fusion des fonctionnalités itowns
+// Gp.itownsExtended -> itowns
+deepCopy(itownsExtended, itowns);
+// itowns -> Gp.itownsExtended
+deepCopy(itowns, itownsExtended);
+
+// "itowns" is exposed into window (for a build bundle) with webpack.
+if (window && window.itowns) {
+    window.itowns = itowns;
 }
