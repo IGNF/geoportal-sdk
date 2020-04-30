@@ -163,18 +163,18 @@ ItMap.prototype.listen = function (eventId, action, context) {
 
                     var callbackLayerChanged = function (itevt) {
                         var layerEvtinfos = map.libMap.getLayerEventInfos(itevt);
-                        var key = layerEvtinfos.propertyName;
+                        var k = layerEvtinfos.propertyName;
                         var oldItObj = {};
-                        oldItObj[key] = layerEvtinfos.previousValue;
+                        oldItObj[k] = layerEvtinfos.previousValue;
                         var oldCommonProp = map._getCommonLayerParams(oldItObj);
                         var newItObj = {};
-                        newItObj[key] = layerEvtinfos.newValue;
+                        newItObj[k] = layerEvtinfos.newValue;
                         var newCommonProp = map._getCommonLayerParams(newItObj);
 
                         action.call(context, {
-                            property : ItMap.LAYERPROPERTIES[key],
-                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[key]],
-                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[key]],
+                            property : ItMap.LAYERPROPERTIES[k],
+                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[k]],
                             layerChanged : layerOpts
                         });
                     };
@@ -185,9 +185,9 @@ ItMap.prototype.listen = function (eventId, action, context) {
 
                     key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
                     map._registerEvent(key, eventId, action, context);
-                    key = null;
                 });
             };
+            key = null;
             break;
         case "controlChanged" :
             break;

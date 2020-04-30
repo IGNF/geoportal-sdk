@@ -129,4 +129,16 @@ ItMap.prototype.getLibMap = function () {
     return this.libMap;
 };
 
+/**
+ * Destroy map by canceling all events listening and removing DOM elements
+ */
+ItMap.prototype.destroyMap = function () {
+    // 1 - suppression de tous les listeners
+    this.forgetAllListeners();
+    // 2 - suppression de la div
+    while (this.div.firstChild) {
+        this.div.removeChild(this.div.firstChild);
+    }
+}
+
 export { ItMap };

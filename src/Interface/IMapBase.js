@@ -26,6 +26,7 @@ var switch2D3D = function (viewMode) {
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
+    oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
     // remove old controls and associated listeners
     for (var controlId in oldMap.controlsOptions) {
@@ -47,7 +48,6 @@ var switch2D3D = function (viewMode) {
             y : lonlat[1]
         };
         oldMap.azimuth = this.getAzimuth();
-        this.libMap.setTarget(null);
     } else if (viewMode === "2d") {
         oldMap.center = [oldMap.center.lon, oldMap.center.lat];
         // transformation des coordonnées de géographiques en planes
@@ -57,23 +57,13 @@ var switch2D3D = function (viewMode) {
             x : xy[0],
             y : xy[1]
         };
-        // 1 - suppression de tous les listeners
-        for (var listeners in this._events) {
-            var keyIdx = 0;
-            var eventName = Object.keys(this._events)[keyIdx];
-            for (var i = 0; i < this._events[listeners].length; i++) {
-                this.forget(eventName, this._events[listeners][i].action);
-            }
-            keyIdx++;
-        }
-        // 2 - suppression de la div
-        while (this.div.firstChild) {
-            this.div.removeChild(this.div.firstChild);
-        }
     } else {
         this.logger.info("Unknown viewing mode");
         return;
     }
+
+    this.destroyMap();
+
     // this.libMap = null;
     var newMap = MapLoader.load(
         // FIXME faut-il rajouter un acces aux clés API directement dans Map getApiKeys()
@@ -99,8 +89,8 @@ var switch2D3D = function (viewMode) {
             // reloadConfig
             // autoconfUrl
             layersOptions : oldMap.layersOptions,
-            controlsOptions : oldMap.controlsOptions
-            // mapEventsOptions :
+            controlsOptions : oldMap.controlsOptions,
+            mapEventsOptions : oldMap.mapEventsOptions
         }
     );
     return newMap;
@@ -427,6 +417,13 @@ IMap.prototype = {
     getLibMap : function () {
         // TO BE OVERRIDDEN
         return {};
+    },
+
+    /**
+     * Destroy map by canceling all events listening and removing DOM elements
+     */
+    destroyMap : function () {
+        // TO BE OVERRIDDEN
     }
 };
 

@@ -85,7 +85,11 @@ IMap.prototype.setSelectable = function (controlOpts) {};
 IMap.prototype.listen = function (eventId, action, context) {
     // verifications de base
     if (typeof action !== "function") {
-        this.logger.info("no action provided for event : " + eventId);
+        this.logger.error("no action provided for the event : " + eventId);
+        return false;
+    }
+    if ( !action.name || typeof action.name === "anomynous") {
+        this.logger.error("the action provided for the event : " + eventId + " must be named");
         return false;
     }
     context = context || this;
@@ -212,12 +216,26 @@ IMap.prototype.forget = function (eventId, action) {
 };
 
 /**
+ * Cancels all events listening previousely set with [Gp.Map.listen()](Gp.Map.html#.listen) method.
+ */
+IMap.prototype.forgetAllListeners = function () {
+    for (var listeners in this._events) {
+        // the array is spliced while looping it,
+        // all registered listeners are deleted looping on the first array item
+        var i = 0;
+        while (map._events[listeners].length > 0) {
+            map.forget(listeners, map._events[listeners][i].action);
+        }
+    }
+}
+
+/**
  * Ecouteur de changements sur les couches pour gerer le tableau this._layers.
  *
  * @param {Gp.LayerChangedEvent} evt - evenement de changement sur les couches
  * @private
  */
-IMap.prototype._onLayerChanged = function (evt) {
+IMap.prototype._onLayerChanged = function _onLayerChanged (evt) {
     var layerOpts = null;
     var idx = -1;
     var layerId = null;
