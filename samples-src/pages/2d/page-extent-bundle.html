@@ -1,0 +1,32 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Extent</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        div#map {
+            max-width: 100%;
+            height: 500px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h2>Extent contrainte de la vue</h2>
+    <!-- map -->
+    <div id="map">
+    </div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        Gp.Map.load('map', {
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
+            extent : [-572513.341856, 5211017.966314, 916327.095083, 6636950.728974]
+        });
+    </script>
+{{/content}}
+{{/extend}}

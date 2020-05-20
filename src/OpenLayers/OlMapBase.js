@@ -54,6 +54,7 @@ OlMap.prototype._initMap = function () {
         // center : [center.x, center.y],
         enableRotation : this.mapOptions.enableRotation,
         zoom : this.mapOptions.zoom,
+        extent : this.mapOptions.extent,
         minZoom : this.mapOptions.minZoom,
         maxZoom : this.mapOptions.maxZoom,
         projection : this.mapOptions.projection,

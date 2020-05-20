@@ -25,6 +25,7 @@ var switch2D3D = function (viewMode) {
     oldMap.controlsOptions = this.getControlsOptions();
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
+    oldMap.extent = this.mapOptions.extent !== undefined ? this.mapOptions.extent : null;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
@@ -77,6 +78,7 @@ var switch2D3D = function (viewMode) {
             enableRotation : oldMap.enableRotation,
             projection : oldMap.projection,
             center : oldMap.center,
+            extent : oldMap.extent,
             azimuth : oldMap.azimuth,
             tilt : oldMap.tilt,
             zoom : oldMap.zoom,
