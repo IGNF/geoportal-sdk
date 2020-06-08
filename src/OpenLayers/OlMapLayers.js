@@ -822,6 +822,7 @@ OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
         // FIXME : patch pour safari !?
         // ce patch cause des problemes sur Chrome v83+
         // img.crossOrigin = null;
+        img.crossOrigin = "anonymous";
 
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
