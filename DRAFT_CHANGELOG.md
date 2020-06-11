@@ -1,28 +1,31 @@
-# SDK Geoportail 2D/3D, version 3.0.12
+# SDK Geoportail 2D/3D, version 3.0.13
 
-**23/04/2020 : version 3.0.12**
+**XX/XX/2020 : version 3.0.13**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-Correctifs divers et mises à jour des tests et du processus de build.
+Correctifs divers et ajouts
 
 ## Changelog
 
 * [Added]
 
+	- Ajout de l'option extent au chargement de la carte (#57)
+	- Ajout guide de bonnes pratiques de developpement (84047c80a45333a692e6f28fc7bc4a7c56d233d6)
+	- !A VENIR! Ajout du control d'exageration du relief (boostRelief)
+
 * [Changed]
 
-    - utilisation des sources ES6 d'itowns pour la construction du bundle 3D (#54)
+	- !A VENIR! mise à jour de l'extension géoportail pour openlayers en version 3.0.11
+	- !A VENIR! mise à jour de l'extension géoportail pour itowns en version 2.2.10
 
 * [Removed]
 
 * [Fixed]
 
-    - mise à jour et corrections des tests unitaires
-    - mise à jour de la documentation pour l'ajout de couches mapBox (#55)
-    - fix sur les interactions du control de getFeatureInfo
-    - fix sur la mise à jour du statut des styles mapbox
+	- fix fonctionnalité noir et blanc avec Chrome v83+ (892c55bee89a2cac9448e28d80cc19ddb9617cdb)
+	- fix sur la gestion des événements (#56)
 
 * [Deprecated]
 
