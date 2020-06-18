@@ -823,47 +823,62 @@ OlMap.MAPBOXPROPERTIES = {
 
 /**
 * callback sur la propriété observable : mapbox-filters
-* @param {Object} e - {type, target} layer
+* contexte (this) est un objet Gp.Map
+* @param {Object} e - {type, target, old, key} layer
 * @private
 */
 OlMap.prototype._callbackMapBoxObservableFilters = function (e) {
-    // console.error("DEBUG:ObservableFilters", e, this.get(OlMap.MAPBOXPROPERTIES["filters"]));
+    this.logger.error("DEBUG:ObservableFilters", e, e.target.get(OlMap.MAPBOXPROPERTIES["filters"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-status
-* @param {Object} e - {type, target} layer
+* contexte (this) est un objet Gp.Map
+* @param {Object} e - {type, target, old, key} layer
 * @private
 */
 OlMap.prototype._callbackMapBoxObservableStatus = function (e) {
-    // console.error("DEBUG:ObservableStatus", e, this.get(OlMap.MAPBOXPROPERTIES["status"]));
+    this.logger.error("DEBUG:ObservableStatus", e, e.target.get(OlMap.MAPBOXPROPERTIES["status"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-themes
-* @param {Object} e - {type, target} layer
+* contexte (this) est un objet Gp.Map
+* @param {Object} e -{type, target, old, key} layer
 * @private
 */
 OlMap.prototype._callbackMapBoxObservableThemes = function (e) {
-    // console.error("DEBUG:ObservableThemes", e, this.get(OlMap.MAPBOXPROPERTIES["themes"]));
+    this.logger.error("DEBUG:ObservableThemes", e, e.target.get(OlMap.MAPBOXPROPERTIES["themes"]));
 };
 
 /**
-* callback sur la propriété observable : mapbox-styles
-* @param {Object} e - {type, target} layer
+* callback sur la propriété observable sur la couche : mapbox-styles
+* contexte (this) est un objet Gp.Map
+* @param {Object} e - {type, target, old, key} layer
 * @private
 */
 OlMap.prototype._callbackMapBoxObservableStyles = function (e) {
-    // console.error("DEBUG:ObservableStyles", e, this.get(OlMap.MAPBOXPROPERTIES["styles"]));
+    this.logger.error("DEBUG:ObservableStyles", e, e.target.get(OlMap.MAPBOXPROPERTIES["styles"]));
+};
+
+/**
+* callback sur la propriété observable sur la carte : mapbox-styles
+* contexte (this) est un objet Gp.Map
+* @param {Object} e - {type, target, old, key} map
+* @private
+*/
+OlMap.prototype._callbackMapBoxObservableMapStyles = function (e) {
+    this.logger.error("DEBUG:ObservableMapStyles", e, e.target.get(OlMap.MAPBOXPROPERTIES["styles"]));
 };
 
 /**
 * callback sur la propriété observable : mapbox-extensions
-* @param {Object} e - {type, target} layer
+* contexte (this) est un objet Gp.Map
+* @param {Object} e - {type, target, old, key} layer
 * @private
 */
 OlMap.prototype._callbackMapBoxObservableExtensions = function (e) {
-    // console.error("DEBUG:ObservableExtensions", e, this.get(OlMap.MAPBOXPROPERTIES["extensions"]));
+    this.logger.error("DEBUG:ObservableExtensions", e, e.target.get(OlMap.MAPBOXPROPERTIES["extensions"]));
 };
 
 /******************************************************************************
@@ -1244,7 +1259,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     // eventuelle (ex. editeur)
                                                     // > map.set("mapbox-extensions")
                                                     vectorLayer.set(OlMap.MAPBOXPROPERTIES["extensions"], tileJSONContent);
-                                                    vectorLayer.on("change:" + OlMap.MAPBOXPROPERTIES["extensions"], self._callbackMapBoxObservableExtensions);
+                                                    vectorLayer.on("change:" + OlMap.MAPBOXPROPERTIES["extensions"], self._callbackMapBoxObservableExtensions.bind(self));
                                                     // debug
                                                     vectorLayer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["extensions"]);
 
@@ -1609,7 +1624,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         var _allStyles = map.get(OlMap.MAPBOXPROPERTIES["styles"]) || {};
                                         _allStyles[_id] = p.styles;
                                         map.set(OlMap.MAPBOXPROPERTIES["styles"], _allStyles);
-                                        map.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableStyles);
+                                        map.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableMapStyles.bind(self));
                                         // debug
                                         map.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["styles"]);
 
@@ -1637,7 +1652,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             }
                                         }
                                         p.layer.set(OlMap.MAPBOXPROPERTIES["styles"], _stylesClone);
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableStyles);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["styles"], self._callbackMapBoxObservableStyles.bind(self));
                                         // debug
                                         p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["styles"]);
 
@@ -1648,7 +1663,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             stylesSummary : p.options.stylesSummary,
                                             styles : p.options.styles
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["themes"], self._callbackMapBoxObservableThemes);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["themes"], self._callbackMapBoxObservableThemes.bind(self));
                                         // debug
                                         p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["themes"]);
 
@@ -1659,7 +1674,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             filtersSummary : p.options.filtersSummary,
                                             filters : p.options.filters
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["filters"], self._callbackMapBoxObservableFilters);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["filters"], self._callbackMapBoxObservableFilters.bind(self));
                                         // debug
                                         p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["filters"]);
 
@@ -1675,7 +1690,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             "layers" : p.selectedLayers, // TODO !
                                             "filters" : p.selectedFilters
                                         });
-                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["status"], self._callbackMapBoxObservableStatus);
+                                        p.layer.on("change:" + OlMap.MAPBOXPROPERTIES["status"], self._callbackMapBoxObservableStatus.bind(self));
                                         // debug
                                         p.layer.dispatchEvent("change:" + OlMap.MAPBOXPROPERTIES["status"]);
 
@@ -1811,7 +1826,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                 var _extensions = layer.get(OlMap.MAPBOXPROPERTIES["extensions"]);
                                 var _urls = layer.getSource().urls;
                                 var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
-                                var _styles = map.get(OlMap.MAPBOXPROPERTIES["styles"]) || {};
+                                var _styles = JSON.parse(JSON.stringify(map.get(OlMap.MAPBOXPROPERTIES["styles"]))) || {};
                                 var _style = Object.assign({}, style); // clone
                                 _styles[id] = _createCustomFiltersStyles(
                                     source,
@@ -1827,7 +1842,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                 // maj au même moment que MAPBOXPROPERTIES["styles"] !
                                 // si on change de theme, il faut donc mettre à jour
                                 // les styles attributaires
-                                var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
+                                var _filters = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["filters"])));
                                 if (_filters) {
                                     layer.set(OlMap.MAPBOXPROPERTIES["filters"], _filters);
                                 }
@@ -1836,7 +1851,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                 // maj des themes : mapbox-themes
                                 // si on change de theme, il faut donc mettre à jour
                                 // le theme selectionné
-                                var _themes = layer.get(OlMap.MAPBOXPROPERTIES["themes"]);
+                                var _themes = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["themes"])));
                                 if (_themes) {
                                     for (var i = 0; i < _themes.styles.length; i++) {
                                         var t = _themes.styles[i];
@@ -1847,7 +1862,7 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                             t.selected = true;
                                         }
                                     }
-                                    layer.set(OlMap.MAPBOXPROPERTIES["themes"], _themes); // FIXME ce listeners ne se lance pas !?
+                                    layer.set(OlMap.MAPBOXPROPERTIES["themes"], _themes);
                                 }
                             })
                             .then(function () {
@@ -1855,16 +1870,18 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                 // si on change de theme, il faut donc mettre à jour
                                 // le theme (index et id) ainsi que le statut des filtres
                                 // sélectionnés
-                                var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
-                                var _status = layer.get(OlMap.MAPBOXPROPERTIES["status"]);
+                                var _filters = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["filters"])));
+                                var _status = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["status"])));
                                 if (_status) {
                                     var filters = [];
-                                    for (var n = 0; n < _filters["filters"].length; n++) {
-                                        var f = _filters["filters"][n];
-                                        filters.push({
-                                            k : f.filterName,
-                                            v : (f.configuration && f.configuration.selected) ? f.configuration.selected : []
-                                        });
+                                    if (_filters["filters"]) {
+                                        for (var n = 0; n < _filters["filters"].length; n++) {
+                                            var f = _filters["filters"][n];
+                                            filters.push({
+                                                k : f.filterName,
+                                                v : (f.configuration && f.configuration.selected) ? f.configuration.selected : []
+                                            });
+                                        }
                                     }
                                     var o = {
                                         "theme" : {
@@ -2098,20 +2115,22 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
             // maj des styles attributaires du layer : mapbox-filters
             // si on change la visibilité, il faut donc mettre à jour les styles
             // attributaires
-            var _filters = layer.get(OlMap.MAPBOXPROPERTIES["filters"]);
+            var _filters = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["filters"])));
             if (_filters) {
-                for (var i = 0; i < _filters.filters.length; i++) {
-                    var _f = _filters.filters[i];
-                    if (_f.filterName === options.category) {
-                        if (_f.configuration && _f.configuration.selected) {
-                            _f.configuration.selected = options.status;
-                        } else {
-                            _f.configuration = {
-                                selected : options.status,
-                                type : 0
-                            };
+                if (_filters.filters) {
+                    for (var i = 0; i < _filters.filters.length; i++) {
+                        var _f = _filters.filters[i];
+                        if (_f.filterName === options.category) {
+                            if (_f.configuration && _f.configuration.selected) {
+                                _f.configuration.selected = options.status;
+                            } else {
+                                _f.configuration = {
+                                    selected : options.status,
+                                    type : 0
+                                };
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
                 layer.set(OlMap.MAPBOXPROPERTIES["filters"], _filters);
@@ -2134,7 +2153,7 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
             // maj du statut : mapbox-status
             // si on change la visibilité, il faut donc mettre à jour le statut
             // des filtres
-            var _status = layer.get(OlMap.MAPBOXPROPERTIES["status"]);
+            var _status = JSON.parse(JSON.stringify(layer.get(OlMap.MAPBOXPROPERTIES["status"])));
             if (_status) {
                 // [{k:categorie1, v: [0,1,0,1]},{k:categorie2, v:[0,0,0,0]}]
                 for (var m = 0; m < _status.filters.length; m++) {

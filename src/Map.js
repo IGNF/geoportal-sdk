@@ -205,7 +205,7 @@ var mapLoadedEvent = {
  * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. |
  * | projection | String | optional | "EPSG:3857" | Projection code (in EPSG or IGNF register) for the map. Not available in 3D as the projection is always "EPSG:4326" |
  * | extent | Array | optional | | Forced extent of the view, with the format [west, south, east, north], with the projection of the map
- * 
+ *
  * * **Specific 3D options**
  *
  * | property | Type | Argument | Default | Description |

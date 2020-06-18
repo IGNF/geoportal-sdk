@@ -139,6 +139,6 @@ ItMap.prototype.destroyMap = function () {
     while (this.div.firstChild) {
         this.div.removeChild(this.div.firstChild);
     }
-}
+};
 
 export { ItMap };
