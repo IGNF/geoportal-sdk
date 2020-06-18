@@ -14,9 +14,12 @@ Correctifs divers et ajouts
 	- Ajout de l'option extent au chargement de la carte (#57)
 	- Ajout guide de bonnes pratiques de developpement (84047c80a45333a692e6f28fc7bc4a7c56d233d6)
 	- !A VENIR! Ajout du control d'exageration du relief (boostRelief)
-	- VectorTile 2D (mapbox) :
-		- Ajout d'un exemple de menu des thèmes et des filtres
-		- Ajout des événements sur les changements sur les properties
+	- Évolution sur le VectorTile 2D (mapbox) :
+		- Ajout d'un exemple d’implémentation de menu
+			- des thèmes,
+			- des filtres,
+			- de la légende
+		- Ajout des événements sur les changements sur les "properties"
 
 * [Changed]
 
