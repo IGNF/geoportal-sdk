@@ -19,7 +19,7 @@
             /* overflow-x: hidden; */
             height: 500px;
         }
-        #themes, #filtres {
+        #themes, #filtres, #legendes {
             display: flex;
             flex-direction: column;
             width: 300px;
@@ -47,6 +47,10 @@
                 <button id="button-editor-filtres">Editeur de filtres</button>
                 <div id="editor-filtres"></div>
             </div>
+            <div id="legendes">
+                <button id="button-editor-legendes">Afficher les legendes</button>
+                <div id="editor-legendes"></div>
+            </div>
         </div>
     </div>
 {{/content}}
@@ -55,6 +59,7 @@
     <script>
         var layer = null;
         var editorThemes = null;
+        var editorLegendes = null;
         var editorFiltres = [];
         var globalMap = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js",
@@ -136,6 +141,66 @@
                 "layerChanged" : function (e) {},
                 "mapLoaded" : function (e) {}
             }
+        });
+
+        function addLegende() {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+
+            // on recupere les informations
+            layer = globalMap.getLibMap().getLayers().getArray()[1]; // ["planign"]
+            var _url = null;
+            var _styles = layer.get("mapbox-themes").styles;
+            for (var i = 0; i < _styles.length; i++) {
+                var s = _styles[i];
+                if (s.selected) {
+                    _url = s.url;
+                    break;
+                }
+            }
+            // on ajoute l'éditeur minimaliste
+            editorLegendes = new ol.style.Editor({
+                target : divEditorLegendes,
+                style : _url,
+                tools : {
+                    layers : true,
+                    filter : false,
+                    style : false,
+                    legend : true,
+                    group : true,
+                    sort : true,
+                    title : false,
+                    type : false,
+                    pin : false,
+                    visibility : false,
+                    editable : false
+                }
+            });
+            editorLegendes.createElement();
+        }
+        function updateLegende() {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+            // reconstruction de la legende
+            if (editorLegendes) {
+                while (divEditorLegendes.firstChild) {
+                    divEditorLegendes.removeChild(divEditorLegendes.firstChild);
+                }
+            }
+
+            addLegende();
+        }
+        document.getElementById("button-editor-legendes").addEventListener("click", (e) => {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+
+            if (divEditorLegendes.style.display === "none" || divEditorLegendes.style.display === "") {
+                divEditorLegendes.style.display = "block";
+            } else {
+                divEditorLegendes.style.display = "none";
+            }
+
+            if (! editorLegendes) {
+                addLegende();
+            }
+
         });
 
         document.getElementById("button-editor-filtres").addEventListener("click", (e) => {
@@ -264,7 +329,7 @@
                             // changement de themes
                             globalMap._updateStyleMapBoxLayer(layer, "planign", {url:url, index:idx})
                             .then(function () {
-
+                                updateLegende();
                             })
                             .catch(function (error) {
                                 console.error(error);
