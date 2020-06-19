@@ -217,77 +217,79 @@
 
                 var filters = layer.get("mapbox-filters").filters;
                 for (var i = 0; i < filters.length; i++) {
-                    var _name = filters[i].filterName;
-                    var _style =  filters[i].style;
+                    (function(filters) {
+                        var _name = filters[i].filterName;
+                        var _style =  filters[i].style;
 
-                    var label = document.createElement('label');
-                    label.id = "editor-filtres-" + i;
-                    label.className = '';
-                    label.innerHTML = _name; // titre de la 'facette'
+                        var label = document.createElement('label');
+                        label.id = "editor-filtres-" + i;
+                        label.className = '';
+                        label.innerHTML = _name; // titre de la 'facette'
 
-                    divEditorFiltres.appendChild(label);
+                        divEditorFiltres.appendChild(label);
 
-                    // Editeur de filtres
-                    var editor = new ol.style.Editor({
-                        target : divEditorFiltres,
-                        id : i,
-                        style : _style,
-                        tools : {
-                            themes : false,
-                            layers : true,
-                            filter : false,
-                            style : false,
-                            legend : false,
-                            title : true,
-                            group : false,
-                            sort : true, // on trie les filtres afin d'avoir un permalien conforme à la liste des filtres !
-                            title : false,
-                            type : false,
-                            pin : false
-                        },
-                        events : {
-                            "editor:layer:onclickvisibility" : function (e) {
-                                // recherche de l'editeur de style
-                                var editorCurrent = null;
-                                for (var p = 0; p < editorFiltres.length; p++) {
-                                    var _editor = editorFiltres[p];
-                                    var s = _editor.getContainer().innerHTML;
-                                    if (s.indexOf(e.target.srcElement.id) !== -1) {
-                                        editorCurrent = _editor;
+                        // Editeur de filtres
+                        var editor = new ol.style.Editor({
+                            target : divEditorFiltres,
+                            id : i.toString(),
+                            style : _style,
+                            tools : {
+                                themes : false,
+                                layers : true,
+                                filter : false,
+                                style : false,
+                                legend : false,
+                                title : true,
+                                group : false,
+                                sort : true, // on trie les filtres afin d'avoir un permalien conforme à la liste des filtres !
+                                title : false,
+                                type : false,
+                                pin : false
+                            },
+                            events : {
+                                "editor:layer:onclickvisibility" : function (e) {
+                                    // recherche de l'editeur de style
+                                    var editorCurrent = null;
+                                    for (var p = 0; p < editorFiltres.length; p++) {
+                                        var _editor = editorFiltres[p];
+                                        var s = _editor.getContainer().innerHTML;
+                                        if (s.indexOf(e.target.srcElement.id) !== -1) {
+                                            editorCurrent = _editor;
+                                        }
                                     }
-                                }
-                                // on recupere des informations
-                                var data = e.target.data.obj;
-                                var target = e.target.srcElement;
-                                var category = editorCurrent.getStyle().name;
-                                var status = [];
-                                for (var nn = 0; nn < editorCurrent.getLayers().length; nn++) {
-                                    var o = editorCurrent.getLayers()[nn];
-                                    status.push((o.visibility()) ? 1 : 0);
-                                }
+                                    // on recupere des informations
+                                    var data = e.target.data.obj;
+                                    var target = e.target.srcElement;
+                                    var category = editorCurrent.getStyle().name;
+                                    var status = [];
+                                    for (var nn = 0; nn < editorCurrent.getLayers().length; nn++) {
+                                        var o = editorCurrent.getLayers()[nn];
+                                        status.push((o.visibility()) ? 1 : 0);
+                                    }
 
-                                // choix du filtre
-                                globalMap._updateFilterMapBoxLayer(layer, "planign", {
-                                    data:data,
-                                    active:target.checked,
-                                    category:category,
-                                    status:status
-                                })
-                                .then(function () {
+                                    // choix du filtre
+                                    globalMap._updateFilterMapBoxLayer(layer, "planign", {
+                                        data:data,
+                                        active:target.checked,
+                                        category:category,
+                                        status:status
+                                    })
+                                    .then(function () {
 
-                                })
-                                .catch(function (error) {
-                                    console.error(error);
-                                });
+                                    })
+                                    .catch(function (error) {
+                                        console.error(error);
+                                    });
+                                }
                             }
-                        }
-                    });
-                    editor.createElement()
-                        .then(function () {
-                            // enregistrement de l'editeur
-                            editorFiltres.push(editor);
+                        });
+                        editor.createElement()
+                            .then(function () {
+                                // enregistrement de l'editeur
+                                editorFiltres.push(editor);
 
-                        })
+                            });
+                    })(filters);
                 }
             }
         });

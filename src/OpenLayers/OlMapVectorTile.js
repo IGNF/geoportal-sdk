@@ -1610,9 +1610,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         // ajout du layer sur la carte
                                         map.addLayer(p.layer);
 
-                                        // etat des layers en cours
-                                        self.logger.warn(p.layer, self._layers);
-
                                         // FIXME
                                         // le tilejson est async donc les informations ne sont pas encore disponibles
                                         // pour les properties mapbox-*
