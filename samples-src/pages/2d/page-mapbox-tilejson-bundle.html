@@ -6,26 +6,67 @@
 
 {{#content "style"}}
     <style>
+        #container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start
+        }
+        #editors {
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            /* overflow-x: hidden; */
+            height: 500px;
+        }
+        #themes, #filtres, #legendes {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
         #geoportalMap {
-            height: 800px;
-            width: 800px;
+            height: 500px;
+            width: 500px;
         }
     </style>
 {{/content}}
 
 {{#content "body"}}
     <h1>Une carte affichant une couche MapBox avec un TileJson</h1>
-    <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
-    <div id="geoportalMap"></div>
+    <h2>Implementation du changement de themes et selection des filtres</h2>
+    <p>NB : 2 boutons pour afficher les themes et les filtres.</p>
+    <p>NB : activer le filtre CHATEAU_SURF, et voir le resultat sur le Chateau de Vincennes</p>
+    <div id="container">
+        <div id="geoportalMap"></div>
+        <div id="editors">
+            <div id="themes">
+                <button id="button-editor-themes">Editeur de themes</button>
+                <div id="editor-themes"></div>
+            </div>
+            <div id="filtres">
+                <button id="button-editor-filtres">Editeur de filtres</button>
+                <div id="editor-filtres"></div>
+            </div>
+            <div id="legendes">
+                <button id="button-editor-legendes">Afficher les legendes</button>
+                <div id="editor-legendes"></div>
+            </div>
+        </div>
+    </div>
 {{/content}}
 
 {{#content "js"}}
     <script>
+        var layer = null;
+        var editorThemes = null;
+        var editorLegendes = null;
+        var editorFiltres = [];
         var globalMap = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js",
+            zoom : 15,
             center:{
-                x : 407444,
-                y : 5856585
+                x : 271158,
+                y : 6248295
             },
             controlsOptions : {
                 "layerSwitcher" : {},
@@ -39,9 +80,10 @@
             },
             layersOptions : {
                 'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    visibility : false
                 },
                 'planign' : {
-                    opacity : 0.7,
+                    opacity : 1,
                     zoomToExtent : true,
                     visibility : true,
                     format : "MapBox",
@@ -50,39 +92,255 @@
                     url : "{{resources}}/MAPBOX/styles/planign/planign.json",
                     styles : [
                         {
+                            "name" : "style par defaut",
+                            "url" : "{{resources}}/MAPBOX/styles/planign/planign.json"
+                        },
+                        {
                             "name" : "style 'gris'",
-                            // "url" : "https://vectortiles.ign.fr/demonstrateur/styles/gris.json"
                             "url" : "{{resources}}/MAPBOX/styles/planign/gris.json",
-                            "selected" : true
                         },
                         {
                             "name" : "style 'muet'",
-                            // "url" : "https://vectortiles.ign.fr/demonstrateur/styles/muet.json",
-                            "url" : "{{resources}}/MAPBOX/styles/planign/muet.json"
+                            "url" : "{{resources}}/MAPBOX/styles/planign/muet.json",
+                            "selected" : true
                         },
                     ],
-                    filtersSummary : "Filtres",
                     filters : [
-                       {
-                           propertyName:"bati_ponc.symbo",
-                           filterName:"Batiments ponctuels",
-                           configuration : {
-                               type : 0,
-                               selected:[0,1,1,1,1,1,1,1]
-                           }
-                       },
-                       {
-                           propertyName:"bati_surf.symbo",
-                           filterName:"Batiments surfaciques",
-                           configuration : {
-                               type : 0,
-                               selected:[0,1,1,1,1,1,1,1]
-                           }
-                       }
+                        {
+                            propertyName:"bati_surf.symbo",
+                            filterName:"Batiments surfaciques",
+                            configuration : {
+                                type : 0,
+                                selected:[1,1,1,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]
+                            }
+                        },
+                        {
+                            propertyName:"bati_zai.nature",
+                            filterName:"Batiments ZAI"
+                        },
+                        {
+                            propertyName:"hydro_ponc.symbo",
+                            filterName:"Hydro ponctuels"
+                        },
+                        {
+                            propertyName:"limite_lin.symbo",
+                            filterName:"Limites administratives"
+                        },
+                        {
+                            propertyName:"bati_ponc.symbo",
+                            filterName:"Batiments ponctuels",
+                            configuration : {
+                                selected:[],
+                                type:0
+                            }
+                        }
                     ]
                 }
             },
-            zoom : 6
+            mapEventsOptions : {
+                "layerChanged" : function (e) {},
+                "mapLoaded" : function (e) {}
+            }
+        });
+
+        function addLegende() {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+
+            // on recupere les informations
+            layer = globalMap.getLibMap().getLayers().getArray()[1]; // ["planign"]
+            var _url = null;
+            var _styles = layer.get("mapbox-themes").styles;
+            for (var i = 0; i < _styles.length; i++) {
+                var s = _styles[i];
+                if (s.selected) {
+                    _url = s.url;
+                    break;
+                }
+            }
+            // on ajoute l'éditeur minimaliste
+            editorLegendes = new ol.style.Editor({
+                target : divEditorLegendes,
+                style : _url,
+                tools : {
+                    layers : true,
+                    filter : false,
+                    style : false,
+                    legend : true,
+                    group : true,
+                    sort : true,
+                    title : false,
+                    type : false,
+                    pin : false,
+                    visibility : false,
+                    editable : false
+                }
+            });
+            editorLegendes.createElement();
+        }
+        function updateLegende() {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+            // reconstruction de la legende
+            if (editorLegendes) {
+                while (divEditorLegendes.firstChild) {
+                    divEditorLegendes.removeChild(divEditorLegendes.firstChild);
+                }
+            }
+
+            addLegende();
+        }
+        document.getElementById("button-editor-legendes").addEventListener("click", (e) => {
+            var divEditorLegendes = document.getElementById("editor-legendes");
+
+            if (divEditorLegendes.style.display === "none" || divEditorLegendes.style.display === "") {
+                divEditorLegendes.style.display = "block";
+            } else {
+                divEditorLegendes.style.display = "none";
+            }
+
+            if (! editorLegendes) {
+                addLegende();
+            }
+
+        });
+
+        document.getElementById("button-editor-filtres").addEventListener("click", (e) => {
+            var divEditorFiltres = document.getElementById("editor-filtres");
+
+            if (divEditorFiltres.style.display === "none" || divEditorFiltres.style.display === "") {
+                divEditorFiltres.style.display = "block";
+            } else {
+                divEditorFiltres.style.display = "none";
+            }
+
+            if (editorFiltres.length === 0) {
+                layer = globalMap.getLibMap().getLayers().getArray()[1]; // ["planign"]
+
+                var filters = layer.get("mapbox-filters").filters;
+                for (var i = 0; i < filters.length; i++) {
+                    (function(filters) {
+                        var _name = filters[i].filterName;
+                        var _style =  filters[i].style;
+
+                        var label = document.createElement('label');
+                        label.id = "editor-filtres-" + i;
+                        label.className = '';
+                        label.innerHTML = _name; // titre de la 'facette'
+
+                        divEditorFiltres.appendChild(label);
+
+                        // Editeur de filtres
+                        var editor = new ol.style.Editor({
+                            target : divEditorFiltres,
+                            id : i.toString(),
+                            style : _style,
+                            tools : {
+                                themes : false,
+                                layers : true,
+                                filter : false,
+                                style : false,
+                                legend : false,
+                                title : true,
+                                group : false,
+                                sort : true, // on trie les filtres afin d'avoir un permalien conforme à la liste des filtres !
+                                title : false,
+                                type : false,
+                                pin : false
+                            },
+                            events : {
+                                "editor:layer:onclickvisibility" : function (e) {
+                                    // recherche de l'editeur de style
+                                    var editorCurrent = null;
+                                    for (var p = 0; p < editorFiltres.length; p++) {
+                                        var _editor = editorFiltres[p];
+                                        var s = _editor.getContainer().innerHTML;
+                                        if (s.indexOf(e.target.srcElement.id) !== -1) {
+                                            editorCurrent = _editor;
+                                        }
+                                    }
+                                    // on recupere des informations
+                                    var data = e.target.data.obj;
+                                    var target = e.target.srcElement;
+                                    var category = editorCurrent.getStyle().name;
+                                    var status = [];
+                                    for (var nn = 0; nn < editorCurrent.getLayers().length; nn++) {
+                                        var o = editorCurrent.getLayers()[nn];
+                                        status.push((o.visibility()) ? 1 : 0);
+                                    }
+
+                                    // choix du filtre
+                                    globalMap._updateFilterMapBoxLayer(layer, "planign", {
+                                        data:data,
+                                        active:target.checked,
+                                        category:category,
+                                        status:status
+                                    })
+                                    .then(function () {
+
+                                    })
+                                    .catch(function (error) {
+                                        console.error(error);
+                                    });
+                                }
+                            }
+                        });
+                        editor.createElement()
+                            .then(function () {
+                                // enregistrement de l'editeur
+                                editorFiltres.push(editor);
+
+                            });
+                    })(filters);
+                }
+            }
+        });
+
+        document.getElementById("button-editor-themes").addEventListener("click", (e) => {
+            var divEditorThemes = document.getElementById("editor-themes");
+
+            if (divEditorThemes.style.display === "none" || divEditorThemes.style.display === "") {
+                divEditorThemes.style.display = "block";
+            } else {
+                divEditorThemes.style.display = "none";
+            }
+
+            if (!editorThemes) {
+                layer = globalMap.getLibMap().getLayers().getArray()[1]; // ["planign"]
+
+                var _styles = layer.get("mapbox-themes").styles;
+                // Editeur de themes
+                editorThemes = new ol.style.Editor({
+                    target : divEditorThemes,
+                    style : _styles[0].url, // le 1er style par defaut...
+                    themes: {
+                        themesSummary : "Styles disponibles", // BUG pour changer le titre !
+                        themes : _styles
+                    },
+                    tools : {
+                        themes : true,
+                        layers : false,
+                        title : true // BUG pour changer le titre !
+                    },
+                    events : {
+                        "editor:themes:onclicktitle" : function (e) {
+                            // on recupere des informations
+                            var url = e.target.srcElement.data;
+                            var file = url.match(/([^\/]+)(?=\.\w+$)/)[1];
+                            var cid = e.target.srcElement.id; // GPEditorMapBoxThemeInput_ID_1_1572098033570
+                            var idx = cid.substring(cid.lastIndexOf("ID_") + 3, cid.lastIndexOf("_")); // 1
+
+                            // changement de themes
+                            globalMap._updateStyleMapBoxLayer(layer, "planign", {url:url, index:idx})
+                            .then(function () {
+                                updateLegende();
+                            })
+                            .catch(function (error) {
+                                console.error(error);
+                            });
+                        }
+                    }
+                });
+                editorThemes.createElement();
+            }
         });
     </script>
 {{/content}}

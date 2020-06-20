@@ -87,7 +87,7 @@ OlMap.prototype.destroyMap = function () {
     // 1 - suppression de tous les listeners
     this.forgetAllListeners();
     // 2 - suppression de la div
-    map.libMap.setTarget(null);
-}
+    this.libMap.setTarget(null);
+};
 
 export { OlMap };
