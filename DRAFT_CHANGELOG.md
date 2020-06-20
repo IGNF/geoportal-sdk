@@ -32,6 +32,7 @@ Correctifs divers et ajouts
 
 	- fix fonctionnalité noir et blanc avec Chrome v83+ (892c55bee89a2cac9448e28d80cc19ddb9617cdb)
 	- fix sur la gestion des événements (#56)
+	- fix la gestion des filtres attributaires sur le VectorTile 2D (mapbox)
 
 * [Deprecated]
 
