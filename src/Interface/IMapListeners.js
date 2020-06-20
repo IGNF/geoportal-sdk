@@ -88,7 +88,7 @@ IMap.prototype.listen = function (eventId, action, context) {
         this.logger.error("no action provided for the event : " + eventId);
         return false;
     }
-    // FIXME: Invalid typeof comparison value. (valid-typeof)
+    // FIXME: Invalid typeof comparison value. (valid-typeof) ?
     if (!action.name || typeof action.name === "anomynous") {
         this.logger.error("the action provided for the event : " + eventId + " must be named");
         return false;
