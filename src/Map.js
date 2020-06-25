@@ -782,6 +782,22 @@ var layerOptions = {
  * | displayProfileOptions.apply | Function | function to display profile if you want to cutomise it. By default, built-in [DISPLAY_PROFILE_BY_DEFAULT()](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.ElevationPath.html#.DISPLAY_PROFILE_BY_DEFAULT) is used. You may also provide your own function using the same signature. |
  * | displayProfileOptions.target | Object | DOM container to use to display the profile. |
  *
+ * * <a id="boostrelief"></a>
+ *
+ * ### Options for "boostrelief" control
+ *
+ * **Specific 3D options**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | maximised | Boolean | Display or not the control |
+ * | scale | Number | Defines the scale used to boost the relief |
+ * | scale.min | Number | Minimum of the scale - 1 by default |
+ * | scale.max | Number | Maximum of the scale - 50 by default |
+ * | scale.step | Number | Step of the scale - 1 by default |
+ * | defaultBoost | Number | Default boost value applied to the widget and the elevation layers when loaded |
+ * 
  * <a id="searchctrl"></a>
  *
  * ### Options for "search" control

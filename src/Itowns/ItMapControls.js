@@ -9,8 +9,8 @@ ItMap.CONTROLSCLASSES = {
     layerswitcher : "itowns.control.LayerSwitcher",
     attributions : "itowns.control.Attributions",
     overview : "itowns.control.MiniGlobe",
-    graphicscale : "itowns.control.Scale"
-
+    graphicscale : "itowns.control.Scale",
+    boostrelief : "itowns.control.BoostRelief"
 };
 
 /**
@@ -273,6 +273,57 @@ ItMap.prototype.addAttributionsControl = function (controlOpts) {
     attOpts.options.collapsed = !controlOpts.maximised;
     var control = new itownsExtended.control.Attributions(attOpts);
     this.libMap.addWidget(control);
+    return control;
+};
+
+/**
+ * Adds the boostRelief control to the map
+ *
+ * @param {Object} controlOpts - control options
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {Boolean} controlOpts.maximised - Display or not the control 
+ * @param {Number} [controlOpts.scale] - Defines the scale used to boost the relief
+ * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
+ * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
+ * @param {Number} [controlOpts.scale.step] - Step of the scale - 1 by default
+ * @param {Number} [controlOpts.defaultBoost = 1] - Default boost value applied to the widget and the elevation layers when loaded
+ *
+ * @returns {Object} control - boostRelief Control
+ */
+ItMap.prototype.addBoostReliefControl = function (controlOpts) {
+    this.logger.trace("[ItMap] addBoostReliefControl...");
+    var boostReliefControlOptions = {};
+    if (controlOpts.position) {
+        boostReliefControlOptions.position = controlOpts.position;
+    } else {
+        boostReliefControlOptions.position = "absolute";
+    }
+    if (controlOpts.div) {
+        boostReliefControlOptions.target = controlOpts.div;
+    }
+    if (controlOpts.scale) {
+        boostReliefControlOptions.scale = controlOpts.scale;
+    }
+    if (controlOpts.defaultBoost) {
+        boostReliefControlOptions.defaultBoost = controlOpts.defaultBoost;
+    }
+    var control = new itownsExtended.control.BoostRelief(boostReliefControlOptions);
+    this.libMap.addWidget(control);
+    if (control.getElement()) {
+        // hide the div if maximised option = false
+        if (controlOpts.maximised === false) {
+            control.getElement().style.display = "none";
+        } else {
+            control.getElement().style.display = "inline";
+        }
+        // modify the position of the scaleBar if x or y is given as option
+        if (!isNaN(controlOpts.x)) {
+            control.getElement().style.left = Number(controlOpts.x) + "px";
+        }
+        if (!isNaN(controlOpts.y)) {
+            control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        }
+    }
     return control;
 };
 
