@@ -75,7 +75,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     newZoom : this._getZoomFromResolution(this.libMap.getView().getResolution()/* , "EPSG:4326" */)
                 });
             }.bind(this);
-            olEventKey = this.libMap.getView().on("change:resolution", callbackZoomchange );
+            olEventKey = this.libMap.getView().on("change:resolution", callbackZoomchange);
             break;
         case "azimuthChanged" :
             var callbackAzimuthChange = function (olEvt) {
@@ -84,7 +84,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     newAzimuth : this.libMap.getView().getRotation() * 180 / Math.PI
                 });
             }.bind(this);
-            olEventKey = this.libMap.getView().on("change:rotation", callbackAzimuthChange );
+            olEventKey = this.libMap.getView().on("change:rotation", callbackAzimuthChange);
             break;
         case "tiltChanged" :
             // non pertinent en 2D
@@ -106,7 +106,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     position : ladded.getZIndex()
                 });
             }.bind(this);
-            olEventKey = this.libMap.getLayers().on("add", callbackLayerAdded );
+            olEventKey = this.libMap.getLayers().on("add", callbackLayerAdded);
             this._registerEvent(olEventKey, eventId, action, context);
 
             // abonnement à un retrait de couche
@@ -126,9 +126,9 @@ OlMap.prototype.listen = function (eventId, action, context) {
                     layerRemoved : layerOpts
                 });
             }.bind(this);
-            olEventKey = this.libMap.getLayers().on("remove", callbackLayerRemoved );
+            olEventKey = this.libMap.getLayers().on("remove", callbackLayerRemoved);
             this._registerEvent(olEventKey, eventId, action, context);
-            
+
             // abonnement à un changement de propriete sur chaque couche
             for (var obsProperty in OlMap.LAYERPROPERTIES) {
                 map.logger.trace("[OlMap] listen : abonnement layerProperty : " + obsProperty);
@@ -165,7 +165,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                                 newValue : newCommonProp[OlMap.LAYERPROPERTIES[olEvt.key]],
                                 layerChanged : layerOpts
                             });
-                        }
+                        };
 
                         olEventKey = olLayer.on("change:" + obsProperty, callbackLayerChanged);
                         this._registerEvent(olEventKey, eventId, action, context);

@@ -54,6 +54,7 @@ OlMap.prototype._initMap = function () {
         // center : [center.x, center.y],
         enableRotation : this.mapOptions.enableRotation,
         zoom : this.mapOptions.zoom,
+        extent : this.mapOptions.extent,
         minZoom : this.mapOptions.minZoom,
         maxZoom : this.mapOptions.maxZoom,
         projection : this.mapOptions.projection,
@@ -86,7 +87,7 @@ OlMap.prototype.destroyMap = function () {
     // 1 - suppression de tous les listeners
     this.forgetAllListeners();
     // 2 - suppression de la div
-    map.libMap.setTarget(null);
-}
+    this.libMap.setTarget(null);
+};
 
 export { OlMap };

@@ -819,11 +819,18 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
 OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
     // fonction de conversion d'une image en n/b
     function getGrayScaledDataUrl (img) {
-        // patch pour safari
-        img.crossOrigin = null;
+        // FIXME : patch pour safari !?
+        // ce patch cause des problemes sur Chrome v83+
+        // img.crossOrigin = null;
+        img.crossOrigin = "anonymous";
 
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
+
+        // si la taille est nulle, on force à une taille de tuile par defaut
+        // afin d'eviter une exception !
+        img.width = img.width || 256;
+        img.height = img.height || 256;
 
         canvas.width = img.width;
         canvas.height = img.height;

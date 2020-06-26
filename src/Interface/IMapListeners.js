@@ -88,7 +88,8 @@ IMap.prototype.listen = function (eventId, action, context) {
         this.logger.error("no action provided for the event : " + eventId);
         return false;
     }
-    if ( !action.name || typeof action.name === "anomynous") {
+    // FIXME: Invalid typeof comparison value. (valid-typeof) ?
+    if (!action.name || typeof action.name === "anomynous") {
         this.logger.error("the action provided for the event : " + eventId + " must be named");
         return false;
     }
@@ -223,11 +224,11 @@ IMap.prototype.forgetAllListeners = function () {
         // the array is spliced while looping it,
         // all registered listeners are deleted looping on the first array item
         var i = 0;
-        while (map._events[listeners].length > 0) {
-            map.forget(listeners, map._events[listeners][i].action);
+        while (this._events[listeners].length > 0) {
+            this.forget(listeners, this._events[listeners][i].action);
         }
     }
-}
+};
 
 /**
  * Ecouteur de changements sur les couches pour gerer le tableau this._layers.
