@@ -200,6 +200,9 @@ IMap.prototype.addControls = function (controlsOptions) {
             case "graphicscale":
                 controlObj = this.addGraphicScaleControl(controlOpts);
                 break;
+            case "boostrelief":
+                controlObj = this.addBoostReliefControl(controlOpts);
+                break;
             case "mouseposition":
                 controlObj = this.addMousePositionControl(controlOpts);
                 break;
@@ -566,6 +569,21 @@ IMap.prototype.addDrawingControl = function (controlOpts) {};
  * @private
  */
 IMap.prototype.addAttributionsControl = function (controlOpts) {};
+
+/**
+ * Adds boost relief control to the map.
+ *
+ * @param {Object} controlOpts - control options
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {Boolean} controlOpts.maximised - Display or not the control 
+ * @param {Object} [controlOpts.scale] - Defines the scale used to boost the relief
+ * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
+ * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
+ * @param {Number} [controlOpts.scale.step] - Step of the scale - 1 by default
+ * @param {Number} [controlOpts.defaultBoost = 1] - Default boost value applied to the widget and the elevation layers when loaded
+ * @private
+ */
+IMap.prototype.addBoostReliefControl = function (controlOpts) {};
 
 /**
  * Adds camera orientation control to the map.
