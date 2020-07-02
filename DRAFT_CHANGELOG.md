@@ -1,6 +1,6 @@
 # SDK Geoportail 2D/3D, version 3.0.13
 
-**XX/XX/2020 : version 3.0.13**
+**02/07/2020 : version 3.0.13**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
@@ -14,7 +14,7 @@ Correctifs divers et ajouts
 	- Ajout de l'option extent au chargement de la carte (#57)
 	- Ajout guide de bonnes pratiques de developpement (84047c80a45333a692e6f28fc7bc4a7c56d233d6)
 	- Ajout du control d'exageration du relief (#59)
-	- Évolution sur le VectorTile 2D (mapbox) :
+	- Évolution sur le VectorTile 2D (mapbox) (#58) :
 		- Ajout d'un exemple d’implémentation de menu
 			- des thèmes,
 			- des filtres,
@@ -23,8 +23,8 @@ Correctifs divers et ajouts
 
 * [Changed]
 
-	- !A VENIR! mise à jour de l'extension géoportail pour openlayers en version 3.0.11
-	- !A VENIR! mise à jour de l'extension géoportail pour itowns en version 2.2.10
+	- Mise à jour de l'extension géoportail pour openlayers en version 3.0.11
+	- Mise à jour de l'extension géoportail pour itowns en version 2.2.10
 
 * [Removed]
 
