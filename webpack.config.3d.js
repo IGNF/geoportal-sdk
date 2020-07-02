@@ -6,6 +6,9 @@ var path = require("path");
 var webpack = require("webpack");
 var header = require("string-template");
 var glob = require("glob");
+var shell = require('shelljs');
+
+shell.config.silent = true;
 
 // -- plugins
 var DefineWebpackPlugin = webpack.DefinePlugin;
@@ -75,7 +78,7 @@ module.exports = (env, argv) => {
                 // "loglevel",
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
-                "itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
+                //"itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -109,6 +112,7 @@ module.exports = (env, argv) => {
             /** MINIFICATION */
             minimizer: [
                 new TerserJsWebPackPlugin({
+                    extractComments: false,
                     terserOptions: {
                         output: {
                             // FIXME qq bug avec les banner !
@@ -216,7 +220,7 @@ module.exports = (env, argv) => {
                 {
                     /** itowns est exposé en global : itowns ! */
                     // test : require.resolve("itowns"),
-                    test : /node_modules\/itowns\/dist\/itowns.js/,
+                    test : /node_modules\/itowns\/lib\/MainBundle.js/,
                     use : [
                         {
                             loader : "expose-loader",
@@ -381,11 +385,6 @@ module.exports = (env, argv) => {
                     from : path.join(__dirname, "samples-src", "resources", "**/*"),
                     to : path.join(__dirname, "samples", "resources"),
                     context : path.join(__dirname, "samples-src", "resources")
-                },
-                /* COPY ITOWNS LIBRARY IN DIST DIR */
-                {
-                    from : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
-                    to : path.join(__dirname, "dist", "3d")
                 }
             ])
         ]
@@ -441,7 +440,11 @@ module.exports = (env, argv) => {
                 banner : header(fs.readFileSync(path.join(__dirname, "licences", "licence-ign.tmpl"), "utf8"), {
                     __BRIEF__ : pkg.description,
                     __VERSION__ : pkg.SDK3DVersion,
-                    __DATE__ : pkg.date
+                    __DATE__ : pkg.date,
+                    __BUILD_DATE__ : new Date().toLocaleString("fr-FR", { timeZone: 'UTC' }),
+                    __GIT_BRANCH__ : shell.exec('git name-rev --name-only HEAD').stdout.trim(),
+                    __GIT_COMMIT__ : shell.exec('git rev-parse --short HEAD').stdout.trim(),
+                    __GIT_STATUS__ : shell.exec('git status -s -uall').stdout.trim().length > 0
                 }),
                 raw : true,
                 entryOnly : true

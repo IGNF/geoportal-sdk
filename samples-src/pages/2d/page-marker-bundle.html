@@ -6,7 +6,15 @@
 
 {{#content "style"}}
     <style>
-        div#map {
+        div#geoportalMap1 {
+            max-width: 100%;
+            height: 500px;
+        }
+        div#geoportalMap2 {
+            max-width: 100%;
+            height: 500px;
+        }
+        div#geoportalMap3 {
             max-width: 100%;
             height: 500px;
         }
@@ -42,67 +50,82 @@
             },
             markersOptions: [{
                 content : "la description dans la <b>popup</b> en <a href='#'>HTML</a>"
-            }]
+            }],
+            mapEventsOptions : {
+                "mapLoaded" : function () {
+                    loadMap2()
+                }
+            }
         });
 
-        Gp.Map.load('geoportalMap2', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            zoom : 18,
-            center : {
-                //location : "73 avenue de Paris, Saint-Mandé"
-                geolocate : true
-            },
-            layersOptions : {
-                'ORTHOIMAGERY.ORTHOPHOTOS': {
+        function loadMap2() {
+            Gp.Map.load('geoportalMap2', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                zoom : 18,
+                center : {
+                    //location : "73 avenue de Paris, Saint-Mandé"
+                    geolocate : true
+                },
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    }
+                },
+                controlsOptions : {
+                    layerSwitcher : {},
+                    mousePosition : {}
+                },
+                markersOptions: [{
+                    content : "<p>Ma position</p>"
+                }],
+                mapEventsOptions : {
+                    "mapLoaded" : function () {
+                        loadMap3()
+                    }
                 }
-            },
-            controlsOptions : {
-                layerSwitcher : {},
-                mousePosition : {}
-            },
-            markersOptions: [{
-                content : "<p>Ma position</p>"
-            }]
-        });
+            });
+        }
 
-        Gp.Map.load('geoportalMap3', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            zoom : 18,
-            center : {
-                x : 261419,
-                y : 6250398
-            },
-            layersOptions : {
-                'ORTHOIMAGERY.ORTHOPHOTOS': {
-                }
-            },
-            controlsOptions : {
-                mousePosition : {}
-            },
-            markersOptions: [{
-                url : "https://www.google.fr/maps/vt/icon/name=assets/icons/spotlight/spotlight_poi-0-tiny.png&color=ffff0000?scale=2",
-                content : "Marker Google. Avec autoPan.",
-                position : {
-                    x : 261500,
+        function loadMap3() {
+            Gp.Map.load('geoportalMap3', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                zoom : 18,
+                center : {
+                    x : 261419,
                     y : 6250398
                 },
-                autoPanOptions : {
-                    autoPan : true,
-                    duration : 1000,
-                    margin : 20
-                }
-            },{
-                content : "Marker par defaut. Avec autoPan désactivé.",
-                offset : [-25.5, -38],
-                position : {
-                    x : 261300,
-                    y : 6250398
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    }
                 },
-                autoPanOptions : {
-                    autoPan : false
-                }
-            }]
-        });
+                controlsOptions : {
+                    mousePosition : {}
+                },
+                markersOptions: [{
+                    url : "https://www.google.fr/maps/vt/icon/name=assets/icons/spotlight/spotlight_poi-0-tiny.png&color=ffff0000?scale=2",
+                    content : "Marker Google. Avec autoPan.",
+                    position : {
+                        x : 261500,
+                        y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : true,
+                        duration : 1000,
+                        margin : 20
+                    }
+                },{
+                    content : "Marker par defaut. Avec autoPan désactivé.",
+                    offset : [-25.5, -38],
+                    position : {
+                        x : 261300,
+                        y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : false
+                    }
+                }]
+            });
+        }
+
     </script>
 {{/content}}
 {{/extend}}

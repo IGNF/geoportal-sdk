@@ -1,4 +1,5 @@
 import { ItMap } from "./ItMapBase";
+import { itownsExtended } from "geoportal-extensions-itowns";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation
@@ -8,8 +9,8 @@ ItMap.CONTROLSCLASSES = {
     layerswitcher : "itowns.control.LayerSwitcher",
     attributions : "itowns.control.Attributions",
     overview : "itowns.control.MiniGlobe",
-    graphicscale : "itowns.control.Scale"
-
+    graphicscale : "itowns.control.Scale",
+    boostrelief : "itowns.control.BoostRelief"
 };
 
 /**
@@ -67,7 +68,7 @@ ItMap.prototype.addMousePositionControl = function (controlOpts) {
     if (controlOpts.altitude) {
         mpOpts.altitude = controlOpts.altitude;
     }
-    var control = new this.Itowns.control.MousePosition(mpOpts);
+    var control = new itownsExtended.control.MousePosition(mpOpts);
     this.libMap.addWidget(control);
     return control;
 };
@@ -131,7 +132,7 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     }
 
     this.logger.trace("[ItMap]  : layerSwitcher Opts  : ... ");
-    var control = new this.Itowns.control.LayerSwitcher(lsOpts);
+    var control = new itownsExtended.control.LayerSwitcher(lsOpts);
     this.libMap.addWidget(control);
     return control;
 };
@@ -166,18 +167,18 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
     if (controlOpts.layer) {
         ovControlOptions.layer = controlOpts.layer;
     } else if (controlOpts.layerId) {
-        ovControlOptions.layer = new this.Itowns.layer.GeoportalWMTS({
+        ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : controlOpts.layerId,
             ssl : true
         });
     } else {
         // orthophotos layer by default on the miniglobe
-        ovControlOptions.layer = new this.Itowns.layer.GeoportalWMTS({
+        ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             ssl : true
         });
     }
-    var control = new this.Itowns.control.MiniGlobe(ovControlOptions);
+    var control = new itownsExtended.control.MiniGlobe(ovControlOptions);
     this.libMap.addWidget(control);
     if (control.getElement()) {
         // hide the div if maximised option = false
@@ -236,7 +237,7 @@ ItMap.prototype.addGraphicScaleControl = function (controlOpts) {
     if (controlOpts.div) {
         scaleControlOptions.target = controlOpts.div;
     }
-    var control = new this.Itowns.control.Scale(scaleControlOptions);
+    var control = new itownsExtended.control.Scale(scaleControlOptions);
     this.libMap.addWidget(control);
     if (control.getElement()) {
         // hide the div if maximised option = false
@@ -270,8 +271,59 @@ ItMap.prototype.addAttributionsControl = function (controlOpts) {
         attOpts.options.target = controlOpts.div;
     }
     attOpts.options.collapsed = !controlOpts.maximised;
-    var control = new this.Itowns.control.Attributions(attOpts);
+    var control = new itownsExtended.control.Attributions(attOpts);
     this.libMap.addWidget(control);
+    return control;
+};
+
+/**
+ * Adds the boostRelief control to the map
+ *
+ * @param {Object} controlOpts - control options
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {Boolean} controlOpts.maximised - Display or not the control 
+ * @param {Object} [controlOpts.scale] - Defines the scale used to boost the relief
+ * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
+ * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
+ * @param {Number} [controlOpts.scale.step] - Step of the scale - 1 by default
+ * @param {Number} [controlOpts.defaultBoost = 1] - Default boost value applied to the widget and the elevation layers when loaded
+ *
+ * @returns {Object} control - boostRelief Control
+ */
+ItMap.prototype.addBoostReliefControl = function (controlOpts) {
+    this.logger.trace("[ItMap] addBoostReliefControl...");
+    var boostReliefControlOptions = {};
+    if (controlOpts.position) {
+        boostReliefControlOptions.position = controlOpts.position;
+    } else {
+        boostReliefControlOptions.position = "absolute";
+    }
+    if (controlOpts.div) {
+        boostReliefControlOptions.target = controlOpts.div;
+    }
+    if (controlOpts.scale) {
+        boostReliefControlOptions.scale = controlOpts.scale;
+    }
+    if (controlOpts.defaultBoost) {
+        boostReliefControlOptions.defaultBoost = controlOpts.defaultBoost;
+    }
+    var control = new itownsExtended.control.BoostRelief(boostReliefControlOptions);
+    this.libMap.addWidget(control);
+    if (control.getElement()) {
+        // hide the div if maximised option = false
+        if (controlOpts.maximised === false) {
+            control.getElement().style.display = "none";
+        } else {
+            control.getElement().style.display = "inline";
+        }
+        // modify the position of the scaleBar if x or y is given as option
+        if (!isNaN(controlOpts.x)) {
+            control.getElement().style.left = Number(controlOpts.x) + "px";
+        }
+        if (!isNaN(controlOpts.y)) {
+            control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        }
+    }
     return control;
 };
 

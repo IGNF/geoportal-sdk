@@ -40,7 +40,7 @@ Une pull request vous permet de soumettre une proposition d'évolution du code s
 
 ### On code...
 
-- Créez une `nouvelle branche` pour travailler. Nommez la par exemple avec le nom de la fonctionnalité à implementer (ex. feature-tests-myfunction) ou celui de l'issue qu'elle vise à résoudre (ex. feature-issue-xx)
+- Créez une `nouvelle branche` pour travailler. Cette branche doit être tirée depuis la branche 'develop'. Nommez la par exemple avec le nom de la fonctionnalité à implementer (ex. feature-tests-myfunction) ou celui de l'issue qu'elle vise à résoudre (ex. feature-issue-xx)
 
 - Dans le répertoire local du projet, installez les dépendances du projet :
 
@@ -101,7 +101,7 @@ Un navigateur se lance avec la jsoc servie sur l'adresse http://localhost:9001/
 
 ### On soumet une PR...
 
-- De votre `fork`, ouvrez une demande de `pull request` sur cette branche (cf. https://help.github.com/articles/creating-a-pull-request/). Et ciblez sur la branche `master` du dépôt d'origine...
+- De votre `fork`, ouvrez une demande de `pull request` sur cette branche (cf. https://help.github.com/articles/creating-a-pull-request/). Et ciblez sur la branche `develop` du dépôt d'origine...
 - Référencez tous les problèmes ainsi que la documentation sur votre PR.
 - Utilisez dans vos `commit` des fonctionnalités de GitHub (ex. "Fix #37.").
 - Si le responsable demande des modifications supplémentaires, il suffit de les pousser vers votre branche locale, la `pull request` se met à jour automatiquement.

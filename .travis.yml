@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "10"
 stages:
   - name: deploy
     # require the branch name to be master
@@ -21,7 +21,7 @@ before_deploy:
     - cp -r dist/3d deploy/current/SDK-3D/
     - cp -r dist/2d deploy/current/SDK-2D/
     - mkdir -p deploy/current/jsdoc/
-    - cp -r jsdoc/. deploy/current/jsdoc/
+    - cp -r jsdoc/* deploy/current/jsdoc/
 deploy:
   provider: pages
   skip-cleanup: true

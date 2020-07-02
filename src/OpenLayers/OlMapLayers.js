@@ -273,6 +273,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
  * @private
  */
 OlMap.prototype._addVectorLayer = function (layerObj) {
+    var self = this;
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
@@ -354,7 +355,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                         },
                         // callback on failure
                         onFailure : function (error) {
-                            this.logger.info("[_addVectorLayer] : Kml request failed : ", error);
+                            self.logger.info("[_addVectorLayer] : Kml request failed : ", error);
                         }
                     });
                 }
@@ -818,11 +819,18 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
 OlMap.prototype._colorGrayscaleLayerSwitch = function (gpLayer, toGrayScale) {
     // fonction de conversion d'une image en n/b
     function getGrayScaledDataUrl (img) {
-        // patch pour safari
-        img.crossOrigin = null;
+        // FIXME : patch pour safari !?
+        // ce patch cause des problemes sur Chrome v83+
+        // img.crossOrigin = null;
+        img.crossOrigin = "anonymous";
 
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
+
+        // si la taille est nulle, on force à une taille de tuile par defaut
+        // afin d'eviter une exception !
+        img.width = img.width || 256;
+        img.height = img.height || 256;
 
         canvas.width = img.width;
         canvas.height = img.height;

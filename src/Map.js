@@ -204,6 +204,7 @@ var mapLoadedEvent = {
  * | enableRotation | Boolean | optional | true | Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used. |
  * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. |
  * | projection | String | optional | "EPSG:3857" | Projection code (in EPSG or IGNF register) for the map. Not available in 3D as the projection is always "EPSG:4326" |
+ * | extent | Array | optional | | Forced extent of the view, with the format [west, south, east, north], with the projection of the map
  *
  * * **Specific 3D options**
  *
@@ -345,24 +346,22 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | url | String | The url to the style file of the layer (style.json) |
+ * | styles | {@link Gp.MapboxStylesOptions} | options for layer styles |
+ * | defaultStyleName | String | Name of the style by default of the layer |
+ * | defaultStyleThumbnail | String | Thumbnail of the style by default of the layer |
+ * | defaultStyleDescription | String | Description of the style by default of the layer |
+ * | mapboxOptions | Object | - |
  *
  * **Specific 2D properties**
  *
  * | property | Type | Description |
  * | - | - | - |
- * | urlService | String | - |
- * | outputFormat | String | - |
- * | projection | String | - |
- * | defaultStyleName | String | - |
- * | defaultStyleThumbnail | String | - |
- * | defaultStyleDescription | String | - |
- * | stylesSummary | String | - |
- * | styles | {@link Gp.MapboxStylesOptions} | options for layer styles |
- * | filtersSummary | String | - |
+ * | urlService | String | (Parameter not available, coming soon) overloads the url of the service of the requested mapbox layer |
+ * | stylesSummary | String | styles description, can be displayed in the mapbox layer styles editor |
+ * | filtersSummary | String | filters description, can be displayed in the mapbox layer filters editor |
  * | filters | {@link Gp.FiltersOptions} | options for layer filters |
  * | queryable | Boolean | If true, user clicks on map will trigger getFeatureInfo request on the layer |
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
- * | mapboxOptions | Object | - |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
@@ -784,6 +783,22 @@ var layerOptions = {
  * | displayProfileOptions.apply | Function | function to display profile if you want to cutomise it. By default, built-in [DISPLAY_PROFILE_BY_DEFAULT()](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.ElevationPath.html#.DISPLAY_PROFILE_BY_DEFAULT) is used. You may also provide your own function using the same signature. |
  * | displayProfileOptions.target | Object | DOM container to use to display the profile. |
  *
+ * * <a id="boostrelief"></a>
+ *
+ * ### Options for "boostrelief" control
+ *
+ * **Specific 3D options**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | maximised | Boolean | Display or not the control |
+ * | scale | Number | Defines the scale used to boost the relief |
+ * | scale.min | Number | Minimum of the scale - 1 by default |
+ * | scale.max | Number | Maximum of the scale - 50 by default |
+ * | scale.step | Number | Step of the scale - 1 by default |
+ * | defaultBoost | Number | Default boost value applied to the widget and the elevation layers when loaded |
+ * 
  * <a id="searchctrl"></a>
  *
  * ### Options for "search" control
@@ -931,16 +946,15 @@ var styleOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | styles | Array(Object) | - |
-* | styles.name | String | - |
-* | styles.url | String | - |
-* | styles.thumbnail | String | - |
-* | styles.description | String | - |
-* | styles.selected | Boolean | - |
+* | styles | Array(Object) | Styles available for the mapbox layer |
+* | styles.name | String | Name of the style as it should appears on the layerSwitcher |
+* | styles.url | String | Url to the json file describing the style |
+* | styles.thumbnail | String | Thumbnail of the style |
+* | styles.description | String | Description of the style |
+* | styles.selected | Boolean | True if the style must be selected by default |
 *
 * @namespace
 * @alias Gp.MapboxStylesOptions
-* @todo finish description
 */
 var mapboxStylesOptions = {
 };
@@ -953,7 +967,7 @@ var mapboxStylesOptions = {
 *
 * | property | Type | Description |
 * | - | - | - |
-* | filters | Array(Object) | - |
+* | filters | Array(Object) | Filters available for the mapbox layer |
 * | filters.propertyName | String | field name of table or the field name with the table, eg "table.field" |
 * | filters.filterName | String | human description |
 * | filters.configuration | Object | - |
@@ -962,7 +976,6 @@ var mapboxStylesOptions = {
 *
 * @namespace
 * @alias Gp.FiltersOptions
-* @todo finish description
 */
 var filtersOptions = {
 };

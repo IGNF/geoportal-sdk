@@ -1,5 +1,19 @@
 import { ItMap } from "./ItMapBase";
 import { IMap } from "../Interface/IMap";
+import {
+    Extent,
+    WMSSource,
+    WMTSSource,
+    FileSource,
+    VectorTilesSource,
+    ElevationLayer,
+    ColorLayer,
+    Fetcher,
+    KMLParser,
+    GeoJsonParser,
+    GpxParser
+} from "itowns";
+import { itownsExtended } from "geoportal-extensions-itowns";
 
 /**
 * Associate a function to trigger when an event is received.
@@ -63,7 +77,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
                 action.call(context, centerChangedEvt);
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
             break;
         case "zoomChanged" :
             var callbackZoomchange = function (itEvent) {
@@ -76,7 +90,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newZoom : itEvent.new
                 });
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
         case "azimuthChanged" :
             var callbackAzimuthChange = function (itEvent) {
@@ -88,7 +102,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newAzimuth : itEvent.new.heading
                 });
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
         case "tiltChanged" :
             var callbackTiltChange = function (itEvent) {
@@ -100,7 +114,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     newTilt : itEvent.new.tilt
                 });
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
             break;
         case "projectionChanged" :
             // TODO  : interet ?
@@ -129,7 +143,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     position : layerIndex
                 });
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
             map._registerEvent(key, eventId, action, context);
 
             var callbackLayerRemoved = function (itevt) {
@@ -139,7 +153,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     layerRemoved : layerOpts
                 });
             };
-            key = map.libMap.listen(context.Itowns.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
+            key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
             map._registerEvent(key, eventId, action, context);
 
             // abonnement à un changement de propriete sur chaque couche
@@ -149,31 +163,31 @@ ItMap.prototype.listen = function (eventId, action, context) {
 
                     var callbackLayerChanged = function (itevt) {
                         var layerEvtinfos = map.libMap.getLayerEventInfos(itevt);
-                        var key = layerEvtinfos.propertyName;
+                        var k = layerEvtinfos.propertyName;
                         var oldItObj = {};
-                        oldItObj[key] = layerEvtinfos.previousValue;
+                        oldItObj[k] = layerEvtinfos.previousValue;
                         var oldCommonProp = map._getCommonLayerParams(oldItObj);
                         var newItObj = {};
-                        newItObj[key] = layerEvtinfos.newValue;
+                        newItObj[k] = layerEvtinfos.newValue;
                         var newCommonProp = map._getCommonLayerParams(newItObj);
 
                         action.call(context, {
-                            property : ItMap.LAYERPROPERTIES[key],
-                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[key]],
-                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[key]],
+                            property : ItMap.LAYERPROPERTIES[k],
+                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[k]],
                             layerChanged : layerOpts
                         });
                     };
 
-                    var type = (obsProperty === "visible") ? context.Itowns.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED
-                        : (obsProperty === "opacity") ? context.Itowns.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED
-                            : context.Itowns.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED;
+                    var type = (obsProperty === "visible") ? itownsExtended.GlobeViewExtended.EVENTS.VISIBLE_PROPERTY_CHANGED
+                        : (obsProperty === "opacity") ? itownsExtended.GlobeViewExtended.EVENTS.OPACITY_PROPERTY_CHANGED
+                            : itownsExtended.GlobeViewExtended.EVENTS.SEQUENCE_PROPERTY_CHANGED;
 
                     key = map.libMap.addLayerListener(itLayer, type, callbackLayerChanged);
                     map._registerEvent(key, eventId, action, context);
-                    key = null;
                 });
             };
+            key = null;
             break;
         case "controlChanged" :
             break;
@@ -406,11 +420,11 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
     switch (layerOpts.format.toUpperCase()) {
         case "KML":
             this.logger.trace("ajout d'une couche KML");
-            layer.source = new this.Itowns.FileSource({
+            layer.source = new FileSource({
                 url : layerOpts.url,
                 projection : "EPSG:4326",
-                fetcher : this.Itowns.Fetcher.xml,
-                parser : this.Itowns.KMLParser.parse
+                fetcher : Fetcher.xml,
+                parser : KMLParser.parse
             });
             // extractStyles from layerOpts is prioritary (if true, itowns will automatically retrieve the KML style)
             if (layerOpts.extractStyles === false) {
@@ -429,11 +443,11 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "GEOJSON":
             this.logger.trace("ajout d'une couche GEOJSON");
-            layer.source = new this.Itowns.FileSource({
+            layer.source = new FileSource({
                 url : layerOpts.url,
                 projection : "EPSG:4326",
-                fetcher : this.Itowns.Fetcher.json,
-                parser : this.Itowns.GeoJsonParser.parse
+                fetcher : Fetcher.json,
+                parser : GeoJsonParser.parse
             });
 
             layer.style = {
@@ -451,11 +465,11 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "GPX":
             this.logger.trace("ajout d'une couche GPX");
-            layer.source = new this.Itowns.FileSource({
+            layer.source = new FileSource({
                 url : layerOpts.url,
                 projection : "EPSG:4326",
-                fetcher : this.Itowns.Fetcher.xml,
-                parser : this.Itowns.GpxParser.parse
+                fetcher : Fetcher.xml,
+                parser : GpxParser.parse
             });
             layer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
             layer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
@@ -517,7 +531,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             vectorLayerOptions.style = layer.style;
         }
 
-        var vectorLayer = new this.Itowns.ColorLayer(layerId, vectorLayerOptions);
+        var vectorLayer = new ColorLayer(layerId, vectorLayerOptions);
 
         this.libMap.getGlobeView().addLayer(vectorLayer);
     }
@@ -540,15 +554,15 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     // itowns needs a bbox to display the layer
     // if the layer is in PM, the bbox needs to be in planar coordinates
     if (layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
-        boundingBox = new this.Itowns.Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as(layerOpts.projection);
+        boundingBox = new Extent("EPSG:4326", layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top).as(layerOpts.projection);
     } else if (layerOpts.bbox && layerOpts.projection === "EPSG:4326") {
-        boundingBox = new this.Itowns.Extent(layerOpts.projection, layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
+        boundingBox = new Extent(layerOpts.projection, layerOpts.bbox.left, layerOpts.bbox.right, layerOpts.bbox.bottom, layerOpts.bbox.top);
     } else if (!layerOpts.bbox && layerOpts.projection === "EPSG:3857") {
         // world bbox in PM (EPSG:3857)
-        boundingBox = new this.Itowns.Extent(layerOpts.projection, -20026376.39, 20026376.39, -20048966.10, 20048966.10);
+        boundingBox = new Extent(layerOpts.projection, -20026376.39, 20026376.39, -20048966.10, 20048966.10);
     } else {
         // world bbox in WGS84 (EPSG:4326)
-        boundingBox = new this.Itowns.Extent("EPSG:4326", -180, 180, -90, 90);
+        boundingBox = new Extent("EPSG:4326", -180, 180, -90, 90);
     }
 
     layerOpts.format = layerOpts.format.toLowerCase();
@@ -593,7 +607,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layerOpts.projection = layerOpts.projection.toUpperCase();
             }
 
-            layer.source = new this.Itowns.WMSSource({
+            layer.source = new WMSSource({
                 protocol : layerOpts.format,
                 version : layerOpts.version || "1.3.0",
                 url : layerOpts.url,
@@ -686,7 +700,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 layerOpts.projection = layerOpts.projection.toUpperCase();
             }
 
-            layer.source = new this.Itowns.WMTSSource({
+            layer.source = new WMTSSource({
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
@@ -749,10 +763,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
         switch (layer.type.toUpperCase()) {
             case "ELEVATION" :
-                this.libMap.getGlobeView().addLayer(new this.Itowns.ElevationLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new ElevationLayer(layer.id, layer));
                 break;
             case "COLOR" :
-                this.libMap.getGlobeView().addLayer(new this.Itowns.ColorLayer(layer.id, layer));
+                this.libMap.getGlobeView().addLayer(new ColorLayer(layer.id, layer));
                 break;
             default :
         };
@@ -770,6 +784,18 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
 ItMap.prototype._addMapBoxLayer = function (layerObj) {
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
+
+    // si les mapbox options ne sont pas données par les options de la couche,
+    // on crée quand même la propriété
+    if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
+        layerOpts.mapboxOptions = {};
+    }
+
+    // déclaration des variables style par défaut
+    var _url;
+    var _thumbnail;
+    var _name;
+    var _description;
 
     var _urlDefaultOrSelected = layerOpts.url;
 
@@ -805,19 +831,13 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             }
         }
 
-        // si les mapbox options ne sont pas données par les options de la couche,
-        // on crée quand même la propriété
-        if (!layerOpts.hasOwnProperty("mapboxOptions") || typeof layerOpts.mapboxOptions === "undefined") {
-            layerOpts.mapboxOptions = {};
-        }
-
         // le style par defaut n'est pas dans la liste, alors on l'ajoute dans
         // dans la liste des themes...
         if (!foundDefaultStyle) {
-            var _url = layerOpts.url;
-            var _thumbnail = layerOpts.defaultStyleThumbnail || null;
-            var _name = layerOpts.defaultStyleName || "Style par défaut";
-            var _description = layerOpts.defaultStyleDescription || "Style par défaut";
+            _url = layerOpts.url;
+            _thumbnail = layerOpts.defaultStyleThumbnail || null;
+            _name = layerOpts.defaultStyleName || "Style par défaut";
+            _description = layerOpts.defaultStyleDescription || "Style par défaut";
             layerOpts.styles.unshift({
                 thumbnail : _thumbnail,
                 name : _name,
@@ -826,9 +846,25 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
                 selected : !foundSelectedStyle
             });
         }
+    } else {
+        // pas de styles spécifiés en options : nous ajouton l'url de la couche comme style par défaut
+        // en réglant le paramètre "selected" à true (seul style, donc selectionné)
+        _url = layerOpts.url;
+        _thumbnail = layerOpts.defaultStyleThumbnail || null;
+        _name = layerOpts.defaultStyleName || "Style par défaut";
+        _description = layerOpts.defaultStyleDescription || "Style par défaut";
+        layerOpts.styles = [
+            {
+                thumbnail : _thumbnail,
+                name : _name,
+                url : _url,
+                description : _description,
+                selected : true
+            }
+        ];
     }
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
-    var vectorTileSource = new this.Itowns.VectorTilesSource({
+    var vectorTileSource = new VectorTilesSource({
         style : _urlDefaultOrSelected,
         filter : function (layer) {
             // Array.includes() -> pas compatibilité IE 11 !
@@ -842,7 +878,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
 
     var vectorTileLayer = {};
 
-    vectorTileLayer = new this.Itowns.ColorLayer(layerId, {
+    vectorTileLayer = new ColorLayer(layerId, {
         // FIXME wait for next itowns release to remove this
         isValidData : function () {
             return false;
@@ -885,7 +921,7 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     var layerId = Object.keys(layerObj)[0];
     // FIXME verrue pour gestion projection MNT = IGNF:WGS84 dans autoconf...
     // itowns ne gere que 3857 et 4326
-    if (layerConf.defaultProjection !== "EPSG:3857") {
+    if (layerConf && layerConf.defaultProjection !== "EPSG:3857") {
         layerConf.defaultProjection = "EPSG:4326";
     }
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns

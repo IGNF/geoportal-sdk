@@ -47,24 +47,27 @@
                },
                "layerswitcher" : {},
                area : {}
+            },
+            mapEventsOptions : {
+                "mapLoaded" : function (evt) {
+                    var map2 = Gp.Map.load(document.getElementById('geoportalMap2'), {
+                        configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                        layersOptions : {
+                            "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+                        },
+                        controlsOptions : {
+                        "search" : {
+                            maximised : true
+                        },
+                        "layerswitcher" : {},
+                        area : {}
+                        }
+                    });
+                    console.log(map2);
+                }
             }
         });
         console.log(map1);
-
-        var map2 = Gp.Map.load(document.getElementById('geoportalMap2'), {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            layersOptions : {
-                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
-            },
-            controlsOptions : {
-              "search" : {
-                 maximised : true
-               },
-               "layerswitcher" : {},
-               area : {}
-            }
-        });
-        console.log(map2);
 
         var map3 = Gp.Map.load('inconnu', {
             apiKey : "{{apikey}}"

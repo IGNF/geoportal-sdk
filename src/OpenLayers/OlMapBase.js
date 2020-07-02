@@ -20,6 +20,12 @@ function OlMap (opts) {
      */
     this.CLASSNAME = "OlMap";
 
+    /**
+     * Mode de visualisation (heritage)
+     */
+    if (!opts.mapOptions) opts.mapOptions = {};
+    if (!opts.mapOptions.viewMode) opts.mapOptions.viewMode = "2d";
+
     // appel du constructeur par heritage.
     IMap.apply(this, arguments);
 
@@ -48,6 +54,7 @@ OlMap.prototype._initMap = function () {
         // center : [center.x, center.y],
         enableRotation : this.mapOptions.enableRotation,
         zoom : this.mapOptions.zoom,
+        extent : this.mapOptions.extent,
         minZoom : this.mapOptions.minZoom,
         maxZoom : this.mapOptions.maxZoom,
         projection : this.mapOptions.projection,
@@ -71,6 +78,16 @@ OlMap.prototype._initMap = function () {
  */
 OlMap.prototype.getLibMap = function () {
     return this.libMap;
+};
+
+/**
+ * Destroy map by canceling all events listening and removing DOM elements
+ */
+OlMap.prototype.destroyMap = function () {
+    // 1 - suppression de tous les listeners
+    this.forgetAllListeners();
+    // 2 - suppression de la div
+    this.libMap.setTarget(null);
 };
 
 export { OlMap };

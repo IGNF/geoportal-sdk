@@ -170,6 +170,7 @@ IMap.prototype.addLayers = function (layersOptions) {
             }
             // ... puis MAPBOX GEOPORTAIL
             if (format == null || format.toUpperCase() === "MAPBOX") {
+                // FIXME je ne comprends pas ce code !?
                 layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:GPP:TMS");
                 if (layerConf) {
                     format = "MAPBOX";
