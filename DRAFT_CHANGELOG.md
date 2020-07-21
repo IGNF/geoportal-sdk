@@ -12,6 +12,8 @@
 
 * [Changed]
 
+	- mise à jour des dépendances du projet
+
 * [Removed]
 
 * [Fixed]
