@@ -575,7 +575,7 @@ IMap.prototype.addAttributionsControl = function (controlOpts) {};
  *
  * @param {Object} controlOpts - control options
  * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
- * @param {Boolean} controlOpts.maximised - Display or not the control 
+ * @param {Boolean} controlOpts.maximised - Display or not the control
  * @param {Object} [controlOpts.scale] - Defines the scale used to boost the relief
  * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
  * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
