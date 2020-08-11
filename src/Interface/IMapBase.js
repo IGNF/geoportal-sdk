@@ -25,7 +25,7 @@ var switch2D3D = function (viewMode) {
     oldMap.controlsOptions = this.getControlsOptions();
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
-    oldMap.extent = this.mapOptions.extent !== undefined ? this.mapOptions.extent : null;
+    oldMap.extent = this.mapOptions.extent;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
