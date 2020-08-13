@@ -51,7 +51,7 @@ ItMap.prototype._initMap = function () {
     this.logger.trace("[ItMap]  : _initMap");
 
     var center;
-    if (this.mapOptions.center) {
+    if (this.mapOptions.center && this.mapOptions.center.x && this.mapOptions.center.y) {
         center = new Coordinates("EPSG:4326", this.mapOptions.center.x, this.mapOptions.center.y, 0);
     } else {
         center = new Coordinates("EPSG:4326", 2, 48, 0);
