@@ -386,7 +386,7 @@ ItMap.prototype.getLibMapControl = function (controlId) {
     for (var j = 0; j < itControls.length; j++) {
         this.logger.trace("[ItMap] getLibMapControl  : analyzing  : " + controlId);
         // test on control Name
-        if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
+        if (itControls[j]._name && itControls[j]._name.toLowerCase() === controlId.toLowerCase()) {
             foundItControl = itControls[j];
             this.logger.trace("[ItMap] getLibMapControl  : found GP Plugin Control ! ");
             break;

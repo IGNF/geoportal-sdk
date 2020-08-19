@@ -80,8 +80,10 @@ ItMap.prototype._initMap = function () {
         self.libMap.forgetByKey(key);
 
         // we show the div when globe is loaded
+        // we had an id to the itowns canvas
         window.setTimeout(function () {
             self.div.style.visibility = "";
+            self.libMap.getGlobeView().domElement.firstElementChild.id = "itownscanvas";
         }, 1);
 
         // evenements pour faire la distinction entre le click et le drag

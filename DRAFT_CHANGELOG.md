@@ -12,11 +12,14 @@
 
 * [Changed]
 
+	- mise à jour des dépendances du projet
+
 * [Removed]
 
 * [Fixed]
 
 	- meilleur gestion des options de la couche sur le format MapBox
+	- fix de la fonction de récupération des controls itowns
 
 * [Deprecated]
 
