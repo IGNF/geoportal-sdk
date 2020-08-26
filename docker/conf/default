@@ -13,6 +13,13 @@ server {
         location / {
                 autoindex on;
         }
+
+        location ~ /geoportal-sdk/test/(.*) {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                rewrite ^/geoportal-extensions/test/(.*)$ /$1 break;
+                proxy_pass http://sdk-server:9021;
+        }
         
         location ~ /geoportal-extensions/test/(.*) {
                 proxy_set_header Host $host;

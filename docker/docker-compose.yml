@@ -10,6 +10,10 @@ services:
     depends_on: 
       - extensions
       - access-lib
+      expose:
+        - 9031
+      ports:
+        - 9031:9031
     volumes:
       - sdk-data-sdk-volume:/home/docker/html/geoportal-sdk
       - sdk-data-ext-volume:/home/docker/html/geoportal-extensions
