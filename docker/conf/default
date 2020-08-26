@@ -1,0 +1,38 @@
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html index-src.html;
+
+        server_name _;
+
+        location / {
+                autoindex on;
+        }
+        
+        location ~ /geoportal-extensions/test/(.*) {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                rewrite ^/geoportal-extensions/test/(.*)$ /$1 break;
+                proxy_pass http://extensions-server:9021;
+        }
+
+        location ~ /geoportal-access-lib/test/(.*) {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                rewrite ^/geoportal-access-lib/test/(.*)$ /$1 break;
+                proxy_pass http://access-lib-server:9012;
+        }
+
+        location ~ /geoportal-access-lib/end-to-end/(.*) {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                rewrite ^/geoportal-access-lib/end-to-end/(.*)$ /$1 break;
+                proxy_pass http://access-lib-server:9013;
+        }
+
+}

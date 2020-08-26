@@ -1,0 +1,97 @@
+version: "3.7"
+
+services:
+  sdk:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    image: sdk
+    container_name: sdk-server
+    depends_on: 
+      - extensions
+      - access-lib
+    volumes:
+      - sdk-data-sdk-volume:/home/docker/html/geoportal-sdk
+      - sdk-data-ext-volume:/home/docker/html/geoportal-extensions
+      - sdk-data-acc-volume:/home/docker/html/geoportal-access-lib
+      - ${SDK}/src:/home/docker/geoportal-sdk/src
+      - ${SDK}/test:/home/docker/geoportal-sdk/test
+      - ${SDK}/samples-src:/home/docker/geoportal-sdk/samples-src
+    networks:
+      - api-network
+
+  extensions:
+    build:
+      context: ${EXTENSIONS}
+      dockerfile: ./docker/Dockerfile
+    image: extensions
+    container_name: extensions-server
+    depends_on: 
+      - access-lib
+    expose:
+      - 9021
+    ports:
+      - 9021:9021
+    volumes:
+      - sdk-data-ext-volume:/home/docker/html/geoportal-extensions
+      - sdk-data-acc-volume:/home/docker/html/geoportal-access-lib
+      - ${EXTENSIONS}/src:/home/docker/geoportal-extensions/src
+      - ${EXTENSIONS}/test:/home/docker/geoportal-extensions/test
+      - ${EXTENSIONS}/samples-src:/home/docker/geoportal-extensions/samples-src
+    networks:
+      - api-network
+
+  access-lib:
+    build:
+      context: ${ACCESSLIB}
+      dockerfile: ./docker/Dockerfile
+    image: access-lib
+    container_name: access-lib-server
+    expose:
+      - 9012
+      - 9013
+    ports:
+      - 9012:9012
+      - 9013:9013
+    volumes:
+      - sdk-data-acc-volume:/home/docker/html/geoportal-access-lib
+      - ${ACCESSLIB}/src:/home/docker/geoportal-access-lib/src
+      - ${ACCESSLIB}/test:/home/docker/geoportal-access-lib/test
+      - ${ACCESSLIB}/samples-src:/home/docker/geoportal-access-lib/samples-src
+    networks:
+      - api-network
+    
+  
+  nginx:
+    image: nginx:1.17.9
+    container_name: nginx-server
+    command: nginx-debug -g 'daemon off;'
+    depends_on:
+      - access-lib
+      - extensions
+      - sdk
+    ports:
+      - 8088:80
+    volumes:
+      - ./conf/default:/etc/nginx/sites-enabled/default:ro
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - sdk-data-sdk-volume:/var/www/html/geoportal-sdk
+      - sdk-data-ext-volume:/var/www/html/geoportal-extensions
+      - sdk-data-acc-volume:/var/www/html/geoportal-access-lib
+    networks:
+      - api-network
+
+volumes:
+  sdk-data-sdk-volume:
+    name: sdk-data-sdk-volume
+  sdk-data-ext-volume:
+    name: sdk-data-ext-volume
+  sdk-data-acc-volume:
+    name: sdk-data-acc-volume
+
+networks:
+  api-network:
+    name: api-network
+    driver: bridge
+    ipam:
+      driver: default
