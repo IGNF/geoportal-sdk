@@ -17,8 +17,8 @@ server {
         location ~ /geoportal-sdk/test/(.*) {
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
-                rewrite ^/geoportal-extensions/test/(.*)$ /$1 break;
-                proxy_pass http://sdk-server:9021;
+                rewrite ^/geoportal-sdk/test/(.*)$ /$1 break;
+                proxy_pass http://sdk-server:9031;
         }
         
         location ~ /geoportal-extensions/test/(.*) {
