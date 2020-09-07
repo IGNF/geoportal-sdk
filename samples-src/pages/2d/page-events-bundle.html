@@ -36,9 +36,9 @@
         var map = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             center : {
-                geolocate : true,
+                // geolocate : true,
                 location : "Nimes",
-                locationTypes : ["PositionOfInterest"]
+                locationTypes : "PositionOfInterest"
             },
             azimuth : 45,
             layersOptions : {

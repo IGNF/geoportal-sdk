@@ -66,11 +66,12 @@
 
         function loadMap3() {
             Gp.Map.load('geoportalMap3', {
-                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                configUrl : "{{resources}}/autoconf.js",
+                apiKey : "{{apikey}}",
                 center : {
-                    geolocate : true,
+                    // geolocate : true,
                     location : "Nimes",
-                    locationType : ["PositionOfInterest"]
+                    locationType : "PositionOfInterest"
                 }
             });
         }
