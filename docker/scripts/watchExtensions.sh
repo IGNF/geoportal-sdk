@@ -4,13 +4,15 @@
 old="0"
 
 # Monitoring 
-inotifywait -r -m -e modify -e create -e delete --timefmt '%Y-%m-%d %H:%M:%S' --format '%T %w %e' /home/docker/geoportal-sdk/src/ |
+inotifywait -r -m -e modify -e create -e delete --timefmt '%Y-%m-%d %H:%M:%S' --format '%T %w %e' /home/docker/html/geoportal-extensions/package/ |
 while read date time file event
 do
   message=$date$time$file$event
   if [ $old != $message ]
   then 
     pushd /home/docker/geoportal-sdk/
+    rm -rf node_modules package-lock.json && npm install
+    cp -r node_modules/* /home/docker/html/geoportal-sdk/node_modules/
     npm run build
     cp -rf ./dist/* /home/docker/html/geoportal-sdk/dist/
     cp -rf ./samples/* /home/docker/html/geoportal-sdk/samples/
