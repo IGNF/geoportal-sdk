@@ -1,0 +1,273 @@
+name: Create 2D/3D Release ...
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Libs Perl
+        run: |
+          sudo apt-get install perl-base libjson-perl
+
+      - name: Build 2D
+        run: |
+          npm run build:2d
+
+      - name: Build 3D
+        run: |
+          npm run build:3d
+
+      # FIXME doit on commiter le package ?
+      - name: Create Packages 2D/3D
+        run: |
+          cd ./scripts/release/
+          chmod 755 build-pack.sh
+          ./build-pack.sh -a
+
+      - name: Create Zip 2D
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        run: |
+          zip --junk-paths bundles-2d dist/2d/*
+
+      - name: Create Zip 3D
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        run: |
+          zip --junk-paths bundles-3d dist/3d/*
+
+      - name: Upload JSDoc artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: jsdoc
+          path: jsdoc
+
+      - name: Upload Binary 2D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-2d
+          path: dist/2d
+
+      - name: Upload Binary 3D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-3d
+          path: dist/3d
+
+      - name: Upload Bundles 2D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundles-2d
+          path: bundles-2d.zip
+
+      - name: Upload Bundles 3D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundles-3d
+          path: bundles-3d.zip
+
+      - name: Upload Package 2D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: package-2d
+          path: scripts/release/geoportal-sdk-2d
+
+      - name: Upload Package 3D artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: package-3d
+          path: scripts/release/geoportal-sdk-3d
+
+  publish_gh-pages:
+    if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: IGNF/geoportal-sdk
+          ref: gh-pages
+
+      - name: Get the tagname
+        id: get_tagname
+        run: echo ::set-output name=TAGNAME::$(echo ${GITHUB_REF##*/})
+
+      - name: Initialize
+        run: |
+          mkdir -p tmp/jsdoc/
+          mkdir -p tmp/dist/2d/
+          mkdir -p tmp/dist/3d/
+          mkdir -p ${{ steps.get_tagname.outputs.TAGNAME }}/dist/
+
+      - name: Download JSDoc artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: jsdoc
+          path: tmp/jsdoc/
+
+      - name: Build jsdoc
+        run: |
+          cp -r tmp/jsdoc/ current
+          cp -r tmp/jsdoc/ ${{ steps.get_tagname.outputs.TAGNAME }}
+
+      - name: Download Binary 2D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-2d
+          path: tmp/dist/2d/
+
+      - name: Download Binary 2D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-3d
+          path: tmp/dist/3d/
+
+      - name: Build Binary
+        run: |
+          cp -r tmp/dist/ current/
+          cp -r tmp/dist/ ${{ steps.get_tagname.outputs.TAGNAME }}
+
+      - name: Link versions
+        run: |
+          rm latest
+          ln -s ${{ steps.get_tagname.outputs.TAGNAME }} latest
+
+      - name: Clean and publish
+        run: |
+          rm -rf tmp/
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A
+          git commit -m "update jsdoc / bundles to release 2D/3D : ${{ steps.get_tagname.outputs.TAGNAME }}"
+          git push
+
+  create_release:
+    if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Perl
+        run: |
+          sudo apt-get install perl-base
+
+      - name: Checkout # checkout repository to get DRAFT_CHANGELOG.md !
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/})
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: DRAFT_CHANGELOG.md
+          draft: false
+          prerelease: false
+
+      - name: Download bundles 2D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: bundles-2d
+
+      - name: Upload Release Asset 2D
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundles-2d.zip
+          asset_name: GpSDK-2D-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
+
+      - name: Download bundles 3D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: bundles-3d
+
+      - name: Upload Release Asset 3D
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundles-2d.zip
+          asset_name: GpSDK-3D-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
+
+  publish_package:
+    if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+    needs: create_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Initialize
+        run: |
+          mkdir -p package-2d
+          mkdir -p package-3d
+
+      - name: Use nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Use registry npm
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@ignf-geoportal'
+
+      - name: Download Package 2D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: package-2d
+          path: package-2d
+
+      - name: Download Package 3D artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: package-3d
+          path: package-3d
+
+      - name: Publish 2D on npm
+        run: |
+          cd ./package-2d
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish 3D on npm
+        run: |
+          cd ./package-3d
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
