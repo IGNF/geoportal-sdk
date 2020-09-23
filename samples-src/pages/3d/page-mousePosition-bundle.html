@@ -17,11 +17,17 @@
 {{#content "body"}}
     <h1>Test de l'ajout du control MousePosition</h1>
     <div id="viewerDiv"></div>
+    <div id="BoutonSwitchToItowns" hidden>
+      <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D"/><br/>
+    </div>
+    <div id="BoutonSwitchToOl">
+      <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
+    </div>
 {{/content}}
 
 {{#content "js"}}
     <script>
-        Gp.Map.load("viewerDiv",{
+        var map = Gp.Map.load("viewerDiv",{
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             viewMode : "3d",
             controlsOptions : {
@@ -303,6 +309,24 @@
                 y : 48.83
             }
         });
+
+        /**
+        * fonction de bascule vers 3D
+        */
+        function switchTo3D () {
+            map = map.switch2D3D("3d");
+            document.getElementById("BoutonSwitchToOl").style.display = "inline";
+            document.getElementById("BoutonSwitchToItowns").style.display = "none";
+        };
+
+        /**
+          * fonction de bascule vers 2D
+          */
+        function switchTo2D () {
+            map = map.switch2D3D("2d");
+            document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+            document.getElementById("BoutonSwitchToOl").style.display = "none";
+        };
     </script>
 {{/content}}
 {{/extend}}

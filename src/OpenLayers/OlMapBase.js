@@ -50,16 +50,22 @@ OlMap.prototype.constructor = OlMap;
 OlMap.prototype._initMap = function () {
     this.logger.trace("[OlMap] : _initMap");
     // creation de la view
-    var view = new View({
+    var viewParams = {
         // center : [center.x, center.y],
         enableRotation : this.mapOptions.enableRotation,
         zoom : this.mapOptions.zoom,
-        extent : this.mapOptions.extent,
         minZoom : this.mapOptions.minZoom,
         maxZoom : this.mapOptions.maxZoom,
         projection : this.mapOptions.projection,
         rotation : this.mapOptions.azimuth * Math.PI / 180
-    });
+    };
+
+    // openlayers create an extent by itself if none is given
+    if (this.mapOptions.extent) {
+        viewParams.extent = this.mapOptions.extent;
+    }
+
+    var view = new View(viewParams);
 
     // creation de la map vide
     this.libMap = new Map({

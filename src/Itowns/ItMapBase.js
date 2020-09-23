@@ -51,7 +51,7 @@ ItMap.prototype._initMap = function () {
     this.logger.trace("[ItMap]  : _initMap");
 
     var center;
-    if (this.mapOptions.center) {
+    if (this.mapOptions.center && this.mapOptions.center.x && this.mapOptions.center.y) {
         center = new Coordinates("EPSG:4326", this.mapOptions.center.x, this.mapOptions.center.y, 0);
     } else {
         center = new Coordinates("EPSG:4326", 2, 48, 0);
@@ -80,8 +80,10 @@ ItMap.prototype._initMap = function () {
         self.libMap.forgetByKey(key);
 
         // we show the div when globe is loaded
+        // we had an id to the itowns canvas
         window.setTimeout(function () {
             self.div.style.visibility = "";
+            self.libMap.getGlobeView().domElement.firstElementChild.id = "itownscanvas";
         }, 1);
 
         // evenements pour faire la distinction entre le click et le drag

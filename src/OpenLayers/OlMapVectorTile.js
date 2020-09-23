@@ -5,7 +5,10 @@ import { OlMap } from "./OlMapBase";
 
 import { olUtils as Utils } from "geoportal-extensions-openlayers";
 
-import { applyStyle as applyStyleOlms } from "ol-mapbox-style";
+import {
+    // applyBackground as applyBackgroundOlms,
+    applyStyle as applyStyleOlms
+} from "ol-mapbox-style";
 
 import VectorTileLayer from "ol/layer/VectorTile";
 
@@ -1508,6 +1511,33 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
 
                                     // Lancement !
                                     var launch = function () {
+                                        // toutes les options utiles
+                                        var _options = {
+                                            visibility : layerOpts.visibility,
+                                            queryable : _queryable,
+                                            opacity : layerOpts.opacity,
+                                            grayScaled : layerOpts.grayScaled,
+                                            position : _position, // FIXME : gestion du zIndex (option position) sur du multi-source !?
+                                            zoomToExtent : layerOpts.zoomToExtent,
+                                            url : layerOpts.url,
+                                            defaultStyleName : layerOpts.defaultStyleName,
+                                            defaultStyleThumbnail : layerOpts.defaultStyleThumbnail,
+                                            defaultStyleDescription : layerOpts.defaultStyleDescription,
+                                            format : layerOpts.format,
+                                            mapboxOptions : layerOpts.mapboxOptions,
+                                            stylesSummary : layerOpts.stylesSummary,
+                                            styles : _themes,
+                                            filtersSummary : layerOpts.filtersSummary,
+                                            filters : _filters,
+                                            title : _title,
+                                            description : _description,
+                                            quicklookUrl : _quicklookUrl,
+                                            metadata : _metadata,
+                                            legends : _legends,
+                                            originators : _originators
+                                        };
+                                        // on récupère les autres options facultatives (ex. htmlAdditionnalContent)
+                                        Utils.mergeParams(_options, layerOpts, false);
                                         // parametre à transmettre à la fonction auto-invoquée
                                         var params = {
                                             id : _glSourceId,
@@ -1516,35 +1546,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             selectedTheme : _selectedTheme,
                                             selectedFilters : _selectedFilters,
                                             selectedLayers : _selectedLayers,
-                                            // ce n'est pas très dynamique comme manière de faire passer les options !
-                                            options : {
-                                                visibility : layerOpts.visibility,
-                                                queryable : _queryable,
-                                                opacity : layerOpts.opacity,
-                                                grayScaled : layerOpts.grayScaled,
-                                                position : _position, // FIXME : gestion du zIndex (option position) sur du multi-source !?
-                                                zoomToExtent : layerOpts.zoomToExtent,
-                                                url : layerOpts.url,
-                                                defaultStyleName : layerOpts.defaultStyleName,
-                                                defaultStyleThumbnail : layerOpts.defaultStyleThumbnail,
-                                                defaultStyleDescription : layerOpts.defaultStyleDescription,
-                                                format : layerOpts.format,
-                                                mapboxOptions : layerOpts.mapboxOptions,
-                                                stylesSummary : layerOpts.stylesSummary,
-                                                styles : _themes,
-                                                filtersSummary : layerOpts.filtersSummary,
-                                                filters : _filters,
-                                                title : _title,
-                                                description : _description,
-                                                quicklookUrl : _quicklookUrl,
-                                                metadata : _metadata,
-                                                legends : _legends,
-                                                originators : _originators
-                                            }
+                                            options : _options
                                         };
                                         // fonction auto-invoquée
                                         (function (p) {
                                             // FIXME faut il ajouter le style de type background ?
+                                            // car il est très mal géré par OpenLayers.
+                                            // Ce type de calque est une CSS appliquée à la carte, et non pas à la couche....
+                                            // applyBackgroundOlms(map, p.styles);
+
                                             // fonction de style de la couche
                                             var setStyle = function () {
                                                 applyStyleOlms(p.layer, p.styles, p.id)
@@ -1630,7 +1640,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     .catch(function (e) {
                                                         // TODO styles utilisateurs par defaut !
                                                         // throw new Error("Apply Style error = " + e.message);
-                                                        // self.logger.warn("DEBUG:Apply Style error = " + e.message);
+                                                        self.logger.warn("DEBUG:Apply Style error = " + e.message);
                                                     });
                                             };
 

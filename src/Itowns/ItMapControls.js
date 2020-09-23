@@ -281,7 +281,7 @@ ItMap.prototype.addAttributionsControl = function (controlOpts) {
  *
  * @param {Object} controlOpts - control options
  * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
- * @param {Boolean} controlOpts.maximised - Display or not the control 
+ * @param {Boolean} controlOpts.maximised - Display or not the control
  * @param {Object} [controlOpts.scale] - Defines the scale used to boost the relief
  * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
  * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
@@ -386,7 +386,7 @@ ItMap.prototype.getLibMapControl = function (controlId) {
     for (var j = 0; j < itControls.length; j++) {
         this.logger.trace("[ItMap] getLibMapControl  : analyzing  : " + controlId);
         // test on control Name
-        if (itControls[j].name && itControls[j].name.toLowerCase() === controlId.toLowerCase()) {
+        if (itControls[j]._name && itControls[j]._name.toLowerCase() === controlId.toLowerCase()) {
             foundItControl = itControls[j];
             this.logger.trace("[ItMap] getLibMapControl  : found GP Plugin Control ! ");
             break;

@@ -25,7 +25,7 @@ var switch2D3D = function (viewMode) {
     oldMap.controlsOptions = this.getControlsOptions();
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
-    oldMap.extent = this.mapOptions.extent !== undefined ? this.mapOptions.extent : null;
+    oldMap.extent = this.mapOptions.extent;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
@@ -249,6 +249,10 @@ IMap.prototype = {
         // centrage avec les coordonnées x, y (s'il y en a)
         if (this.getViewMode() === "2d") {
             this.setXYCenter(this.mapOptions.center);
+        }
+        // centrage par location ou geolocalisation (s'il y en a). Centrage en x,y réalisé au chargement du globe (initMap)
+        if (this.getViewMode() === "3d" && (this.mapOptions.center.location || this.mapOptions.center.geolocate)) {
+            this.setCenter(this.mapOptions.center);
         }
 
         // FIXME Config est créé en runtime dans la variable globale Gp
