@@ -244,7 +244,6 @@ jobs:
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@ignf-geoportal'
 
       - name: Download Package 2D artifacts
         uses: actions/download-artifact@v2
