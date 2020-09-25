@@ -271,8 +271,15 @@ IMap.prototype._onLayerChanged = function _onLayerChanged (evt) {
         var idxx = this._getLayerIndexByLayerOpts(layerOpts);
         if (idxx >= 0 && idxx < this._layers.length) {
             layerId = this._layers[idxx].id;
-            this._layers[idxx].options[evt.property] = evt.newValue;
-            this.logger.trace("[IMap] _onLayerChanged : setting " + evt.property + " value to " + evt.newValue + " for layer : " + layerId);
+
+            // cas spécifique de la mise à jour du style mapbox selectionné
+            if (evt.property === "mapbox-status") {
+                this._layers[idxx].options.styles = this._setSelectedMapboxStyle(this._layers[idxx].options.styles, parseInt(evt.newValue.theme.index));
+                this.logger.trace("[IMap] _onLayerChanged : setting selected style key to " + evt.newValue.theme.key + " for layer : " + layerId);
+            } else {
+                this._layers[idxx].options[evt.property] = evt.newValue;
+                this.logger.trace("[IMap] _onLayerChanged : setting " + evt.property + " value to " + evt.newValue + " for layer : " + layerId);
+            }
         } else {
             this.logger.warn("[IMap] _onLayerChanged : layerOpts (" + Object.keys(layerOpts)[0] + ") not found for layerChanged Event");
         }
@@ -344,3 +351,21 @@ IMap.prototype._resetLayerChangedEvent = function () {
  */
 IMap.prototype._changeLayerColor = function (layerId, colorToGray) {
 };
+
+/**
+ *  Function to update selected style properties
+ *
+ * @param {Array} styles - array of the styles
+ * @param {Number} index - index of the style to set as selected 
+ *
+ * @private
+ */
+IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
+    for (var i = 0; i < styles.length; i++) {
+        styles[i].selected = false;
+        if (i === index) {
+            styles[i].selected = true;
+        }
+    }
+    return styles;
+}

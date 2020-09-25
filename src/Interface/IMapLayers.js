@@ -536,3 +536,21 @@ IMap.prototype._layerOptions2layerConf = function (layerOptions, layerConf) {
     lConf.metadata = this._filterEmptyMetadata(lConf.metadata);
     return lConf;
 };
+
+/**
+ *  Function to update selected style property of a mapbox layer
+ *
+ * @param {Array} styles - array of the styles
+ * @param {Number} index - index of the style to set as selected 
+ *
+ * @private
+ */
+IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
+    for (var i = 0; i < styles.length; i++) {
+        styles[i].selected = false;
+        if (i === index) {
+            styles[i].selected = true;
+        }
+    }
+    return styles;
+}
