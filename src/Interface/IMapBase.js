@@ -250,10 +250,6 @@ IMap.prototype = {
         if (this.getViewMode() === "2d") {
             this.setXYCenter(this.mapOptions.center);
         }
-        // centrage par location ou geolocalisation (s'il y en a). Centrage en x,y réalisé au chargement du globe (initMap)
-        if (this.getViewMode() === "3d" && (this.mapOptions.center.location || this.mapOptions.center.geolocate)) {
-            this.setCenter(this.mapOptions.center);
-        }
 
         // FIXME Config est créé en runtime dans la variable globale Gp
         var scope = typeof window !== "undefined" ? window : {};
@@ -353,8 +349,8 @@ IMap.prototype = {
             this.mapOptions.center.projection = "EPSG:4326";
         }
 
-        // Centrage de la carte avec les options demandées
-        if (this.getViewMode() === "2d") {
+        // centrage par location ou geolocalisation (s'il y en a). Centrage en x,y réalisé au chargement du globe (3d:initMap / 2d:_afterInitMap)
+        if (this.mapOptions.center.location || this.mapOptions.center.geolocate) {
             this.setCenter(this.mapOptions.center);
         }
         // ajout des markers : TODO
