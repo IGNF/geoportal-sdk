@@ -153,17 +153,17 @@ IMap.prototype.setCenter = function (center) {
     if (!center) {
         return;
     }
-    if (center.location && center.location.trim().length > 0) {
-        this.logger.trace("[IMap] : setCenter - geocode");
-        this.centerGeocode(center);
+    if (center.hasOwnProperty("x") && center.hasOwnProperty("y")) {
+        this.logger.trace("[IMap] : setCenter - x, y");
+        this.setXYCenter(center);
     }
-    else if (center.geolocate) {
+    if (center.geolocate) {
         this.logger.trace("[IMap] : setCenter - geolocate");
         this.centerGeolocate();
     }
-    else if (center.hasOwnProperty("x") && center.hasOwnProperty("y")) {
-        this.logger.trace("[IMap] : setCenter - x, y");
-        this.setXYCenter(center);
+    if (center.location && center.location.trim().length > 0) {
+        this.logger.trace("[IMap] : setCenter - geocode");
+        this.centerGeocode(center);
     }
 };
 
