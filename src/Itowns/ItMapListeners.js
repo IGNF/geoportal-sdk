@@ -124,6 +124,12 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 var ladded = itevt;
                 var layerIndex;
                 var layerOpts = map._getLayerOpts(ladded.layerId);
+
+                // mapbox label layer overlay
+                if (!layerOpts) {
+                    return;
+                }
+
                 var itColorLayer = map.libMap.getColorLayerById(Object.keys(layerOpts)[0]);
 
                 if (itColorLayer && itColorLayer.sequence >= 0) {
@@ -149,6 +155,12 @@ ItMap.prototype.listen = function (eventId, action, context) {
             var callbackLayerRemoved = function (itevt) {
                 var lremoved = itevt;
                 var layerOpts = map._getLayerOpts(lremoved.layerId) || map._getLayerOpts(lremoved.layerId, map._layersRemoved);
+                
+                // mapbox label layer overlay
+                if (!layerOpts) {
+                    return;
+                }
+
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
@@ -866,10 +878,10 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
     var vectorTileSource = new VectorTilesSource({
         style : _urlDefaultOrSelected,
-        filter : function (layer) {
-            // Array.includes() -> pas compatibilité IE 11 !
-            return ["fill", "line"].includes(layer.type);
-        },
+        // filter : function (layer) {
+        //     // Array.includes() -> pas compatibilité IE 11 !
+        //     return ["fill", "line"].includes(layer.type);
+        // },
         zoom : {
             min : 2,
             max : 16
@@ -883,6 +895,8 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         isValidData : function () {
             return false;
         },
+        noTextureParentOutsideLimit: true,
+        labelEnabled: true,
         source : vectorTileSource
         // fx : 2.5,
     });
