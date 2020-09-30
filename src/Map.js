@@ -364,7 +364,7 @@ var autoPanOptions = {
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
- * **Specific 2D properties**
+ * **Specific 3D properties**
  * 
  * | property | Type | Description |
  * | - | - | - |
