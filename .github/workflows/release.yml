@@ -260,13 +260,13 @@ jobs:
       - name: Publish 2D on npm
         run: |
           cd ./package-2d
-          npm publish
+          npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GEOPORTAL_TOKEN }}
 
       - name: Publish 3D on npm
         run: |
           cd ./package-3d
-          npm publish
+          npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GEOPORTAL_TOKEN }}
