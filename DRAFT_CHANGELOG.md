@@ -11,6 +11,8 @@ Correctif sur la gestion des couches vecteur tuilé
 
 * [Added]
 
+    - Ajout d'une option pour afficher les labels associés à une couche vecteur tuilé en 3D (86914803398fec375d85fae512785e610ae812b4)
+
 * [Changed]
     
     - layerChanged écoute la propriété mapbox-status (df0c2016557af6cd76524db0dde5f9350e0f57e9)

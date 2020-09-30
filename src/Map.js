@@ -364,6 +364,13 @@ var autoPanOptions = {
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
+ * **Specific 2D properties**
+ * 
+ * | property | Type | Description |
+ * | - | - | - |
+ * | showLabels | Boolean | False by default. If true, the labels associated to the mapbox layer will be displayed |
+ * 
+ * 
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
  * **Common 2D/3D properties**

@@ -896,9 +896,8 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             return false;
         },
         noTextureParentOutsideLimit: true,
-        labelEnabled: true,
+        labelEnabled: layerOpts.showLabels || false,
         source : vectorTileSource
-        // fx : 2.5,
     });
 
     // definition de l'opacité et de la visibilité de la couche
