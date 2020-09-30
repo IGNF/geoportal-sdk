@@ -44,6 +44,8 @@ OlMap.LAYERPROPERTIES = {
     maxResolution : "minZoom"
 };
 
+OlMap.LAYERPROPERTIES["mapbox-status"] = "mapbox-status";
+
 /**
  * Remove the layers listed to the map.
  *

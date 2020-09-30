@@ -319,6 +319,10 @@ OlMap.prototype._getCommonLayerParams = function (olLayerOpts) {
         this.logger.trace("[OlMap] : _getCommonLayerParams - position : " + olLayerOpts.zIndex);
         commonOpts.position = olLayerOpts.zIndex;
     }
+    if (olLayerOpts.hasOwnProperty("mapbox-status")) {
+        this.logger.trace("[OlMap] : _getCommonLayerParams - mapbox-status : " + olLayerOpts.mapbox-status);
+        commonOpts["mapbox-status"] = olLayerOpts["mapbox-status"];
+    }
     if (olLayerOpts.hasOwnProperty("maxResolution")) {
         var minZoom = this._getZoomFromResolution(olLayerOpts.maxResolution);
         this.logger.trace("[OlMap] : _getCommonLayerParams - minZoom : " + minZoom);

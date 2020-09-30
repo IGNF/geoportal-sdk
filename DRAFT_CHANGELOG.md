@@ -5,6 +5,8 @@
 
 ## Summary
 
+Correctif sur la gestion des couches vecteur tuilé
+
 ## Changelog
 
 * [Added]
@@ -13,6 +15,8 @@
 
 * [Changed]
     
+    - layerChanged écoute la propriété mapbox-status (df0c2016557af6cd76524db0dde5f9350e0f57e9)
+
 * [Removed]
 
 * [Fixed]
