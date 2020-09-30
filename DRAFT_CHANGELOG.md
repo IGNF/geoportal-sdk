@@ -1,6 +1,6 @@
 # SDK Geoportail 2D/3D, version 3.0.15
 
-**29/09/2020 : version 3.0.15**
+**30/09/2020 : version 3.0.15**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
@@ -21,7 +21,7 @@ Correctif sur la gestion des couches vecteur tuilé
 
 * [Fixed]
 
-    - correction du centrage par lacalisation (#63)
+    - correction du centrage par localisation (#63)
 
 * [Deprecated]
 
