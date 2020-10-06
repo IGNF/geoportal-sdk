@@ -217,7 +217,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundles-2d.zip
+          asset_path: ./bundles-3d.zip
           asset_name: GpSDK-3D-${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
