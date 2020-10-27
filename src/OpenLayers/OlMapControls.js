@@ -15,7 +15,7 @@ import {
     Rotate as RotateControl,
     ScaleLine as ScaleLineControl
 } from "ol/control";
-import Graticule from "ol/Graticule";
+import Graticule from "ol/layer/Graticule";
 import View from "ol/View";
 import Overlay from "ol/Overlay";
 import {
