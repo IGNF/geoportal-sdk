@@ -161,6 +161,13 @@ function IMap (opts) {
      */
     this._events = {};
 
+    /**
+     * object d'enriegistrements des overlays.
+     * Markers enregistrés par le SDK
+     */
+    this._markers = [];
+
+
     if (this._opts.mapOptions) {
         this.apiKey = this._opts.mapOptions.apiKey;
     }

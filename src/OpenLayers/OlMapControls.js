@@ -1388,6 +1388,8 @@ OlMap.prototype._addMarkers = function (markersOptions) {
             element : mrkImg
         });
         this.libMap.addOverlay(mrk);
+        // on tient à jour le tableau des markersOptions
+        this._markers.push(mo);
         // listen to geolocated and located events (if marker has to be positionned to the center of the map
         if (needsLocated === true) {
             var gpMap = this;
@@ -1416,6 +1418,26 @@ OlMap.prototype._addMarkers = function (markersOptions) {
         // TODO :
         //  - add option for making popup opened or not at startup
     }
+};
+
+OlMap.prototype._removeMarkers = function () {
+    var currentOverlays = this.libMap.getOverlays().getArray();
+    // FIXME pas élégant
+    while(currentOverlays.length > 0) {
+        this.libMap.removeOverlay(currentOverlays[0]);
+    }
+    this._markers = [];
+};
+
+OlMap.prototype.getMarkersOptions = function () {
+    return this._markers;
+};
+
+OlMap.prototype.setMarkersOptions = function (markersOptions) {
+    // 1 - remove all current overlays
+    this._removeMarkers();
+    // 2 - add specified overlays
+    this._addMarkers(markersOptions);
 };
 
 /**
