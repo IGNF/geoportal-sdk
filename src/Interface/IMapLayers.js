@@ -361,6 +361,37 @@ IMap.prototype._addMarkers = function (markersOptions) {
 };
 
 /**
+ * Removes map overlays
+ * FIXME : make it public ?
+ *
+ * @private
+ */
+IMap.prototype._removeMarkers = function () {
+    this.logger.trace("[IMap] _removeMarkers : generic function");
+};
+
+/**
+ * Gets the markers options currently added to the map
+ *
+ * @summary Specific 2D function
+ * @alias Gp.Map.getMarkersOptions
+ */
+IMap.prototype.getMarkersOptions = function () {
+    this.logger.trace("[IMap] getMarkersOptions : generic function");
+};
+
+/**
+ * Replaces the overlays already added to the map with the given markersOptions
+ *
+ * @alias Gp.Map.setMarkersOptions
+ * @summary Specific 2D function
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
+ */
+IMap.prototype.setMarkersOptions = function (markersOptions) {
+    this.logger.trace("[IMap] setMarkersOptions : generic function");
+};
+
+/**
  * Check params for layerDisplay
  *
  * @param {Gp.LayerOptions} layerOpts - options of the layer
