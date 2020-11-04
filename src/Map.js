@@ -937,6 +937,14 @@ var controlOptions = {
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
 *
+* **Specific 3D properties**
+*
+* | property | Type | Description |
+* | - | - | - |
+* | pointColor | String | Point color styling (RGB hex value). Default is "#002A50".|
+* | pointOpacity | Number | Point opacity (alpha value between 0:transparent and 1:opaque). Default is 0.9. |
+* | pointRadius  | Number | Point radius in pixel. Default is 6. |
+*
 *
 * @namespace
 * @alias Gp.StyleOptions
