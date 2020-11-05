@@ -1,0 +1,85 @@
+{{#extend "sample-bundle-layout-3d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 3D Markers</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 400px;
+            width: 600px;
+            position:relative;
+            display:"inline";
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test de la bascule 3D / 2D</h1>
+    <div id="BoutonSwitchToIt">
+        <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D"/><br/>
+    </div>
+    <div id="BoutonSwitchToOl" hidden>
+        <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
+    </div>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+
+            var map = Gp.Map.load('geoportalMap', {
+                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                zoom : 18,
+                center : {
+                    x : 261419,
+                    y : 6250398
+                },
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    }
+                },
+                controlsOptions : {
+                    mousePosition : {}
+                },
+                markersOptions: [{
+                    url : "https://www.google.fr/maps/vt/icon/name=assets/icons/spotlight/spotlight_poi-0-tiny.png&color=ffff0000?scale=2",
+                    content : "Marker Google. Avec autoPan.",
+                    position : {
+                        x : 261500,
+                        y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : true,
+                        duration : 1000,
+                        margin : 20
+                    }
+                },{
+                    content : "Marker par defaut. Avec autoPan désactivé.",
+                    offset : [-25.5, -38],
+                    position : {
+                        x : 261300,
+                        y : 6250398
+                    },
+                    autoPanOptions : {
+                        autoPan : false
+                    }
+                }]
+            });
+
+            function switchTo3D() {
+                map = map.switch2D3D("3d");
+                document.getElementById("BoutonSwitchToOl").style.display = "inline";
+                document.getElementById("BoutonSwitchToIt").style.display = "none";
+            };
+
+            function switchTo2D() {
+                map = map.switch2D3D("2d");
+                document.getElementById("BoutonSwitchToIt").style.display = "inline";
+                document.getElementById("BoutonSwitchToOl").style.display = "none";
+            };
+
+    </script>
+{{/content}}
+{{/extend}}
