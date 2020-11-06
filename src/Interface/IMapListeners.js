@@ -342,17 +342,6 @@ IMap.prototype._resetLayerChangedEvent = function () {
 };
 
 /**
- *  Function to disable/enable layer color (grayscale or color mode).
- *
- * @param {String} layerId - layer identifier
- * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
- *
- * @private
- */
-IMap.prototype._changeLayerColor = function (layerId, colorToGray) {
-};
-
-/**
  *  Function to update selected style properties
  *
  * @param {Array} styles - array of the styles
