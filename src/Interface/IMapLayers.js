@@ -353,7 +353,8 @@ IMap.prototype._getLayersObj = function (layerIds) {
 };
 
 /**
- * Add the markers to the map
+ * 2D : Adds the markers to the map
+ * 3D : Adds the markersOptions to the _markers array only
  * FIXME : make it public ?
  *
  * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
@@ -361,6 +362,38 @@ IMap.prototype._getLayersObj = function (layerIds) {
  */
 IMap.prototype._addMarkers = function (markersOptions) {
     this.logger.trace("[IMap] _addMarkers : generic function");
+};
+
+/**
+ * 2D : Removes map overlays
+ * 3D : Empties the _markers array only
+ * FIXME : make it public ?
+ *
+ * @private
+ */
+IMap.prototype._removeMarkers = function () {
+    this.logger.trace("[IMap] _removeMarkers : generic function");
+};
+
+/**
+ * 2D : Gets the markers options currently added to the map
+ * 3D : Return the markerOptions saved from the 2D map
+ * 
+ * @alias Gp.Map.getMarkersOptions
+ */
+IMap.prototype.getMarkersOptions = function () {
+    this.logger.trace("[IMap] getMarkersOptions : generic function");
+};
+
+/**
+ * 2D : Replaces the overlays already added to the map with the given markersOptions
+ * 3D : Replaces the markerOptions saved from the 2D map
+ *
+ * @alias Gp.Map.setMarkersOptions
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
+ */
+IMap.prototype.setMarkersOptions = function (markersOptions) {
+    this.logger.trace("[IMap] setMarkersOptions : generic function");
 };
 
 /**

@@ -477,8 +477,7 @@ ItMap.prototype._getTMSLimits = function (TMSID) {
     this.logger.trace("[ItMap]  : no TMS Limits found for this TMS id");
 };
 
-/**
- * Adds a vector Layer to the map
+/* Adds a vector Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -619,8 +618,9 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
     }
 };
 
-/**
- * Adds a Raster Layer to the map
+
+ 
+/* Adds a Raster Layer to the map
  *
  * @param {Object} layerObj - raster layer to add.
  * @param {Gp.LayerOptions} layerObj.geoportalLayerID - options of the layer
@@ -1028,4 +1028,55 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     }
     // Ajout de la couche avec iTowns via l'interface du SDK
     this._addRasterLayer(layerObj);
+};
+
+/**
+ * Adds the markers to _markers array
+ *
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to save in the _markers array
+ * @private
+ */
+ItMap.prototype._addMarkers = function (markersOptions) {
+    this.logger.trace("[ItMap] : _addMarkers");
+    if (!Array.isArray(markersOptions)) {
+        this.logger.info("Can not process markersOptions. It is not an Array.");
+        return;
+    }
+    var mo = null;
+    var ii = 0;
+    for (ii = 0; ii < markersOptions.length; ii++) {
+        mo = markersOptions[ii];
+        // update _markers array with the marker options saved in case of switch to 2D
+        this._markers.push(mo);
+    }
+}
+
+/**
+ * Empties _markers array
+ *
+ * @private
+ */
+ItMap.prototype._removeMarkers = function () {
+    // empty overlays SDK array
+    this._markers = [];
+};
+
+/**
+ * Gets the markers options saved in _markers array
+ *
+ */
+ItMap.prototype.getMarkersOptions = function () {
+    return this._markers;
+};
+
+/**
+ * Replaces the overlays already saved in _markers with the given markersOptions
+ *
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
+ */
+ItMap.prototype.setMarkersOptions = function (markersOptions) {
+    // 1 - remove all current overlays
+    this._removeMarkers();
+    // 2 - add specified overlays
+    this._addMarkers(markersOptions);
 };
