@@ -11,7 +11,7 @@ Evolutions et correctifs divers.
 
 * [Added]
 
-- Ajout de fonctions de manipulation des overlays/markers (#69)
+    - Ajout de fonctions de manipulation des overlays/markers (#69)
 
 * [Changed]
     
@@ -19,7 +19,7 @@ Evolutions et correctifs divers.
 
 * [Fixed]
 
-- Affichage des ponctuels GeoJSON en 3D (#70)
+    - Affichage des ponctuels GeoJSON en 3D (#70)
 
 * [Deprecated]
 
