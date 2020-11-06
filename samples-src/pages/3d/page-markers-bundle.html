@@ -24,6 +24,8 @@
         <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
     </div>
     <div id="geoportalMap"></div>
+    <button onclick="modifyMarkersContent()"> modify markers content </button>
+    <button onclick="modifyMarkersPosition()"> modify markers position </button>
 {{/content}}
 
 {{#content "js"}}
@@ -79,6 +81,31 @@
                 document.getElementById("BoutonSwitchToIt").style.display = "inline";
                 document.getElementById("BoutonSwitchToOl").style.display = "none";
             };
+
+            /**
+              * Fonction de modification des markers
+              */
+            var modifyMarkersContent = function () {
+                var newMarkersOptions = map.getMarkersOptions(); 
+                newMarkersOptions[0].content = "Marker 1 - Contenu modifie"
+                newMarkersOptions[1].content = "Marker 2 - Contenu modifie"
+            
+                map.setMarkersOptions(newMarkersOptions);
+            };
+        
+            /**
+              * Fonction de modification des markers
+              */
+              var modifyMarkersPosition = function () {
+                var newMarkersOptions = map.getMarkersOptions(); 
+                newMarkersOptions[0].position.x = 261400
+                newMarkersOptions[1].position.x = 261600
+                newMarkersOptions[0].position.y = 6250450
+                newMarkersOptions[1].position.y = 6250300
+            
+                map.setMarkersOptions(newMarkersOptions);
+            };
+
 
     </script>
 {{/content}}
