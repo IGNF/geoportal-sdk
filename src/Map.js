@@ -937,7 +937,7 @@ var controlOptions = {
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
 *
-* **Specific 3D properties**
+* **Specific 3D properties (for GeoJSON only)**
 *
 * | property | Type | Description |
 * | - | - | - |
