@@ -6,7 +6,7 @@ import { Services } from "geoportal-extensions-openlayers";
  *
  * @param {Object} opts - opts de geocodage
  * @param {String} opts.location - localisant
- * @param {Array.<String>} opts.locationType - types de localisants
+ * @param {String} opts.locationType - type de localisant
  * @private
  */
 IMap.prototype.centerGeocode = function (opts) {
@@ -22,32 +22,28 @@ IMap.prototype.centerGeocode = function (opts) {
     }
     // On cherche les types de géocodage disponibles
     var layersIds = Config.getLayersId(this.apiKey);
-    var locTypes = opts.locationType || ["StreetAddress", "PositionOfInterest"];
-    var fo = {};
-    fo.type = [];
-    while (locTypes.length > 0) {
-        var lt = locTypes.pop();
-        if (layersIds.indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
-            this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
-            fo.type.push(lt);
-        }
+    var locType = opts.locationType || "location";
+    var index = null;
+    if (layersIds.indexOf(locType + "$OGC:OPENLS;Geocode") >= 0) {
+        this.logger.trace("[IMap] centerGeocode : found rights for " + locType);
+        index = locType;
     }
     // Si on n'a rien trouve, on ne peut pas geocoder
-    if (fo.type.length === 0) {
+    if (!index) {
         this.logger.info("no rights for geocoding services");
         return;
     }
     var map = this;
     Services.geocode({
         apiKey : this.apiKey,
-        location : opts.location,
-        filterOptions : fo,
+        query : opts.location,
+        index : index,
         // si le service de geocodage répond
         onSuccess : function (geocodeResponse) {
-            map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.x + ", " + geocodeResponse.locations[0].position.y + ")");
+            map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.lon + ", " + geocodeResponse.locations[0].position.lat + ")");
             var point = {
-                x : geocodeResponse.locations[0].position.y,
-                y : geocodeResponse.locations[0].position.x,
+                x : geocodeResponse.locations[0].position.lon,
+                y : geocodeResponse.locations[0].position.lat,
                 projection : "EPSG:4326"
             };
             map.setAutoCenter(point);

@@ -203,7 +203,7 @@ IMap.DEFAULTOPTIONS = {
         projection : "EPSG:4326",
         geolocate : false,
         location : null,
-        locationType : ["StreetAddress", "PositionOfInterest"]
+        locationType : "location"
     },
     azimuth : 0,
     enableRotation : true,
@@ -353,6 +353,7 @@ IMap.prototype = {
         if (this.mapOptions.center.location || this.mapOptions.center.geolocate) {
             this.setCenter(this.mapOptions.center);
         }
+
         // ajout des markers : TODO
         if (this.mapOptions.hasOwnProperty("markersOptions")) {
             this._addMarkers(this.mapOptions.markersOptions);
