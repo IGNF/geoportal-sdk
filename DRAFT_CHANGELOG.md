@@ -5,16 +5,21 @@
 
 ## Summary
 
+Evolutions et correctifs divers.
 
 ## Changelog
 
 * [Added]
+
+- Ajout de fonctions de manipulation des overlays/markers (#69)
 
 * [Changed]
     
 * [Removed]
 
 * [Fixed]
+
+- Affichage des ponctuels GeoJSON en 3D (#70)
 
 * [Deprecated]
 
