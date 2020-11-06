@@ -202,7 +202,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | enableRotation | Boolean | optional | true | Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used. |
- * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. |
+ * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. Options are kept in case of switch 2D<->3D |
  * | projection | String | optional | "EPSG:3857" | Projection code (in EPSG or IGNF register) for the map. Not available in 3D as the projection is always "EPSG:4326" |
  * | extent | Array | optional | | Forced extent of the view, with the format [west, south, east, north], with the projection of the map
  *
@@ -364,6 +364,13 @@ var autoPanOptions = {
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
+ * **Specific 3D properties**
+ * 
+ * | property | Type | Description |
+ * | - | - | - |
+ * | showLabels | Boolean | False by default. If true, the labels associated to the mapbox layer will be displayed |
+ * 
+ * 
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
  * **Common 2D/3D properties**
@@ -929,6 +936,14 @@ var controlOptions = {
 * | markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38. |
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
+*
+* **Specific 3D properties (for GeoJSON only)**
+*
+* | property | Type | Description |
+* | - | - | - |
+* | pointColor | String | Point color styling (RGB hex value). Default is "#002A50".|
+* | pointOpacity | Number | Point opacity (alpha value between 0:transparent and 1:opaque). Default is 0.9. |
+* | pointRadius  | Number | Point radius in pixel. Default is 6. |
 *
 *
 * @namespace

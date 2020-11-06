@@ -19,6 +19,12 @@ import GML3 from "ol/format/GML3";
 import GeoJSON from "ol/format/GeoJSON";
 import GPX from "ol/format/GPX";
 
+import Overlay from "ol/Overlay";
+import {
+    transform as olTransformProj
+    // get as olGetProj
+} from "ol/proj";
+
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 
 import {
@@ -43,6 +49,8 @@ OlMap.LAYERPROPERTIES = {
     minResolution : "maxZoom",
     maxResolution : "minZoom"
 };
+
+OlMap.LAYERPROPERTIES["mapbox-status"] = "mapbox-status";
 
 /**
  * Remove the layers listed to the map.
@@ -957,3 +965,164 @@ OlMap.prototype._applyCommonLayerParams = function (layerOpts) {
 
     return commonOpts;
 };
+
+/**
+ * Adds the markers to the map
+ * FIXME : make it public ?
+ *
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
+ * @private
+ */
+OlMap.prototype._addMarkers = function (markersOptions) {
+    this.logger.trace("[OlMap] : _addMarkers");
+    if (!Array.isArray(markersOptions)) {
+        this.logger.info("Can not process markersOptions. It is not an Array.");
+        return;
+    }
+    var mo = null;
+    var context = this;
+    var ii = 0;
+    // marker open popup function
+    // this == img element associated to the marker
+    var fopenPopup = function (evt) {
+        var evtPx = context.getLibMap().getEventPixel(evt);
+        context.logger.trace("[OlMap] : _addMarkers : display content : " + mo.content);
+        Ol.gp.GfiUtils.displayInfo(
+            context.getLibMap(),
+            context.getLibMap().getCoordinateFromPixel([
+                evtPx[0] + this.mo.ppoffset[0],
+                evtPx[1] + this.mo.ppoffset[1]
+            ]),
+            this.mo.content,
+            this.mo.contentType,
+            this.mo.autoPanOptions
+        );
+    };
+    for (ii = 0; ii < markersOptions.length; ii++) {
+        mo = markersOptions[ii];
+        // complete missing properties with default
+        if (!mo.hasOwnProperty("content")) {
+            mo.content = ""; // empty string to avoid errors on display
+        }
+        if (!mo.hasOwnProperty("url")) {
+            mo.url = Ol.control.DefaultMarkers["lightOrange"];
+        }
+        // image offset
+        if (!mo.hasOwnProperty("offset")) {
+            mo.offset = Ol.control.DefaultMarkers["defaultOffset"];
+        }
+        this.logger.trace("[OlMap] : _addMarkers : offset [" + mo.offset[0] + "," + mo.offset[1] + "]");
+        // popup offset (from mouse click)
+        if (!mo.hasOwnProperty("ppoffset")) {
+            // default popup has a 15px of y offset (see .gp-feature-info-div::before css class)
+            mo.ppoffset = [0, -15];
+        }
+        var needsLocated = false;
+        if (!mo.hasOwnProperty("position")) {
+            // no position given : use map center
+            mo.position = {
+                x : this.libMap.getView().getCenter()[0],
+                y : this.libMap.getView().getCenter()[1]
+            };
+            // when "located" or "geolocated", the center is not yet the final one (returned by located or geolocated event).
+            needsLocated = true;
+        }
+        if (!mo.hasOwnProperty("contentType")) {
+            mo.contentType = "text/html";
+        }
+        // autoPan Options
+        if (!mo.hasOwnProperty("autoPanOptions")) {
+            // by default : autoPan true
+            mo.autoPanOptions = {
+                autoPan : IMap.DEFAULT_AUTOPAN_OPTIONS.autoPan,
+                // properties of autoPanAnimation : https://openlayers.org/en/latest/apidoc/module-ol_Overlay.html#~PanOptions
+                autoPanAnimation : {
+                    duration : IMap.DEFAULT_AUTOPAN_OPTIONS.duration
+                },
+                autoPanMargin : IMap.DEFAULT_AUTOPAN_OPTIONS.margin
+            };
+        }
+        // create overlay
+        var fcoords = [mo.position.x, mo.position.y];
+        if (mo.position.hasOwnProperty("projection")) {
+            fcoords = olTransformProj(fcoords, mo.position.projection, this.getProjection());
+        }
+        this.logger.trace("[OlMap] : _addMarkers : coords [" + fcoords[0] + ", " + fcoords[1] + "]");
+        var mrkImg = document.createElement("img");
+        mrkImg.src = mo.url;
+        // mrkImg.setAttribute("content", mo.content);
+        mrkImg.mo = mo;
+        var mrk = new Overlay({
+            position : fcoords,
+            offset : mo.offset,
+            element : mrkImg
+        });
+        this.libMap.addOverlay(mrk);
+        // on tient à jour le tableau des markersOptions
+        this._markers.push(mo);
+        // listen to geolocated and located events (if marker has to be positionned to the center of the map
+        if (needsLocated === true) {
+            var gpMap = this;
+            /**
+             * Change markerPositon - this == mrk overlay object
+             *
+             * @param {Object} locEvt - Gp.Located or Gp.GeolocatedEvent
+             */
+            var changeCenter = function (locEvt) {
+                var fcoords = [
+                    locEvt.position.x,
+                    locEvt.position.y
+                ];
+                if (locEvt.position.hasOwnProperty("projection")) {
+                    fcoords = olTransformProj(fcoords, locEvt.position.projection, gpMap.getProjection());
+                }
+                this.setPosition(fcoords);
+            };
+            this.listen("located", changeCenter, mrk);
+            this.listen("geolocated", changeCenter, mrk);
+        }
+        // listen to markerEvents
+        mrkImg.addEventListener("click", fopenPopup, true);
+        // TODO : test if useless or not
+        mrkImg.addEventListener("touchend", fopenPopup, true);
+        // TODO :
+        //  - add option for making popup opened or not at startup
+    }
+};
+
+/**
+ * Removes map overlays
+ * FIXME : make it public ?
+ *
+ * @private
+ */
+OlMap.prototype._removeMarkers = function () {
+    var currentOverlays = this.libMap.getOverlays().getArray();
+    // removes all map overlays
+    while(currentOverlays.length > 0) {
+        this.libMap.removeOverlay(currentOverlays[0]);
+    }
+    // empty overlays SDK array
+    this._markers = [];
+};
+
+/**
+ * Gets the markers options currently added to the map
+ *
+ */
+OlMap.prototype.getMarkersOptions = function () {
+    return this._markers;
+};
+
+/**
+ * Replaces the overlays already added to the map with the given markersOptions
+ *
+ * @param {Array.<Gp.MarkerOptions>} markersOptions - Markers to add to the Map.
+ */
+OlMap.prototype.setMarkersOptions = function (markersOptions) {
+    // 1 - remove all current overlays
+    this._removeMarkers();
+    // 2 - add specified overlays
+    this._addMarkers(markersOptions);
+};
+

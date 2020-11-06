@@ -22,6 +22,7 @@ var switch2D3D = function (viewMode) {
     oldMap.azimuth = this.getAzimuth();
     oldMap.zoom = this.getZoom();
     oldMap.layersOptions = this.getLayersOptions();
+    oldMap.markersOptions = this.getMarkersOptions();
     oldMap.controlsOptions = this.getControlsOptions();
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
@@ -84,7 +85,7 @@ var switch2D3D = function (viewMode) {
             zoom : oldMap.zoom,
             // maxZoom : this.
             // minZoom : this.
-            // markerOptions :
+            markersOptions : oldMap.markersOptions,
             viewMode : viewMode,
             // proxyUrl
             // noProxyDomains
@@ -160,6 +161,13 @@ function IMap (opts) {
      *  }]
      */
     this._events = {};
+
+    /**
+     * object d'enriegistrements des overlays.
+     * Markers enregistrés par le SDK
+     */
+    this._markers = [];
+
 
     if (this._opts.mapOptions) {
         this.apiKey = this._opts.mapOptions.apiKey;
@@ -249,10 +257,6 @@ IMap.prototype = {
         // centrage avec les coordonnées x, y (s'il y en a)
         if (this.getViewMode() === "2d") {
             this.setXYCenter(this.mapOptions.center);
-        }
-        // centrage par location ou geolocalisation (s'il y en a). Centrage en x,y réalisé au chargement du globe (initMap)
-        if (this.getViewMode() === "3d" && (this.mapOptions.center.location || this.mapOptions.center.geolocate)) {
-            this.setCenter(this.mapOptions.center);
         }
 
         // FIXME Config est créé en runtime dans la variable globale Gp
@@ -353,13 +357,13 @@ IMap.prototype = {
             this.mapOptions.center.projection = "EPSG:4326";
         }
 
-        // Centrage de la carte avec les options demandées
-        if (this.getViewMode() === "2d") {
+        // centrage par location ou geolocalisation (s'il y en a). Centrage en x,y réalisé au chargement du globe (3d:initMap / 2d:_afterInitMap)
+        if (this.mapOptions.center.location || this.mapOptions.center.geolocate) {
             this.setCenter(this.mapOptions.center);
         }
-        // ajout des markers : TODO
+        // ajout des markers : en 3D, uniquement un enregistrement dans this._markers
         if (this.mapOptions.hasOwnProperty("markersOptions")) {
-            this._addMarkers(this.mapOptions.markersOptions);
+            this.setMarkersOptions(this.mapOptions.markersOptions);
         }
 
         // ajout des couches
