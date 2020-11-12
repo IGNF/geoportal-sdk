@@ -946,7 +946,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         ];
     }
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
-    var vectorTileSource = new VectorTilesSource({
+    var vectorTileSourceOpts = {
         style : _urlDefaultOrSelected,
         // filter : function (layer) {
         //     // Array.includes() -> pas compatibilité IE 11 !
@@ -956,7 +956,12 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             min : 2,
             max : 16
         }
-    });
+    };
+    
+    if (layerOpts.sprite) {
+        vectorTileSourceOpts.sprite = layerOpts.sprite;
+    }
+    var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
 
     var vectorTileLayer = {};
 

@@ -369,7 +369,7 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | showLabels | Boolean | False by default. If true, the labels associated to the mapbox layer will be displayed |
- * 
+ * | sprite | String | Url to the sprites file. By default, automatically extracted from the style file. |
  * 
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
