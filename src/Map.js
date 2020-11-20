@@ -211,6 +211,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
+ * | isWebGL2 | Boolean | optional | true | Parameter to enable webgl 2.0. |
  *
  *
  * @namespace
