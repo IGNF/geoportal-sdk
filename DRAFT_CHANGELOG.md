@@ -5,7 +5,7 @@
 
 ## Summary
 
-Evolutions et correctifs divers.
+iTowns 2.27.0, webGL2 et correctifs divers.
 
 ## Changelog
 
@@ -14,6 +14,8 @@ Evolutions et correctifs divers.
     - Ajout de fonctions de manipulation des overlays/markers (#69)
 
 * [Changed]
+
+    - MaJ iTowns 2.27.0 et reactivation affichage labels vecteur tuilé par défaut (#72)
     
 * [Removed]
 
