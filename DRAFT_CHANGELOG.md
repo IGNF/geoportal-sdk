@@ -12,6 +12,7 @@ iTowns 2.27.0, webGL2 et correctifs divers.
 * [Added]
 
     - Ajout de fonctions de manipulation des overlays/markers (#69)
+    - Interface pour l'option sprite en 3D (#71)
 
 * [Changed]
 
