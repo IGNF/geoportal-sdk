@@ -646,11 +646,16 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     if (LayerClass === null) {
         return;
     }
-    // instance
-    var olLayer = new LayerClass({
+    var opts = {
         layer : layerId,
         olParams : olParams
-    });
+    };
+    if (!this._isConfLoaded) {
+        opts.apiKey = this.apiKey;
+    }
+    // instance
+    var olLayer = new LayerClass(opts);
+
     // le controle geoportalAttribution exploite la propriete _originators
     // si l'utilisateur en a passé des originators en paramètres, on écrase ceux de l'autoconf.
     if (layerOpts.hasOwnProperty("originators")) {
@@ -1125,4 +1130,3 @@ OlMap.prototype.setMarkersOptions = function (markersOptions) {
     // 2 - add specified overlays
     this._addMarkers(markersOptions);
 };
-
