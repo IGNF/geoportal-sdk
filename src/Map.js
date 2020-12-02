@@ -212,6 +212,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
+ * | isWebGL2 | Boolean | optional | true | Parameter to enable webgl 2.0. |
  *
  *
  * @namespace
@@ -366,7 +367,7 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | showLabels | Boolean | False by default. If true, the labels associated to the mapbox layer will be displayed |
- *
+ * | sprite | String | Url to the sprites file. By default, automatically extracted from the style file. |
  *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
@@ -465,7 +466,7 @@ var layerOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | layers | Array(String or Object) | List of layers Ids or layers config to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
+ * | layers | Array(String / Object) | List of layers Ids or layers config to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
  * | minZoom | Number | min zoom level for overview map. |
  * | maxZoom | Number | max zoom level for overview map. |
  * | projection | String | projection code for overview map. |

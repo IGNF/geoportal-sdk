@@ -27,6 +27,7 @@ var switch2D3D = function (viewMode) {
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
     oldMap.extent = this.mapOptions.extent;
+    oldMap.isWebGL2 = this.mapOptions.isWebGL2;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
@@ -212,6 +213,7 @@ var switch2D3D = function (viewMode) {
             // minZoom : this.
             markersOptions : oldMap.markersOptions,
             viewMode : viewMode,
+            isWebGL2 : oldMap.isWebGL2,
             // proxyUrl
             // noProxyDomains
             // reloadConfig

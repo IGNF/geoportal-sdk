@@ -5,15 +5,21 @@
 
 ## Summary
 
-Evolutions et correctifs divers.
+* iTowns 2.27.0, webGL2 et correctifs divers
+* Possibilité d'utiliser le SDK sans appel au service d'autoconfiguration
 
 ## Changelog
 
 * [Added]
 
     - Ajout de fonctions de manipulation des overlays/markers (#69)
+    - Interface pour l'option sprite en 3D (#71)
+    - ajout de l'option "reloadConfig" afin d'avoir le choix de charger le service d'autoconfiguration
 
 * [Changed]
+
+    - MaJ iTowns 2.27.0 et reactivation affichage labels vecteur tuilé par défaut (#72)
+    - Possibilité de configurer le contrôle "overview" sans appel au service d'autoconfiguration
     
 * [Removed]
 

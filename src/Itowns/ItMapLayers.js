@@ -498,7 +498,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche KML");
             layer.source = new FileSource({
                 url : layerOpts.url,
-                projection : "EPSG:4326",
+                crs : "EPSG:4326",
                 fetcher : Fetcher.xml,
                 parser : KMLParser.parse
             });
@@ -521,7 +521,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche GEOJSON");
             layer.source = new FileSource({
                 url : layerOpts.url,
-                projection : "EPSG:4326",
+                crs : "EPSG:4326",
                 fetcher : Fetcher.json,
                 parser : GeoJsonParser.parse
             });
@@ -548,7 +548,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche GPX");
             layer.source = new FileSource({
                 url : layerOpts.url,
-                projection : "EPSG:4326",
+                crs : "EPSG:4326",
                 fetcher : Fetcher.xml,
                 parser : GpxParser.parse
             });
@@ -604,7 +604,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
         var vectorLayerOptions = {
             name : layer.id,
             transparent : true,
-            projection : "EPSG:4326",
+            crs : "EPSG:4326",
             source : layer.source
         };
 
@@ -694,7 +694,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 version : layerOpts.version || "1.3.0",
                 url : layerOpts.url,
                 name : layerNames,
-                projection : layerOpts.projection,
+                crs : layerOpts.projection,
                 style : layerOpts.styleName || "",
                 heightMapWidth : 256,
                 transparent : true,
@@ -786,7 +786,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
-                projection : layerOpts.projection,
+                crs : layerOpts.projection,
                 networkOptions : {
                     crossOrigin : "omit"
                 },
@@ -946,7 +946,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         ];
     }
     // Ajout couche Vecteur tuilé par itowns (fx: 2.5 => transparent)
-    var vectorTileSource = new VectorTilesSource({
+    var vectorTileSourceOpts = {
         style : _urlDefaultOrSelected,
         // filter : function (layer) {
         //     // Array.includes() -> pas compatibilité IE 11 !
@@ -956,7 +956,12 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             min : 2,
             max : 16
         }
-    });
+    };
+    
+    if (layerOpts.sprite) {
+        vectorTileSourceOpts.sprite = layerOpts.sprite;
+    }
+    var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
 
     var vectorTileLayer = {};
 
@@ -966,7 +971,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             return false;
         },
         noTextureParentOutsideLimit: true,
-        labelEnabled: layerOpts.showLabels || false,
+        labelEnabled: layerOpts.showLabels || true,
         source : vectorTileSource
     });
 
