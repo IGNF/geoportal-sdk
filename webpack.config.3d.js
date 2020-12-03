@@ -78,7 +78,7 @@ module.exports = (env, argv) => {
                 // "loglevel",
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
-                //"itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
+                "itowns" : path.join(__dirname, "node_modules", "itowns", "lib", "MainBundle.js"),
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -107,7 +107,7 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
-        // stats : "verbose",
+        stats : "verbose",
         optimization : {
             /** MINIFICATION */
             minimizer: [

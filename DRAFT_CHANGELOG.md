@@ -1,27 +1,33 @@
-# SDK Geoportail 2D/3D, version 3.0.15
+# SDK Geoportail 2D/3D, version 3.1.0
 
-**30/09/2020 : version 3.0.15**
+**03/12/2020 : version 3.1.0**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-Correctif sur la gestion des couches vecteur tuilé
-
+* iTowns 2.27.0, webGL2 et correctifs divers
+* Possibilité d'utiliser le SDK sans appel au service d'autoconfiguration
+* BREAKING CHANGE : SDK 3D compatible avec extensions geoportail pour itowns 2.3.0 + Utilisation du webGl2 par défaut
+ 
 ## Changelog
 
 * [Added]
 
-    - Ajout d'une option pour afficher les labels associés à une couche vecteur tuilé en 3D (#67)
+    - Ajout de fonctions de manipulation des overlays/markers (#69)
+    - Interface pour l'option sprite en 3D (#71)
+    - Ajout de l'option "reloadConfig" afin d'avoir le choix de charger le service d'autoconfiguration (#73)
 
 * [Changed]
-    
-    - layerChanged écoute la propriété mapbox-status (#66)
 
+    - MaJ iTowns 2.27.0 et reactivation affichage labels vecteur tuilé par défaut + paramètre sur l'utilisation du webGL2 (#72)
+    - Possibilité de configurer le contrôle "overview" sans appel au service d'autoconfiguration (#73)
+    
 * [Removed]
 
 * [Fixed]
 
-    - correction du centrage par localisation (#63)
+    - Affichage des ponctuels GeoJSON en 3D (#70)
+    - Eslint style fixes (#73)
 
 * [Deprecated]
 
