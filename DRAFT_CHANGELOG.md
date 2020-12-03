@@ -1,6 +1,6 @@
-# SDK Geoportail 2D/3D, version 3.0.16
+# SDK Geoportail 2D/3D, version 3.1.0
 
-**xx/xx/2020 : version 3.0.16**
+**03/12/2020 : version 3.1.0**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
@@ -15,7 +15,7 @@
 
     - Ajout de fonctions de manipulation des overlays/markers (#69)
     - Interface pour l'option sprite en 3D (#71)
-    - ajout de l'option "reloadConfig" afin d'avoir le choix de charger le service d'autoconfiguration (#73)
+    - Ajout de l'option "reloadConfig" afin d'avoir le choix de charger le service d'autoconfiguration (#73)
 
 * [Changed]
 
@@ -27,6 +27,7 @@
 * [Fixed]
 
     - Affichage des ponctuels GeoJSON en 3D (#70)
+    - Eslint style fixes (#73)
 
 * [Deprecated]
 
