@@ -108,24 +108,24 @@ var switch2D3D = function (viewMode) {
                     // on prend le 1er element car la 3d ne peut pas avoir
                     // plusieurs couches...
                     var l = overview.layers[0];
-                    if (typeof l === 'object') {
+                    if (typeof l === "object") {
                         // conf d'une couche : mapping des params
                         _overview.layer = {
-                            id: l.layer,
+                            id : l.layer,
                             type : "color",
-                            visible: l.visible,
-                            opacity: l.opacity || 1,
-                            source: {
-                                protocol: (l.format) ? l.format.toLowerCase() : "wmts",
-                                version: l.version || "1.0.0",
-                                projection: (l.projection) ? l.projection.toUpperCase() : null,
-                                url: l.url,
+                            visible : l.visible,
+                            opacity : l.opacity || 1,
+                            source : {
+                                protocol : (l.format) ? l.format.toLowerCase() : "wmts",
+                                version : l.version || "1.0.0",
+                                projection : (l.projection) ? l.projection.toUpperCase() : null,
+                                url : l.url,
                                 // networkOptions: {
                                 //     crossOrigin: "anonymous"
                                 // },
-                                format: l.outputFormat || "image/jpeg",
-                                name: l.layer,
-                                tileMatrixSet: l.tileMatrixSet || "PM",
+                                format : l.outputFormat || "image/jpeg",
+                                name : l.layer,
+                                tileMatrixSet : l.tileMatrixSet || "PM",
                                 style : l.styleName || "normal",
                                 // tileMatrixSetLimits : [],
                                 // extent : {},
@@ -161,9 +161,9 @@ var switch2D3D = function (viewMode) {
                     layer : l.source.name,
                     tileMatrixSet : l.source.tileMatrixSet || "PM",
                     version : l.source.version || "1.0.0",
-                    styleName : l.source.style  || "normal",
+                    styleName : l.source.style || "normal",
                     outputFormat : l.source.format || "image/jpeg",
-                    projection: (l.source.projection) ? l.source.projection.toUpperCase() : null,
+                    projection : (l.source.projection) ? l.source.projection.toUpperCase() : null
                 });
             }
         } else {
@@ -397,8 +397,7 @@ IMap.prototype = {
         if (this.apiKey && !this._opts.mapOptions.reloadConfig) { // une clef est fournie
             // et l'utilisateur ne souhaite pas faire un appel à l'autoconf
             needsGetConfig = false;
-        }
-        else if (this.apiKey || this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl) {
+        } else if (this.apiKey || this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl) {
             // TODO : this.apiKey.length > 1
             needsGetConfig = (this._opts.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
@@ -450,7 +449,7 @@ IMap.prototype = {
         this.logger.trace("[IMap] : Autoconfiguration chargée ... ou pas");
 
         // TODO : detecter si on a le bon objet (error ou success)
-        this._isConfLoaded  = (typeof configResponse === "undefined") ? false : true;
+        this._isConfLoaded = (typeof configResponse === "undefined") ? false : true;
 
         // declenchement de l'evenement "configured"
         var e = IMap.CustomEvent("configured", {

@@ -618,8 +618,6 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
     }
 };
 
-
-
 /* Adds a Raster Layer to the map
  *
  * @param {Object} layerObj - raster layer to add.
@@ -970,8 +968,8 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         isValidData : function () {
             return false;
         },
-        noTextureParentOutsideLimit: true,
-        labelEnabled: layerOpts.showLabels || true,
+        noTextureParentOutsideLimit : true,
+        labelEnabled : layerOpts.showLabels || true,
         source : vectorTileSource
     });
 
@@ -1054,7 +1052,7 @@ ItMap.prototype._addMarkers = function (markersOptions) {
         // update _markers array with the marker options saved in case of switch to 2D
         this._markers.push(mo);
     }
-}
+};
 
 /**
  * Empties _markers array
@@ -1068,7 +1066,7 @@ ItMap.prototype._removeMarkers = function () {
 
 /**
  * Gets the markers options saved in _markers array
- *
+ * @returns {Array} - markers array
  */
 ItMap.prototype.getMarkersOptions = function () {
     return this._markers;

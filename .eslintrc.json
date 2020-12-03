@@ -75,6 +75,10 @@
             "error",
             "always"
         ],
+        "no-prototype-builtins": [
+          "off",
+          "always"
+        ],
         "space-unary-ops": [
             "error",
             {

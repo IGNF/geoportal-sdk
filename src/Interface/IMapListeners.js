@@ -257,9 +257,9 @@ IMap.prototype._onLayerChanged = function _onLayerChanged (evt) {
             // il faut garder trace de la couche supprimmée pour
             // d'autres abonnements à layerChanged.layerRemoved
             var layerRemoved = {};
-            layerRemoved["id"] = this._layers[idx].id;
-            layerRemoved["options"] = this._layers[idx].options;
-            layerRemoved["obj"] = this._layers[idx].obj;
+            layerRemoved.id = this._layers[idx].id;
+            layerRemoved.options = this._layers[idx].options;
+            layerRemoved.obj = this._layers[idx].obj;
             this._layersRemoved.push(layerRemoved);
             this._layers.splice(idx, 1);
             this.logger.trace("[IMap] _onLayerChanged : #(layers) == " + this._layers.length);
@@ -345,7 +345,8 @@ IMap.prototype._resetLayerChangedEvent = function () {
  *  Function to update selected style properties
  *
  * @param {Array} styles - array of the styles
- * @param {Number} index - index of the style to set as selected 
+ * @param {Number} index - index of the style to set as selected
+ * @returns {Object} mapbox styles
  *
  * @private
  */
@@ -357,4 +358,4 @@ IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
         }
     }
     return styles;
-}
+};

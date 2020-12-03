@@ -164,7 +164,7 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
     this.logger.trace("[ItMap] addOverviewControl : ... ");
     // clone car on ne veut pas modifier l'original !
     var opts = JSON.parse(JSON.stringify(controlOpts));
-    
+
     var ovControlOptions = {};
     if (opts.position) {
         ovControlOptions.position = opts.position;
