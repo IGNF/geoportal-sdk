@@ -1,5 +1,9 @@
 import { ItMap } from "./ItMapBase";
 import { itownsExtended } from "geoportal-extensions-itowns";
+import {
+    WMTSSource,
+    ColorLayer
+} from "itowns";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation
@@ -36,6 +40,9 @@ ItMap.prototype.addMousePositionControl = function (controlOpts) {
         mpOpts.target = controlOpts.div;
     }
     mpOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        mpOpts.apiKey = this.apiKey;
+    }
     if (controlOpts.systems &&
         Array.isArray(controlOpts.systems) &&
         controlOpts.systems.length > 0) {
@@ -155,24 +162,42 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
  */
 ItMap.prototype.addOverviewControl = function (controlOpts) {
     this.logger.trace("[ItMap] addOverviewControl : ... ");
+    // clone car on ne veut pas modifier l'original !
+    var opts = JSON.parse(JSON.stringify(controlOpts));
+
     var ovControlOptions = {};
-    if (controlOpts.position) {
-        ovControlOptions.position = controlOpts.position;
+    if (opts.position) {
+        ovControlOptions.position = opts.position;
     } else {
         ovControlOptions.position = "absolute";
     }
-    if (controlOpts.div) {
-        ovControlOptions.target = controlOpts.div;
+    if (opts.div) {
+        ovControlOptions.target = opts.div;
     }
-    if (controlOpts.layer) {
-        ovControlOptions.layer = controlOpts.layer;
+    if (opts.layer) {
+        ovControlOptions.layer = opts.layer;
+        // conf d'une couche, possibilité de ne pas utiliser l'autoconf !
+        if (!this._isConfLoaded) {
+            ovControlOptions.layer.apiKey = this.apiKey;
+        }
+        // on ajoute les limites du tileMatrix
+        if (!opts.layer.source.tileMatrixSet) {
+            ovControlOptions.layer.source.tileMatrixSet = "PM";
+        }
+        if (!opts.layer.source.tileMatrixSetLimits) {
+            ovControlOptions.layer.source.tileMatrixSetLimits = this._getTMSLimits(opts.layer.source.tileMatrixSet);
+        }
+        ovControlOptions.layer.source = new WMTSSource(ovControlOptions.layer.source);
+        ovControlOptions.layer = new ColorLayer(ovControlOptions.layer.id, ovControlOptions.layer);
     } else if (controlOpts.layerId) {
+        // utilisation de l'autoconf !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : controlOpts.layerId,
             ssl : true
         });
     } else {
         // orthophotos layer by default on the miniglobe
+        // utilisation de l'autoconf !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             ssl : true

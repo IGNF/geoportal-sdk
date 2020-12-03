@@ -25,6 +25,8 @@ import {
     Circle as CircleStyle
 } from "ol/style";
 
+import TileLayer from "ol/layer/Tile";
+import WMTSTileGrid from "ol/tilegrid/WMTS";
 /**
  * Proprietes modifiables des controles pour OL
  */
@@ -106,7 +108,7 @@ OlMap.prototype.addZoomBoxControl = function (controlOpts) {
  * @param {Object} controlOpts - control options
  * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
  * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
- * @param {Array.<String>} controlOpts.layers - List of layers Ids to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used.
+ * @param {Array.<String|Object>} controlOpts.layers - List of layers Ids or layers conf to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used.
  * @param {Number} controlOpts.minZoom - min zoom level for overview map.
  * @param {Number} controlOpts.maxZoom - max zoom level for overview map.
  * @param {String} controlOpts.projection - projection code for overview map.
@@ -120,7 +122,20 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
         ovOpts.target = controlOpts.div;
     }
     ovOpts.collapsed = !controlOpts.maximised;
+    // fonctionnement du controle overview :
+    // - pas de couches renseignées : utilisation des couches de la carte (natif ol)
+    // - couches renseignées :
+    //      * si déjà chargées sur la carte, on utilise les conf des couches
+    //      * si pas chargées sur la carte, on doit les creer :
+    //          * si une conf est fournie, on met en place une couche classique
+    //          * si pas de conf fournie, on utlise la couche geoportail avec l'autoconf
+    // ex. options layers :
+    //  OK  : [LAYER1, LAYER2, LAYER3]
+    //  OK  : [{layer:LAYER1...}, {layer:LAYER2...}, {layer:LAYER3...}]
+    //  NOK : [{LAYER1:{}, LAYER2:{}}, LAYER3]
+    //  NOK : [{LAYER1:{...}}, {LAYER2:{...}}, LAYER3]
     if (controlOpts.layers && Array.isArray(controlOpts.layers)) {
+        // on cherche si les couches sont déjà chargées sur la carte
         var layerObjs = this._getLayersObj(controlOpts.layers);
         var olLayers = [];
         layerObjs.forEach((layerObj) => {
@@ -130,21 +145,77 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
         this);
         if (olLayers.length === 0 && controlOpts.layers.length > 0) {
             // couche(s) non chargée(s) dans la carte principale :
-            // on essaye de les créer comme des couches WMTS Géoportail.
+            // on essaye de les créer comme des couches WMTS classique ou Géoportail
+            // en fonction de l'autoconf
             for (var i = 0; i < controlOpts.layers.length; i++) {
                 this.logger.trace("[OlMap] addOverviewControl : adding geoportal layer : " + controlOpts.layers[i] + " to map");
-                var gpLayer = new Ol.layer.GeoportalWMTS({
-                    layer : controlOpts.layers[i]/*,
-                    // on ecrase les contraintes de zoom qui peuvent
-                    // exister par defaut sur la couche.
-                    olParams : {
-                        minResolution : this._getResolutionFromZoomLevel(21),
-                        maxResolution : this._getResolutionFromZoomLevel(1)
+                // la structure du layer est soit :
+                //  (on ajoute l'option apiKey si autoconf non chargée)
+                //  - un nom => creation geoportail
+                //  - un objet :
+                //      - avec conf vide => creation geoportail
+                //      - avec conf complete => creation personnalisée
+                var isConfGpp = false;
+                if (typeof controlOpts.layers[i] === "object") {
+                    if (Object.keys(controlOpts.layers[i]).length === 0) {
+                        isConfGpp = true;
                     }
-                    */
-                });
-                if (gpLayer) {
-                    olLayers.push(gpLayer);
+                } else {
+                    isConfGpp = true;
+                }
+
+                var opts = {};
+                if (!this._isConfLoaded) {
+                    opts.apiKey = this.apiKey;
+                }
+                if (isConfGpp) {
+                    opts.layer = controlOpts.layers[i];
+                    // opts pour une couche à transmettre à GeoportalWMTS
+                    // {
+                    //     apiKey:...,
+                    //     layer:...,
+                    //     ssl: true,
+                    //     olParams : {
+                    //         sourceParams : {
+                    //              url:...,
+                    //              format : "wmts",
+                    //              layer:...,
+                    //              tileMatrixSet : "PM",
+                    //              styleName : "normal",
+                    //              outputFormat : "image/jpeg"
+                    //         }
+                    //     }
+                    // }
+                    var gpLayer = new Ol.layer.GeoportalWMTS(opts);
+                    if (gpLayer) {
+                        olLayers.push(gpLayer);
+                    }
+                } else {
+                    var layerOpts = controlOpts.layers[i];
+                    var commonOpts = this._applyCommonLayerParams(layerOpts);
+                    var defaultOpts = this._getWMTSDefaultOpts();
+                    Object.assign(opts, commonOpts, defaultOpts, layerOpts);
+                    var sourceOpts = {
+                        url : opts.url,
+                        layer : opts.layer,
+                        matrixSet : opts.tileMatrixSet,
+                        format : opts.outputFormat,
+                        version : opts.version,
+                        style : opts.styleName,
+                        tileGrid : new WMTSTileGrid({
+                            origin : [
+                                opts.topLeftCorner.x,
+                                opts.topLeftCorner.y
+                            ],
+                            resolutions : opts.resolutions,
+                            matrixIds : opts.matrixIds
+                        })
+                    };
+                    opts.source = new Ol.source.WMTSExtended(sourceOpts);
+                    var layer = new TileLayer(opts);
+                    if (layer) {
+                        olLayers.push(layer);
+                    }
                 }
             }
         }
@@ -282,6 +353,9 @@ OlMap.prototype.addMousePositionControl = function (controlOpts) {
         mpOpts.target = controlOpts.div;
     }
     mpOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        mpOpts.apiKey = this.apiKey;
+    }
     if (controlOpts.systems &&
         Array.isArray(controlOpts.systems) &&
         controlOpts.systems.length > 0) {
@@ -348,6 +422,9 @@ OlMap.prototype.addRouteControl = function (controlOpts) {
         rteOpts.target = controlOpts.div;
     }
     rteOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        rteOpts.apiKey = this.apiKey;
+    }
     if (controlOpts.graphs) {
         rteOpts.graphs = controlOpts.graphs;
     }
@@ -404,6 +481,9 @@ OlMap.prototype.addIsocurveControl = function (controlOpts) {
         isoOpts.target = controlOpts.div;
     }
     isoOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        isoOpts.apiKey = this.apiKey;
+    }
     if (controlOpts.graphs) {
         isoOpts.graphs = controlOpts.graphs;
     }
@@ -837,6 +917,9 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
     if (controlOpts.div) {
         elevOpts.target = controlOpts.div;
     }
+    if (!this._isConfLoaded) {
+        elevOpts.apiKey = this.apiKey;
+    }
     // styles
     if (controlOpts.styles) {
         elevOpts.stylesOptions = {};
@@ -910,7 +993,9 @@ OlMap.prototype.addSearchControl = function (controlOpts) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
-
+    if (!this._isConfLoaded) {
+        searchOpts.apiKey = this.apiKey;
+    }
     // zoomTo
     searchOpts.zoomTo = controlOpts.zoomTo || null;
 
@@ -958,6 +1043,9 @@ OlMap.prototype.addReverseSearchControl = function (controlOpts) {
         searchOpts.target = controlOpts.div;
     }
     searchOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        searchOpts.apiKey = this.apiKey;
+    }
     // resources
     if (controlOpts.hasOwnProperty("resources")) {
         searchOpts.resources = controlOpts.resources;

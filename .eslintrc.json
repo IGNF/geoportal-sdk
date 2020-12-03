@@ -15,12 +15,12 @@
         "navigator": false,
         "window": false
     },
-    "overrides": {
+    "overrides": [{
         "files": ["Map.js"],
         "rules": {
             "no-unused-vars": "off"
         }
-    },
+    }],
     "rules": {
         "curly": "error",
         "key-spacing": [
@@ -74,6 +74,10 @@
         "space-before-function-paren": [
             "error",
             "always"
+        ],
+        "no-prototype-builtins": [
+          "off",
+          "always"
         ],
         "space-unary-ops": [
             "error",

@@ -423,7 +423,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                 // defaultDataProjection to dataProjection version > 5.0.0 !
                 formatOptions["defaultDataProjection"] = layerOpts.projection;
                 // param for GMLx format
-                formatOptions["srsName"] = layerOpts.projection;
+                formatOptions.["srsName"] = layerOpts.projection;
             }
             // FIXME à revoir...
             if (oflc.indexOf("gml") > 0 ||
@@ -646,11 +646,16 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     if (LayerClass === null) {
         return;
     }
-    // instance
-    var olLayer = new LayerClass({
+    var opts = {
         layer : layerId,
         olParams : olParams
-    });
+    };
+    if (!this._isConfLoaded) {
+        opts.apiKey = this.apiKey;
+    }
+    // instance
+    var olLayer = new LayerClass(opts);
+
     // le controle geoportalAttribution exploite la propriete _originators
     // si l'utilisateur en a passé des originators en paramètres, on écrase ceux de l'autoconf.
     if (layerOpts.hasOwnProperty("originators")) {
@@ -1099,7 +1104,7 @@ OlMap.prototype._addMarkers = function (markersOptions) {
 OlMap.prototype._removeMarkers = function () {
     var currentOverlays = this.libMap.getOverlays().getArray();
     // removes all map overlays
-    while(currentOverlays.length > 0) {
+    while (currentOverlays.length > 0) {
         this.libMap.removeOverlay(currentOverlays[0]);
     }
     // empty overlays SDK array
@@ -1109,6 +1114,7 @@ OlMap.prototype._removeMarkers = function () {
 /**
  * Gets the markers options currently added to the map
  *
+ * @returns {Array} - markers array
  */
 OlMap.prototype.getMarkersOptions = function () {
     return this._markers;
@@ -1125,4 +1131,3 @@ OlMap.prototype.setMarkersOptions = function (markersOptions) {
     // 2 - add specified overlays
     this._addMarkers(markersOptions);
 };
-

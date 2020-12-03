@@ -60,7 +60,7 @@ import olDist from "./Utils/dist-openlayers/index";
 import { olExtended } from "geoportal-extensions-openlayers";
 
 // import itowns
-import * as itowns from "itowns/lib/MainBundle";
+import * as itowns from "itowns";
 
 // import des extensions itowns
 import { itownsExtended } from "geoportal-extensions-itowns";
