@@ -619,7 +619,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
 };
 
 
- 
+
 /* Adds a Raster Layer to the map
  *
  * @param {Object} layerObj - raster layer to add.
@@ -786,7 +786,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
                 protocol : layerOpts.format.toLowerCase(),
                 version : layerOpts.version,
                 url : layerOpts.url,
-                crs : layerOpts.projection,
+                projection : layerOpts.projection,
                 networkOptions : {
                     crossOrigin : "omit"
                 },
@@ -957,7 +957,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             max : 16
         }
     };
-    
+
     if (layerOpts.sprite) {
         vectorTileSourceOpts.sprite = layerOpts.sprite;
     }
