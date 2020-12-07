@@ -394,12 +394,12 @@ IMap.prototype = {
 
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
-        if (this.apiKey && !this._opts.mapOptions.reloadConfig) { // une clef est fournie
+        if (this.apiKey && !this.mapOptions.reloadConfig) { // une clef est fournie
             // et l'utilisateur ne souhaite pas faire un appel à l'autoconf
             needsGetConfig = false;
-        } else if (this.apiKey || this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl) {
+        } else if (this.apiKey || this.mapOptions.configUrl || this.mapOptions.autoconfUrl) {
             // TODO : this.apiKey.length > 1
-            needsGetConfig = (this._opts.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
+            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
         } else { // une clef n'est pas fournie
             // on essaye de trouver une configuration existante
@@ -413,16 +413,16 @@ IMap.prototype = {
         if (needsGetConfig) {
             // autoconf locale ? on met par defaut un callbackSuffix à ""
             // à moins qu'on ne le surcharge (non documenté).
-            var callbackSuffix = this._opts.mapOptions.callbackSuffix;
+            var callbackSuffix = this.mapOptions.callbackSuffix;
             // deprecated param autoconfUrl
-            if (this._opts.mapOptions.configUrl ||
-                this._opts.mapOptions.autoconfUrl) {
+            if (this.mapOptions.configUrl ||
+                this.mapOptions.autoconfUrl) {
                 callbackSuffix = callbackSuffix || "";
             }
             var map = this;
             Services.getConfig({
                 apiKey : this.apiKey,
-                serverUrl : this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl,
+                serverUrl : this.mapOptions.configUrl || this.mapOptions.autoconfUrl,
                 callbackSuffix : callbackSuffix,
                 // fonction de rappel onSuccess
                 onSuccess : function (configResponse) {
