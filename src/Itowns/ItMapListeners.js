@@ -311,7 +311,7 @@ ItMap.prototype._features2html = function (features) {
         if (props.hasOwnProperty("description")) {
             var descDiv = document.createElement("div");
             descDiv.className = "gp-att-description-div";
-            descDiv.innerHTML = props.["description"];
+            descDiv.innerHTML = props["description"];
             content.appendChild(descDiv);
         }
         var p = null;
