@@ -423,7 +423,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                 // defaultDataProjection to dataProjection version > 5.0.0 !
                 formatOptions["defaultDataProjection"] = layerOpts.projection;
                 // param for GMLx format
-                formatOptions.["srsName"] = layerOpts.projection;
+                formatOptions["srsName"] = layerOpts.projection;
             }
             // FIXME à revoir...
             if (oflc.indexOf("gml") > 0 ||
