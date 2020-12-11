@@ -17,19 +17,41 @@ var MapLoader = {
      * @param {String | DOMElement} div - The HTML element or its id where the map will be loaded.
      * @param {Gp.MapOptions} [mapOptions] - Options for loading the map.
      * @example
-     *      Gp.Map.load(
-     *          'geoportalMap',
+     *   var map = Gp.Map.load(
+     *          'viewer-map',
      *          {
-     *              apiKey : "YOUR_API_KEY",
-     *              center : {
-     *                  location : "rue pasteur, Saint-Mandé"
+     *              apiKey: "YOUR_API_KEY",
+     *              reloadConfig: true,
+     *              isWebGL2: false,
+     *              enginePath3d: "path/to/itowns.js",
+     *              viewMode: "3d",
+     *              center: {
+     *                  location: "rue pasteur, Saint-Mandé"
      *              },
-     *              zoom : 16,
-     *              layersOptions : {
-     *                  'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD' : {}
+     *              zoom: 16,
+     *              tilt: 0,
+     *              azimuth: 45,
+     *              controlsOptions: {
+     *                  mousePosition: {},
+     *                  search: { maximised : true }
+     *              },
+     *              mapEventsOptions: {
+     *                    "mapLoaded": window.initMap,
+     *                    "layerChanged": window.callbackLayerChanged,
+     *                    "zoomChanged": window.callbackZoomChanged,
+     *                    "centerChanged": window.callbackCenterChanged,
+     *                    "azimuthChanged": window.callbackAzimuthChanged,
+     *                    "tiltChanged": window.callbackTiltChanged
+     *              },
+     *              layersOptions: {
+     *                  'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD': {}
      *              }
      *          }
-     *      );
+     *    );
+     *
+     *    // abonnement à l'evenement "mapLoaded"
+     *    map.listen("mapLoaded", function (e) { console.log("objet map", e); });
+     *
      * @returns {Gp.Map} - The Geoportal map.
      */
     load : function (div, mapOptions) {

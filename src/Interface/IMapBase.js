@@ -410,6 +410,7 @@ IMap.prototype = {
 
         // appel du service d'autoconfiguration si nécessaire
         // Dans tous les cas, le reste s'exécute dans _afterGetConfig
+        var map = this;
         if (needsGetConfig) {
             // autoconf locale ? on met par defaut un callbackSuffix à ""
             // à moins qu'on ne le surcharge (non documenté).
@@ -419,7 +420,6 @@ IMap.prototype = {
                 this.mapOptions.autoconfUrl) {
                 callbackSuffix = callbackSuffix || "";
             }
-            var map = this;
             Services.getConfig({
                 apiKey : this.apiKey,
                 serverUrl : this.mapOptions.configUrl || this.mapOptions.autoconfUrl,
@@ -435,7 +435,12 @@ IMap.prototype = {
                 }
             });
         } else {
-            this._afterGetConfig(Config);
+            // HACK : je mets cette fonction dans la pile des callbacks afin que son
+            // execution soit differée par le moteur javascript !
+            // ceci afin qu'un abonnement à l'event "mapLoaded" puisse se faire...
+            setTimeout(function () {
+                map._afterGetConfig(Config);
+            });
         }
     },
 
@@ -443,6 +448,8 @@ IMap.prototype = {
      * callback d'appel à l'autoconf (ou non).
      *
      * @param {Object} configResponse - configuration associée à apiKey.
+     * @fires mapLoaded
+     * @fires configured
      * @private
      */
     _afterGetConfig : function (configResponse) {
@@ -463,6 +470,49 @@ IMap.prototype = {
         if (!this.mapOptions.hasOwnProperty("layersOptions")) {
             if (this._isConfLoaded) {
                 // FIXME : trouver l'info dans l'autoconf ... ou pas ?
+                // param par defaut :
+                // "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {
+                //     minZoom : 0,
+                //     maxZoom : 19,
+                //     queryable : true,
+                //     opacity: 1,
+                //     format : "wmts",
+                //     position : 0,
+                //     title : "Photographies aériennes",
+                //     description : "Photographies aériennes",
+                //     url : "https://wxs.ign.fr/an7nvfzojv5wa96dsga5nk8w/geoportail/wmts",
+                //     layer : "ORTHOIMAGERY.ORTHOPHOTOS",
+                //     projection : "EPSG:3857",
+                //     tileMatrixSet : "PM",
+                //     topLeftCorner : {
+                //         x:-20037508,
+                //         y:20037508
+                //     },
+                //     resolutions : [156543.033928041,78271.51696402048,39135.758482010235,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.7481131407048,152.8740565703525,76.43702828517624,38.21851414258813,19.10925707129406,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.2985821417389697,0.1492910708694849,0.0746455354347424],
+                //     matrixIds : ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"],
+                //     styleName : "normal",
+                //     outputFormat : "image/jpeg",
+                //     originators : [{
+                //         name : "IGN",
+                //         attribution : "Institut National de l'Information Géographique et Forestière",
+                //         url : "https://www.ign.fr"
+                //     }],
+                //     quicklookUrl : "https://wxs.ign.fr/static/pictures/ign_ortho.jpg",
+                //     metadata : [{"url":""},
+                //         {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml"},
+                //         {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=SPOT5.xml"},
+                //         {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=NCL-DITTT-ORTHO.xml"},
+                //         {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml"},
+                //         {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_ORTHOHR_1-0.xml"}
+                //     ],
+                //     legends : [
+                //         {
+                //             format : "application/pdf",
+                //             url : "https://www.geoportail.gouv.fr/depot/fiches/photographiesaeriennes/geoportail_dates_des_prises_de_vues_aeriennes.pdf",
+                //             minScaleDenominator : null
+                //         }
+                //     ]
+                // }
             }
             this.mapOptions.layersOptions = {
                 "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {}
