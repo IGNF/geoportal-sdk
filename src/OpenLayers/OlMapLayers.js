@@ -779,7 +779,7 @@ OlMap.prototype._checkLayerParams = function (layerOpts) {
  *
  * @param {String} layerId - layer identifier
  * @param {Boolean} toGrayScale - indicate transformation direction (from or to grayscale)
- *
+ * @fires change:grayScaled
  * @private
  */
 OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {

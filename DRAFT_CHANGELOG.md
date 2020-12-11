@@ -13,11 +13,12 @@
 
 * [Changed]
 
+    - mise à jour documentation
+    - changements internes du processus de build (b9564b912049dbade1a3f9548a67e2bf374471e1) 
+
 * [Removed]
 
 * [Fixed]
-
-    - Correction sur le chargement de couches via apiKey (9b09a2bfcc40894b09fa86fcb47fe022f20723a6)
 
 * [Deprecated]
 

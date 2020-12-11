@@ -7,6 +7,7 @@ import { Services } from "geoportal-extensions-openlayers";
  * @param {Object} opts - opts de geocodage
  * @param {String} opts.location - localisant
  * @param {Array.<String>} opts.locationType - types de localisants
+ * @fires located
  * @private
  */
 IMap.prototype.centerGeocode = function (opts) {
@@ -69,6 +70,7 @@ IMap.prototype.centerGeocode = function (opts) {
 /**
  * envoie d'une requête de géolocalisation par IP.
  *
+ * @fires geolocated
  * @private
  */
 IMap.prototype.centerGeolocate = function () {

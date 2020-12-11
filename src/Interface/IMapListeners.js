@@ -61,7 +61,7 @@ IMap.prototype.setSelectable = function (controlOpts) {};
  *
  * | eventId  | description |
  * |-|-|
- * | mapLoaded | fired when map has finished loading.  |
+ * | mapLoaded | fired when map has finished loading. Callback function handles a {@link Gp.MapLoadedEvent} object. |
  * | geolocated | fired when map has finished centering by geolocation. Callback function handles a {@link Gp.GeolocatedEvent} object.|
  * | located | fired when map has finished centering by geocoding. Callback function handles a {@link Gp.LocatedEvent} object. |
  * | configured | fired when map has finished loading geoportal configuration. Callback function handles a {@link Gp.ConfiguredEvent} object |

@@ -39,7 +39,11 @@
         var map = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             azimuth : 45,
-            zoom : 12,
+            zoom : 13,
+            center : {
+                x : -511270,
+                y : 6151620
+            },
             // proxyUrl : "{{ proxy }}?url=",
             layersOptions : {
                 'ORTHOIMAGERY.ORTHOPHOTOS': {

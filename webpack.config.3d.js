@@ -108,6 +108,31 @@ module.exports = (env, argv) => {
         ],
         devtool : (devMode) ? "eval-source-map" : false,
         stats : "verbose",
+        devServer : {
+            // proxy: {
+            //      "/samples/resources/proxy/" : {
+            //          secure: false,
+            //          target: "http://localhost/proxy/proxy.php" // proxy à deployer en local !
+            //      }
+            // },
+            stats : "errors-only",
+            // host : "localhost",
+            // https: true,
+            // port : 9001,
+            // hot : true,
+            // contentBase : path.join(__dirname),
+            // publicPath : "/dist/3d/",
+            // openPage : "/samples/index-3d-map.html",
+            // open : "google-chrome",
+            watchOptions : {
+                watch : true,
+                poll : true
+            },
+            overlay : {
+                errors : true,
+                warnings : false
+            }
+        },
         optimization : {
             /** MINIFICATION */
             minimizer: [
