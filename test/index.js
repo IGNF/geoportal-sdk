@@ -7,8 +7,8 @@ if (module.hot) {
         // /OlMap\.test.js/
         // /OlMapBox\.test.js/
         // /ItMap\.test.js/
-        ///SDK2D\.test.js/
-        ///SDK3D\.test.js/
+        // /SDK2D\.test.js/
+        // /SDK3D\.test.js/
 
     );
     // debug...

@@ -470,6 +470,10 @@ IMap.prototype = {
         if (!this.mapOptions.hasOwnProperty("layersOptions")) {
             if (this._isConfLoaded) {
                 // FIXME : trouver l'info dans l'autoconf ... ou pas ?
+                this.mapOptions.layersOptions = {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+                };
+            } else {
                 // param par defaut :
                 // "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {
                 //     minZoom : 0,
@@ -513,10 +517,10 @@ IMap.prototype = {
                 //         }
                 //     ]
                 // }
+                this.mapOptions.layersOptions = {
+                    "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {}
+                };
             }
-            this.mapOptions.layersOptions = {
-                "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {}
-            };
         }
 
         // recuperation du centre par défaut si aucun spécifié
