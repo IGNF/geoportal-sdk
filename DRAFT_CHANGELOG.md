@@ -1,11 +1,11 @@
-# SDK Geoportail 2D/3D, version 3.1.2
+# SDK Geoportail 2D/3D, version 3.1.3
 
-**11/12/2020 : version 3.1.2**
+**14/12/2020 : version 3.1.3**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* 
+* Corrections mineures
  
 ## Changelog
 
@@ -16,6 +16,9 @@
 * [Removed]
 
 * [Fixed]
+  
+    - correction des tests
+    - correction chargement par défaut couche orthophotos en 3D
 
 * [Deprecated]
 
