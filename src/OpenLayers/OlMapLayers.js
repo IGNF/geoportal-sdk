@@ -166,17 +166,17 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                 } else {
                     params.TRANSPARENT = "TRUE";
                 }
-                let sourceOpts = {
+                var sourceWmsOpts = {
                     url : layerOpts.url,
                     params : params
                 };
                 if (layerOpts.hasOwnProperty("projection")) {
-                    sourceOpts.projection = layerOpts.projection;
+                    sourceWmsOpts.projection = layerOpts.projection;
                 }
                 if (layerOpts.hasOwnProperty("tiled") && layerOpts.tiled === true) {
-                    constructorOpts.source = new TileWMSSource(sourceOpts);
+                    constructorOpts.source = new TileWMSSource(sourceWmsOpts);
                 } else {
-                    constructorOpts.source = new ImageWMSSource(sourceOpts);
+                    constructorOpts.source = new ImageWMSSource(sourceWmsOpts);
                 }
                 break;
             }
@@ -190,7 +190,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     lOpts[opt] = layerOpts[opt];
                 }
                 layerOpts = lOpts;
-                let sourceOpts = {
+                var sourceWmtsOpts = {
                     url : layerOpts.url,
                     layer : layerOpts.layer,
                     matrixSet : layerOpts.tileMatrixSet,
@@ -211,11 +211,11 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     layerOpts.url.indexOf("{TileRow}") > 0 ||
                     layerOpts.url.indexOf("{TileCol}") > 0) {
                     // its an url template => RESTFul
-                    sourceOpts.requestEncoding = "REST";
+                    sourceWmtsOpts.requestEncoding = "REST";
                 } else {
-                    sourceOpts.requestEncoding = "KVP";
+                    sourceWmtsOpts.requestEncoding = "KVP";
                 }
-                constructorOpts.source = new Ol.source.WMTSExtended(sourceOpts);
+                constructorOpts.source = new Ol.source.WMTSExtended(sourceWmtsOpts);
                 break;
             }
             case "OSM":

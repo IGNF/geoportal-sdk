@@ -10,6 +10,7 @@
     "scripts": {
         "setup": "npm install",
         "clean": "echo \"Warning: target not yet implemented!\" && exit 0",
+        "check": "eslint src/",
         "test:serve": "webpack-dev-server --config webpack.test.serve.js",
         "doc:serve": "webpack-dev-server --config webpack.config.3d --content-base jsdoc/ --port 9001 --open 'google-chrome'",
         "sample:3d:serve": "webpack-dev-server --config webpack.config.3d --mode=development --https --open-page samples/index-3d-map.html --content-base . --output-public-path '/dist/3d/' --port 9001 --open 'google-chrome'",

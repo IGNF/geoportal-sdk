@@ -2,8 +2,7 @@ import { IMap } from "../Interface/IMap";
 import Logger from "../Utils/LoggerByDefault";
 // itowns & extended extensions
 import { itownsExtended } from "geoportal-extensions-itowns";
-import { Coordinates } from "itowns";
-import { THREE } from "itowns";
+import { Coordinates, THREE } from "itowns";
 
 /**
 * Itowns IMap implementation class.
