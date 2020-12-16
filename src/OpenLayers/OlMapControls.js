@@ -1249,7 +1249,7 @@ OlMap.prototype.addGetFeatureInfoControl = function (controlOpts) {
             var mapLayer = this._layers[i];
 
             if (gfiLayerId === mapLayer.id) {
-                let format = mapLayer.options.format.toLowerCase();
+                var format = mapLayer.options.format.toLowerCase();
                 if (!mapLayer.options.queryable &&
                     format !== "kml" &&
                     format !== "geojson" &&

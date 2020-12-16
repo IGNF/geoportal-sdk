@@ -320,7 +320,7 @@ OlMap.prototype._getCommonLayerParams = function (olLayerOpts) {
         commonOpts.position = olLayerOpts.zIndex;
     }
     if (olLayerOpts.hasOwnProperty("mapbox-status")) {
-        this.logger.trace("[OlMap] : _getCommonLayerParams - mapbox-status : " + olLayerOpts.mapbox-status);
+        this.logger.trace("[OlMap] : _getCommonLayerParams - mapbox-status : " + olLayerOpts["mapbox-status"]);
         commonOpts["mapbox-status"] = olLayerOpts["mapbox-status"];
     }
     if (olLayerOpts.hasOwnProperty("maxResolution")) {

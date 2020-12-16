@@ -45,39 +45,39 @@ describe("-- Test SDK 2D --", function () {
                 expect(scope.ol).to.exist ;
 
                 // integration ol
-                scope.ol.should.have.property('source');
-                scope.ol.should.have.property('layer');
-                scope.ol.should.have.property('control');
-                scope.ol.should.have.property('format');
+                scope.ol.default.should.have.property('source');
+                scope.ol.default.should.have.property('layer');
+                scope.ol.default.should.have.property('control');
+                scope.ol.default.should.have.property('format');
 
                 // integration extension géoportail ol
-                scope.ol.source.should.have.property('GeoportalWMS');
-                scope.ol.source.should.have.property('GeoportalWMTS');
-                scope.ol.source.should.have.property('WMTSExtended');
+                scope.ol.default.source.should.have.property('GeoportalWMS');
+                scope.ol.default.source.should.have.property('GeoportalWMTS');
+                scope.ol.default.source.should.have.property('WMTSExtended');
 
-                scope.ol.layer.should.have.property('GeoportalWMS');
-                scope.ol.layer.should.have.property('GeoportalWMTS');
+                scope.ol.default.layer.should.have.property('GeoportalWMS');
+                scope.ol.default.layer.should.have.property('GeoportalWMTS');
 
-                scope.ol.control.should.have.property('GeoportalAttribution');
-                scope.ol.control.should.have.property('LayerSwitcher');
-                scope.ol.control.should.have.property('GetFeatureInfo');
-                scope.ol.control.should.have.property('SearchEngine');
-                scope.ol.control.should.have.property('Route');
-                scope.ol.control.should.have.property('Isocurve');
-                scope.ol.control.should.have.property('MousePosition');
-                scope.ol.control.should.have.property('Drawing');
-                scope.ol.control.should.have.property('ReverseGeocode');
-                scope.ol.control.should.have.property('LayerImport');
-                scope.ol.control.should.have.property('MeasureLength');
-                scope.ol.control.should.have.property('MeasureArea');
-                scope.ol.control.should.have.property('MeasureAzimuth');
-                scope.ol.control.should.have.property('DefaultMarkers');
-                scope.ol.control.should.have.property('ElevationPath');
+                scope.ol.default.control.should.have.property('GeoportalAttribution');
+                scope.ol.default.control.should.have.property('LayerSwitcher');
+                scope.ol.default.control.should.have.property('GetFeatureInfo');
+                scope.ol.default.control.should.have.property('SearchEngine');
+                scope.ol.default.control.should.have.property('Route');
+                scope.ol.default.control.should.have.property('Isocurve');
+                scope.ol.default.control.should.have.property('MousePosition');
+                scope.ol.default.control.should.have.property('Drawing');
+                scope.ol.default.control.should.have.property('ReverseGeocode');
+                scope.ol.default.control.should.have.property('LayerImport');
+                scope.ol.default.control.should.have.property('MeasureLength');
+                scope.ol.default.control.should.have.property('MeasureArea');
+                scope.ol.default.control.should.have.property('MeasureAzimuth');
+                scope.ol.default.control.should.have.property('DefaultMarkers');
+                scope.ol.default.control.should.have.property('ElevationPath');
 
-                scope.ol.format.should.have.property('KMLExtended');
+                scope.ol.default.format.should.have.property('KMLExtended');
 
-                scope.ol.should.have.property('gp');
-                scope.ol.gp.should.have.property('GfiUtils');
+                scope.ol.default.should.have.property('gp');
+                scope.ol.default.gp.should.have.property('GfiUtils');
             });
         });
     });
