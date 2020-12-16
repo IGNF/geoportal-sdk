@@ -27,6 +27,7 @@ var switch2D3D = function (viewMode) {
     oldMap.mapDiv = this.div.id;
     oldMap.apiKey = this.apiKey;
     oldMap.extent = this.mapOptions.extent;
+    oldMap.isWebGL2 = this.mapOptions.isWebGL2;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
 
@@ -34,34 +35,159 @@ var switch2D3D = function (viewMode) {
     for (var controlId in oldMap.controlsOptions) {
         this.removeControls(controlId);
     }
+
+    // récupération des couches 3D qui n'étaient pas affichées en 2D
     if (viewMode === "3d") {
-        // récupération des couches 3D qui n'étaient pas affichées en 2D
         if (this._3Dlayers) {
             for (var l = 0; l < this._3Dlayers.length; l++) {
                 oldMap.layersOptions[this._3Dlayers[l].id] = this._3Dlayers[l].options;
             }
         }
-        oldMap.center = [oldMap.center.x, oldMap.center.y];
-        // transformation des coordonnées de planes en géographiques
-        // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-        var lonlat = olTransformProj(oldMap.center, oldMap.projection, "EPSG:4326");
-        oldMap.center = {
-            x : lonlat[0],
-            y : lonlat[1]
-        };
+    }
+
+    // récupération de l'azimut
+    if (viewMode === "3d") {
         oldMap.azimuth = this.getAzimuth();
-    } else if (viewMode === "2d") {
-        oldMap.center = [oldMap.center.lon, oldMap.center.lat];
-        // transformation des coordonnées de géographiques en planes
-        // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
-        var xy = olTransformProj(oldMap.center, "EPSG:4326", "EPSG:3857");
-        oldMap.center = {
-            x : xy[0],
-            y : xy[1]
-        };
-    } else {
-        this.logger.info("Unknown viewing mode");
-        return;
+    }
+
+    // gestion du centre
+    function switch4center (mode, center, projection) {
+        var _center = null;
+        if (mode === "3d") {
+            // transformation des coordonnées de planes en géographiques
+            // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
+            var lonlat = olTransformProj([center.x, center.y], projection, "EPSG:4326");
+            _center = {
+                x : lonlat[0],
+                y : lonlat[1]
+            };
+        } else if (mode === "2d") {
+            // transformation des coordonnées de géographiques en planes
+            // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
+            var xy = olTransformProj([center.lon, center.lat], "EPSG:4326", "EPSG:3857");
+            _center = {
+                x : xy[0],
+                y : xy[1]
+            };
+        } else {
+            this.logger.info("Unknown viewing mode");
+        }
+        return _center;
+    }
+    oldMap.center = switch4center(viewMode, oldMap.center, oldMap.projection);
+
+    // gestion du controle overview
+    function switch4overview (mode, overview) {
+        // 2d <-> 3d
+        // * maximised <-> maximised
+        // * layers <-> layerId ou layer (mapping)
+        // * minZoom <-> layer.source.zoom.min
+        // * maxZoom <-> layer.source.zoom.max
+        // * projection <-> layer.source.projection.toUpperCase()
+
+        // mapping layer 3d <-> 2d :
+        //  *protocol : format.toLowerCase(),
+        //  *version : version,
+        //  *url : url,
+        //  *projection : projection.toUpperCase(),
+        //  *networkOptions : {crossOrigin : "omit"},
+        //  *tileMatrixSet :tileMatrixSet,
+        //  *tileMatrixSetLimits :tileMatrixSetLimits,
+        //  *format :outputFormat,
+        //  *name :layer,
+        //  *style :styleName,
+        //  *zoom.min : minZoom || 1,
+        //  *zoom.max : maxZoom || 21
+        //  *extent : bbox
+
+        var _overview = {};
+        if (mode === "3d") {
+            // 2d -> 3d
+            if (overview.layers) {
+                if (overview.layers.length) {
+                    // on prend le 1er element car la 3d ne peut pas avoir
+                    // plusieurs couches...
+                    var l = overview.layers[0];
+                    if (typeof l === "object") {
+                        // conf d'une couche : mapping des params
+                        _overview.layer = {
+                            id : l.layer,
+                            type : "color",
+                            visible : l.visible,
+                            opacity : l.opacity || 1,
+                            source : {
+                                protocol : (l.format) ? l.format.toLowerCase() : "wmts",
+                                version : l.version || "1.0.0",
+                                projection : (l.projection) ? l.projection.toUpperCase() : null,
+                                url : l.url,
+                                // networkOptions: {
+                                //     crossOrigin: "anonymous"
+                                // },
+                                format : l.outputFormat || "image/jpeg",
+                                name : l.layer,
+                                tileMatrixSet : l.tileMatrixSet || "PM",
+                                style : l.styleName || "normal",
+                                // tileMatrixSetLimits : [],
+                                // extent : {},
+                                zoom : {
+                                    min : l.minZoom || 1,
+                                    max : l.maxZoom || 21
+                                }
+                            }
+                        };
+                    } else {
+                        // id de couche
+                        _overview.layerId = l;
+                    }
+                }
+            }
+        } else if (mode === "2d") {
+            // 3d -> 2d
+            _overview.layers = [];
+            if (overview.layerId) {
+                // id de couche
+                _overview.layers.push(overview.layerId);
+            }
+            if (overview.layer) {
+                var ly = overview.layer;
+                // conf d'une couche : mapping des params
+                _overview.layers.push({
+                    format : (ly.source.protocol) ? ly.source.protocol.toLowerCase() : "wmts",
+                    minZoom : ly.source.zoom.min || 1,
+                    maxZoom : ly.source.zoom.max || 21,
+                    visibility : ly.visibility,
+                    opacity : ly.opacity || 1,
+                    url : ly.source.url,
+                    layer : ly.source.name,
+                    tileMatrixSet : ly.source.tileMatrixSet || "PM",
+                    version : ly.source.version || "1.0.0",
+                    styleName : ly.source.style || "normal",
+                    outputFormat : ly.source.format || "image/jpeg",
+                    projection : (ly.source.projection) ? ly.source.projection.toUpperCase() : null
+                });
+            }
+        } else {
+            this.logger.info("Unknown viewing mode");
+        }
+
+        // options communes
+        _overview.maximised = overview.maximised;
+        // options à garder lors du switch :
+        // 2d
+        _overview.minZoom = overview.minZoom;
+        _overview.maxZoom = overview.maxZoom;
+        _overview.projection = overview.projection;
+        // 3d
+        _overview.width = overview.width;
+        _overview.height = overview.height;
+        _overview.x = overview.x;
+        _overview.y = overview.y;
+        _overview.position = overview.position;
+
+        return _overview;
+    }
+    if (oldMap.controlsOptions.overview) {
+        oldMap.controlsOptions.overview = switch4overview(viewMode, oldMap.controlsOptions.overview);
     }
 
     this.destroyMap();
@@ -87,6 +213,7 @@ var switch2D3D = function (viewMode) {
             // minZoom : this.
             markersOptions : oldMap.markersOptions,
             viewMode : viewMode,
+            isWebGL2 : oldMap.isWebGL2,
             // proxyUrl
             // noProxyDomains
             // reloadConfig
@@ -168,6 +295,8 @@ function IMap (opts) {
      */
     this._markers = [];
 
+    // l'autoconf est elle chargée ?
+    this._isConfLoaded = false;
 
     if (this._opts.mapOptions) {
         this.apiKey = this._opts.mapOptions.apiKey;
@@ -219,7 +348,7 @@ IMap.DEFAULTOPTIONS = {
     zoom : 10,
     minZoom : 0,
     maxZoom : 21,
-    reloadConfig : false,
+    reloadConfig : true,
     controlsOptions : {
         draggable : true,
         keyboard : true,
@@ -227,6 +356,60 @@ IMap.DEFAULTOPTIONS = {
     },
     mapEventsOptions : {},
     noProxyDomains : ["wxs.ign.fr"]
+};
+
+/**
+ * Couche par défaut
+ * @param {String} apiKey - api key
+ * @returns {Object} - config
+ * @private
+ */
+IMap.DEFAULTLAYER = function (apiKey) {
+    return {
+        "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS" : {
+            minZoom : 0,
+            maxZoom : 19,
+            queryable : true,
+            opacity : 1,
+            format : "wmts",
+            position : 0,
+            title : "Photographies aériennes",
+            description : "Photographies aériennes",
+            url : "https://wxs.ign.fr/" + apiKey + "/geoportail/wmts",
+            layer : "ORTHOIMAGERY.ORTHOPHOTOS",
+            projection : "EPSG:3857",
+            tileMatrixSet : "PM",
+            topLeftCorner : {
+                x : -20037508,
+                y : 20037508
+            },
+            resolutions : [156543.033928041, 78271.51696402048, 39135.758482010235, 19567.87924100512, 9783.93962050256, 4891.96981025128, 2445.98490512564, 1222.99245256282, 611.49622628141, 305.7481131407048, 152.8740565703525, 76.43702828517624, 38.21851414258813, 19.10925707129406, 9.554628535647032, 4.777314267823516, 2.388657133911758, 1.194328566955879, 0.5971642834779395, 0.2985821417389697, 0.1492910708694849, 0.0746455354347424],
+            matrixIds : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"],
+            styleName : "normal",
+            outputFormat : "image/jpeg",
+            originators : [{
+                name : "IGN",
+                attribution : "Institut National de l'Information Géographique et Forestière",
+                url : "https://www.ign.fr"
+            }],
+            quicklookUrl : "https://wxs.ign.fr/static/pictures/ign_ortho.jpg",
+            metadata : [
+                { url : "" },
+                { format : "xml", url : "https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml" },
+                { format : "xml", url : "https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=SPOT5.xml" },
+                { format : "xml", url : "https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=NCL-DITTT-ORTHO.xml" },
+                { format : "xml", url : "https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml" },
+                { format : "xml", url : "https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_ORTHOHR_1-0.xml" }
+            ],
+            legends : [
+                {
+                    format : "application/pdf",
+                    url : "https://www.geoportail.gouv.fr/depot/fiches/photographiesaeriennes/geoportail_dates_des_prises_de_vues_aeriennes.pdf",
+                    minScaleDenominator : null
+                }
+            ]
+        }
+    };
 };
 
 IMap.prototype = {
@@ -265,15 +448,12 @@ IMap.prototype = {
 
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
-        if (this.apiKey ||
-            this._opts.mapOptions.configUrl ||
-            this._opts.mapOptions.autoconfUrl) { // une clef est fournie
-            // on recharge l'autoconf si l'utilisateur l'a demandé
-            // ou si aucun n'appel d'autoconf n'a ete fait pour cette cle
+        if (this.apiKey && !this.mapOptions.reloadConfig) { // une clef est fournie
+            // et l'utilisateur ne souhaite pas faire un appel à l'autoconf
+            needsGetConfig = false;
+        } else if (this.apiKey || this.mapOptions.configUrl || this.mapOptions.autoconfUrl) {
             // TODO : this.apiKey.length > 1
-            needsGetConfig = (this._opts.reloadConfig ||
-                              !Config ||
-                              !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
+            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
         } else { // une clef n'est pas fournie
             // on essaye de trouver une configuration existante
@@ -284,19 +464,19 @@ IMap.prototype = {
 
         // appel du service d'autoconfiguration si nécessaire
         // Dans tous les cas, le reste s'exécute dans _afterGetConfig
+        var map = this;
         if (needsGetConfig) {
             // autoconf locale ? on met par defaut un callbackSuffix à ""
             // à moins qu'on ne le surcharge (non documenté).
-            var callbackSuffix = this._opts.mapOptions.callbackSuffix;
+            var callbackSuffix = this.mapOptions.callbackSuffix;
             // deprecated param autoconfUrl
-            if (this._opts.mapOptions.configUrl ||
-                this._opts.mapOptions.autoconfUrl) {
+            if (this.mapOptions.configUrl ||
+                this.mapOptions.autoconfUrl) {
                 callbackSuffix = callbackSuffix || "";
             }
-            var map = this;
             Services.getConfig({
                 apiKey : this.apiKey,
-                serverUrl : this._opts.mapOptions.configUrl || this._opts.mapOptions.autoconfUrl,
+                serverUrl : this.mapOptions.configUrl || this.mapOptions.autoconfUrl,
                 callbackSuffix : callbackSuffix,
                 // fonction de rappel onSuccess
                 onSuccess : function (configResponse) {
@@ -309,7 +489,12 @@ IMap.prototype = {
                 }
             });
         } else {
-            this._afterGetConfig(Config);
+            // HACK : je mets cette fonction dans la pile des callbacks afin que son
+            // execution soit differée par le moteur javascript !
+            // ceci afin qu'un abonnement à l'event "mapLoaded" puisse se faire...
+            setTimeout(function () {
+                map._afterGetConfig(Config);
+            });
         }
     },
 
@@ -317,11 +502,15 @@ IMap.prototype = {
      * callback d'appel à l'autoconf (ou non).
      *
      * @param {Object} configResponse - configuration associée à apiKey.
+     * @fires mapLoaded
+     * @fires configured
      * @private
      */
     _afterGetConfig : function (configResponse) {
         this.logger.trace("[IMap] : Autoconfiguration chargée ... ou pas");
+
         // TODO : detecter si on a le bon objet (error ou success)
+        this._isConfLoaded = (typeof configResponse === "undefined") ? false : true;
 
         // declenchement de l'evenement "configured"
         var e = IMap.CustomEvent("configured", {
@@ -332,15 +521,19 @@ IMap.prototype = {
         this.div.dispatchEvent(e);
 
         // recuperation couche par defaut si aucune specifiee
-        if (configResponse && !this.mapOptions.hasOwnProperty("layersOptions")) {
-            // FIXME : trouver l'info dans l'autoconf ... ou pas ?
-            this.mapOptions.layersOptions = {
-                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
-            };
+        if (!this.mapOptions.hasOwnProperty("layersOptions")) {
+            if (this._isConfLoaded) {
+                // FIXME : trouver l'info dans l'autoconf ... ou pas ?
+                this.mapOptions.layersOptions = {
+                    "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+                };
+            } else {
+                this.mapOptions.layersOptions = IMap.DEFAULTLAYER(this.apiKey);
+            }
         }
 
         // recuperation du centre par défaut si aucun spécifié
-        if (configResponse &&
+        if (this._isConfLoaded &&
             (!this.mapOptions.center.hasOwnProperty("x") || this.mapOptions.center.x === 0) &&
             (!this.mapOptions.center.hasOwnProperty("y") || this.mapOptions.center.y === 0)) {
             var autoconfCenter;

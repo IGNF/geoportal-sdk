@@ -190,10 +190,11 @@ var mapLoadedEvent = {
  * | defaultFeaturesStyle | {@link Gp.StyleOptions Gp.StyleOptions} | optional | | Default style options for vector layers features (KML, GPX, GeoJSON). |
  * | layersOptions | Object | optional | | Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide. |
  * | controlsOptions | Object | optional | | Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties. |
- * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects. |
+ * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See [Gp.Map.listen()](Gp.Map.html#.listen) for available event Ids and their associated events objects. |
  * | minZoom | Integer | optional | 0 | Zoom level beyond which the user can't zoom out. |
  * | maxZoom | Integer | optional | 21 | Zoom level beyond which the user can't zoom in. |
  * | configUrl or AutoConfUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. |
+ * | reloadConfig | Boolean | optional | true | Disable / enable autoconfiguration service. If true, the autoconfiguration service is load for loading the map. If false, the autoconfiguration service is not used, if configUrl is not specified and if apiKey is specified. Only use if you know what you're doing. |
  * | proxyUrl | String | optional | | Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing. |
  * | noProxyDomains | Array.<String> | optional | | Proxy will not be used for this list of domain names. Only use if you know what you're doing. |
  *
@@ -211,6 +212,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
+ * | isWebGL2 | Boolean | optional | true | Parameter to enable webgl 2.0. |
  *
  *
  * @namespace
@@ -218,10 +220,6 @@ var mapLoadedEvent = {
  *
  */
 var mapOptions = {
-    /*
- * undocumented options - for the moment
- * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
- */
 };
 
 /**
@@ -365,12 +363,12 @@ var autoPanOptions = {
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
  * **Specific 3D properties**
- * 
+ *
  * | property | Type | Description |
  * | - | - | - |
  * | showLabels | Boolean | False by default. If true, the labels associated to the mapbox layer will be displayed |
- * 
- * 
+ * | sprite | String | Url to the sprites file. By default, automatically extracted from the style file. |
+ *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
  * **Common 2D/3D properties**
@@ -468,7 +466,7 @@ var layerOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | layers | Array(String) | List of layers Ids to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
+ * | layers | Array(String / Object) | List of layers Ids or layers config to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
  * | minZoom | Number | min zoom level for overview map. |
  * | maxZoom | Number | max zoom level for overview map. |
  * | projection | String | projection code for overview map. |
@@ -477,6 +475,8 @@ var layerOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
+ * | layer | Object | The layer object formatted as expected by itowns (layerId ignored if layer param specified) |
+ * | layerId | String | The Geoportal layers Ids to be displayed on the overview map (by default, "ORTHOIMAGERY.ORTHOPHOTOS") |
  * | position | String | The type of positionment of the overview element inside its container. Can be "absolute" or "relative" ("absolute" by default) |
  * | width | Number | The width of the minimap (100px by default) |
  * | heigth | Number | The height of the minimap (100px by default) |
@@ -805,7 +805,7 @@ var layerOptions = {
  * | scale.max | Number | Maximum of the scale - 50 by default |
  * | scale.step | Number | Step of the scale - 1 by default |
  * | defaultBoost | Number | Default boost value applied to the widget and the elevation layers when loaded |
- * 
+ *
  * <a id="searchctrl"></a>
  *
  * ### Options for "search" control

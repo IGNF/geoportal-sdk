@@ -17,7 +17,9 @@ module.exports = {
         libraryTarget : "umd"
     },
     resolve : {
-        alias : {}
+        alias : {
+            "itowns" : path.join(__dirname, "node_modules", "itowns", "lib", "MainBundle.js")
+        }
     },
     externals : ["request", "xmldom"],
     devtool : "eval-source-map",
@@ -41,7 +43,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader', 
+                    'style-loader',
                     'css-loader'
                 ]
             },

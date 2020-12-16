@@ -142,7 +142,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
             var callbackLayerRemoved = function (itevt) {
                 var lremoved = itevt;
                 var layerOpts = map._getLayerOpts(lremoved.layerId) || map._getLayerOpts(lremoved.layerId, map._layersRemoved);
-                
+
                 // mapbox label layer overlay
                 if (!layerOpts) {
                     return;
@@ -257,20 +257,18 @@ ItMap.prototype._onMapClick = function (evt) {
     this.logger.trace("[ItMap] : _onMapClick...");
     this._removeInfoDivs();
 
-    var visibleFeatures = this.libMap.getFeaturesAtMousePosition(evt);
-
-    if (visibleFeatures.length === 0) {
-        // no visible features
-        return;
-    }
-
-    var content = this._features2html(visibleFeatures);
-    // Affichage des features.
-    var position = {
-        x : evt.layerX,
-        y : evt.layerY
-    };
-    this._displayInfo(position, content.innerHTML);
+    var self = this;
+    this.libMap.getFeaturesAtMousePosition(evt).then(feats => {
+        if (feats.length !== 0) {
+            var content = self._features2html(feats);
+            // Affichage des features.
+            var position = {
+                x : evt.layerX,
+                y : evt.layerY
+            };
+            self._displayInfo(position, content.innerHTML);
+        }
+    });
 };
 
 /**

@@ -1,0 +1,44 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D without autoconf</title>
+{{/content}}
+
+{{#content "vendor"}}
+        <script src="{{ resources }}/vendor/d3.v3.min.js"></script>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 600px;
+            width: 100%;
+        }
+        #extControlDiv {
+            height: 60px;
+            width : 100%;
+            border : 1px solid;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Ajout d'une carte avec Gp.Map.load() sans appel à l'autoconf</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+<script>
+        Gp.olExtended.includeProjections();
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            reloadConfig : false, // sans autoconf !
+            zoom : 12,
+            center : {
+                x : 270000,
+                y : 6250000
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

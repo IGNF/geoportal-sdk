@@ -378,7 +378,7 @@ IMap.prototype._removeMarkers = function () {
 /**
  * 2D : Gets the markers options currently added to the map
  * 3D : Return the markerOptions saved from the 2D map
- * 
+ *
  * @alias Gp.Map.getMarkersOptions
  */
 IMap.prototype.getMarkersOptions = function () {
@@ -574,11 +574,11 @@ IMap.prototype._layerOptions2layerConf = function (layerOptions, layerConf) {
 };
 
 /**
- *  Function to update selected style property of a mapbox layer
+ * Function to update selected style property of a mapbox layer
  *
  * @param {Array} styles - array of the styles
- * @param {Number} index - index of the style to set as selected 
- *
+ * @param {Number} index - index of the style to set as selected
+ * @returns {Object} - mapbox styles
  * @private
  */
 IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
@@ -589,7 +589,7 @@ IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
         }
     }
     return styles;
-}
+};
 
 /**
  *  Function to disable/enable layer color (grayscale or color mode).

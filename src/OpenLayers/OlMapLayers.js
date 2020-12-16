@@ -166,17 +166,17 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                 } else {
                     params.TRANSPARENT = "TRUE";
                 }
-                let sourceOpts = {
+                var sourceWmsOpts = {
                     url : layerOpts.url,
                     params : params
                 };
                 if (layerOpts.hasOwnProperty("projection")) {
-                    sourceOpts.projection = layerOpts.projection;
+                    sourceWmsOpts.projection = layerOpts.projection;
                 }
                 if (layerOpts.hasOwnProperty("tiled") && layerOpts.tiled === true) {
-                    constructorOpts.source = new TileWMSSource(sourceOpts);
+                    constructorOpts.source = new TileWMSSource(sourceWmsOpts);
                 } else {
-                    constructorOpts.source = new ImageWMSSource(sourceOpts);
+                    constructorOpts.source = new ImageWMSSource(sourceWmsOpts);
                 }
                 break;
             }
@@ -190,7 +190,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     lOpts[opt] = layerOpts[opt];
                 }
                 layerOpts = lOpts;
-                let sourceOpts = {
+                var sourceWmtsOpts = {
                     url : layerOpts.url,
                     layer : layerOpts.layer,
                     matrixSet : layerOpts.tileMatrixSet,
@@ -211,11 +211,11 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     layerOpts.url.indexOf("{TileRow}") > 0 ||
                     layerOpts.url.indexOf("{TileCol}") > 0) {
                     // its an url template => RESTFul
-                    sourceOpts.requestEncoding = "REST";
+                    sourceWmtsOpts.requestEncoding = "REST";
                 } else {
-                    sourceOpts.requestEncoding = "KVP";
+                    sourceWmtsOpts.requestEncoding = "KVP";
                 }
-                constructorOpts.source = new Ol.source.WMTSExtended(sourceOpts);
+                constructorOpts.source = new Ol.source.WMTSExtended(sourceWmtsOpts);
                 break;
             }
             case "OSM":
@@ -646,11 +646,16 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     if (LayerClass === null) {
         return;
     }
-    // instance
-    var olLayer = new LayerClass({
+    var opts = {
         layer : layerId,
         olParams : olParams
-    });
+    };
+    if (!this._isConfLoaded) {
+        opts.apiKey = this.apiKey;
+    }
+    // instance
+    var olLayer = new LayerClass(opts);
+
     // le controle geoportalAttribution exploite la propriete _originators
     // si l'utilisateur en a passé des originators en paramètres, on écrase ceux de l'autoconf.
     if (layerOpts.hasOwnProperty("originators")) {
@@ -774,7 +779,7 @@ OlMap.prototype._checkLayerParams = function (layerOpts) {
  *
  * @param {String} layerId - layer identifier
  * @param {Boolean} toGrayScale - indicate transformation direction (from or to grayscale)
- *
+ * @fires change:grayScaled
  * @private
  */
 OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
@@ -1099,7 +1104,7 @@ OlMap.prototype._addMarkers = function (markersOptions) {
 OlMap.prototype._removeMarkers = function () {
     var currentOverlays = this.libMap.getOverlays().getArray();
     // removes all map overlays
-    while(currentOverlays.length > 0) {
+    while (currentOverlays.length > 0) {
         this.libMap.removeOverlay(currentOverlays[0]);
     }
     // empty overlays SDK array
@@ -1109,6 +1114,7 @@ OlMap.prototype._removeMarkers = function () {
 /**
  * Gets the markers options currently added to the map
  *
+ * @returns {Array} - markers array
  */
 OlMap.prototype.getMarkersOptions = function () {
     return this._markers;
@@ -1125,4 +1131,3 @@ OlMap.prototype.setMarkersOptions = function (markersOptions) {
     // 2 - add specified overlays
     this._addMarkers(markersOptions);
 };
-
