@@ -821,8 +821,10 @@ var layerOptions = {
  * | resources.autocomplete | Array(String) | resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"] |
  * | displayAdvancedSearch | Boolean | True to display advanced search tools. Default is false (not displayed) |
  * | advancedSearch | Object | advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
- * | geocodeOptions | Object | options of geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
- * | autocompleteOptions | Object | options of autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete) |
+ * | geocodeOptions | Object | geocoding options of the control (see [SearchEngine doc](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)) |
+ * | geocodeOptions.serviceOptions | Object | options of the geocode service (see [Gp.Services.geocode](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)) |
+ * | autocompleteOptions | Object | geocoding options of the control (see [SearchEngine doc](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)) |
+ * | autocompleteOptions.serviceOptions | Object | options of the autocomplete service (see see [Gp.Services.autocomplete](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete)) |
  *
  * <a id="reversesearch"></a>
  *
