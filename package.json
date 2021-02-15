@@ -1,7 +1,7 @@
 {
     "name": "geoportal-sdk",
     "version": "3.1.4",
-    "date": "15/02/2020",
+    "date": "15/02/2021",
     "SDK2DVersion": "3.1.4",
     "SDK3DVersion": "3.1.4",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
