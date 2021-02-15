@@ -982,8 +982,10 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
  * @param {Array.<String>} controlOpts.resources.autocomplete - resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"]
  * @param {Boolean} [controlOpts.displayAdvancedSearch = false] - True to display advanced search tools. Default is false (not displayed)
  * @param {Object} controlOpts.advancedSearch - advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
- * @param {Object} [controlOpts.geocodeOptions = {}] - options of geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
- * @param {Object} [controlOpts.autocompleteOptions = {}] - options of autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete)
+ * @param {Object} [controlOpts.geocodeOptions = {}] - geocoding options of the control (see http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)
+ * @param {Object} [controlOpts.geocodeOptions.serviceOptions = {}] - options of the geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
+ * @param {Object} [controlOpts.autocompleteOptions = {}] - geocoding options of the control (see http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)
+ * @param {Object} [controlOpts.autocompleteOptions.serviceOptions = {}] - options of the autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete)
  *
  * @return {Ol.control.SearchEngine} control
  */
