@@ -63,6 +63,11 @@ div[id^="GPdrawing-"] {
   z-index: 8;
 }
 
+/* Attribution zindex */
+div[id^="GPAttribution-"] {
+  z-index: 2;
+}
+
 
 /* Gestion des z-index : cote gauche */
 
@@ -79,6 +84,11 @@ div[id^="GPisochron-"] {
 /* Reverse zindex > import */
 div[id^="GPreverseGeocoding-"] {
   z-index: 4;
+}
+
+/* Mouse Position zindex > Attribution  */
+div[id^="GPmousePosition-"] {
+  z-index: 3;
 }
 
 /* Import zindex min */

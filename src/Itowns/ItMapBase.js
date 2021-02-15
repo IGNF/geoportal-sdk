@@ -2,7 +2,7 @@ import { IMap } from "../Interface/IMap";
 import Logger from "../Utils/LoggerByDefault";
 // itowns & extended extensions
 import { itownsExtended } from "geoportal-extensions-itowns";
-import { Coordinates } from "itowns";
+import { Coordinates, THREE } from "itowns";
 
 /**
 * Itowns IMap implementation class.
@@ -70,7 +70,10 @@ ItMap.prototype._initMap = function () {
     // creation de la map vide avec les paramètres de positionnement de la caméra
     this.libMap = new itownsExtended.GlobeViewExtended(viewerDiv, positionOnGlobe, {
         // to display the last zoom level of Ortho layer
-        maxSubdivisionLevel : 18
+        maxSubdivisionLevel : 18,
+        renderer : {
+            isWebGL2 : this.mapOptions.isWebGL2 !== undefined ? this.mapOptions.isWebGL2 : true
+        }
     });
 
     var self = this;
