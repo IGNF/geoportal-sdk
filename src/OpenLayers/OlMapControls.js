@@ -187,9 +187,7 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
                     //     }
                     // }
                     var gpLayer = new Ol.layer.GeoportalWMTS(opts);
-                    if (gpLayer) {
-                        olLayers.push(gpLayer);
-                    }
+                    olLayers.push(gpLayer);
                 } else {
                     var layerOpts = controlOpts.layers[i];
                     var commonOpts = this._applyCommonLayerParams(layerOpts);
@@ -213,9 +211,7 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
                     };
                     opts.source = new Ol.source.WMTSExtended(sourceOpts);
                     var layer = new TileLayer(opts);
-                    if (layer) {
-                        olLayers.push(layer);
-                    }
+                    olLayers.push(layer);
                 }
             }
         }
@@ -673,7 +669,7 @@ OlMap.prototype.addLayerSwitcherControl = function (controlOpts) {
             collapsed : !(controlOpts && controlOpts.maximised)
         }
     };
-    if (controlOpts.div) {
+    if (controlOpts && controlOpts.div) {
         lsOpts.options.target = controlOpts.div;
     }
     // application des configuration des couches :

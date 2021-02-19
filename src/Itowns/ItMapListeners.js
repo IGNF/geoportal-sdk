@@ -125,10 +125,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     // if itColorLayer is not defined, the layer is an MNT  : we set its layerIndex to -1
                     layerIndex = -1;
                 }
-                if (!layerOpts) {
-                    map.logger.trace("[ItMap] listen  : enregistrement d'une couche 'inconnue'.");
-                    // layerOpts = map._registerUnknownLayer(ladded) ;
-                }
+                // if (!layerOpts) {
+                //    map.logger.trace("[ItMap] listen  : enregistrement d'une couche 'inconnue'.");
+                //    layerOpts = map._registerUnknownLayer(ladded) ;
+                // }
 
                 // if itColorLayer is undefined, it is an MNT  : the sequence is set to -1
                 action.call(context, {

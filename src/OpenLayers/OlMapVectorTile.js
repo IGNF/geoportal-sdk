@@ -452,7 +452,7 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 // FIXME cas particulier :
                                 // on ajoute une liste de filtres pour la configuration:0...,
                                 // si on a qu'un seul "layers"...
-                                if (_nlayers === 1 && filter.type && filter.type === 0) {
+                                if (_nlayers === 1 && filter.type === 0) {
                                     if (!l.filter) {
                                         l.filter = [];
                                         l.filter.push("in");
@@ -561,7 +561,9 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 if (filter.selected && filter.selected.length) {
                                     // TODO...
                                 }
-                            } else {}
+                            } else {
+                                // TODO...
+                            }
 
                             // gestion des filtres actifs
                             // on modifie la visibilité sur un filtre actif
@@ -695,8 +697,8 @@ var _createCustomFiltersStyles = function (source, urls, filters, tilejson, styl
                 tableName : null, // recherche sur une table : ex. "table.champ"
                 propertyName : _filter.propertyName,
                 filterName : _filter.filterName,
-                selected : (_conf && _conf.selected) ? _conf.selected : [],
-                type : (_conf && _conf.type) ? _conf.type : 0
+                selected : (_conf.selected) ? _conf.selected : [],
+                type : (_conf.type) ? _conf.type : 0
             };
 
             // le champ "propertyName" contient il le nom d'une table ?
@@ -1328,8 +1330,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             var _refLayerOptsFilter = layerOpts.filters[ii];
 
                                                             var _conf = _refLayerOptsFilter.configuration || {};
-                                                            var _selected = (_conf && _conf.selected) ? _conf.selected : [];
-                                                            var _type = (_conf && _conf.type) ? _conf.type : 0;
+                                                            var _selected = (_conf.selected) ? _conf.selected : [];
+                                                            var _type = (_conf.type) ? _conf.type : 0;
                                                             // filtre courant
                                                             var _filter = {
                                                                 tableName : null, // recherche sur une table : ex. "table.champ"
