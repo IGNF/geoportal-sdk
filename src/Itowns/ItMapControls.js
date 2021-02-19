@@ -93,12 +93,12 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     this.logger.trace("[ItMap]  : addLayerSwitcherControl ... ");
     // TODO  : parametrage des couches
     var lsOpts = {
-        layers : controlOpts.layers || [],
+        layers : (controlOpts && controlOpts.layers) || [],
         options : {
             collapsed : !(controlOpts && controlOpts.maximised)
         }
     };
-    if (controlOpts.div) {
+    if (controlOpts && controlOpts.div) {
         lsOpts.options.target = controlOpts.div;
     }
     // application des configuration des couches  :
@@ -438,15 +438,17 @@ ItMap.prototype.getLSLayerContainerDivId = function (layerId) {
         return id;
     }
     var itlayers = this._getLayersObj([layerId]);
-    if (itlayers.length > 0) {
+    if (itlayers && itlayers.length > 0) {
         var itLayerList = this._controls[idxLS].obj._layerListContainer;
-        var divId = itLayerList.id;
-        var uid = divId.substring(divId.indexOf("-"));
-        if (itLayerList && itLayerList.childNodes) {
-            for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
-                if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
-                    var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
-                    return foundId;
+        if (itLayerList) {
+            var divId = itLayerList.id;
+            var uid = divId.substring(divId.indexOf("-"));
+            if (itLayerList.childNodes) {
+                for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
+                    if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
+                        var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
+                        return foundId;
+                    }
                 }
             }
         }

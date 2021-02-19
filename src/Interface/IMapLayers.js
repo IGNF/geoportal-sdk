@@ -214,7 +214,7 @@ IMap.prototype.addLayers = function (layersOptions) {
             continue;
         }
         switch (layerOpts.format.toUpperCase()) {
-            case "georss":
+            case "GEORSS":
                 // TODO GeoRSS
                 break;
             case "KML":
@@ -281,7 +281,7 @@ IMap.prototype.modifyLayers = function (layersOptions) {
         return false;
     }
     var layerIds = Object.keys(layersOptions);
-    if (!layerIds || !Array.isArray(layerIds)) {
+    if (!layerIds) {
         this.logger.info("modifyLayers : wrong format for layersOptions !");
         return false;
     }

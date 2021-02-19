@@ -568,54 +568,53 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
         case "WFS":
             // TODO ???
             break;
-        case "drawing":
+        case "DRAWING":
             // TODO ??
             break;
         default:
             break;
     }
-    if (layer) {
-        // le controle geoportalAttribution exploite la propriete _originators
-        if (layerOpts.hasOwnProperty("originators")) {
-            layer._originators = layerOpts.originators;
-        }
 
-        // Dans le cas où aucune visibilité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
-            // on la règle à "true" par défaut
-            layerOpts.visibility = true;
-        }
-
-        this._layers.push({
-            id : layerId,
-            obj : layer,
-            options : layerOpts
-        });
-
-        var LSControl = this.getLibMapControl("layerswitcher");
-        // if the LS already exists, we have to save the conf of the layer to add it to the LS
-        if (LSControl) {
-            LSControl._addedLayerConf[layerId] = layerOpts;
-        }
-
-        // we add the layer and refresh the itowns viewer
-        // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
-
-        var vectorLayerOptions = {
-            name : layer.id,
-            transparent : true,
-            crs : "EPSG:4326",
-            source : layer.source
-        };
-
-        if (layer.style) {
-            vectorLayerOptions.style = layer.style;
-        }
-
-        var vectorLayer = new ColorLayer(layerId, vectorLayerOptions);
-
-        this.libMap.getGlobeView().addLayer(vectorLayer);
+    // le controle geoportalAttribution exploite la propriete _originators
+    if (layerOpts.hasOwnProperty("originators")) {
+        layer._originators = layerOpts.originators;
     }
+
+    // Dans le cas où aucune visibilité n'est spécifiée
+    if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
+        // on la règle à "true" par défaut
+        layerOpts.visibility = true;
+    }
+
+    this._layers.push({
+        id : layerId,
+        obj : layer,
+        options : layerOpts
+    });
+
+    var LSControl = this.getLibMapControl("layerswitcher");
+    // if the LS already exists, we have to save the conf of the layer to add it to the LS
+    if (LSControl) {
+        LSControl._addedLayerConf[layerId] = layerOpts;
+    }
+
+    // we add the layer and refresh the itowns viewer
+    // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
+
+    var vectorLayerOptions = {
+        name : layer.id,
+        transparent : true,
+        crs : "EPSG:4326",
+        source : layer.source
+    };
+
+    if (layer.style) {
+        vectorLayerOptions.style = layer.style;
+    }
+
+    var vectorLayer = new ColorLayer(layerId, vectorLayerOptions);
+
+    this.libMap.getGlobeView().addLayer(vectorLayer);
 };
 
 /* Adds a Raster Layer to the map

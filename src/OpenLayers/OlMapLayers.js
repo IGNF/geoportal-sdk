@@ -455,7 +455,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             });
 
             break;
-        case "drawing":
+        case "DRAWING":
             // à tester avec les outils de dessins
             this.logger.trace("[_addVectorLayer] : ajout d'une couche de dessin");
 
@@ -791,7 +791,7 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
         case "KML":
         case "GPX":
         case "WFS":
-        case "drawing":
+        case "DRAWING":
             this.logger.warn("[_changeLayerColor] : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;
     }

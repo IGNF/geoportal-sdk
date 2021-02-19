@@ -452,7 +452,7 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 // FIXME cas particulier :
                                 // on ajoute une liste de filtres pour la configuration:0...,
                                 // si on a qu'un seul "layers"...
-                                if (_nlayers === 1 && filter.type && filter.type === 0) {
+                                if (_nlayers === 1 && filter.type === 0) {
                                     if (!l.filter) {
                                         l.filter = [];
                                         l.filter.push("in");

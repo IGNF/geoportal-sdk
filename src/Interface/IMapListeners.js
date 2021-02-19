@@ -202,7 +202,7 @@ IMap.prototype.forget = function (eventId, action) {
                     eventOrigin.removeEventListener(eventType, itCallback);
                 }
             }
-            if (!rEvents) {
+            if (!itCallback) {
                 this.logger.info("action to forget not found for  : " + eventId);
                 return false;
             }

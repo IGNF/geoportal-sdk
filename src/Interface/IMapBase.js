@@ -61,7 +61,9 @@ var switch2D3D = function (viewMode) {
                 x : lonlat[0],
                 y : lonlat[1]
             };
-        } else if (mode === "2d") {
+        }
+        
+        if (mode === "2d") {
             // transformation des coordonnées de géographiques en planes
             // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
             var xy = olTransformProj([center.lon, center.lat], "EPSG:4326", "EPSG:3857");
@@ -69,9 +71,8 @@ var switch2D3D = function (viewMode) {
                 x : xy[0],
                 y : xy[1]
             };
-        } else {
-            this.logger.info("Unknown viewing mode");
         }
+
         return _center;
     }
     oldMap.center = switch4center(viewMode, oldMap.center, oldMap.projection);
@@ -141,7 +142,9 @@ var switch2D3D = function (viewMode) {
                     }
                 }
             }
-        } else if (mode === "2d") {
+        }
+        
+        if (mode === "2d") {
             // 3d -> 2d
             _overview.layers = [];
             if (overview.layerId) {
@@ -166,8 +169,6 @@ var switch2D3D = function (viewMode) {
                     projection : (ly.source.projection) ? ly.source.projection.toUpperCase() : null
                 });
             }
-        } else {
-            this.logger.info("Unknown viewing mode");
         }
 
         // options communes
