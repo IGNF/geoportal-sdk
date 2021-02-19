@@ -147,7 +147,7 @@ IMap.prototype.addLayers = function (layersOptions) {
         // si on a donné une URL, on ne cherche pas à découvrir la couche Géoportail
         if (!layerOpts.hasOwnProperty("url") && Config) {
             var format = null;
-            if (layerOpts && layerOpts.format) {
+            if (layerOpts.format) {
                 format = layerOpts.format;
             }
             var layerConf = null;
@@ -281,7 +281,7 @@ IMap.prototype.modifyLayers = function (layersOptions) {
         return false;
     }
     var layerIds = Object.keys(layersOptions);
-    if (!layerIds) {
+    if (layerIds.length === 0) {
         this.logger.info("modifyLayers : wrong format for layersOptions !");
         return false;
     }

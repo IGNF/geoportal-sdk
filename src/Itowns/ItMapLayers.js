@@ -890,8 +890,6 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         var foundDefaultStyle = false; // recherche du style par defaut
         var foundSelectedStyle = false; // recherche du theme sélectionné
 
-        _urlDefaultOrSelected = layerOpts.url;
-
         for (var i = 0; i < layerOpts.styles.length; i++) {
             var t = layerOpts.styles[i];
             // algo assez simpliste... car on compare juste les urls
