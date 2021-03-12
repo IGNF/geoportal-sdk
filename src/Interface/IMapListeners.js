@@ -168,6 +168,7 @@ IMap.prototype.forget = function (eventId, action) {
         case "geolocated" :
         case "located" :
         case "configured" :
+        case "pickFeature" :
             // on cherche l'enregistrement de l'evenement
             var rEvents = this._events[eventId];
             if (!rEvents) {
@@ -206,7 +207,6 @@ IMap.prototype.forget = function (eventId, action) {
         case "projectionChanged" :
         case "layerChanged" :
         case "controlChanged" :
-        case "pickFeature" :
             break;
         default :
             this.logger.info("unhandled event : " + eventId);
