@@ -125,8 +125,10 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
-                // desabonnement des ecouteurs internes...
-                this._resetLayerChangedEvent();
+                // FIXME comment faire le menage des ecouteurs internes ?
+                setTimeout(function () {
+                    context._resetLayerChangedEvent(); // trop violent ?
+                }, 0);
             }.bind(this);
             olEventKey = this.libMap.getLayers().on("remove", callbackLayerRemoved);
             this._registerEvent(olEventKey, eventId, action, context);

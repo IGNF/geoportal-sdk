@@ -151,6 +151,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
+                // FIXME comment faire le menage des ecouteurs internes ?
+                setTimeout(function () {
+                    context._resetLayerChangedEvent(); // trop violent ?
+                }, 0);
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
             map._registerEvent(key, eventId, action, context);
