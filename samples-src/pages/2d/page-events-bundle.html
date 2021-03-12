@@ -20,7 +20,8 @@
         <input type="checkbox" name="azimuthChanged" onclick="listen(this);"/>azimuthChanged<br/>
         <input type="checkbox" name="zoomChanged" onclick="listen(this);"/>zoomChanged<br/>
         <input type="checkbox" name="centerChanged" checked="true" onclick="listen(this);"/>centerChanged<br/>
-        <input type="checkbox" name="layerChanged" onclick="listen(this);"/>layerChanged<br/>
+        <input type="checkbox" name="layerChanged" checked="true" onclick="listen(this);"/>layerChanged<br/>
+        
         <input type="button" name="grayScale" onclick="toggleGS();" value="Toggle Orthos Grayscale / Color"/>
     </div>
     <div id="outputDiv"></div>
@@ -46,7 +47,9 @@
                 'ORTHOIMAGERY.ORTHOPHOTOS': {
                     minZoom : 1,
                     maxZoom : 15
-                }
+                },
+                'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {},
+                'CADASTRALPARCELS.PARCELS' : {}
             },
             controlsOptions : {
                 'layerSwitcher' : {
@@ -59,9 +62,9 @@
                 'geolocated' : action,
                 'layerChanged' : action,
                 'configured' : function () {
-                    map.addLayers({
-                        'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {}
-                    }) ;
+                    // map.addLayers({
+                    //      'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {}
+                    // }) ;
                 }
             },
             zoom : 10

@@ -108,15 +108,15 @@ OlMap.prototype.listen = function (eventId, action, context) {
             }.bind(this);
             olEventKey = this.libMap.getLayers().on("add", callbackLayerAdded);
             this._registerEvent(olEventKey, eventId, action, context);
-
+            
             // abonnement à un retrait de couche
             var callbackLayerRemoved = function (olEvt) {
                 var lremoved = olEvt.element;
                 // on cherche la couche a éventuellement déjà été
                 // enlevée de this._layers
                 var layerOpts = this._getLayerOpts(lremoved) ||
-                                this._getLayerOpts(lremoved, this._layersRemoved);
-
+                this._getLayerOpts(lremoved, this._layersRemoved);
+                
                 var self = context.getLibMap();
                 if (self.featuresOverlay && layerOpts[self.featuresOverlay.getId()]) {
                     self.removeOverlay(self.featuresOverlay);
@@ -128,7 +128,9 @@ OlMap.prototype.listen = function (eventId, action, context) {
             }.bind(this);
             olEventKey = this.libMap.getLayers().on("remove", callbackLayerRemoved);
             this._registerEvent(olEventKey, eventId, action, context);
-
+            
+            // doit on s'abonner s'il n'y'a pas de couches !?
+            // if (this.libMap.getLayers().getLength()) {
             // abonnement à un changement de propriete sur chaque couche
             for (var obsProperty in OlMap.LAYERPROPERTIES) {
                 map.logger.trace("[OlMap] listen : abonnement layerProperty : " + obsProperty);
@@ -173,6 +175,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 },
                 map);
             }
+            // }
             olEventKey = null;
             break;
         case "controlChanged" :
