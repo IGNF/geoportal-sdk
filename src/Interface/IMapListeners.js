@@ -168,14 +168,6 @@ IMap.prototype.forget = function (eventId, action) {
         case "geolocated" :
         case "located" :
         case "configured" :
-        case "mapFailure" :
-        case "centerChanged" :
-        case "zoomChanged" :
-        case "azimuthChanged" :
-        case "tiltChanged" :
-        case "projectionChanged" :
-        case "layerChanged" :
-        case "controlChanged" :
         case "pickFeature" :
             // on cherche l'enregistrement de l'evenement
             var rEvents = this._events[eventId];
@@ -206,6 +198,15 @@ IMap.prototype.forget = function (eventId, action) {
                 this.logger.info("action to forget not found for  : " + eventId);
                 return false;
             }
+            break;
+        case "mapFailure" :
+        case "centerChanged" :
+        case "zoomChanged" :
+        case "azimuthChanged" :
+        case "tiltChanged" :
+        case "projectionChanged" :
+        case "layerChanged" :
+        case "controlChanged" :
             break;
         default :
             this.logger.info("unhandled event : " + eventId);
