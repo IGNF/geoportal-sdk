@@ -125,10 +125,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     // if itColorLayer is not defined, the layer is an MNT  : we set its layerIndex to -1
                     layerIndex = -1;
                 }
-                if (!layerOpts) {
-                    map.logger.trace("[ItMap] listen  : enregistrement d'une couche 'inconnue'.");
-                    // layerOpts = map._registerUnknownLayer(ladded) ;
-                }
+                // if (!layerOpts) {
+                //    map.logger.trace("[ItMap] listen  : enregistrement d'une couche 'inconnue'.");
+                //    layerOpts = map._registerUnknownLayer(ladded) ;
+                // }
 
                 // if itColorLayer is undefined, it is an MNT  : the sequence is set to -1
                 action.call(context, {
@@ -151,6 +151,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
+                // FIXME comment faire le menage des ecouteurs internes ?
+                setTimeout(function () {
+                    context._resetLayerChangedEvent(); // trop violent ?
+                }, 0);
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_REMOVED, callbackLayerRemoved);
             map._registerEvent(key, eventId, action, context);
