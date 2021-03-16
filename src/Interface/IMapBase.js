@@ -62,7 +62,7 @@ var switch2D3D = function (viewMode) {
                 y : lonlat[1]
             };
         }
-        
+
         if (mode === "2d") {
             // transformation des coordonnées de géographiques en planes
             // FIXME : ne devrait pas se faire avec ol.proj mais avec proj4 car dans IMap, ol n'est pas forcement chargée !
@@ -143,7 +143,7 @@ var switch2D3D = function (viewMode) {
                 }
             }
         }
-        
+
         if (mode === "2d") {
             // 3d -> 2d
             _overview.layers = [];

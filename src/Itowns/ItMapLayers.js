@@ -959,10 +959,10 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
 
     // overloads the showLabels option to false if the layer is not visible
     if (layerOpts.visibility === false) {
-      layerOpts.showLabels = false;
+        layerOpts.showLabels = false;
     } else {
-      // vector tile layers labels handling
-      layerOpts.showLabels = layerOpts.showLabels === undefined ? true : layerOpts.showLabels;
+        // vector tile layers labels handling
+        layerOpts.showLabels = layerOpts.showLabels === undefined ? true : layerOpts.showLabels;
     }
 
     var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
