@@ -956,6 +956,15 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     if (layerOpts.sprite) {
         vectorTileSourceOpts.sprite = layerOpts.sprite;
     }
+
+    // overloads the showLabels option to false if the layer is not visible
+    if (layerOpts.visibility === false) {
+        layerOpts.showLabels = false;
+    } else {
+        // vector tile layers labels handling
+        layerOpts.showLabels = layerOpts.showLabels === undefined ? true : layerOpts.showLabels;
+    }
+
     var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
 
     var vectorTileLayer = {};
@@ -966,7 +975,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             return false;
         },
         noTextureParentOutsideLimit : true,
-        labelEnabled : layerOpts.showLabels || true,
+        labelEnabled : layerOpts.showLabels,
         source : vectorTileSource
     });
 
