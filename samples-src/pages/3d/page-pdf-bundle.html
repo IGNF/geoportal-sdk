@@ -1,0 +1,64 @@
+{{#extend "sample-bundle-layout-3d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 3D PDF</title>
+{{/content}}
+
+{{#content "vendor"}}
+        <script src="{{ resources }}/vendor/jspdf.min.js"></script>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 1200px;
+          position : "relative";
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test 3D</h1>
+    <h2>Carte 3D.</h2>
+    <div>
+        <input type="button" name="print" onclick="printRender();" value="print"/><br/>
+    </div>
+    <div id="viewerDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load("viewerDiv",{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            viewMode : "3d",
+            isWebGL2 : true,
+            layersOptions : {
+                "ORTHOIMAGERY.ORTHOPHOTOS" : {}
+            },
+            center : {
+                x : 2.357,
+                y : 48.83,
+                projection : "EPSG:4326"
+            },
+            azimuth : 60
+        });
+
+        // cf. https://jsfiddle.net/gL8hp7zq/
+        // You can try to render the PDF on a canvas element via PDF.js and then use it
+        // to create an instance of THREE.CanvasTexture for a plane mesh.
+        function printRender() {
+            var imgData = map.getLibMap().getGlobeView().mainLoop.gfxEngine.getRenderer().domElement.toDataURL("image/jpeg", 1.0);
+            // option preserveDrawingBuffer !?
+            // renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
+
+            console.log(imgData);
+            const { jsPDF } = window.jspdf;
+            var pdf = new jsPDF();
+            pdf.addImage(imgData, 'JPEG', 0, 0);
+            pdf.save("download.pdf");
+        };
+
+    </script>
+{{/content}}
+{{/extend}}
