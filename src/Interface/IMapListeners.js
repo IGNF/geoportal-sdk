@@ -88,7 +88,7 @@ IMap.prototype.listen = function (eventId, action, context) {
         this.logger.error("no action provided for the event : " + eventId);
         return false;
     }
-    if (!action.name || typeof action.name === "anomynous") {
+    if (!action.name || action.name === "anomynous") {
         this.logger.warn("the action provided for the event : " + eventId + " should be named so that it can be remove later");
     }
     context = context || this;
