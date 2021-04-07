@@ -115,7 +115,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 // on cherche la couche a éventuellement déjà été
                 // enlevée de this._layers
                 var layerOpts = this._getLayerOpts(lremoved) ||
-                                this._getLayerOpts(lremoved, this._layersRemoved);
+                this._getLayerOpts(lremoved, this._layersRemoved);
 
                 var self = context.getLibMap();
                 if (self.featuresOverlay && layerOpts[self.featuresOverlay.getId()]) {
@@ -125,10 +125,16 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 action.call(context, {
                     layerRemoved : layerOpts
                 });
+                // FIXME comment faire le menage des ecouteurs internes ?
+                setTimeout(function () {
+                    context._resetLayerChangedEvent(); // trop violent ?
+                }, 0);
             }.bind(this);
             olEventKey = this.libMap.getLayers().on("remove", callbackLayerRemoved);
             this._registerEvent(olEventKey, eventId, action, context);
 
+            // doit on s'abonner s'il n'y'a pas de couches !?
+            // if (this.libMap.getLayers().getLength()) {
             // abonnement à un changement de propriete sur chaque couche
             for (var obsProperty in OlMap.LAYERPROPERTIES) {
                 map.logger.trace("[OlMap] listen : abonnement layerProperty : " + obsProperty);
@@ -173,6 +179,7 @@ OlMap.prototype.listen = function (eventId, action, context) {
                 },
                 map);
             }
+            // }
             olEventKey = null;
             break;
         case "controlChanged" :
