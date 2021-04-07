@@ -23,6 +23,7 @@
     }],
     "rules": {
         "curly": "error",
+        "dot-notation" : "off",
         "key-spacing": [
             "error",
             {

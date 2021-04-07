@@ -511,7 +511,7 @@ IMap.prototype = {
         this.logger.trace("[IMap] : Autoconfiguration chargée ... ou pas");
 
         // TODO : detecter si on a le bon objet (error ou success)
-        this._isConfLoaded = (typeof configResponse === "undefined") ? false : true;
+        this._isConfLoaded = !(typeof configResponse === "undefined");
 
         // declenchement de l'evenement "configured"
         var e = IMap.CustomEvent("configured", {
