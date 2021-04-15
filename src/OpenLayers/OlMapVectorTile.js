@@ -1646,6 +1646,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     });
                                             };
 
+                                            // multisource
+                                            var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
+
+                                            // layer en cours d'ajout...
+                                            // on ne le rajoute pas...
+                                            if (_id === layerId && self._getLayersObj([layerId]).length > 0) {
+                                                self.logger.info("Layer [" + layerId + "] already added to map.");
+                                                return;
+                                            }
+
                                             // enregistrement du layer
                                             var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
                                             self._layers.push({
