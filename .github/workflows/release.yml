@@ -3,7 +3,7 @@ name: Create 2D/3D Release ...
 on:
   push:
     tags:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+' # ex. 3.12.5
 
 jobs:
 
