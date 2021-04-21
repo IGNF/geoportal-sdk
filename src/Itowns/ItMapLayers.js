@@ -580,11 +580,8 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
         layer._originators = layerOpts.originators;
     }
 
-    // Dans le cas où aucune visibilité n'est spécifiée
-    if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
-        // on la règle à "true" par défaut
-        layerOpts.visibility = true;
-    }
+    // set default layerOptions for visibility if none specified
+    layerOpts = this._setDefaultVisibilityOptions(layerOpts);
 
     this._layers.push({
         id : layerId,
@@ -807,17 +804,9 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.source.attribution = layerOpts.originators;
         }
 
-        // Dans le cas où aucune opacité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("opacity") || typeof layerOpts.opacity === "undefined") {
-            // on la règle à 1 par défaut
-            layerOpts.opacity = 1;
-        }
-
-        // Dans le cas où aucune visibilité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
-            // on la règle à "true" par défaut
-            layerOpts.visibility = true;
-        }
+        // set default layerOptions for visibility and opacity if none specified
+        layerOpts = this._setDefaultOpacityOptions(layerOpts);
+        layerOpts = this._setDefaultVisibilityOptions(layerOpts);
 
         // on met à jour le tableau des couches
         this._layers.push({
@@ -957,12 +946,16 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         vectorTileSourceOpts.sprite = layerOpts.sprite;
     }
 
+    // set default layerOptions for visibility and opacity if none specified
+    layerOpts = this._setDefaultOpacityOptions(layerOpts);
+    layerOpts = this._setDefaultVisibilityOptions(layerOpts);
+
     // overloads the showLabels option to false if the layer is not visible
     if (layerOpts.visibility === false) {
         layerOpts.showLabels = false;
     } else {
         // vector tile layers labels handling
-        layerOpts.showLabels = layerOpts.showLabels === undefined ? true : layerOpts.showLabels;
+        layerOpts.showLabels = true;
     }
 
     var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
@@ -980,8 +973,8 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     });
 
     // definition de l'opacité et de la visibilité de la couche
-    vectorTileLayer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-    vectorTileLayer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+    vectorTileLayer.visible = layerOpts.visibility;
+    vectorTileLayer.opacity = layerOpts.opacity;
 
     var LSControl = this.getLibMapControl("layerswitcher");
     // if the LS already exists, we have to save the conf of the layer to add it to the LS
@@ -1058,6 +1051,34 @@ ItMap.prototype._addMarkers = function (markersOptions) {
         // update _markers array with the marker options saved in case of switch to 2D
         this._markers.push(mo);
     }
+};
+
+/**
+ * set default layerOpts for visibility if none specified
+ *
+ * @private
+ */
+ItMap.prototype._setDefaultVisibilityOptions = function(opts) {
+  // Dans le cas où aucune visibilité n'est spécifiée
+  if (!opts.hasOwnProperty("visibility") || typeof opts.visibility === "undefined") {
+      // on la règle à "true" par défaut
+      opts.visibility = true;
+  }
+  return opts;
+};
+
+/**
+ * set default layerOpts for opacity if none specified
+ *
+ * @private
+ */
+ItMap.prototype._setDefaultOpacityOptions = function(opts) {
+  // Dans le cas où aucune opacité n'est spécifiée
+  if (!opts.hasOwnProperty("opacity") || typeof opts.opacity === "undefined") {
+      // on la règle à 1 par défaut
+      opts.opacity = 1;
+  }
+  return opts;
 };
 
 /**
