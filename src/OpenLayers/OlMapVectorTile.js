@@ -1646,6 +1646,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     });
                                             };
 
+                                            // multisource
+                                            var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
+
+                                            // layer en cours d'ajout...
+                                            // on ne le rajoute pas...
+                                            if (_id === layerId && self._getLayersObj([layerId]).length > 0) {
+                                                self.logger.info("Layer [" + layerId + "] already added to map.");
+                                                return;
+                                            }
+
                                             // enregistrement du layer
                                             var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
                                             self._layers.push({
@@ -1748,10 +1758,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // Maintenant que la couche mapBox a été ajoutée de manière asynchrone,
                                             // on s'assure de bien remettre à jour les indexs des couches et de
                                             // reordonner les couches correctement (désynchro des zIndex dans le cas d'un switch 3D->2D)
-                                            // On entre pas dans la condition si les IDs des couches ne correspondent pas entre
-                                            // les couches contenues dans_layers et mapOptions.layersOptions
-                                            // cf. FIXME couche ORTHO dans afterGetConfig
-                                            for (var i = 0; i < self._layers.length; i++) {
+                                            // On n'entre pas dans la condition si les IDs des couches ne correspondent pas entre
+                                            // les couches contenues dans _layers et mapOptions.layersOptions !
+                                            // On reordonne si _layers === layersOptions !
+
+                                            for (var i = 0; i < self._layers.length && self._layers.length === Object.keys(self.mapOptions.layersOptions).length; i++) {
                                                 var layerName = self._layers[i].id;
                                                 if (self.mapOptions.layersOptions && self.mapOptions.layersOptions[layerName] && self.mapOptions.layersOptions[layerName].position !== undefined) {
                                                     self._layers[i].options.position = self.mapOptions.layersOptions[layerName].position;
