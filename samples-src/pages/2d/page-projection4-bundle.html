@@ -25,10 +25,18 @@
     <script>
 
         Gp.Map.load('geoportalMap4',{
+            center: {
+                x : -4.620391,
+                y : 48.268698,
+                projection : "CRS:84"
+            },
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             projection : "IGNF:LAMB93",
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO" : {}
+            },
+            controlsOptions : {
+                mousePosition : {}
             }
         });
     </script>

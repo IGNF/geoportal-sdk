@@ -82,10 +82,10 @@ Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM
 Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
 
 ```
-npm i geoportal-sdk
+npm i @ignf-geoportal/sdk-2d
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/2d/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/@ignf-geoportal/sdk-2d/dist/` de votre projet.
 
 #### Accès direct
 

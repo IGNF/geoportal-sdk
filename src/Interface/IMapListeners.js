@@ -88,7 +88,7 @@ IMap.prototype.listen = function (eventId, action, context) {
         this.logger.error("no action provided for the event : " + eventId);
         return false;
     }
-    if (!action.name || typeof action.name === "anomynous") {
+    if (!action.name || action.name === "anomynous") {
         this.logger.warn("the action provided for the event : " + eventId + " should be named so that it can be remove later");
     }
     context = context || this;
@@ -168,14 +168,6 @@ IMap.prototype.forget = function (eventId, action) {
         case "geolocated" :
         case "located" :
         case "configured" :
-        case "mapFailure" :
-        case "centerChanged" :
-        case "zoomChanged" :
-        case "azimuthChanged" :
-        case "tiltChanged" :
-        case "projectionChanged" :
-        case "layerChanged" :
-        case "controlChanged" :
         case "pickFeature" :
             // on cherche l'enregistrement de l'evenement
             var rEvents = this._events[eventId];
@@ -202,10 +194,19 @@ IMap.prototype.forget = function (eventId, action) {
                     eventOrigin.removeEventListener(eventType, itCallback);
                 }
             }
-            if (!rEvents) {
+            if (!itCallback) {
                 this.logger.info("action to forget not found for  : " + eventId);
                 return false;
             }
+            break;
+        case "mapFailure" :
+        case "centerChanged" :
+        case "zoomChanged" :
+        case "azimuthChanged" :
+        case "tiltChanged" :
+        case "projectionChanged" :
+        case "layerChanged" :
+        case "controlChanged" :
             break;
         default :
             this.logger.info("unhandled event : " + eventId);

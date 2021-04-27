@@ -286,7 +286,7 @@ IMap.prototype.removeControls = function (controlIds) {
 IMap.prototype.modifyControls = function (controlsOptions) {
     this.logger.trace("[IMap] : modifyControls ... ");
     var controlIds = Object.keys(controlsOptions);
-    if (!controlIds || controlIds.length === 0) {
+    if (controlIds.length === 0) {
         this.logger.info("No control to modify.");
         return;
     }
