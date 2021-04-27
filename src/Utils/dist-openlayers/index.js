@@ -2,16 +2,16 @@
 /* eslint-disable camelcase */
 /**
 * Fichier index pour openlayers.
-* version 6.4.3 (tag)
+* version 6.3.1 (tag)
 *
 *     openalayers.org$ git remote -v
 *     origin https://github.com/openlayers/openlayers.git (fetch)
 *     origin https://github.com/openlayers/openlayers.git (push)
 *
-*     openalayers.org$ git checkout v6.4.3
-*         Note: extraction de 'v6.4.3'.
+*     openlayers.org$ git checkout v6.3.1
+*         Note: extraction de 'v6.3.1'.
 *
-*     openalayers.org$ npm run build-index
+*     openlayers.org$ npm run build-index
 *
 */
 import $ol$Collection from 'ol/Collection';
@@ -165,7 +165,6 @@ import $ol$layer$Group from 'ol/layer/Group';
 import $ol$layer$Heatmap from 'ol/layer/Heatmap';
 import $ol$layer$Image from 'ol/layer/Image';
 import $ol$layer$Layer from 'ol/layer/Layer';
-import $ol$layer$MapboxVector from 'ol/layer/MapboxVector';
 import $ol$layer$Tile from 'ol/layer/Tile';
 import $ol$layer$Vector from 'ol/layer/Vector';
 import $ol$layer$VectorImage from 'ol/layer/VectorImage';
@@ -511,7 +510,6 @@ ol.layer.Group = $ol$layer$Group;
 ol.layer.Heatmap = $ol$layer$Heatmap;
 ol.layer.Image = $ol$layer$Image;
 ol.layer.Layer = $ol$layer$Layer;
-ol.layer.MapboxVector = $ol$layer$MapboxVector;
 ol.layer.Tile = $ol$layer$Tile;
 ol.layer.Vector = $ol$layer$Vector;
 ol.layer.VectorImage = $ol$layer$VectorImage;
