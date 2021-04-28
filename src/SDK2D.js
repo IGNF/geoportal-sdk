@@ -54,6 +54,7 @@ export {
     Error,
     Helper,
     Protocols,
+    Logger,
     servicesDate, servicesVersion,
     LayerUtils,
     ProxyUtils,

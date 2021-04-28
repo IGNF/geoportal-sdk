@@ -102,6 +102,10 @@ export {
      * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-XHR.html|geoportal-access-lib}
      */
     Protocols,
+    /**
+     * Logger
+     */
+    Logger,
     /** servicesDate
      * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Gp.html|geoportal-access-lib}
      */
