@@ -552,7 +552,8 @@ ItMap.prototype._getTMSLimits = function (TMSID) {
                     minTileCol : 0,
                     maxTileCol : 8192
                 }
-            };
+            }
+        };
         return TMSlimits;
     }
     this.logger.trace("[ItMap]  : no TMS Limits found for this TMS id");
