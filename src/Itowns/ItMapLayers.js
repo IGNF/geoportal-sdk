@@ -472,86 +472,87 @@ ItMap.prototype._getTMSLimits = function (TMSID) {
                 maxTileCol : 262144
             }
         };
-        if (TMSID === "WGS84G_PO") {
-            TMSlimits = {
-                0 : {
-                    minTileRow : 0,
-                    maxTileRow : 0,
-                    minTileCol : 0,
-                    maxTileCol : 2
-                },
-                1 : {
-                    minTileRow : 0,
-                    maxTileRow : 1,
-                    minTileCol : 0,
-                    maxTileCol : 4
-                },
-                2 : {
-                    minTileRow : 0,
-                    maxTileRow : 3,
-                    minTileCol : 0,
-                    maxTileCol : 8
-                },
-                3 : {
-                    minTileRow : 0,
-                    maxTileRow : 7,
-                    minTileCol : 0,
-                    maxTileCol : 16
-                },
-                4 : {
-                    minTileRow : 0,
-                    maxTileRow : 15,
-                    minTileCol : 0,
-                    maxTileCol : 32
-                },
-                5 : {
-                    minTileRow : 1,
-                    maxTileRow : 31,
-                    minTileCol : 0,
-                    maxTileCol : 64
-                },
-                6 : {
-                    minTileRow : 2,
-                    maxTileRow : 62,
-                    minTileCol : 0,
-                    maxTileCol : 128
-                },
-                7 : {
-                    minTileRow : 4,
-                    maxTileRow : 125,
-                    minTileCol : 0,
-                    maxTileCol : 256
-                },
-                8 : {
-                    minTileRow : 8,
-                    maxTileRow : 250,
-                    minTileCol : 0,
-                    maxTileCol : 512
-                },
-                9 : {
-                    minTileRow : 17,
-                    maxTileRow : 500,
-                    minTileCol : 0,
-                    maxTileCol : 1024
-                },
-                10 : {
-                    minTileRow : 34,
-                    maxTileRow : 1001,
-                    minTileCol : 0,
-                    maxTileCol : 2048
-                },
-                11 : {
-                    minTileRow : 68,
-                    maxTileRow : 2002,
-                    minTileCol : 0,
-                    maxTileCol : 4096
-                },
-                12 : {
-                    minTileRow : 136,
-                    maxTileRow : 4004,
-                    minTileCol : 0,
-                    maxTileCol : 8192
-                }
+        return TMSlimits;
+    }
+    if (TMSID === "WGS84G_PO") {
+        TMSlimits = {
+            0 : {
+                minTileRow : 0,
+                maxTileRow : 0,
+                minTileCol : 0,
+                maxTileCol : 2
+            },
+            1 : {
+                minTileRow : 0,
+                maxTileRow : 1,
+                minTileCol : 0,
+                maxTileCol : 4
+            },
+            2 : {
+                minTileRow : 0,
+                maxTileRow : 3,
+                minTileCol : 0,
+                maxTileCol : 8
+            },
+            3 : {
+                minTileRow : 0,
+                maxTileRow : 7,
+                minTileCol : 0,
+                maxTileCol : 16
+            },
+            4 : {
+                minTileRow : 0,
+                maxTileRow : 15,
+                minTileCol : 0,
+                maxTileCol : 32
+            },
+            5 : {
+                minTileRow : 1,
+                maxTileRow : 31,
+                minTileCol : 0,
+                maxTileCol : 64
+            },
+            6 : {
+                minTileRow : 2,
+                maxTileRow : 62,
+                minTileCol : 0,
+                maxTileCol : 128
+            },
+            7 : {
+                minTileRow : 4,
+                maxTileRow : 125,
+                minTileCol : 0,
+                maxTileCol : 256
+            },
+            8 : {
+                minTileRow : 8,
+                maxTileRow : 250,
+                minTileCol : 0,
+                maxTileCol : 512
+            },
+            9 : {
+                minTileRow : 17,
+                maxTileRow : 500,
+                minTileCol : 0,
+                maxTileCol : 1024
+            },
+            10 : {
+                minTileRow : 34,
+                maxTileRow : 1001,
+                minTileCol : 0,
+                maxTileCol : 2048
+            },
+            11 : {
+                minTileRow : 68,
+                maxTileRow : 2002,
+                minTileCol : 0,
+                maxTileCol : 4096
+            },
+            12 : {
+                minTileRow : 136,
+                maxTileRow : 4004,
+                minTileCol : 0,
+                maxTileCol : 8192
             }
         };
         return TMSlimits;
