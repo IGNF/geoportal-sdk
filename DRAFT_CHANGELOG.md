@@ -1,6 +1,6 @@
-# SDK Geoportail 2D/3D, version 3.1.6
+# SDK Geoportail 2D/3D, version 3.2.0
 
-**26/04/2021 : version 3.1.6**
+**26/05/2021 : version 3.2.0**
 > Release SDK Geoportail 2D/3D
 
 ## Summary
@@ -13,7 +13,7 @@
 
 * [Changed]
 
-    - geoportal-extensions-openlayers@3.0.15
+    - geoportal-extensions-openlayers@3.1.0
     - openlayers@6.3.1
 
 * [Removed]

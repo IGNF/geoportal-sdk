@@ -1,22 +1,18 @@
 {
    "description" : "French Geoportal SDK based on OpenLayers (2D)",
    "directories" : {},
-   "module" : "src/SDK2D.js",
-   "repository" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk.git",
-      "type" : "git"
-   },
-   "license" : "CECILL-B",
-   "keywords" : [
-      "openlayers",
-      "geoportail",
-      "webservice",
-      "javascript"
-   ],
-   "scripts" : {},
-   "version" : "3.1.6",
-   "name" : "@ignf-geoportal/sdk-2d",
    "author" : "IGNF",
+   "license" : "CECILL-B",
+   "dependencies" : {
+      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/upgrade_to_ol6/build/scripts/release/geoportal-extensions-openlayers-3.1.0.tgz",
+      "xmldom" : "^0.1.27",
+      "node-fetch" : "^2.6.1",
+      "ol" : "6.3.1"
+   },
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
+   "version" : "3.2.0",
    "files" : [
       "dist/",
       "src/",
@@ -24,16 +20,20 @@
       "README.md",
       "package.json"
    ],
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   "keywords" : [
+      "openlayers",
+      "geoportail",
+      "webservice",
+      "javascript"
+   ],
+   "repository" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk.git",
+      "type" : "git"
    },
-   "dependencies" : {
-      "ol" : "6.3.1",
-      "node-fetch" : "^2.6.1",
-      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/upgrade_to_ol6/build/scripts/release/geoportal-extensions-openlayers-3.0.15.tgz",
-      "xmldom" : "^0.1.27"
-   },
-   "date" : "24/04/2021",
+   "main" : "dist/GpSDK2D-src.js",
+   "date" : "26/05/2021",
+   "scripts" : {},
+   "name" : "@ignf-geoportal/sdk-2d",
    "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "main" : "dist/GpSDK2D-src.js"
+   "module" : "src/SDK2D.js"
 }
