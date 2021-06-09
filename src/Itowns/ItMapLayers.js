@@ -968,7 +968,7 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             return false;
         },
         noTextureParentOutsideLimit : true,
-        labelEnabled : layerOpts.showLabels,
+        addLabelLayer : layerOpts.showLabels,
         source : vectorTileSource
     });
 
