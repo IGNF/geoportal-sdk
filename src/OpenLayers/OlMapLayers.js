@@ -16,8 +16,8 @@ import OSMSource from "ol/source/OSM";
 
 import GML2 from "ol/format/GML2";
 import GML3 from "ol/format/GML3";
-import GeoJSON from "ol/format/GeoJSON";
-import GPX from "ol/format/GPX";
+// import GeoJSON from "ol/format/GeoJSON";
+// import GPX from "ol/format/GPX";
 
 import Overlay from "ol/Overlay";
 import {
@@ -373,9 +373,11 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GPX");
             constructorOpts.source = new VectorSource({
                 url : this.setProxy(layerOpts.url),
-                format : new GPX()
+                format : new Ol.format.GPXExtended({
+                    defaultStyle : vectorStyle
+                })
             });
-            constructorOpts.style = vectorStyle;
+            constructorOpts.style = vectorStyle; // utile ?
             break;
         case "GEORSS":
             // TODO GeoRSS
@@ -384,9 +386,11 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
             constructorOpts.source = new VectorSource({
                 url : this.setProxy(layerOpts.url),
-                format : new GeoJSON()
+                format : new Ol.format.GeoJSONExtended({
+                    defaultStyle : vectorStyle
+                })
             });
-            constructorOpts.style = vectorStyle;
+            constructorOpts.style = vectorStyle; // utile ?
             break;
         case "WFS":
             // TODO : gestion des valeurs par defaut
