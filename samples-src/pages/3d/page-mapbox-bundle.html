@@ -42,18 +42,16 @@
             projection : "EPSG:3857",
             tileMatrixSet : "PM",
             // url : "https://vectortiles.ign.fr/demonstrateur/styles/planign.json",
-            url : "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/standard.json",
+            url : "{{resources}}/MAPBOX/styles/planign/standard.json",
             styles : [
                 {
                     "name" : "style 'gris'",
-                    "url" : "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/gris.json",
-                    // "url" : "data/planign/gris.json"
+                    "url" : "{{resources}}/MAPBOX/styles/planign/gris.json",
                     "selected" : true
                 },
                 {
-                    "name" : "style 'muet'",
-                    "url" : "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/muet.json",
-                    // "url" : "data/planign/muet.json",
+                    "name" : "style 'accentue'",
+                    "url" : "{{resources}}/MAPBOX/styles/planign/accentue.json",
                 },
             ],
             filtersSummary : "Filtres",

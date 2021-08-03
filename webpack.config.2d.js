@@ -84,9 +84,9 @@ module.exports = (env, argv) => {
         },
         externals : [
             {
-                request : {
-                    commonjs2 : "request",
-                    commonjs : "request",
+                "node-fetch" : {
+                    commonjs2 : "node-fetch",
+                    commonjs : "node-fetch",
                     amd : "require"
                 },
                 xmldom : {
