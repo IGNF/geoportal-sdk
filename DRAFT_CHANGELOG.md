@@ -16,6 +16,7 @@
 
     - geoportal-extensions-openlayers@3.1.0
     - openlayers@6.3.1
+    - itowns 2.33
 
 * [Removed]
 
