@@ -452,7 +452,7 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 // FIXME cas particulier :
                                 // on ajoute une liste de filtres pour la configuration:0...,
                                 // si on a qu'un seul "layers"...
-                                if (_nlayers === 1 && filter.type && filter.type === 0) {
+                                if (_nlayers === 1 && filter.type === 0) {
                                     if (!l.filter) {
                                         l.filter = [];
                                         l.filter.push("in");
@@ -561,7 +561,9 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 if (filter.selected && filter.selected.length) {
                                     // TODO...
                                 }
-                            } else {}
+                            } else {
+                                // TODO...
+                            }
 
                             // gestion des filtres actifs
                             // on modifie la visibilité sur un filtre actif
@@ -695,8 +697,8 @@ var _createCustomFiltersStyles = function (source, urls, filters, tilejson, styl
                 tableName : null, // recherche sur une table : ex. "table.champ"
                 propertyName : _filter.propertyName,
                 filterName : _filter.filterName,
-                selected : (_conf && _conf.selected) ? _conf.selected : [],
-                type : (_conf && _conf.type) ? _conf.type : 0
+                selected : (_conf.selected) ? _conf.selected : [],
+                type : (_conf.type) ? _conf.type : 0
             };
 
             // le champ "propertyName" contient il le nom d'une table ?
@@ -1208,7 +1210,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection
                                                 // featureProjection
-                                                featureClass : RenderFeature
+                                                // featureClass : RenderFeature
                                             });
                                             // cf. https://openlayers.org/en/latest/apidoc/module-ol_source_VectorTile-VectorTile.html
                                             vectorSource = new VectorTileSource({
@@ -1242,7 +1244,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection ?
                                                 // featureProjection ?
-                                                featureClass : RenderFeature
+                                                // featureClass : RenderFeature
                                             });
                                             vectorLayer = new VectorTileLayer({
                                                 visible : false,
@@ -1328,8 +1330,8 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                             var _refLayerOptsFilter = layerOpts.filters[ii];
 
                                                             var _conf = _refLayerOptsFilter.configuration || {};
-                                                            var _selected = (_conf && _conf.selected) ? _conf.selected : [];
-                                                            var _type = (_conf && _conf.type) ? _conf.type : 0;
+                                                            var _selected = (_conf.selected) ? _conf.selected : [];
+                                                            var _type = (_conf.type) ? _conf.type : 0;
                                                             // filtre courant
                                                             var _filter = {
                                                                 tableName : null, // recherche sur une table : ex. "table.champ"
@@ -1644,6 +1646,16 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     });
                                             };
 
+                                            // multisource
+                                            var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
+
+                                            // layer en cours d'ajout...
+                                            // on ne le rajoute pas...
+                                            if (_id === layerId && self._getLayersObj([layerId]).length > 0) {
+                                                self.logger.info("Layer [" + layerId + "] already added to map.");
+                                                return;
+                                            }
+
                                             // enregistrement du layer
                                             var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
                                             self._layers.push({
@@ -1746,10 +1758,11 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // Maintenant que la couche mapBox a été ajoutée de manière asynchrone,
                                             // on s'assure de bien remettre à jour les indexs des couches et de
                                             // reordonner les couches correctement (désynchro des zIndex dans le cas d'un switch 3D->2D)
-                                            // On entre pas dans la condition si les IDs des couches ne correspondent pas entre
-                                            // les couches contenues dans_layers et mapOptions.layersOptions
-                                            // cf. FIXME couche ORTHO dans afterGetConfig
-                                            for (var i = 0; i < self._layers.length; i++) {
+                                            // On n'entre pas dans la condition si les IDs des couches ne correspondent pas entre
+                                            // les couches contenues dans _layers et mapOptions.layersOptions !
+                                            // On reordonne si _layers === layersOptions !
+
+                                            for (var i = 0; i < self._layers.length && self._layers.length === Object.keys(self.mapOptions.layersOptions).length; i++) {
                                                 var layerName = self._layers[i].id;
                                                 if (self.mapOptions.layersOptions && self.mapOptions.layersOptions[layerName] && self.mapOptions.layersOptions[layerName].position !== undefined) {
                                                     self._layers[i].options.position = self.mapOptions.layersOptions[layerName].position;

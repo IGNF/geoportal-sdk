@@ -1,11 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.1.3
+# SDK Geoportail 2D/3D, version 3.2.0
 
-**16/12/2020 : version 3.1.3**
+**03/08/2021 : version 3.2.0**
+
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Corrections mineures
+* Upgrade d'OpenLayers et des extensions geoportail
  
 ## Changelog
 
@@ -13,13 +14,14 @@
 
 * [Changed]
 
+    - geoportal-extensions-openlayers@3.1.0
+    - openlayers@6.3.1
+    - itowns 2.33
+
 * [Removed]
 
 * [Fixed]
   
-    - correction des tests
-    - correction chargement par défaut couche orthophotos en 3D
-
 * [Deprecated]
 
 * [Security]

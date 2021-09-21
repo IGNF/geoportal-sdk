@@ -25,6 +25,11 @@
     <script>
 
         Gp.Map.load('geoportalMap3',{
+            center: {
+                x : -4.620391,
+                y : 48.268698,
+                projection : "CRS:84"
+            },
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             projection : "EPSG:2154",
             layersOptions : {
@@ -34,6 +39,9 @@
                     url : "http://services.sandre.eaufrance.fr/geo/zonage",
                     layers : ["TronconHydrographique"]
                 }
+            },
+            controlsOptions : {
+                mousePosition : {}
             }
         });
     </script>

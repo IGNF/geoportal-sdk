@@ -568,54 +568,50 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
         case "WFS":
             // TODO ???
             break;
-        case "drawing":
+        case "DRAWING":
             // TODO ??
             break;
         default:
             break;
     }
-    if (layer) {
-        // le controle geoportalAttribution exploite la propriete _originators
-        if (layerOpts.hasOwnProperty("originators")) {
-            layer._originators = layerOpts.originators;
-        }
 
-        // Dans le cas où aucune visibilité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
-            // on la règle à "true" par défaut
-            layerOpts.visibility = true;
-        }
-
-        this._layers.push({
-            id : layerId,
-            obj : layer,
-            options : layerOpts
-        });
-
-        var LSControl = this.getLibMapControl("layerswitcher");
-        // if the LS already exists, we have to save the conf of the layer to add it to the LS
-        if (LSControl) {
-            LSControl._addedLayerConf[layerId] = layerOpts;
-        }
-
-        // we add the layer and refresh the itowns viewer
-        // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
-
-        var vectorLayerOptions = {
-            name : layer.id,
-            transparent : true,
-            crs : "EPSG:4326",
-            source : layer.source
-        };
-
-        if (layer.style) {
-            vectorLayerOptions.style = layer.style;
-        }
-
-        var vectorLayer = new ColorLayer(layerId, vectorLayerOptions);
-
-        this.libMap.getGlobeView().addLayer(vectorLayer);
+    // le controle geoportalAttribution exploite la propriete _originators
+    if (layerOpts.hasOwnProperty("originators")) {
+        layer._originators = layerOpts.originators;
     }
+
+    // set default layerOptions for visibility if none specified
+    layerOpts = this._setDefaultVisibilityOptions(layerOpts);
+
+    this._layers.push({
+        id : layerId,
+        obj : layer,
+        options : layerOpts
+    });
+
+    var LSControl = this.getLibMapControl("layerswitcher");
+    // if the LS already exists, we have to save the conf of the layer to add it to the LS
+    if (LSControl) {
+        LSControl._addedLayerConf[layerId] = layerOpts;
+    }
+
+    // we add the layer and refresh the itowns viewer
+    // this will launch the addedLayer callback (dans "ItMap._onLayerChanged")
+
+    var vectorLayerOptions = {
+        name : layer.id,
+        transparent : true,
+        crs : "EPSG:4326",
+        source : layer.source
+    };
+
+    if (layer.style) {
+        vectorLayerOptions.style = layer.style;
+    }
+
+    var vectorLayer = new ColorLayer(layerId, vectorLayerOptions);
+
+    this.libMap.getGlobeView().addLayer(vectorLayer);
 };
 
 /* Adds a Raster Layer to the map
@@ -808,17 +804,9 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
             layer.source.attribution = layerOpts.originators;
         }
 
-        // Dans le cas où aucune opacité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("opacity") || typeof layerOpts.opacity === "undefined") {
-            // on la règle à 1 par défaut
-            layerOpts.opacity = 1;
-        }
-
-        // Dans le cas où aucune visibilité n'est spécifiée
-        if (!layerOpts.hasOwnProperty("visibility") || typeof layerOpts.visibility === "undefined") {
-            // on la règle à "true" par défaut
-            layerOpts.visibility = true;
-        }
+        // set default layerOptions for visibility and opacity if none specified
+        layerOpts = this._setDefaultOpacityOptions(layerOpts);
+        layerOpts = this._setDefaultVisibilityOptions(layerOpts);
 
         // on met à jour le tableau des couches
         this._layers.push({
@@ -891,8 +879,6 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
         var foundDefaultStyle = false; // recherche du style par defaut
         var foundSelectedStyle = false; // recherche du theme sélectionné
 
-        _urlDefaultOrSelected = layerOpts.url;
-
         for (var i = 0; i < layerOpts.styles.length; i++) {
             var t = layerOpts.styles[i];
             // algo assez simpliste... car on compare juste les urls
@@ -959,6 +945,16 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
     if (layerOpts.sprite) {
         vectorTileSourceOpts.sprite = layerOpts.sprite;
     }
+
+    // affichage des labels associés à la couche à true par défaut
+    if (!layerOpts.showLabels) {
+        layerOpts.showLabels = true;
+    }
+
+    // set default layerOptions for visibility and opacity if none specified
+    layerOpts = this._setDefaultOpacityOptions(layerOpts);
+    layerOpts = this._setDefaultVisibilityOptions(layerOpts);
+
     var vectorTileSource = new VectorTilesSource(vectorTileSourceOpts);
 
     var vectorTileLayer = {};
@@ -969,13 +965,13 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
             return false;
         },
         noTextureParentOutsideLimit : true,
-        labelEnabled : layerOpts.showLabels || true,
+        addLabelLayer : layerOpts.showLabels,
         source : vectorTileSource
     });
 
     // definition de l'opacité et de la visibilité de la couche
-    vectorTileLayer.visible = (layerOpts.visibility === undefined) ? true : layerOpts.visibility;
-    vectorTileLayer.opacity = (layerOpts.opacity === undefined) ? 1 : layerOpts.opacity;
+    vectorTileLayer.visible = layerOpts.visibility;
+    vectorTileLayer.opacity = layerOpts.opacity;
 
     var LSControl = this.getLibMapControl("layerswitcher");
     // if the LS already exists, we have to save the conf of the layer to add it to the LS
@@ -1052,6 +1048,34 @@ ItMap.prototype._addMarkers = function (markersOptions) {
         // update _markers array with the marker options saved in case of switch to 2D
         this._markers.push(mo);
     }
+};
+
+/**
+ * set default layerOpts for visibility if none specified
+ *
+ * @private
+ */
+ItMap.prototype._setDefaultVisibilityOptions = function(opts) {
+  // Dans le cas où aucune visibilité n'est spécifiée
+  if (!opts.hasOwnProperty("visibility") || typeof opts.visibility === "undefined") {
+      // on la règle à "true" par défaut
+      opts.visibility = true;
+  }
+  return opts;
+};
+
+/**
+ * set default layerOpts for opacity if none specified
+ *
+ * @private
+ */
+ItMap.prototype._setDefaultOpacityOptions = function(opts) {
+  // Dans le cas où aucune opacité n'est spécifiée
+  if (!opts.hasOwnProperty("opacity") || typeof opts.opacity === "undefined") {
+      // on la règle à 1 par défaut
+      opts.opacity = 1;
+  }
+  return opts;
 };
 
 /**
