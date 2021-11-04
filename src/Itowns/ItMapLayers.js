@@ -601,6 +601,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
     var vectorLayerOptions = {
         name : layer.id,
         transparent : true,
+        addLabelLayer : true,
         crs : "EPSG:4326",
         source : layer.source
     };

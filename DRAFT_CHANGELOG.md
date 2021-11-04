@@ -21,6 +21,8 @@
 
 * [Fixed]
 
+    - correction sur l'affichage des ponctuels sur les KML / GPX en 3D
+
 * [Deprecated]
 
 * [Security]
