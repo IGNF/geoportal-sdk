@@ -14,14 +14,14 @@
 
 * [Changed]
 
-    - geoportal access lib 3.0.1
-    - extension geoportail pour openlayers 3.1.0
+    - geoportal access lib 3.0.1 (#84)
+    - extension geoportail pour openlayers 3.1.0 (#84)
 
 * [Removed]
 
 * [Fixed]
 
-    - correction sur l'affichage des ponctuels sur les KML / GPX en 3D
+    - correction sur l'affichage des ponctuels sur les KML / GPX en 3D (#85)
 
 * [Deprecated]
 
