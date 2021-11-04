@@ -1,12 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.2.0
+# SDK Geoportail 2D/3D, version 3.3.0
 
-**03/08/2021 : version 3.2.0**
+**04/11/2021 : version 3.3.0**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Upgrade d'OpenLayers et des extensions geoportail
+* Upgrade des extensions geoportail pour utilisation de l'itinéraire v2
  
 ## Changelog
 
@@ -14,14 +14,13 @@
 
 * [Changed]
 
-    - geoportal-extensions-openlayers@3.1.0
-    - openlayers@6.3.1
-    - itowns 2.33
+    - geoportal access lib 3.0.1
+    - extension geoportail pour openlayers 3.1.0
 
 * [Removed]
 
 * [Fixed]
-  
+
 * [Deprecated]
 
 * [Security]
