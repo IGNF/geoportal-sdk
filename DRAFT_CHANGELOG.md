@@ -1,12 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.3.1
+# SDK Geoportail 2D/3D, version 3.3.3
 
-**08/11/2021 : version 3.3.1**
+**10/11/2021 : version 3.3.3**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Upgrade des extensions geoportail pour utilisation de l'itinéraire v2
+* Correction couche itinéraire en doublon dans le layerSwitcher
  
 ## Changelog
 
@@ -14,14 +14,14 @@
 
 * [Changed]
 
-    - geoportal access lib 3.0.1 (#84)
-    - extension geoportail pour openlayers 3.1.0 (#84)
+    - geoportal access lib 3.0.3
+    - extension geoportail pour openlayers 3.2.3
 
 * [Removed]
 
 * [Fixed]
 
-    - correction sur l'affichage des ponctuels sur les KML / GPX en 3D (#85)
+    - correction sur l'affichage des couches itinéraires dans le layerSwitcher
 
 * [Deprecated]
 
