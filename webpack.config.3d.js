@@ -94,9 +94,9 @@ module.exports = (env, argv) => {
                 //     amd : "itowns",
                 //     root : "itowns"
                 // },
-                request : {
-                    commonjs2 : "request",
-                    commonjs : "request",
+                "node-fetch" : {
+                    commonjs2 : "node-fetch",
+                    commonjs : "node-fetch",
                     amd : "require"
                 },
                 xmldom : {

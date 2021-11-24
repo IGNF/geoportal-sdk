@@ -1,11 +1,10 @@
-# SDK Geoportail 2D/3D, version 3.1.9
+# SDK Geoportail 2D/3D, version 3.3.3
 
-**30/06/2021 : version 3.1.9**
+**10/11/2021 : version 3.3.3**
+
 > Release SDK Geoportail 2D/3D
 
 ## Summary
-
-* Upgrade extensions geoportail pour OpenLayers et pour iTowns, et travaux sur le profil alti
 
 ## Changelog
 
@@ -13,13 +12,11 @@
 
 * [Changed]
 
-    - mise à jour ext-gp-ol-3.0.19 (#82)
 
 * [Removed]
 
 * [Fixed]
 
-    - fix visuel vignette du profil alti (#82)
 
 * [Deprecated]
 

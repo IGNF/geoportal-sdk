@@ -14,7 +14,7 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Une carte affichant une couche MapBox avec un style externe</h1>
+    <h1>Une carte affichant une couche MapBox (Plan IGN)</h1>
     <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
     <div id="geoportalMap"></div>
 {{/content}}
@@ -22,7 +22,12 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap',{
-            configUrl : "{{resources}}/autoconf.js",
+            reloadConfig : false,
+            apiKey : "{{apikey}}",
+            center:{
+                x : 407444,
+                y : 5856585
+            },
             controlsOptions : {
                 "layerSwitcher" : {},
                 "getfeatureInfo" : {
@@ -36,10 +41,9 @@
             layersOptions : {
                 'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
                 },
-                'monMapBox' : {
-                    grayScaled : true,
+                'PLAN.IGN.GEOPORTAIL' : {
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/styles/planign/standard.json"
+                    url : "{{resources}}/MAPBOX/styles/PLAN.IGN.GEOPORTAIL.json"
                 }
             },
             zoom : 6

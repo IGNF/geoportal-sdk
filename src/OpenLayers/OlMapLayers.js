@@ -16,8 +16,6 @@ import OSMSource from "ol/source/OSM";
 
 import GML2 from "ol/format/GML2";
 import GML3 from "ol/format/GML3";
-// import GeoJSON from "ol/format/GeoJSON";
-// import GPX from "ol/format/GPX";
 
 import Overlay from "ol/Overlay";
 import {
@@ -444,7 +442,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                 }
             } else {
                 // Defaults format to GeoJSON
-                format = new GeoJSON(formatOptions);
+                format = new Ol.format.GeoJSONExtended(formatOptions);
             }
             constructorOpts.source = new VectorSource({
                 format : format,
