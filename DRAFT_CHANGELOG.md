@@ -1,6 +1,6 @@
-# SDK Geoportail 2D/3D, version 3.3.3
+# SDK Geoportail 2D/3D, version 3.3.4
 
-**10/11/2021 : version 3.3.3**
+**03/12/2021 : version 3.3.4**
 
 > Release SDK Geoportail 2D/3D
 
@@ -12,11 +12,9 @@
 
 * [Changed]
 
-
 * [Removed]
 
 * [Fixed]
-
 
 * [Deprecated]
 

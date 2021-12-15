@@ -1210,7 +1210,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection
                                                 // featureProjection
-                                                featureClass : RenderFeature
+                                                // featureClass : RenderFeature
                                             });
                                             // cf. https://openlayers.org/en/latest/apidoc/module-ol_source_VectorTile-VectorTile.html
                                             vectorSource = new VectorTileSource({
@@ -1244,7 +1244,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection ?
                                                 // featureProjection ?
-                                                featureClass : RenderFeature
+                                                // featureClass : RenderFeature
                                             });
                                             vectorLayer = new VectorTileLayer({
                                                 visible : false,
