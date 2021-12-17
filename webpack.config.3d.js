@@ -63,6 +63,7 @@ module.exports = (env, argv) => {
         output : {
             path : path.join(__dirname, "dist", "3d"),
             filename : "GpSDK3D" + suffix + ".js",
+            chunkFilename: "chunk-[id]" + suffix + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true

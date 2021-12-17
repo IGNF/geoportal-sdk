@@ -1,13 +1,13 @@
-# DEPENDENCIES (26/05/2021)
+# DEPENDENCIES (17/12/2021)
 
-* geoportal-extensions-openlayers@3.1.0
-└── geoportal-access-lib@2.1.8
+* geoportal-extensions-openlayers@3.2.5
+└── geoportal-access-lib@3.0.5
 
-* geoportal-extensions-itowns@2.3.2
-└── geoportal-access-lib@2.1.8
+* geoportal-extensions-itowns@2.3.4
+└── geoportal-access-lib@3.0.5
 
 * "itowns"
-└── "itowns@2.30.0"
+└── "itowns@2.33.0"
 
 * "openlayers"
-└── "openlayers@6.3.1
+└── "openlayers@6.9.0
