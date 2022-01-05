@@ -1,27 +1,43 @@
-# SDK Geoportail 2D/3D, version 3.3.1
+# SDK Geoportail 2D/3D, version 3.3.4
 
-**08/11/2021 : version 3.3.1**
+**03/12/2021 : version 3.3.4**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Upgrade des extensions geoportail pour utilisation de l'itinéraire v2
- 
+* Possibilité de passer une liste de clés lors de l'initialisation de la carte
+
 ## Changelog
 
 * [Added]
+    - Possibilité de passer une liste de clés lors de l'initialisation de la carte (#86)
+    Exemple :
+    ```js
+    var map = Gp.Map.load('geoportalMap',{
+                apiKey : "jhyvi0fgmnuxvfv0zjzorvdn,administratif",
+                azimuth : 45,
+                zoom : 13,
+                center : {
+                    x : -511270,
+                    y : 6151620
+                },
+                layersOptions : {
+                    'ORTHOIMAGERY.ORTHOPHOTOS': {
+                    },
+                    'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    },
+                    'LIMITES_ADMINISTRATIVES_EXPRESS.LATEST': {
+                    }
+                }
+    }
+    ```
 
 * [Changed]
-
-    - geoportal access lib 3.0.1 (#84)
-    - extension geoportail pour openlayers 3.1.0 (#84)
 
 * [Removed]
 
 * [Fixed]
-
-    - correction sur l'affichage des ponctuels sur les KML / GPX en 3D (#85)
 
 * [Deprecated]
 
