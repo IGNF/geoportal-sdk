@@ -64,6 +64,7 @@ module.exports = (env, argv) => {
         output : {
             path : path.join(__dirname, "dist", "2d"),
             filename : "GpSDK2D" + suffix + ".js",
+            chunkFilename: "[name]" + suffix + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true
@@ -124,6 +125,9 @@ module.exports = (env, argv) => {
             }
         },
         optimization : {
+            namedModules: true,
+            // namedChunks: true,
+            // chunkIds: "named",
             /** MINIFICATION */
             minimizer: [
                 new TerserJsWebPackPlugin({
@@ -139,14 +143,20 @@ module.exports = (env, argv) => {
                 }),
                 new OptimizeCSSAssetsWebPackPlugin({})
             ],
-            /** EXTRACT CSS INTO SINGLE FILE */
             splitChunks : {
                 cacheGroups : {
+                    /** EXTRACT CSS INTO SINGLE FILE */
                     styles : {
                         name : "GpSDK2D",
                         test : /\.css$/,
                         chunks : "all",
                         enforce : true
+                    },
+                    /** CHUNK FOR GEOTIFF */
+                    vendor : {
+                        name: 'chunk-geotiff',
+                        test: /node_modules/,
+                        reuseExistingChunk: true
                     }
                 }
             }

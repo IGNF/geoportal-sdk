@@ -42,7 +42,7 @@ function cleanContext() {
 
     // tests à realiser sur :
     // - les options communes
-    // - les options specifiques : ex. filtres & themes
+    // - les options specifiques : ex. filtres & styles
     // - les styles : ex. mapbox-*
     // - les objets internes openlayers : ex. id, source, type, ...
     // - le fichier metadata.json
@@ -56,8 +56,8 @@ function cleanContext() {
     // outputformat, ???
     // projection, ???
     // queryable,
-    // name, defaultthemedescription , url, quicklookurl(=> thumbnail),
-    // themes : [name, defaultthemedescription (=> description), url, quicklookurl(=> thumbnail)]
+    // name, defaultStyleDescription , url, quicklookurl(=> thumbnail),
+    // styles : [name, defaultStyleDescription (=> description), url, quicklookurl(=> thumbnail)]
     // filters : [propertyname, filtername, configuration]
 
 describe("-- Test vector tile with mapbox format json --", function() {
@@ -100,7 +100,7 @@ describe("-- Test vector tile with mapbox format json --", function() {
             // propriétés metadonnées spécifiques par défaut
             layerOptions.mapbox.should.have.property("queryable");
             layerOptions.mapbox.should.have.property("filters");
-            layerOptions.mapbox.should.have.property('themes');
+            layerOptions.mapbox.should.have.property('styles');
             // titre / description par defaut :
             expect(layerOptions.mapbox.title).to.equal("Couche MapBox");
             expect(layerOptions.mapbox.description).to.equal("Couche MapBox");
@@ -161,12 +161,12 @@ describe("-- Test vector tile with mapbox format json --", function() {
             layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("projection");
             layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("name");
             layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("thumbnail");
-            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("defaultThemeDescription");
+            layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("defaultStyleDescription");
             layerOptions.mapbox.should.withMessage("not yet implemented !").have.property("queryable");
             // propriétés d'un theme
-            layerOptions.mapbox.should.have.property("themesSummary");
-            layerOptions.mapbox.should.have.property("themes");
-            expect(layerOptions.mapbox.themes, "not yet implemented !").to.deep.include({
+            layerOptions.mapbox.should.have.property("stylesSummary");
+            layerOptions.mapbox.should.have.property("styles");
+            expect(layerOptions.mapbox.styles, "not yet implemented !").to.deep.include({
                 thumbnail : "", 
                 name : "", 
                 description : "", 
@@ -196,11 +196,11 @@ describe("-- Test vector tile with mapbox format json --", function() {
                 outputFormat : "", // ???
                 thumbnail : "",
                 name : "", 
-                defaultThemeDescription : "", 
+                defaultStyleDescription : "", 
                 url : "test/spec/mapbox/fixtures/mapbox.json",
                 queryable : true,
-                themesSummary : "",
-                themes : [
+                stylesSummary : "",
+                styles : [
                     {
                         thumbnail : "", 
                         name : "", 
