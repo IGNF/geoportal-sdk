@@ -147,8 +147,8 @@ var map = Gp.Map.load(
     "mapDiv",   // identifiant du conteneur HTML
     // options d'affichage de la carte (Gp.MapOptions)
     {           
-         // clef d'accès à la plateforme
-         apiKey: "APIKEY",
+         // clef(s) d'accès à la plateforme
+         apiKey: "APIKEY-1,APIKEY-2",
          // centrage de la carte
          center : {
              location : "73 avenue de Paris, Saint-Mandé"
@@ -177,7 +177,7 @@ var map = Gp.Map.load(
 
 Permet, d'afficher une carte avec les options suivantes :
 
-* utilisation des **droits de la clef** 'APIKEY' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
+* utilisation des **droits d'une ou de plusieurs clefs** 'APIKEY-1', 'APIKEY-2' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
 
 * **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 
@@ -196,12 +196,12 @@ Permet, d'afficher une carte avec les options suivantes :
 
 ### Configuration de l'accès à la plateforme Géoportail
 
-Le SDK Géoportail exploite les services web exposés par la plateforme Géoportail. Ceux-ci sont soumis à l'obtention d'une **clef d'accès** obtenue sur le site [professionnels.ign.fr](http://professionnels.ign.fr/ign/contrats) ayant les droits sur les ressources que vous souhaitez exploiter.
+Le SDK Géoportail exploite les services web exposés par la plateforme Géoportail. Ceux-ci sont soumis à l'obtention d'une ou de plusieurs **clefs d'accès génériques** obtenues sur le site [geoservices.ign.fr](https://geoservices.ign.fr/services-web) ayant les droits sur les ressources que vous souhaitez exploiter. Il est possible de savoir quelle clef est associée à quelle ressource [ici](https://geoservices.ign.fr/documentation/services/tableau_ressources).
 
 
 ### Configuration dynamique
 
-Une fois la clef obtenue, vous pouvez l'utiliser pour paramétrer le SDK à l'aide de la propriété **apiKey** lors de l'initialisation de la carte :
+Une fois la ou les clefs voulues choisies, vous pouvez les utiliser pour paramétrer le SDK à l'aide de la propriété **apiKey** lors de l'initialisation de la carte :
 
 
 ``` javascript
@@ -211,7 +211,7 @@ var map = Gp.Map.load(
     {
          ...
          // clef d'accès à la plateforme
-         apiKey: "APIKEY",
+         apiKey: "APIKEY-1,APIKEY-2",
          ...
     }
 ) ;
@@ -222,7 +222,7 @@ Lors du chargement de la carte, le SDK récupèrera automatiquement la configura
 
 ### Optimisation du chargement : configuration locale
 
-Vous pouvez améliorer le temps de chargement de votre page en mettant en cache sur votre plateforme la configuration associée à votre clef d'accès. Il vous suffit pour cela de récupérer le fichier de configuration (autoconf.json) obtenu à l'aide [du formulaire de ce tutoriel](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html).
+Vous pouvez améliorer le temps de chargement de votre page en mettant en cache sur votre plateforme la configuration associée à votre ou vos clefs d'accès. Il vous suffit pour cela de récupérer le fichier de configuration (autoconf.json) obtenu à l'aide [du formulaire de ce tutoriel](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html).
 
 Enregistrez ce fichier sur votre plateforme et paramétrez le SDK à l'aide de la propriété **configUrl** lors de l'initialisation de la carte :
 
@@ -299,7 +299,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-*NB* : Cette possibilité de centrage ne fonctionne que si [la clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
+*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
 
 
 #### Centrage par géolocalisation du terminal utilisé
@@ -339,7 +339,7 @@ Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage
 
 #### Affichage des couches Géoportail WMS et WMTS
 
-Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
+Les couches Géoportail sont les couches auxquelles donne droit [les clefs utilisées pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
 **Exemple 1** : ajout des couches WMTS Photographies aériennes et cartes avec une opacité de 30%.
 
@@ -594,7 +594,7 @@ map = Gp.Map.load(
     "mapDiv",   // identifiant du conteneur HTML
     // options d'affichage de la carte (Gp.MapOptions)
     {
-         apiKeys : "API-KEY",
+         apiKey : "APIKEY-1, APIKEY-2",
          ...
          mapEventsOptions : {
              // Appel de la fonction après le chargement de la carte
