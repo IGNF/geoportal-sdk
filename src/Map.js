@@ -182,7 +182,7 @@ var mapLoadedEvent = {
  *
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
- * | apiKey | String / Array.<String> | | | access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats) |
+ * | apiKey | String / Array.<String> | | | generic access key(s) to Geoportal platform, obtained [here](https://geoservices.ign.fr/services-web) |
  * | viewMode | String | optional | "2d" | Library to load the map with. Values are : <ul> <li> "2d" (default) to load the map with OpenLayers (2D) </li> <li>"3d" to be able to use 2D (OpenLayers) and 3D (iTowns) views. In this case, you have to use GpSDK3D.js file (instead of GpSDK2D.js)</li></ul> |
  * | center | {@link Gp.Center Gp.Center} | optional | | Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization. |
  * | azimuth | Float | optional | 0 | Map orientation in decimal degrees clockwise to the north. |
