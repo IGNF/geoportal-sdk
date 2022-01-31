@@ -22,25 +22,39 @@ IMap.prototype.centerGeocode = function (opts) {
         return;
     }
     // On cherche les types de géocodage disponibles
-    var layersIds = Config.getLayersId(this.apiKey);
+    var layersIds = {};
+
+    // si plusieurs clés en entrée, on récupère toutes les ressources par clé
+    var keys = this.apiKey.split(",");
+    for (var i=0; i<keys.length; i++) {
+        layersIds[keys[i]] = Config.getLayersId(keys[i]);
+    }
     var locTypes = opts.locationType || ["StreetAddress", "PositionOfInterest"];
     var fo = {};
     fo.type = [];
-    while (locTypes.length > 0) {
-        var lt = locTypes.pop();
-        if (layersIds.indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
-            this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
-            fo.type.push(lt);
+    fo.keys = [];
+    // pour chaque clé en entrée, on va vérifier à quelle ressource de géocodage elle a accès
+    for (var i=0; i<keys.length; i++) {
+        var checkLocTypes = locTypes;
+        while (checkLocTypes.length > 0) {
+            var lt = checkLocTypes.pop();
+            if (layersIds[keys[i]].indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
+                this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
+                fo.type.push(lt);
+                // on récupère toutes les clés ayant accès à au moins une ressource de géocodage
+                fo.keys.push(keys[i]);
+            }
         }
-    }
+    }   
     // Si on n'a rien trouve, on ne peut pas geocoder
     if (fo.type.length === 0) {
         this.logger.info("no rights for geocoding services");
         return;
     }
     var map = this;
+    // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey : this.apiKey,
+        apiKey : fo.keys[0],
         location : opts.location,
         filterOptions : fo,
         // si le service de geocodage répond
