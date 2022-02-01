@@ -104,16 +104,16 @@ IMap.prototype.centerGeolocate = function () {
             function (position) {
                 self.logger.trace("[IMap] found center by geolocation (" + position.coords.longitude + ", " + position.coords.latitude + ")");
                 var point = {
-                    x: position.coords.longitude,
-                    y: position.coords.latitude,
-                    projection: "EPSG:4326"
+                    x : position.coords.longitude,
+                    y : position.coords.latitude,
+                    projection : "EPSG:4326"
                 };
                 // paramater zoomLevel (=17 by default) used for 3D setAutoCenter function only
                 self.setAutoCenter(point, 17);
                 // declenchement de l'evenement "geolocated"
                 var e = IMap.CustomEvent("geolocated", {
-                    detail: {
-                        position: point
+                    detail : {
+                        position : point
                     }
                 });
                 self.div.dispatchEvent(e);
