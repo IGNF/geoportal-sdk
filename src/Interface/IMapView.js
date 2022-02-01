@@ -63,28 +63,28 @@ IMap.prototype.centerGeocode = function (opts) {
     var map = this;
     // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey: fo.keys[0],
-        location: opts.location,
-        filterOptions: fo,
+        apiKey : fo.keys[0],
+        location : opts.location,
+        filterOptions : fo,
         // si le service de geocodage répond
-        onSuccess: function (geocodeResponse) {
+        onSuccess : function (geocodeResponse) {
             map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.x + ", " + geocodeResponse.locations[0].position.y + ")");
             var point = {
-                x: geocodeResponse.locations[0].position.y,
-                y: geocodeResponse.locations[0].position.x,
-                projection: "EPSG:4326"
+                x : geocodeResponse.locations[0].position.y,
+                y : geocodeResponse.locations[0].position.x,
+                projection : "EPSG:4326"
             };
             map.setAutoCenter(point);
             // declenchement de l'evenement "located"
             var e = IMap.CustomEvent("located", {
-                detail: {
-                    position: point
+                detail : {
+                    position : point
                 }
             });
             map.div.dispatchEvent(e);
         },
         // si le service de géocodage échoue
-        onFailure: function () {
+        onFailure : function () {
             this.logger.info("Erreur du service de géocodage !!!");
         }
     });
