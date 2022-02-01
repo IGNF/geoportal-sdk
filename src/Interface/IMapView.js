@@ -14,18 +14,26 @@ IMap.prototype.centerGeocode = function (opts) {
     // FIXME Config est créé en runtime dans la variable globale Gp
     var scope = typeof window !== "undefined" ? window : {};
     var Config = scope.Gp ? scope.Gp.Config : undefined;
+    var keys;
 
     // le centrage par geocodage n'est possible que si l'utilisateur a les
     // droits sur le service.
-    if (!Config || !this.apiKey) {
+    if (this.apiKey) {
+        // on transforme la liste de clés en tableau
+        this.logger.info("retrieve apiKeys from apiKey list");
+        keys = this.apiKey.split(",");
+    } else if (Config && Config.generalOptions && Config.generalOptions.apiKeys) {
+        this.logger.info("retrieve apiKeys from config");
+        keys = Object.keys(Config.generalOptions.apiKeys);
+    } else {
         this.logger.info("no rights for geocoding services");
         return;
     }
+
     // On cherche les types de géocodage disponibles
     var layersIds = {};
 
     // si plusieurs clés en entrée, on récupère toutes les ressources par clé
-    var keys = this.apiKey.split(",");
     for (var i = 0; i < keys.length; i++) {
         layersIds[keys[i]] = Config.getLayersId(keys[i]);
     }
@@ -34,8 +42,9 @@ IMap.prototype.centerGeocode = function (opts) {
     fo.type = [];
     fo.keys = [];
     // pour chaque clé en entrée, on va vérifier à quelle ressource de géocodage elle a accès
+    var checkLocTypes;
     for (var k = 0; k < keys.length; k++) {
-        var checkLocTypes = locTypes;
+        checkLocTypes = locTypes.slice();
         while (checkLocTypes.length > 0) {
             var lt = checkLocTypes.pop();
             if (layersIds[keys[k]].indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
@@ -54,28 +63,28 @@ IMap.prototype.centerGeocode = function (opts) {
     var map = this;
     // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey : fo.keys[0],
-        location : opts.location,
-        filterOptions : fo,
+        apiKey: fo.keys[0],
+        location: opts.location,
+        filterOptions: fo,
         // si le service de geocodage répond
-        onSuccess : function (geocodeResponse) {
+        onSuccess: function (geocodeResponse) {
             map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.x + ", " + geocodeResponse.locations[0].position.y + ")");
             var point = {
-                x : geocodeResponse.locations[0].position.y,
-                y : geocodeResponse.locations[0].position.x,
-                projection : "EPSG:4326"
+                x: geocodeResponse.locations[0].position.y,
+                y: geocodeResponse.locations[0].position.x,
+                projection: "EPSG:4326"
             };
             map.setAutoCenter(point);
             // declenchement de l'evenement "located"
             var e = IMap.CustomEvent("located", {
-                detail : {
-                    position : point
+                detail: {
+                    position: point
                 }
             });
             map.div.dispatchEvent(e);
         },
         // si le service de géocodage échoue
-        onFailure : function () {
+        onFailure: function () {
             this.logger.info("Erreur du service de géocodage !!!");
         }
     });
@@ -95,16 +104,16 @@ IMap.prototype.centerGeolocate = function () {
             function (position) {
                 self.logger.trace("[IMap] found center by geolocation (" + position.coords.longitude + ", " + position.coords.latitude + ")");
                 var point = {
-                    x : position.coords.longitude,
-                    y : position.coords.latitude,
-                    projection : "EPSG:4326"
+                    x: position.coords.longitude,
+                    y: position.coords.latitude,
+                    projection: "EPSG:4326"
                 };
                 // paramater zoomLevel (=17 by default) used for 3D setAutoCenter function only
                 self.setAutoCenter(point, 17);
                 // declenchement de l'evenement "geolocated"
                 var e = IMap.CustomEvent("geolocated", {
-                    detail : {
-                        position : point
+                    detail: {
+                        position: point
                     }
                 });
                 self.div.dispatchEvent(e);
@@ -359,8 +368,8 @@ IMap.prototype._getZoomFromResolution = function (resolution, projCode) {
     this.logger.trace("[IMap] : _getZoomFromResolution");
     var mapProj = this.getProjection();
     var wmtsDefaults = IMap.WMTSDEFAULTS[projCode] ||
-                       IMap.WMTSDEFAULTS[mapProj] ||
-                       IMap.WMTSDEFAULTS["EPSG:3857"];
+        IMap.WMTSDEFAULTS[mapProj] ||
+        IMap.WMTSDEFAULTS["EPSG:3857"];
 
     var zoom = 0;
     var diffMin = Math.abs(wmtsDefaults.resolutions[0] - resolution);
@@ -390,8 +399,8 @@ IMap.prototype._getResolutionFromZoomLevel = function (zoom, projCode) {
     this.logger.trace("[IMap] : _getResolutionFromZoomLevel");
     var mapProj = this.getProjection();
     var wmtsDefaults = IMap.WMTSDEFAULTS[projCode] ||
-                       IMap.WMTSDEFAULTS[mapProj] ||
-                       IMap.WMTSDEFAULTS["EPSG:3857"];
+        IMap.WMTSDEFAULTS[mapProj] ||
+        IMap.WMTSDEFAULTS["EPSG:3857"];
     var res = -1;
     if (zoom >= 0 && zoom < wmtsDefaults.resolutions.length) {
         res = wmtsDefaults.resolutions[zoom];

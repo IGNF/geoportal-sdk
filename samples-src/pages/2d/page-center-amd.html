@@ -45,6 +45,10 @@
             Gp.Map.load('geoportalMap1',{
                 // apiKey : "{{apikey}}",
                 configUrl : "{{resources}}/autoconf.js",
+                zoom : 17,
+                center : {
+                    location : "36 avenue d'Italie, paris"
+                },
                 mapEventsOptions : {
                 "mapLoaded" : function () {
                     loadMap2()
