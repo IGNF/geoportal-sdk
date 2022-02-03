@@ -1,12 +1,10 @@
-# SDK Geoportail 2D/3D, version 3.3.6
+# SDK Geoportail 2D/3D, version 3.3.7
 
-**28/01/2022 : version 3.3.6**
+**xx/02/2022 : version 3.3.7**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
-
-Mise à jour de la documentation et des extensions geoportail pour openlayers en version 3.2.7
 
 ## Changelog
 
@@ -14,12 +12,11 @@ Mise à jour de la documentation et des extensions geoportail pour openlayers en
 
 * [Changed]
 
-    - Mise à jour de la documentation et des README (#88)
-    - Mise à jour des extensions geoportail pour openlayers en version 3.2.7
-
 * [Removed]
 
 * [Fixed]
+
+    - correction de la fonction de centrage par geocodage avec multiclés et autoconf local (#89)
 
 * [Deprecated]
 
