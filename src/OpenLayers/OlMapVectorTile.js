@@ -1233,6 +1233,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorSource._legends = _legends;
                                             vectorSource._originators = _originators;
                                             vectorLayer = new VectorTileLayer({
+                                                className : _title,
                                                 source : vectorSource,
                                                 visible : false,
                                                 zIndex : _position, // FIXME gerer l'ordre sur des multisources ?
@@ -1247,6 +1248,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                 // featureClass : RenderFeature
                                             });
                                             vectorLayer = new VectorTileLayer({
+                                                className : _title,
                                                 visible : false,
                                                 zIndex : _position,
                                                 declutter : true // utile ? option ?
@@ -1483,6 +1485,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                         vectorSource._legends = _legends;
                                         vectorSource._originators = _originators;
                                         vectorLayer = new VectorTileLayer({
+                                            className : _title,
                                             source : vectorSource,
                                             visible : false,
                                             zIndex : _position, // FIXME gerer l'ordre sur des multisources ?
