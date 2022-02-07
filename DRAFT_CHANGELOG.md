@@ -1,10 +1,12 @@
 # SDK Geoportail 2D/3D, version 3.3.7
 
-**03/02/2022 : version 3.3.7**
+**07/02/2022 : version 3.3.7**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
+
+Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
 
 ## Changelog
 
