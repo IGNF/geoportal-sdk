@@ -14,23 +14,45 @@ IMap.prototype.centerGeocode = function (opts) {
     // FIXME Config est créé en runtime dans la variable globale Gp
     var scope = typeof window !== "undefined" ? window : {};
     var Config = scope.Gp ? scope.Gp.Config : undefined;
+    var keys;
 
     // le centrage par geocodage n'est possible que si l'utilisateur a les
     // droits sur le service.
-    if (!Config || !this.apiKey) {
+    if (this.apiKey) {
+        // on transforme la liste de clés en tableau
+        this.logger.info("retrieve apiKeys from apiKey list");
+        keys = this.apiKey.split(",");
+    } else if (Config && Config.generalOptions && Config.generalOptions.apiKeys) {
+        this.logger.info("retrieve apiKeys from config");
+        keys = Object.keys(Config.generalOptions.apiKeys);
+    } else {
         this.logger.info("no rights for geocoding services");
         return;
     }
+
     // On cherche les types de géocodage disponibles
-    var layersIds = Config.getLayersId(this.apiKey);
+    var layersIds = {};
+
+    // si plusieurs clés en entrée, on récupère toutes les ressources par clé
+    for (var i = 0; i < keys.length; i++) {
+        layersIds[keys[i]] = Config.getLayersId(keys[i]);
+    }
     var locTypes = opts.locationType || ["StreetAddress", "PositionOfInterest"];
     var fo = {};
     fo.type = [];
-    while (locTypes.length > 0) {
-        var lt = locTypes.pop();
-        if (layersIds.indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
-            this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
-            fo.type.push(lt);
+    fo.keys = [];
+    // pour chaque clé en entrée, on va vérifier à quelle ressource de géocodage elle a accès
+    var checkLocTypes;
+    for (var k = 0; k < keys.length; k++) {
+        checkLocTypes = locTypes.slice();
+        while (checkLocTypes.length > 0) {
+            var lt = checkLocTypes.pop();
+            if (layersIds[keys[k]].indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
+                this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
+                fo.type.push(lt);
+                // on récupère toutes les clés ayant accès à au moins une ressource de géocodage
+                fo.keys.push(keys[k]);
+            }
         }
     }
     // Si on n'a rien trouve, on ne peut pas geocoder
@@ -39,8 +61,9 @@ IMap.prototype.centerGeocode = function (opts) {
         return;
     }
     var map = this;
+    // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey : this.apiKey,
+        apiKey : fo.keys[0],
         location : opts.location,
         filterOptions : fo,
         // si le service de geocodage répond
@@ -345,8 +368,8 @@ IMap.prototype._getZoomFromResolution = function (resolution, projCode) {
     this.logger.trace("[IMap] : _getZoomFromResolution");
     var mapProj = this.getProjection();
     var wmtsDefaults = IMap.WMTSDEFAULTS[projCode] ||
-                       IMap.WMTSDEFAULTS[mapProj] ||
-                       IMap.WMTSDEFAULTS["EPSG:3857"];
+        IMap.WMTSDEFAULTS[mapProj] ||
+        IMap.WMTSDEFAULTS["EPSG:3857"];
 
     var zoom = 0;
     var diffMin = Math.abs(wmtsDefaults.resolutions[0] - resolution);
@@ -376,8 +399,8 @@ IMap.prototype._getResolutionFromZoomLevel = function (zoom, projCode) {
     this.logger.trace("[IMap] : _getResolutionFromZoomLevel");
     var mapProj = this.getProjection();
     var wmtsDefaults = IMap.WMTSDEFAULTS[projCode] ||
-                       IMap.WMTSDEFAULTS[mapProj] ||
-                       IMap.WMTSDEFAULTS["EPSG:3857"];
+        IMap.WMTSDEFAULTS[mapProj] ||
+        IMap.WMTSDEFAULTS["EPSG:3857"];
     var res = -1;
     if (zoom >= 0 && zoom < wmtsDefaults.resolutions.length) {
         res = wmtsDefaults.resolutions[zoom];
