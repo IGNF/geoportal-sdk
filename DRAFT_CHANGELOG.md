@@ -6,7 +6,8 @@
 
 ## Summary
 
-Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
+* Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
+* Mise à jour du package des Extensions
 
 ## Changelog
 
@@ -24,4 +25,3 @@ Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
 * [Deprecated]
 
 * [Security]
-              
