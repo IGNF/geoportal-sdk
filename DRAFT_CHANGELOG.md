@@ -1,12 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.3.7
+# SDK Geoportail 2D/3D, version 3.3.8
 
-**07/02/2022 : version 3.3.7**
+**07/02/2022 : version 3.3.8**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
+* Mise à jour du package des Extensions OpenLayers en 3.2.8 ([release notes](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.8))
 
 ## Changelog
 
@@ -18,10 +18,6 @@ Corrections sur le centrage par geocodage et sur le rendu vecteur tuilé
 
 * [Fixed]
 
-    - correction de la fonction de centrage par geocodage avec multiclés et autoconf local (#89)
-    - bug sur l'affichage du vecteur tuilé en superposition avec une autre couche (cf. <https://github.com/openlayers/openlayers/issues/9970>)
-
 * [Deprecated]
 
 * [Security]
-              
