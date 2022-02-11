@@ -14,7 +14,7 @@
       "webservice",
       "javascript"
    ],
-   "version" : "3.3.7",
+   "version" : "3.3.8",
    "files" : [
       "dist/",
       "src/",
@@ -37,6 +37,6 @@
    "author" : "IGNF",
    "directories" : {},
    "license" : "CECILL-B",
-   "date" : "07/02/2022",
+   "date" : "11/02/2022",
    "name" : "@ignf-geoportal/sdk-3d"
 }

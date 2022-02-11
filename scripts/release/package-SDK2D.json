@@ -7,8 +7,8 @@
       "url" : "https://github.com/IGNF/geoportal-sdk/issues"
    },
    "name" : "@ignf-geoportal/sdk-2d",
-   "date" : "07/02/2022",
-   "version" : "3.3.7",
+   "date" : "11/02/2022",
+   "version" : "3.3.8",
    "scripts" : {},
    "files" : [
       "dist/",
