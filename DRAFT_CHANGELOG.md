@@ -1,12 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.3.8
+# SDK Geoportail 2D/3D, version 3.3.9
 
-**07/02/2022 : version 3.3.8**
+**15/02/2022 : version 3.3.9**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-* Mise à jour du package des Extensions OpenLayers en 3.2.8 ([release notes](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.8))
+* Mise à jour du package des Extensions OpenLayers en 3.2.9 ([release notes](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.9))
 
 ## Changelog
 
@@ -17,6 +17,8 @@
 * [Removed]
 
 * [Fixed]
+
+    - correction sur le layerswitcher selon le navigateur (hotfix portail)
 
 * [Deprecated]
 
