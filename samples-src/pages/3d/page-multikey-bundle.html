@@ -21,12 +21,13 @@
 {{#content "js"}}
     <script>
         var map = Gp.Map.load('viewerDiv',{
-            apiKey : "ortho,cartes,administratif",
+            apiKey : "{{apikey}}",
+            viewMode : "3d"
             azimuth : 45,
             zoom : 13,
             center : {
-                x : -511270,
-                y : 6151620
+                x : -1.2,
+                y : 48.2
             },
             layersOptions : {
                 'ORTHOIMAGERY.ORTHOPHOTOS': {
@@ -34,6 +35,9 @@
                 'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                 },
                 'LIMITES_ADMINISTRATIVES_EXPRESS.LATEST': {
+                },
+                "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
+                    type : "elevation"
                 }
             },
             controlsOptions : {
