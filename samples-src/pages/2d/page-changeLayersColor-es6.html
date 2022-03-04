@@ -29,11 +29,11 @@
 
     <div id="geoportalMap"></div>
     <div id="BoutonDiv">
-        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS');" value="changeLayerColor(maCoucheGP)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2');" value="changeLayerColor(maCoucheGP)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheWFS');" value="changeLayerColor(maCoucheWFS)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS');" value="changeLayerColor(maCoucheWMS)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheWMS_CORS');" value="changeLayerColor(maCoucheWMS_CORS)"/><br/>
-        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
+        <input type="button" name="export" onclick="changeLayerColor('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS');" value="changeLayerColor(maCoucheWMTS)"/><br/>
         <input type="button" name="export" onclick="changeLayerColor('maCoucheOSM');" value="changeLayerColor(maCoucheOSM)"/><br/>
     </div>
 {{/content}}
@@ -42,11 +42,11 @@
     <script>
         var map = null;
         var layerColored = {
-          "GEOGRAPHICALGRIDSYSTEMS.MAPS" : false,
+          "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : false,
           "maCoucheWFS" : false,
           "maCoucheWMS" : false,
           "maCoucheWMS_CORS" : false,
-          "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : false,
+          "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS" : false,
           "maCoucheOSM" : false,
         }
 
@@ -69,7 +69,7 @@
         map = self.Gp.Map.load("geoportalMap",{
             apiKey : "{{apikey}}",
             layersOptions : {
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                     title : "maCoucheGP"
                 },
                 maCoucheWFS : {
@@ -101,7 +101,7 @@
                     layers : ["BATHY-DALLE_PYR-PNG_3857_WMSR"],
                     outputFormat : "image/png"
                 },
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS::GEOPORTAIL:OGC:WMTS" : {
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS" : {
                     title : "maCoucheWMTS",
                     format : "wmts",
                     minZoom : 0,
@@ -109,7 +109,7 @@
                     visibility : true,
                     opacity : 1 ,
                     url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
-                    layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+                    layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
                     tileMatrixSet : "PM",
                     styleName : "normal",
                     outputFormat : "image/jpeg"

@@ -23,7 +23,7 @@
     <div id="geoportalMap"></div>
     <div id="BoutonDiv">
         <input type="button" name="export" onclick="modifyLayers();" value="modifiyLayers(null)"/><br/>
-        <input type="button" name="export" onclick="modifyLayers({'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {opacity : 0.5}});" value="modifyLayers(GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
+        <input type="button" name="export" onclick="modifyLayers({'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2' : {opacity : 0.5}});" value="modifyLayers(GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2)"/><br/>
         <input type="button" name="export" onclick="modifyLayers({'ORTHOIMAGERY.ORTHOPHOTOS':{minZoom:8,maxZoom:12},'CADASTRALPARCELS.PARCELS':{visibility:false}});" value="modifyLayers(ORTHOIMAGERY.ORTHOPHOTOS,CADASTRALPARCELS.PARCELS)"/><br/>
     </div>
 {{/content}}
@@ -37,7 +37,7 @@
                     minZoom : 1,
                     maxZoom : 15
                 },
-                'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {},
+                'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2' : {},
                 'CADASTRALPARCELS.PARCELS' : {}
             },
             controlsOptions : {

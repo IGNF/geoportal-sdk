@@ -27,20 +27,20 @@
 
     <div id="BoutonDiv">
         <input type="button" name="export" onclick="removeLayers();" value="Remove(null)"/><br/>
-        <input type="button" name="export" onclick="removeLayers('GEOGRAPHICALGRIDSYSTEMS.MAPS');" value="Remove(GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
-        <input type="button" name="export" onclick="removeLayers(['ORTHOIMAGERY.ORTHOPHOTOS','GEOGRAPHICALGRIDSYSTEMS.MAPS']);" value="Remove(ORTHOIMAGERY.ORTHOPHOTOS,GEOGRAPHICALGRIDSYSTEMS.MAPS)"/><br/>
+        <input type="button" name="export" onclick="removeLayers('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2');" value="Remove(GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2)"/><br/>
+        <input type="button" name="export" onclick="removeLayers(['ORTHOIMAGERY.ORTHOPHOTOS','GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2']);" value="Remove(ORTHOIMAGERY.ORTHOPHOTOS,GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2)"/><br/>
     </div>
 {{/content}}
 
 {{#content "js"}}
     <script>
         var map = Gp.Map.load("viewerDiv",{
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            apiKey : "{{apikey}}",
             viewMode : "3d",
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {
                 },
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                 }
             },
             controlsOptions : {
