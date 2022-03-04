@@ -31,8 +31,8 @@ function deepCopy (source, target) {
     // FIXME Implementing Tail Call Elimination
     function tce (source, target) {
         for (var prop in source) {
-            if (source.hasOwnProperty(prop)) {
-                if (!target.hasOwnProperty(prop)) {
+            if (Object.prototype.hasOwnProperty.call(source, prop)) {
+                if (!Object.prototype.hasOwnProperty.call(target, prop)) {
                     target[prop] = source[prop];
                 } else if (typeof source[prop] === "object") {
                     tce(source[prop], target[prop]);
