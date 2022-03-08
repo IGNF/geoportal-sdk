@@ -39,7 +39,7 @@
                     format : "wmts",
                     outputFormat : "image/x-bil;bits=32",
                     noDataValue : -99999,
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                    url : "https://wxs.ign.fr/{{apikey4}}/geoportail/wmts",
                     layer : "ELEVATION.ELEVATIONGRIDCOVERAGE",
                     styleName : "normal",
                     tileMatrixSet : "WGS84G",
@@ -112,7 +112,7 @@
                     description : "Photographies aériennes",
                     format : "wmts",
                     outputFormat : "image/jpeg",
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
                     layer : "ORTHOIMAGERY.ORTHOPHOTOS",
                     projection : "EPSG:3857",
                     tileMatrixSet : "PM",
@@ -301,7 +301,8 @@
                     title : "GPX",
                     description : "Photographies aériennes",
                     format : "GPX",
-                    url : "https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/ULTRA2009.gpx",
+                    url : "../resources/GPX/Campomoro-Tizzano-Sartene_3029.gpx",
+                    // url : "https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/ULTRA2009.gpx",
                     opacity : 0.7,
                     minZoom : 8,
                     maxZoom : 15,
@@ -317,10 +318,10 @@
                 }
             },
             center : {
-                x : 0.038,
-                y : 43
+                x : 8.85,
+                y : 41.59
             },
-            zoom : 6
+            zoom : 10
         });
     </script>
 {{/content}}

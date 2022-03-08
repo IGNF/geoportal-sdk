@@ -42,7 +42,7 @@
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {
                 },
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                 }
             },
             center : {
@@ -78,7 +78,7 @@
             } else {
                 // creation d'une nouvelle carte à l'identique
                 map2 = Gp.Map.load('geoportalMap2', {
-                    apiKey : ["{{apikey}}"],
+                    apiKey : "{{apikey}}",
                     viewMode : "3d",
                     center : centerIT,
                     layersOptions : layersOptions,

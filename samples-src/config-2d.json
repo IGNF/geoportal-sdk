@@ -2,7 +2,7 @@
     "baseurl" : "../..",
     "resources" : "../resources",
     "proxy" : "https://localhost/proxy/proxy.php",
-    "apikey" : "jhyvi0fgmnuxvfv0zjzorvdn",
-    "apikey2" : "kgco926a9mj4fcng4whjf5ac",
+    "apikey" : "essentiels,calcul",
+    "apikey2" : "parcellaire",
     "apikey3" : "an7nvfzojv5wa96dsga5nk8w"
 }

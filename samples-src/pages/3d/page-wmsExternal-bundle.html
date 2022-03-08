@@ -29,8 +29,11 @@
 {{#content "js"}}
     <script>
         var map = Gp.Map.load("viewerDiv",{
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
-            viewMode : "3d",            
+            apiKey : "{{apikey}}",
+            viewMode : "3d",
+            center : {
+                location : "Chambéry, 73000"
+            },       
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {},
                 "avalanches" : {
