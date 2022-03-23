@@ -1,10 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.3.10
+# SDK Geoportail 2D/3D, version 3.3.11
 
-**xx/xx/2022 : version 3.3.10**
+**23/03/2022 : version 3.3.11**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
+
+Utilisation du service d'isochrone v2
 
 ## Changelog
 
@@ -13,7 +15,7 @@
 * [Changed]
 
     - READMESDK-3D : mention du control de boostrelief
-    - utilisation service d'isochrone v2
+    - utilisation service d'isochrone v2 (#92)
 
 * [Removed]
 
