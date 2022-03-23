@@ -13,6 +13,7 @@
 * [Changed]
 
     - READMESDK-3D : mention du control de boostrelief
+    - utilisation service d'isochrone v2
 
 * [Removed]
 
