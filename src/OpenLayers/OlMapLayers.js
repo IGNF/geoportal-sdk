@@ -195,6 +195,7 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
                     format : layerOpts.outputFormat,
                     version : layerOpts.version,
                     style : layerOpts.styleName,
+                    projection: layerOpts.projection,
                     tileGrid : new WMTSTileGrid({
                         origin : [
                             layerOpts.topLeftCorner.x,
