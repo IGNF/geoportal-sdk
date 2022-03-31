@@ -6,8 +6,6 @@
 
 ## Summary
 
-Mise à jour du package des Extensions OpenLayers en 3.2.11 ([release notes](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.11))
-
 ## Changelog
 
 * [Added]
