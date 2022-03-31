@@ -1,12 +1,12 @@
-# SDK Geoportail 2D/3D, version 3.3.10
+# SDK Geoportail 2D/3D, version 3.3.11
 
-**04/03/2022 : version 3.3.10**
+**23/03/2022 : version 3.3.11**
 
 > Release SDK Geoportail 2D/3D
 
 ## Summary
 
-Mise à jour de l'extension géoportail pour iTowns en version 2.3.6, pour utilisation d'iTowns 2.37 dans le SDK 3D
+Utilisation du service d'isochrone v2
 
 ## Changelog
 
@@ -14,7 +14,8 @@ Mise à jour de l'extension géoportail pour iTowns en version 2.3.6, pour utili
 
 * [Changed]
 
-    - update iTowns en version 2.37
+    - READMESDK-3D : mention du control de boostrelief
+    - utilisation service d'isochrone v2 (#92)
 
 * [Removed]
 
