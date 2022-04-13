@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour du package des Extensions OpenLayers en 3.2.11 ([release notes](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.11))
+Correctif mineur sur le passage de l'option "projection"
 
 ## Changelog
 
@@ -17,6 +17,8 @@ Mise à jour du package des Extensions OpenLayers en 3.2.11 ([release notes](htt
 * [Removed]
 
 * [Fixed]
+
+    - passage du paramètre projection lors de l'ajout d'une couche 2D (https://github.com/IGNF/geoportal-sdk/pull/93)
 
 * [Deprecated]
 
