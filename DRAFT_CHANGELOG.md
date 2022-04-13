@@ -6,6 +6,8 @@
 
 ## Summary
 
+Correctif mineur sur le passage de l'option "projection"
+
 ## Changelog
 
 * [Added]
@@ -15,6 +17,8 @@
 * [Removed]
 
 * [Fixed]
+
+    - passage du paramètre projection lors de l'ajout d'une couche 2D (https://github.com/IGNF/geoportal-sdk/pull/93)
 
 * [Deprecated]
 
