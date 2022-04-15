@@ -1660,7 +1660,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             }
 
                                             // enregistrement du layer
-                                            var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
                                             self._layers.push({
                                                 id : _id,
                                                 obj : p.layer,
