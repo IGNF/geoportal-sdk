@@ -6,6 +6,8 @@
 
 ## Summary
 
+* maj des extensions OpenLayers
+
 ## Changelog
 
 * [Added]
@@ -15,6 +17,8 @@
 * [Removed]
 
 * [Fixed]
+
+    - passage des options de l'editeur de style dans l'outil d'import de couche pour le vecteur tuilé
 
 * [Deprecated]
 
