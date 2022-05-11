@@ -6,8 +6,6 @@
 
 ## Summary
 
-Mise à jour du package des extensions OpenLayers : [3.3.13](https://github.com/IGNF/geoportal-extensions/releases/tag/ol-3.2.13)
-
 ## Changelog
 
 * [Added]
