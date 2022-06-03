@@ -62,7 +62,7 @@
                 }
                 // overview
                 // ctrlOpts[elem.value]["layers"] = ["GEOGRAPHICALGRIDSYSTEMS.MAPS.OVERVIEW"] ;
-                ctrlOpts[elem.value]["layers"] = ["GEOGRAPHICALGRIDSYSTEMS.MAPS"] ;
+                ctrlOpts[elem.value]["layers"] = ["GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"] ;
                 ctrlOpts[elem.value]["strokeOpacity"] = 1 ;
                 ctrlOpts[elem.value]["strokeColor"] = "#ff0000" ;
                 // route
@@ -106,7 +106,7 @@
         }
         function addLayer() {
            map.addLayers({
-               'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+               'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                     title : "Cartes modifiées",
                     legends : [{
                        format : "image/gif",
@@ -150,7 +150,7 @@
                 layersOptions : {
                     'ORTHOIMAGERY.ORTHOPHOTOS': {
                     },
-                    'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                     },
                     'osmLyr' : {
                         format : "osm",

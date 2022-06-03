@@ -10,6 +10,9 @@
             height: 600px;
             width: 100%;
         }
+        #extControlDiv {
+            position : absolute;
+        }
     </style>
 {{/content}}
 
@@ -17,6 +20,7 @@
     <h1>Ajout d'une carte avec Gp.Map.load() et l'ensemble des options possibles de mapOptions </h1>
     <div id="geoportalMap"></div>
     <input type="button" value="addLayer" onclick="addLayer();"/><br>
+    <div id="extControlDiv"></div>
 {{/content}}
 
 {{#content "js"}}
@@ -60,7 +64,7 @@
                 layersOptions : {
                     /* see ol-all-layersOptions.html to test all layers options */
                     /* couche WMTS Géoportail */
-                    'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                    'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                     }
                 },
                 controlsOptions : {
@@ -163,7 +167,7 @@
 
         function addLayer() {
            map.addLayers({
-               'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+               'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                     title : "Cartes modifiées",
                     legends : [{
                        format : "image/gif",

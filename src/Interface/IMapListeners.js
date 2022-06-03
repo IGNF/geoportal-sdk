@@ -61,7 +61,7 @@ IMap.prototype.setSelectable = function (controlOpts) {};
  *
  * | eventId  | description |
  * |-|-|
- * | mapLoaded | fired when map has finished loading.  |
+ * | mapLoaded | fired when map has finished loading. Callback function handles a {@link Gp.MapLoadedEvent} object. |
  * | geolocated | fired when map has finished centering by geolocation. Callback function handles a {@link Gp.GeolocatedEvent} object.|
  * | located | fired when map has finished centering by geocoding. Callback function handles a {@link Gp.LocatedEvent} object. |
  * | configured | fired when map has finished loading geoportal configuration. Callback function handles a {@link Gp.ConfiguredEvent} object |
@@ -88,7 +88,7 @@ IMap.prototype.listen = function (eventId, action, context) {
         this.logger.error("no action provided for the event : " + eventId);
         return false;
     }
-    if (!action.name || typeof action.name === "anomynous") {
+    if (!action.name || action.name === "anomynous") {
         this.logger.warn("the action provided for the event : " + eventId + " should be named so that it can be remove later");
     }
     context = context || this;
@@ -168,14 +168,6 @@ IMap.prototype.forget = function (eventId, action) {
         case "geolocated" :
         case "located" :
         case "configured" :
-        case "mapFailure" :
-        case "centerChanged" :
-        case "zoomChanged" :
-        case "azimuthChanged" :
-        case "tiltChanged" :
-        case "projectionChanged" :
-        case "layerChanged" :
-        case "controlChanged" :
         case "pickFeature" :
             // on cherche l'enregistrement de l'evenement
             var rEvents = this._events[eventId];
@@ -202,10 +194,19 @@ IMap.prototype.forget = function (eventId, action) {
                     eventOrigin.removeEventListener(eventType, itCallback);
                 }
             }
-            if (!rEvents) {
+            if (!itCallback) {
                 this.logger.info("action to forget not found for  : " + eventId);
                 return false;
             }
+            break;
+        case "mapFailure" :
+        case "centerChanged" :
+        case "zoomChanged" :
+        case "azimuthChanged" :
+        case "tiltChanged" :
+        case "projectionChanged" :
+        case "layerChanged" :
+        case "controlChanged" :
             break;
         default :
             this.logger.info("unhandled event : " + eventId);
@@ -257,9 +258,9 @@ IMap.prototype._onLayerChanged = function _onLayerChanged (evt) {
             // il faut garder trace de la couche supprimmée pour
             // d'autres abonnements à layerChanged.layerRemoved
             var layerRemoved = {};
-            layerRemoved["id"] = this._layers[idx].id;
-            layerRemoved["options"] = this._layers[idx].options;
-            layerRemoved["obj"] = this._layers[idx].obj;
+            layerRemoved.id = this._layers[idx].id;
+            layerRemoved.options = this._layers[idx].options;
+            layerRemoved.obj = this._layers[idx].obj;
             this._layersRemoved.push(layerRemoved);
             this._layers.splice(idx, 1);
             this.logger.trace("[IMap] _onLayerChanged : #(layers) == " + this._layers.length);
@@ -271,8 +272,15 @@ IMap.prototype._onLayerChanged = function _onLayerChanged (evt) {
         var idxx = this._getLayerIndexByLayerOpts(layerOpts);
         if (idxx >= 0 && idxx < this._layers.length) {
             layerId = this._layers[idxx].id;
-            this._layers[idxx].options[evt.property] = evt.newValue;
-            this.logger.trace("[IMap] _onLayerChanged : setting " + evt.property + " value to " + evt.newValue + " for layer : " + layerId);
+
+            // cas spécifique de la mise à jour du style mapbox selectionné
+            if (evt.property === "mapbox-status") {
+                this._layers[idxx].options.styles = this._setSelectedMapboxStyle(this._layers[idxx].options.styles, parseInt(evt.newValue.theme.index));
+                this.logger.trace("[IMap] _onLayerChanged : setting selected style key to " + evt.newValue.theme.key + " for layer : " + layerId);
+            } else {
+                this._layers[idxx].options[evt.property] = evt.newValue;
+                this.logger.trace("[IMap] _onLayerChanged : setting " + evt.property + " value to " + evt.newValue + " for layer : " + layerId);
+            }
         } else {
             this.logger.warn("[IMap] _onLayerChanged : layerOpts (" + Object.keys(layerOpts)[0] + ") not found for layerChanged Event");
         }
@@ -335,12 +343,20 @@ IMap.prototype._resetLayerChangedEvent = function () {
 };
 
 /**
- *  Function to disable/enable layer color (grayscale or color mode).
+ *  Function to update selected style properties
  *
- * @param {String} layerId - layer identifier
- * @param {Boolean} colorToGray - indicate transformation direction (from or to grayscale)
+ * @param {Array} styles - array of the styles
+ * @param {Number} index - index of the style to set as selected
+ * @returns {Object} mapbox styles
  *
  * @private
  */
-IMap.prototype._changeLayerColor = function (layerId, colorToGray) {
+IMap.prototype._setSelectedMapboxStyle = function (styles, index) {
+    for (var i = 0; i < styles.length; i++) {
+        styles[i].selected = false;
+        if (i === index) {
+            styles[i].selected = true;
+        }
+    }
+    return styles;
 };

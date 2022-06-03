@@ -23,61 +23,64 @@
     <div id="BoutonSwitchToOl">
         <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D"/><br/>
     </div>
-    <div id="viewerDiv"></div>
+    <div id="viewerDiv"></div><br/>
+    <input type="button" value="add VT layer" onclick="addLayer();"/>
     {{/content}}
 
 {{#content "js"}}
     <script>
+
+        const layerVT = {
+            visibility : true,
+            queryable : true,
+            grayScaled : true,
+            showLabels : true,
+            title : "Themes PLANIGN",
+            description : "Mise en place des themes avec des filtres attributaires pour la couche PLANIGN...",
+            format : "MapBox",
+            position : 2,
+            projection : "EPSG:3857",
+            tileMatrixSet : "PM",
+            // url : "https://vectortiles.ign.fr/demonstrateur/styles/planign.json",
+            url : "{{resources}}/MAPBOX/styles/planign/standard.json",
+            styles : [
+                {
+                    "name" : "style 'gris'",
+                    "url" : "{{resources}}/MAPBOX/styles/planign/gris.json",
+                    "selected" : true
+                },
+                {
+                    "name" : "style 'accentue'",
+                    "url" : "{{resources}}/MAPBOX/styles/planign/accentue.json",
+                },
+            ],
+            filtersSummary : "Filtres",
+            filters : [
+                {
+                    propertyName:"bati_ponc.symbo",
+                    filterName:"Batiments ponctuels",
+                    configuration : {
+                        type : 0,
+                        selected:[0,1,1,1,1,1,1,1]
+                    }
+                },
+                {
+                    propertyName:"bati_surf.symbo",
+                    filterName:"Batiments surfaciques",
+                    configuration : {
+                        type : 0,
+                        selected:[0,1,1,1,1,1,1,1]
+                    }
+                }
+            ]
+        };
         var map = Gp.Map.load("viewerDiv", {
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             viewMode : "3d",
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {
                 },
-                'coucheMapBoxIgnThemesPLANIGN' : {
-                    visibility : true,
-                    queryable : true,
-                    grayScaled : true,
-                    title : "Themes PLANIGN",
-                    description : "Mise en place des themes avec des filtres attributaires pour la couche PLANIGN...",
-                    format : "MapBox",
-                    position : 2,
-                    projection : "EPSG:3857",
-                    tileMatrixSet : "PM",
-                    // url : "https://vectortiles.ign.fr/demonstrateur/styles/planign.json",
-                    url : "{{resources}}/MAPBOX/styles/planign.json",
-                    styles : [
-                        {
-                            "name" : "style 'gris'",
-                            "url" : "https://vectortiles.ign.fr/demonstrateur/styles/gris.json",
-                            // "url" : "data/planign/gris.json"
-                            "selected" : true
-                        },
-                        {
-                            "name" : "style 'muet'",
-                            "url" : "https://vectortiles.ign.fr/demonstrateur/styles/muet.json",
-                            // "url" : "data/planign/muet.json",
-                        },
-                    ],
-                    filtersSummary : "Filtres",
-                    filters : [
-                       {
-                           propertyName:"bati_ponc.symbo",
-                           filterName:"Batiments ponctuels",
-                           configuration : {
-                               type : 0,
-                               selected:[0,1,1,1,1,1,1,1]
-                           }
-                       },
-                       {
-                           propertyName:"bati_surf.symbo",
-                           filterName:"Batiments surfaciques",
-                           configuration : {
-                               type : 0,
-                               selected:[0,1,1,1,1,1,1,1]
-                           }
-                       }]
-                    },
+                'coucheMapBoxIgnThemesPLANIGN' : layerVT,
                 // 'monMapBoxGeoJSON' : {
                 //     format : "MapBox",
                 //     urlService : "https://vectortiles.ign.fr/rok4server/1.0.0/PLAN.IGN/${z}/${x}/${y}.pbf",
@@ -115,6 +118,15 @@
             document.getElementById("BoutonSwitchToItowns").style.display = "inline";
             document.getElementById("BoutonSwitchToOl").style.display = "none";
         };
+
+        /**
+          * fonction ajout d'une couche VT
+          */
+        function addLayer() {
+           map.addLayers({
+            'coucheMapBoxIgnThemesPLANIGN2' : layerVT,
+           }) ;
+        }
     </script>
 {{/content}}
 {{/extend}}

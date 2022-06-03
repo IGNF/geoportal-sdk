@@ -1,0 +1,71 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D Azimuth</title>
+{{/content}}
+
+{{#content "vendor"}}
+        <script src="{{ resources }}/vendor/jspdf.min.js"></script>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        div#map {
+            max-width: 100%;
+            height: 500px;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h2>Contrôle de l'azimuth</h2>
+    <div>
+        <input type="button" name="print" onclick="printRender();" value="print"/><br/>
+    </div>
+    <!-- map -->
+    <div id="map">
+    </div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load('map', {
+            // apiKey : "{{apikey}}",
+            configUrl : "{{resources}}/autoconf.js",
+        });
+
+
+        // Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
+        function printRender() {
+            map.getLibMap().once('rendercomplete', function(event) {
+                const { jsPDF } = window.jspdf;
+                var canvas = event.context.canvas;
+
+                // var canvas = document.createElement('canvas');
+                var size = map.getLibMap().getSize();
+                canvas.width = size[0];
+                canvas.height = size[1];
+                ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+                ctx.globalAlpha = 1;
+                var c = document.querySelector("canvas");
+                ctx.drawImage(c, 0, 0, canvas.width, canvas.height);
+                // ctx.restore();
+                ctx.save();
+
+                var data = canvas.toDataURL('image/png');
+                var pdf = new jsPDF({
+                    orientation: 'landscape',
+                    unit :'mm',
+                    format : 'a4'
+                });
+                pdf.addImage(data, 'PNG', 0, 0, canvas.width, canvas.height);
+                pdf.save("download.pdf");
+
+            });
+            map.getLibMap().renderSync();
+        };
+    </script>
+{{/content}}
+{{/extend}}

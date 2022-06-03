@@ -70,7 +70,10 @@ ItMap.prototype._initMap = function () {
     // creation de la map vide avec les paramètres de positionnement de la caméra
     this.libMap = new itownsExtended.GlobeViewExtended(viewerDiv, positionOnGlobe, {
         // to display the last zoom level of Ortho layer
-        maxSubdivisionLevel : 18
+        maxSubdivisionLevel : 18,
+        renderer : {
+            isWebGL2 : this.mapOptions.isWebGL2 !== undefined ? this.mapOptions.isWebGL2 : true
+        }
     });
 
     var self = this;

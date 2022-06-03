@@ -34,25 +34,27 @@
                 "layerimport" : {}
             },
             layersOptions : {
-                'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                 },
-                'monMapBoxOSM' : {
+                'monMapBox' : {
                     zoomToExtent : true,
                     format : "MapBox",
-                    url : "{{resources}}/MAPBOX/styles/osm.json",
+                    url : "{{resources}}/MAPBOX/styles/planign/accentue.json",
                     mapboxOptions : {
                         "center": [2, 48],
                         "layers": [{
-                          "id": "land",
-                          "type": "fill",
-                          "source": "osm",
-                          "source-layer": "land",
-                          "layout": {
-                            "visibility": "visible"
-                          },
-                          "paint": {
-                            "fill-color": "rgba(76, 76, 92, 1)"
-                          }
+                            "id": "bckgrd",
+                            "type": "fill",
+                            "source": "plan_ign",
+                            "source-layer": "fond_opaque",
+                            "minzoom": 0,
+                            "layout": {
+                                "visibility": "visible"
+                            },
+                            "paint": {
+                                "fill-color": "#000000",
+                                "fill-opacity": 1
+                            }
                         }]
                     }
                 }

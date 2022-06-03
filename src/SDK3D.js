@@ -60,7 +60,7 @@ import olDist from "./Utils/dist-openlayers/index";
 import { olExtended } from "geoportal-extensions-openlayers";
 
 // import itowns
-import * as itowns from "itowns/lib/MainBundle";
+import * as itowns from "itowns";
 
 // import des extensions itowns
 import { itownsExtended } from "geoportal-extensions-itowns";
@@ -72,8 +72,8 @@ function deepCopy (source, target) {
     // FIXME Implementing Tail Call Elimination
     function tce (source, target) {
         for (var prop in source) {
-            if (source.hasOwnProperty(prop)) {
-                if (!target.hasOwnProperty(prop)) {
+            if (Object.prototype.hasOwnProperty.call(source, prop)) {
+                if (!Object.prototype.hasOwnProperty.call(target, prop)) {
                     target[prop] = source[prop];
                 } else if (typeof source[prop] === "object") {
                     tce(source[prop], target[prop]);
@@ -102,6 +102,10 @@ export {
      * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-XHR.html|geoportal-access-lib}
      */
     Protocols,
+    /**
+     * Logger
+     */
+    Logger,
     /** servicesDate
      * @see {@link http://ignf.github.io/geoportal-access-lib/current/jsdoc/module-Gp.html|geoportal-access-lib}
      */

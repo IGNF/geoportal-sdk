@@ -1,5 +1,9 @@
 import { ItMap } from "./ItMapBase";
 import { itownsExtended } from "geoportal-extensions-itowns";
+import {
+    WMTSSource,
+    ColorLayer
+} from "itowns";
 
 /**
  * Association controlId <-> classe iTowns d'implemenation
@@ -36,6 +40,9 @@ ItMap.prototype.addMousePositionControl = function (controlOpts) {
         mpOpts.target = controlOpts.div;
     }
     mpOpts.collapsed = !controlOpts.maximised;
+    if (!this._isConfLoaded) {
+        mpOpts.apiKey = this.apiKey;
+    }
     if (controlOpts.systems &&
         Array.isArray(controlOpts.systems) &&
         controlOpts.systems.length > 0) {
@@ -86,12 +93,12 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     this.logger.trace("[ItMap]  : addLayerSwitcherControl ... ");
     // TODO  : parametrage des couches
     var lsOpts = {
-        layers : controlOpts.layers || [],
+        layers : (controlOpts && controlOpts.layers) || [],
         options : {
             collapsed : !(controlOpts && controlOpts.maximised)
         }
     };
-    if (controlOpts.div) {
+    if (controlOpts && controlOpts.div) {
         lsOpts.options.target = controlOpts.div;
     }
     // application des configuration des couches  :
@@ -155,24 +162,42 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
  */
 ItMap.prototype.addOverviewControl = function (controlOpts) {
     this.logger.trace("[ItMap] addOverviewControl : ... ");
+    // clone car on ne veut pas modifier l'original !
+    var opts = JSON.parse(JSON.stringify(controlOpts));
+
     var ovControlOptions = {};
-    if (controlOpts.position) {
-        ovControlOptions.position = controlOpts.position;
+    if (opts.position) {
+        ovControlOptions.position = opts.position;
     } else {
         ovControlOptions.position = "absolute";
     }
-    if (controlOpts.div) {
-        ovControlOptions.target = controlOpts.div;
+    if (opts.div) {
+        ovControlOptions.target = opts.div;
     }
-    if (controlOpts.layer) {
-        ovControlOptions.layer = controlOpts.layer;
+    if (opts.layer) {
+        ovControlOptions.layer = opts.layer;
+        // conf d'une couche, possibilité de ne pas utiliser l'autoconf !
+        if (!this._isConfLoaded) {
+            ovControlOptions.layer.apiKey = this.apiKey;
+        }
+        // on ajoute les limites du tileMatrix
+        if (!opts.layer.source.tileMatrixSet) {
+            ovControlOptions.layer.source.tileMatrixSet = "PM";
+        }
+        if (!opts.layer.source.tileMatrixSetLimits) {
+            ovControlOptions.layer.source.tileMatrixSetLimits = this._getTMSLimits(opts.layer.source.tileMatrixSet);
+        }
+        ovControlOptions.layer.source = new WMTSSource(ovControlOptions.layer.source);
+        ovControlOptions.layer = new ColorLayer(ovControlOptions.layer.id, ovControlOptions.layer);
     } else if (controlOpts.layerId) {
+        // utilisation de l'autoconf !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : controlOpts.layerId,
             ssl : true
         });
     } else {
         // orthophotos layer by default on the miniglobe
+        // utilisation de l'autoconf !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             ssl : true
@@ -413,15 +438,17 @@ ItMap.prototype.getLSLayerContainerDivId = function (layerId) {
         return id;
     }
     var itlayers = this._getLayersObj([layerId]);
-    if (itlayers.length > 0) {
+    if (itlayers && itlayers.length > 0) {
         var itLayerList = this._controls[idxLS].obj._layerListContainer;
-        var divId = itLayerList.id;
-        var uid = divId.substring(divId.indexOf("-"));
-        if (itLayerList && itLayerList.childNodes) {
-            for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
-                if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
-                    var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
-                    return foundId;
+        if (itLayerList) {
+            var divId = itLayerList.id;
+            var uid = divId.substring(divId.indexOf("-"));
+            if (itLayerList.childNodes) {
+                for (var layerDivKey = 0; layerDivKey < itLayerList.childNodes.length; layerDivKey++) {
+                    if (itLayerList.childNodes[layerDivKey].id === "GPlayerSwitcher_ID_" + layerId + uid) {
+                        var foundId = "GPlayerSwitcher_ID_" + layerId + uid;
+                        return foundId;
+                    }
                 }
             }
         }

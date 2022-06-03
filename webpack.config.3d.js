@@ -63,6 +63,7 @@ module.exports = (env, argv) => {
         output : {
             path : path.join(__dirname, "dist", "3d"),
             filename : "GpSDK3D" + suffix + ".js",
+            chunkFilename: "chunk-[id]" + suffix + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true
@@ -78,7 +79,7 @@ module.exports = (env, argv) => {
                 // "loglevel",
                 // - import forcé en mode bundle :
                 "proj4" : path.join(__dirname, "node_modules", "proj4", "dist", "proj4-src.js"),
-                //"itowns" : path.join(__dirname, "node_modules", "itowns", "dist", "itowns.js"),
+                "itowns" : path.join(__dirname, "node_modules", "itowns", "lib", "MainBundle.js"),
                 // - import local :
                 // "ol-dist" : path.join(__dirname, "lib", "openlayers", "index.js")
             }
@@ -94,9 +95,9 @@ module.exports = (env, argv) => {
                 //     amd : "itowns",
                 //     root : "itowns"
                 // },
-                request : {
-                    commonjs2 : "request",
-                    commonjs : "request",
+                "node-fetch" : {
+                    commonjs2 : "node-fetch",
+                    commonjs : "node-fetch",
                     amd : "require"
                 },
                 xmldom : {
@@ -107,7 +108,32 @@ module.exports = (env, argv) => {
             }
         ],
         devtool : (devMode) ? "eval-source-map" : false,
-        // stats : "verbose",
+        stats : "verbose",
+        devServer : {
+            // proxy: {
+            //      "/samples/resources/proxy/" : {
+            //          secure: false,
+            //          target: "http://localhost/proxy/proxy.php" // proxy à deployer en local !
+            //      }
+            // },
+            stats : "errors-only",
+            // host : "localhost",
+            // https: true,
+            // port : 9001,
+            // hot : true,
+            // contentBase : path.join(__dirname),
+            // publicPath : "/dist/3d/",
+            // openPage : "/samples/index-3d-map.html",
+            // open : "google-chrome",
+            watchOptions : {
+                watch : true,
+                poll : true
+            },
+            overlay : {
+                errors : true,
+                warnings : false
+            }
+        },
         optimization : {
             /** MINIFICATION */
             minimizer: [

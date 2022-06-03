@@ -64,6 +64,7 @@ module.exports = (env, argv) => {
         output : {
             path : path.join(__dirname, "dist", "2d"),
             filename : "GpSDK2D" + suffix + ".js",
+            chunkFilename: "[name]" + suffix + ".js",
             library : "Gp",
             libraryTarget : "umd",
             umdNamedDefine : true
@@ -84,9 +85,9 @@ module.exports = (env, argv) => {
         },
         externals : [
             {
-                request : {
-                    commonjs2 : "request",
-                    commonjs : "request",
+                "node-fetch" : {
+                    commonjs2 : "node-fetch",
+                    commonjs : "node-fetch",
                     amd : "require"
                 },
                 xmldom : {
@@ -98,7 +99,35 @@ module.exports = (env, argv) => {
         ],
         devtool : (devMode) ? "eval-source-map" : false,
         // stats : "verbose",
+        devServer : {
+            // proxy: {
+            //      "/samples/resources/proxy/" : {
+            //          secure: false,
+            //          target: "http://localhost/proxy/proxy.php" // proxy à deployer en local !
+            //      }
+            // },
+            stats : "errors-only",
+            // host : "localhost",
+            // https: true,
+            // port : 9001,
+            // hot : true,
+            // contentBase : path.join(__dirname),
+            // publicPath : "/dist/2d/",
+            // openPage : "/samples/index-2d-map.html",
+            // open : "google-chrome",
+            watchOptions : {
+                watch : true,
+                poll : true
+            },
+            overlay : {
+                errors : true,
+                warnings : false
+            }
+        },
         optimization : {
+            namedModules: true,
+            // namedChunks: true,
+            // chunkIds: "named",
             /** MINIFICATION */
             minimizer: [
                 new TerserJsWebPackPlugin({
@@ -114,14 +143,20 @@ module.exports = (env, argv) => {
                 }),
                 new OptimizeCSSAssetsWebPackPlugin({})
             ],
-            /** EXTRACT CSS INTO SINGLE FILE */
             splitChunks : {
                 cacheGroups : {
+                    /** EXTRACT CSS INTO SINGLE FILE */
                     styles : {
                         name : "GpSDK2D",
                         test : /\.css$/,
                         chunks : "all",
                         enforce : true
+                    },
+                    /** CHUNK FOR GEOTIFF */
+                    vendor : {
+                        name: 'chunk-geotiff',
+                        test: /node_modules/,
+                        reuseExistingChunk: true
                     }
                 }
             }

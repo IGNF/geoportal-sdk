@@ -1,0 +1,57 @@
+{{#extend "sample-bundle-layout-3d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 3D multikey</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 1200px;
+          position : "relative";
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <div id="viewerDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load('viewerDiv',{
+            apiKey : "{{apikey}}",
+            viewMode : "3d",
+            azimuth : 45,
+            zoom : 13,
+            center : {
+                x : -1.2,
+                y : 48.2
+            },
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {
+                },
+                'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
+                },
+                'LIMITES_ADMINISTRATIVES_EXPRESS.LATEST': {
+                },
+                "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
+                    type : "elevation"
+                }
+            },
+            controlsOptions : {
+                layerSwitcher : {
+                    maximised : true
+                },
+                mousePosition : {
+                    maximised : false
+                },
+                attributions : {
+                    maximised : false
+                }
+            }
+        })
+    </script>
+{{/content}}
+{{/extend}}

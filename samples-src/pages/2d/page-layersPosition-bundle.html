@@ -46,7 +46,7 @@
                     "mapLoaded" : function (evt) {
                         console.log("maploaded");
                         evt.map.addLayers({
-                            'GEOGRAPHICALGRIDSYSTEMS.MAPS': {
+                            'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
                                 position : 2,
                                 title : "Cartes position=2"
                              },
@@ -70,7 +70,7 @@
 
         function addLayers() {
            map.addLayers({
-            'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD::GEOPORTAIL:OGC:WMTS' : {
+            'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2.SCAN-EXPRESS.STANDARD::GEOPORTAIL:OGC:WMTS' : {
                 minZoom : 0,
                 maxZoom : 16,
                 opacity: 0.3,
@@ -78,7 +78,7 @@
                 title : "scans position=1",
                 description : "Cartographie topographique multi-échelles du territoire français issue des bases de données vecteur de l’IGN –réalisée selon un processus cartographique innovant fortement automatisé.",
                 url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
-                layer : "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
+                layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2.SCAN-EXPRESS.STANDARD",
                 tileMatrixSet : "PM",
                 topLeftCorner : {
                     x:-20037508,

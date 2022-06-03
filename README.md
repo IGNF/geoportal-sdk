@@ -1,3 +1,7 @@
+[![Build](https://github.com/IGNF/geoportal-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/IGNF/geoportal-sdk/actions/workflows/build.yml)
+[![CeCILL License](https://img.shields.io/badge/licence-CeCILL--B-blue.svg)](https://raw.githubusercontent.com/IGNF/geoportal-sdk/master/LICENCE-3D.md)
+[![DeepScan grade](https://deepscan.io/api/teams/12425/projects/15482/branches/310111/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=12425&pid=15482&bid=310111)
+
 # Kit de Développement (SDK) Géoportail
 
 Le Kit de développement - ou SDK - Géoportail est une librairie JavaScript mise à disposition sous licence libre par l’IGN permettant d’ajouter simplement dans un site web une carte utilisant les ressources du Géoportail.

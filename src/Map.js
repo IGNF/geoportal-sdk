@@ -182,7 +182,7 @@ var mapLoadedEvent = {
  *
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
- * | apiKey | String / Array.<String> | | | access key(s) to Geoportal platform, obtained [here](http://professionnels.ign.fr/ign/contrats) |
+ * | apiKey | String / Array.<String> | | | generic access key(s) to Geoportal platform, obtained [here](https://geoservices.ign.fr/services-web) |
  * | viewMode | String | optional | "2d" | Library to load the map with. Values are : <ul> <li> "2d" (default) to load the map with OpenLayers (2D) </li> <li>"3d" to be able to use 2D (OpenLayers) and 3D (iTowns) views. In this case, you have to use GpSDK3D.js file (instead of GpSDK2D.js)</li></ul> |
  * | center | {@link Gp.Center Gp.Center} | optional | | Map Centering information. Either with coordinates, with geoportal geocoding service or with user geo-localization. |
  * | azimuth | Float | optional | 0 | Map orientation in decimal degrees clockwise to the north. |
@@ -190,10 +190,11 @@ var mapLoadedEvent = {
  * | defaultFeaturesStyle | {@link Gp.StyleOptions Gp.StyleOptions} | optional | | Default style options for vector layers features (KML, GPX, GeoJSON). |
  * | layersOptions | Object | optional | | Layers to add to the map and their options. Associative array mapping ids of layers to display and their properties.<br/>For each layer, the id may be either the name of a Geoportal layer (eg : "ORTHOIMAGERY.ORTHOPHOTOS") available with the given apiKey or an id of your choice for external resources. The properties associated to each ID are given as {@link Gp.LayerOptions}.<br/>For Geoportal Layers availables with the given apiKey, values are automaticaly fetched from key configuration. You only need to specify a {@link Gp.LayerOptions} Object with properties you want to overide. |
  * | controlsOptions | Object | optional | | Controls to add to the map and their options. Associative array mapping the control's name (keys) with a Boolean (value) for activating / deactivating or with their properties (values given as {@link Gp.ControlOptions}). See {@link Gp.ControlOptions} for availables controls list and their properties. |
- * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See {@link Gp.Map#listen Gp.Map.listen()} for available event Ids and their associated events objects. |
+ * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See [Gp.Map.listen()](Gp.Map.html#.listen) for available event Ids and their associated events objects. |
  * | minZoom | Integer | optional | 0 | Zoom level beyond which the user can't zoom out. |
  * | maxZoom | Integer | optional | 21 | Zoom level beyond which the user can't zoom in. |
  * | configUrl or AutoConfUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. |
+ * | reloadConfig | Boolean | optional | true | Disable / enable autoconfiguration service. If true, the autoconfiguration service is load for loading the map. If false, the autoconfiguration service is not used, if configUrl is not specified and if apiKey is specified. Only use if you know what you're doing. |
  * | proxyUrl | String | optional | | Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing. |
  * | noProxyDomains | Array.<String> | optional | | Proxy will not be used for this list of domain names. Only use if you know what you're doing. |
  *
@@ -202,7 +203,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | enableRotation | Boolean | optional | true | Map rotation. Default is true. If false a rotation constraint that always sets the rotation to zero is used. |
- * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. |
+ * | markersOptions | Array.<{@link Gp.MarkerOptions Gp.MarkerOptions}> | optional | | Options for displaying markers on the map. Options are kept in case of switch 2D<->3D |
  * | projection | String | optional | "EPSG:3857" | Projection code (in EPSG or IGNF register) for the map. Not available in 3D as the projection is always "EPSG:4326" |
  * | extent | Array | optional | | Forced extent of the view, with the format [west, south, east, north], with the projection of the map
  *
@@ -211,6 +212,7 @@ var mapLoadedEvent = {
  * | property | Type | Argument | Default | Description |
  * | - | - | - | - | - |
  * | tilt | Float | optional | 0 | Camera gradient in decimal degrees. 0 for a vertical view. 90 for an horizontal view. |
+ * | isWebGL2 | Boolean | optional | true | Parameter to enable webgl 2.0. |
  *
  *
  * @namespace
@@ -218,10 +220,6 @@ var mapLoadedEvent = {
  *
  */
 var mapOptions = {
-    /*
- * undocumented options - for the moment
- * @property {Boolean} [reloadConfig=false] - If true, the autoconfiguration service is reload for loading the map. If false, the previous autoconfiguration result is used. This option is used if configUrl is not specified. Only use if you know what you're doing.
- */
 };
 
 /**
@@ -364,6 +362,13 @@ var autoPanOptions = {
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
+ * **Specific 3D properties**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | showLabels | Boolean | True by default. If true, the labels associated to the mapbox layer will be displayed |
+ * | sprite | String | Url to the sprites file. By default, automatically extracted from the style file. |
+ *
  * ### KML, GPX, GeoJSON and MapBox specific properties
  *
  * **Common 2D/3D properties**
@@ -461,7 +466,7 @@ var layerOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
- * | layers | Array(String) | List of layers Ids to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
+ * | layers | Array(String / Object) | List of layers Ids or layers config to be displayed on the overview map (may be part of main map layersId or a geoportal WMTS layer ID). If none, all main map layers will be used. |
  * | minZoom | Number | min zoom level for overview map. |
  * | maxZoom | Number | max zoom level for overview map. |
  * | projection | String | projection code for overview map. |
@@ -470,6 +475,8 @@ var layerOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
+ * | layer | Object | The layer object formatted as expected by itowns (layerId ignored if layer param specified) |
+ * | layerId | String | The Geoportal layers Ids to be displayed on the overview map (by default, "ORTHOIMAGERY.ORTHOPHOTOS") |
  * | position | String | The type of positionment of the overview element inside its container. Can be "absolute" or "relative" ("absolute" by default) |
  * | width | Number | The width of the minimap (100px by default) |
  * | heigth | Number | The height of the minimap (100px by default) |
@@ -798,7 +805,7 @@ var layerOptions = {
  * | scale.max | Number | Maximum of the scale - 50 by default |
  * | scale.step | Number | Step of the scale - 1 by default |
  * | defaultBoost | Number | Default boost value applied to the widget and the elevation layers when loaded |
- * 
+ *
  * <a id="searchctrl"></a>
  *
  * ### Options for "search" control
@@ -814,8 +821,10 @@ var layerOptions = {
  * | resources.autocomplete | Array(String) | resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"] |
  * | displayAdvancedSearch | Boolean | True to display advanced search tools. Default is false (not displayed) |
  * | advancedSearch | Object | advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
- * | geocodeOptions | Object | options of geocode service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
- * | autocompleteOptions | Object | options of autocomplete service (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete) |
+ * | geocodeOptions | Object | geocoding options of the control (see [SearchEngine doc](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)) |
+ * | geocodeOptions.serviceOptions | Object | options of the geocode service (see [Gp.Services.geocode](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)) |
+ * | autocompleteOptions | Object | geocoding options of the control (see [SearchEngine doc](http://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.SearchEngine.html)) |
+ * | autocompleteOptions.serviceOptions | Object | options of the autocomplete service (see see [Gp.Services.autocomplete](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~autoComplete)) |
  *
  * <a id="reversesearch"></a>
  *
@@ -929,6 +938,14 @@ var controlOptions = {
 * | markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38. |
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
+*
+* **Specific 3D properties (for GeoJSON only)**
+*
+* | property | Type | Description |
+* | - | - | - |
+* | pointColor | String | Point color styling (RGB hex value). Default is "#002A50".|
+* | pointOpacity | Number | Point opacity (alpha value between 0:transparent and 1:opaque). Default is 0.9. |
+* | pointRadius  | Number | Point radius in pixel. Default is 6. |
 *
 *
 * @namespace

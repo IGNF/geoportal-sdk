@@ -3,7 +3,7 @@ name: Create 2D/3D Release ...
 on:
   push:
     tags:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+' # ex. 3.12.5
 
 jobs:
 
@@ -179,6 +179,24 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/})
 
+      - name: Get Package.json value
+        id: get_package_value
+        run: |
+          echo ::set-output name=DATE::$(cat package.json | perl -MJSON -0ne 'my $DS = decode_json $_; my $field = 'date'; print $DS->{$field};' | sed -e 's/\//\\\//g')
+          echo ::set-output name=VERSION::$(cat package.json | perl -MJSON -0ne 'my $DS = decode_json $_; my $field = 'version'; print $DS->{$field};')
+      
+      - name: Create ChangeLog
+        run: | # cf. http://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html
+          sed -i 's/__VERSION__/${{ steps.get_package_value.outputs.VERSION }}/g' DRAFT_CHANGELOG.md
+          sed -i 's/__DATE__/${{ steps.get_package_value.outputs.DATE }}/g' DRAFT_CHANGELOG.md
+
+      - name: Upload ChangeLog artifacts
+        if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+        uses: actions/upload-artifact@v2
+        with:
+          name: changelog
+          path: DRAFT_CHANGELOG.md
+    
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.1.2
@@ -217,7 +235,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundles-2d.zip
+          asset_path: ./bundles-3d.zip
           asset_name: GpSDK-3D-${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
@@ -260,13 +278,43 @@ jobs:
       - name: Publish 2D on npm
         run: |
           cd ./package-2d
-          npm publish
+          npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GEOPORTAL_TOKEN }}
 
       - name: Publish 3D on npm
         run: |
           cd ./package-3d
-          npm publish
+          npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GEOPORTAL_TOKEN }}
+
+  changelog:
+    if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
+    needs: [create_release, publish_package]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: IGNF/geoportal-sdk
+          ref: develop
+          token: ${{ secrets.ADMIN_GEOPORTAL_TOKEN }}
+
+      - name: Download ChangeLog artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: changelog
+
+      - name: Reset draft changelog
+        run: |
+          rm  DRAFT_CHANGELOG.md
+          cp .github/CHANGELOG_TEMPLATE.md DRAFT_CHANGELOG.md
+
+      - name: Clean and publish
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A
+          git commit -m "reset DRAFT_CHANGELOG"
+          git push --force

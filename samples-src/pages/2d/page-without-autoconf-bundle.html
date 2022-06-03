@@ -1,0 +1,167 @@
+{{#extend "sample-bundle-layout-2d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 2D without autoconf</title>
+{{/content}}
+
+{{#content "vendor"}}
+        <script src="{{ resources }}/vendor/d3.v3.min.js"></script>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #geoportalMap {
+            height: 600px;
+            width: 100%;
+        }
+        #extControlDiv {
+            height: 60px;
+            width : 100%;
+            border : 1px solid;
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Ajout d'une carte avec Gp.Map.load() sans appel à l'autoconf</h1>
+    <div id="geoportalMap"></div>
+{{/content}}
+
+{{#content "js"}}
+<script>
+        Gp.olExtended.includeProjections();
+        var map = Gp.Map.load('geoportalMap',{
+            apiKey : "{{apikey}}",
+            reloadConfig : false, // sans autoconf !
+            azimuth : 45,
+            zoom : 12,
+            center : {
+                x : 270000,
+                y : 6250000
+            },
+            // proxyUrl : "{{ proxy }}?url=",
+            layersOptions : {
+                // conf complete pour un chargement sans autoconf !
+                'ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS': {
+                    title:"Photographies aériennes",
+                    description:"Photographies aériennes",
+                    format : "wmts",
+                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                    layer : "ORTHOIMAGERY.ORTHOPHOTOS",
+                    tileMatrixSet : "PM",
+                    topLeftCorner : {
+                        x:-20037508,
+                        y:20037508
+                    },
+                    resolutions : [156543.033928041,78271.51696402048,39135.758482010235,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.7481131407048,152.8740565703525,76.43702828517624,38.21851414258813,19.10925707129406,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.2985821417389697,0.1492910708694849/*,0.0746455354347424*/],
+                    matrixIds : ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"/*,"21"*/],
+                    styleName : "normal",
+                    // version : "1.1.0",
+                    outputFormat : "image/jpeg",
+                    minZoom : 0,
+                    maxZoom : 19,
+                    visibility : true,
+                    originators : [{
+                        name : "IGN",
+                        attribution : "Institut National de l'Information Géographique et Forestière",
+                        url : "https://www.ign.fr"
+                    }],
+                    quicklookUrl : "https://wxs.ign.fr/static/pictures/ign_ortho.jpg",
+                    metadata : [{"url":""},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml"},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=SPOT5.xml"},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=NCL-DITTT-ORTHO.xml"},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_BDORTHOr_2-0.xml"},
+                        {"format":"xml","url":"https://wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_ORTHOHR_1-0.xml"}
+                    ],
+                    legends : [
+                        {
+                           format : "application/pdf",
+                           url : "https://www.geoportail.gouv.fr/depot/fiches/photographiesaeriennes/geoportail_dates_des_prises_de_vues_aeriennes.pdf",
+                           minScaleDenominator : null
+                        }
+                    ]
+                },
+                // sans autoconf, une conf minimale ne peut pas être chargée !
+                'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {},
+                // conf complete pour un chargement sans autoconf !
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS" : {
+                        title : "Couche Carte WMTS",
+                        format : "wmts",
+                        // minZoom : 0,
+                        // maxZoom : 16,
+                        // visibility : true,
+                        // opacity : 0.8 ,
+                        url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                        layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+                        tileMatrixSet : "PM",
+                        styleName : "normal",
+                        outputFormat : "image/jpeg"
+                }
+            },
+            controlsOptions : {
+                zoom : {},
+                // sans conf, par defaut, le controle prend la ou les couche(s)
+                // chargées sur la carte
+                // overview : {},
+
+                // ce controle ne fonctionne pas, car sur une conf minimale, on fait
+                // appel à l'autoconf... sauf si la couche est déjà chargée sur la carte !
+                // overview : {
+                //     maximised : true,
+                //     layers : ["GEOGRAPHICALGRIDSYSTEMS.MAPS.OVERVIEW"],
+                //     projection : "EPSG:3857",
+                //     minZoom : 1,
+                //     maxZoom : 7
+                // },
+
+                // sans conf, le controle prend la couche renseignée sur la carte
+                // overview : {
+                //     maximised : true,
+                //     layers : [
+                //         "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS",
+                //         "ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS"
+                //     ]
+                // },
+
+                // on veut ça dans l'idéal sans autoconf
+                overview : {
+                    maximised : true,
+                    layers : [{
+                            format : "wmts",
+                            minZoom : 0,
+                            maxZoom : 16,
+                            visibility : true,
+                            opacity : 0.5,
+                            url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                            layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+                            tileMatrixSet : "PM",
+                            styleName : "normal",
+                            outputFormat : "image/jpeg"
+                    }]
+                },
+                orientation : {},
+                graphicScale : {},
+                mousePosition : {},
+                route : {},
+                isocurve : {},
+                graticule : {},
+                layerSwitcher : {
+                    maximised : true
+                },
+                layerimport : {},
+                length : {},
+                area : {},
+                azimuth : {},
+                elevationPath : {},
+                search : {},
+                reverseSearch : {},
+                drawing : {},
+                attributions : {
+                    maximised : true
+                }
+            }
+        });
+    </script>
+{{/content}}
+{{/extend}}

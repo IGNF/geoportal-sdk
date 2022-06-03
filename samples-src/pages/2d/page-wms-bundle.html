@@ -22,8 +22,14 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap',{
+            center: {
+                x : -4.620391,
+                y : 48.268698,
+                projection : "CRS:84"
+            },
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             controlsOptions : {
+                "mousePosition" : {},
                 "layerSwitcher" : {}
             },
             layersOptions : {

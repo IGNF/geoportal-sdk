@@ -37,8 +37,8 @@
 {{#content "js"}}
     <script>
         var map = Gp.Map.load('geoportalMap',{
-            configUrl : "{{resources}}/autoconf.js",
-            apiKey : "{{apikey3}}",
+            // configUrl : "{{resources}}/autoconf.js",
+            apiKey : "{{apikey}}",
             viewMode : "3d",
             center : {
                 // geolocate : true,
@@ -49,7 +49,7 @@
             layersOptions : {
                 "ORTHOIMAGERY.ORTHOPHOTOS" : {
                 },
-                "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                 }
             },
             controlsOptions : {
@@ -64,7 +64,7 @@
                 'layerChanged' : action,
                 'configured' : function () {
                     map.addLayers({
-                        'GEOGRAPHICALGRIDSYSTEMS.MAPS' : {}
+                        'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2' : {}
                     }) ;
                 }
             },

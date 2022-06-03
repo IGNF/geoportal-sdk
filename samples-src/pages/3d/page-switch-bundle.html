@@ -33,16 +33,58 @@
                 /*layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {
                     },
-                    "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {
+                    "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                     }
                 },*/
                 layersOptions : {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {
-                    }/*,
+                    },
+                    "KML_1" : {
+                        title : "Paris 1",
+                        description : "KML de Paris numéro 1",
+                        format : "KML",
+                        url : "../resources/KML/paris_1.kml",
+                        opacity : 0.7,
+                        minZoom : 8,
+                        maxZoom : 15,
+                        visibility : true,
+                        opacity : 1,
+                        styleOptions : {
+                            polyFillColor : "blue",
+                            polyFillOpacity : 1,
+                            strokeColor : "white",
+                            strokeOpacity : 0.8,
+                            strokeWidth : 2
+                        },
+                        extractStyles : true
+                    },
+                    "KML_2" : {
+                        title : "Paris 2",
+                        description : "KML de Paris numéro 2",
+                        format : "KML",
+                        url : "../resources/KML/paris_2.kml",
+                        opacity : 0.7,
+                        minZoom : 8,
+                        maxZoom : 15,
+                        visibility : true,
+                        opacity : 1,
+                        styleOptions : {
+                            polyFillColor : "red",
+                            polyFillOpacity : 0.8,
+                            strokeColor : "green",
+                            strokeOpacity : 0.5,
+                            strokeWidth : 5
+                        },
+                        extractStyles : false
+                    }
+                    /*,
                     "HY.PhysicalWaters" : {
                     },
                     "TN.RoadTransportNetwork" : {
                     }*/
+                },
+                center : {
+                    location : "Lyon, 69000"
                 },
                 controlsOptions : {
                     layerSwitcher : {

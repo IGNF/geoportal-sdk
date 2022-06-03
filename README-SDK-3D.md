@@ -85,10 +85,10 @@ Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM
 Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
 
 ```
-npm i geoportal-sdk
+npm i @ignf-geoportal/sdk-3d
 ```
 
-L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/geoportal-sdk/dist/3d/` de votre projet.
+L'arborescence décrite ci-dessus sera alors accessible dans le répertoire `node_modules/@ignf-geoportal/sdk-3d/dist/` de votre projet.
 
 #### Accès direct
 
@@ -121,7 +121,7 @@ import * as Gp from "@ignf-geoportal/sdk-3d";
 
 // votre utilisation du SDK
 var map = Gp.Map.load("myDivId",{
-    apiKey : "myApiKey",
+    apiKey : "myApiKey1,myApiKey2",
     viewMode : "2d", // ou "3d"
     ...
 });
@@ -153,7 +153,7 @@ var map = Gp.Map.load(
     // options d'affichage de la carte (Gp.MapOptions)
     {           
          // clef d'accès à la plateforme
-         apiKey: "APIKEY",
+         apiKey: "APIKEY-1,APIKEY-2",
          // chargement de la cartographie en 3D avec la librairie itowns
          viewMode : "3d",
 
@@ -181,7 +181,7 @@ var map = Gp.Map.load(
 
 Permet, d'afficher une carte avec les options suivantes :
 
-* utilisation des **droits de la clef** 'APIKEY' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
+* utilisation des **droits de la ou des clefs** 'APIKEY-1, APIKEY-2' ([Plus d'infos sur les possibilités de paramétrage des droits...](#config));
 
 * **viewMode** : "**3d**" pour un chargement de la cartographie en 3D, **avec la librairie iTowns,** ou "**2d**" (par défaut) pour un chargement de la cartographie en 2D, **avec la librairie OpenLayers.** Il sera ensuite possible de basculer d'un mode de visualisation à l'autre (Voir la partie "Bascule entre 2D et 3D).
 
@@ -198,7 +198,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 ### Configuration de l'accès à la plateforme Géoportail
 
-Le SDK Géoportail exploite les services web exposés par la plateforme Géoportail. Ceux-ci sont soumis à l'obtention d'une **clef d'accès** obtenue sur le site [professionnels.ign.fr](http://professionnels.ign.fr/ign/contrats) ayant les droits sur les ressources que vous souhaitez exploiter.
+Le SDK Géoportail exploite les services web exposés par la plateforme Géoportail. Ceux-ci sont soumis à l'obtention d'une ou de plusieurs **clefs d'accès génériques** obtenues sur le site [geoservices.ign.fr](https://geoservices.ign.fr/services-web) ayant les droits sur les ressources que vous souhaitez exploiter. Il est possible de savoir quelle clef est associée à quelle ressource [ici](https://geoservices.ign.fr/documentation/services/tableau_ressources).
 
 
 ### Configuration dynamique
@@ -213,7 +213,7 @@ var map = Gp.Map.load(
     {
          ...
          // clef d'accès à la plateforme
-         apiKey: "APIKEY",
+         apiKey: "APIKEY-1,APIKEY-2",
          ...
     }
 ) ;
@@ -304,7 +304,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-*NB* : Cette possibilité de centrage ne fonctionne que si [la clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
+*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
 
 
 #### Centrage par géolocalisation du terminal utilisé
@@ -346,7 +346,7 @@ Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage
 
 #### Affichage des couches Géoportail WMS et WMTS
 
-Les couches Géoportail sont les couches auxquelles donne droit [la clef utilisée pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
+Les couches Géoportail sont les couches auxquelles donne droit [les clefs utilisées pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
 Pour afficher un MNT IGN dans un contexte 3D, il suffit de renseigner le paramètre "isElevation" à true.
 
@@ -542,6 +542,12 @@ Les outils disponibles en 2D uniquement sont les suivants :
 * calcul d'azimuth (["azimuth"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#azimuth))
 
 * calcul de profil altimétrique (["elevationpath"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#elevationpath))
+
+
+L'outil disponible en 3D uniquement est le suivant :
+
+* exagération du relief (["boostrelief"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#boostrelief))
+
 
 *NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
