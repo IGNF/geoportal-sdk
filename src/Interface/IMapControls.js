@@ -203,6 +203,9 @@ IMap.prototype.addControls = function (controlsOptions) {
             case "boostrelief":
                 controlObj = this.addBoostReliefControl(controlOpts);
                 break;
+            case "buildings":
+                controlObj = this.addBuildingsControl(controlOpts);
+                break;
             case "mouseposition":
                 controlObj = this.addMousePositionControl(controlOpts);
                 break;

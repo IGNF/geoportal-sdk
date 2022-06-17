@@ -1,0 +1,48 @@
+{{#extend "sample-bundle-layout-3d"}}
+
+{{#content "head"}}
+    <title>Sample SDK 3D  Buildings</title>
+{{/content}}
+
+{{#content "style"}}
+    <style>
+        #viewerDiv {
+          height: 600px;
+          width: 100%;
+          position : "relative";
+        }
+    </style>
+{{/content}}
+
+{{#content "body"}}
+    <h1>Test de l'ajout du control Buildings</h1>
+    <div id="BoutonSwitch2d3d">
+        <input type="button" name="switch" onclick="switchTo2D3D();" value="Switch 2D <-> 3D"/><br/>
+    </div>
+    <div id="viewerDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+    <script>
+        var map = Gp.Map.load("viewerDiv",{
+            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            viewMode : "3d",
+            controlsOptions : {
+                buildings : {}
+            },
+            layersOptions : {
+                'ORTHOIMAGERY.ORTHOPHOTOS': {}
+            },
+            center : {
+                x : 2.357,
+                y : 48.83
+            }
+        });
+
+        function switchTo2D3D () {
+            var viewMode = map.getViewMode();
+            map = map.switch2D3D(viewMode === "2d" ? "3d":"2d");
+        };
+    </script>
+{{/content}}
+{{/extend}}
