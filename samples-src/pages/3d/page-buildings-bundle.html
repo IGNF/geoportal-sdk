@@ -28,7 +28,11 @@
             configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
             viewMode : "3d",
             controlsOptions : {
-                buildings : {}
+                buildings : {
+                    MNT : true,
+                    buildingsOnGround : false,
+                    key : "cartes"
+                }
             },
             layersOptions : {
                 'ORTHOIMAGERY.ORTHOPHOTOS': {}
