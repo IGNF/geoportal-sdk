@@ -548,6 +548,12 @@ var layerOptions = {
  * | positionMarker.offset | Array(Number) | Offsets in pixels used when positioning the marker towards targeted point. The *first element* in the array is the horizontal offset. A positive value shifts the marker right. The *second element* in the array is the vertical offset. A positive value shifts the marker down. [0,0] value positions the top-left corner of the marker image to the targeted point. Default is offset associated to default marker image. |
  * | positionMarker.hide | Boolean | If true, marker is not displayed, otherwise displayed (False by default.) |
  *
+ *  **Specific 3D options**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | x | Number | The position of the mouseposition button from the left of the container div |
+ * | y | Number | The position of the mouseposition button from the bottom of the container div |
  *
  * <a id="route"></a>
  *
@@ -617,6 +623,13 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
+ * 
+ * **Specific 3D options**
+ *
+ * | property | Type | Description |
+ * | - | - | - |
+ * | x | Number | The position of the layerswitcher button from the left of the container div |
+ * | y | Number | The position of the layerswitcher button from the bottom of the container div |
  *
  * <a id="getfeatureinfo"></a>
  *
@@ -800,6 +813,8 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | Display or not the control |
+ * | x | Number | The position of the boostrelief button from the left of the container div |
+ * | y | Number | The position of the boostrelief button from the bottom of the container div |
  * | scale | Number | Defines the scale used to boost the relief |
  * | scale.min | Number | Minimum of the scale - 1 by default |
  * | scale.max | Number | Maximum of the scale - 50 by default |
@@ -816,6 +831,8 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | Display or not the control |
+ * | x | Number | The position of the buildings button from the left of the container div |
+ * | y | Number | The position of the buildings button from the bottom of the container div |
  * | key | String | Defines the apiKey used to add the buildings layer - "essentiels" by default |
  * | MNT | Boolean | adds the MNT to the globe (ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES) - true by default |
  * | buildingsOnGround | Boolean | If true, put the buildings without elevation - false by default |
