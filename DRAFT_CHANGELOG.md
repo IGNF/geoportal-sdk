@@ -12,6 +12,8 @@
 
 * [Changed]
 
+    - Modification de la gestion des features (FeatureClass en mode 'read/write') sur le vecteur tuilé
+
 * [Removed]
 
 * [Fixed]
