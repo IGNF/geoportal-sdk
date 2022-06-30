@@ -589,6 +589,24 @@ IMap.prototype.addAttributionsControl = function (controlOpts) {};
 IMap.prototype.addBoostReliefControl = function (controlOpts) {};
 
 /**
+ * Adds the buildings control to the globe
+ *
+ * @param {Object} controlOpts - control options
+ * @param {Boolean} controlOpts.maximised - Display or not the control
+ * @param {Number} [controlOpts.x] - The position of the buildings button from the left of the container div
+ * @param {Number} [controlOpts.y] - The position of the buildings button from the bottom of the container div
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {String} [controlOpts.key = "essentiels"] - Defines the apiKey used to add the buildings layer
+ * @param {Boolean} [controlOpts.MNT = true] - adds the MNT to the globe (ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES)
+ * @param {Boolean} [controlOpts.buildingsOnGround = false] - If true, put the buildings without elevation
+ * @param {Number} [controlOpts.defaultVisibility = true] - Display the building when the globe is initialized
+ * @param {Number} [controlOpts.minZoom = 15] - Minimum zoom level to display the buildings. 
+ * @private
+ * 
+ */
+ IMap.prototype.addBuildingsControl = function (controlOpts) {};
+
+/**
  * Adds camera orientation control to the map.
  *
  * @param {Object} controlOpts - control options
