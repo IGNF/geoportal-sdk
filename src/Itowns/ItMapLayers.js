@@ -800,6 +800,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         default :
     }
     if (layer) {
+        // ajout de la version du sdk dans les requêtes image
+        layer.source.url = Gp.Helper.normalyzeUrl(layer.source.url, {
+            "gp-sdk" : Gp.sdkVersion
+        }, false);
         // le controle geoportalAttribution exploite la propriete options.originators
         if (layerOpts.hasOwnProperty("originators")) {
             layer.source.attribution = layerOpts.originators;
