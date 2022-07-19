@@ -63,8 +63,6 @@ Il contient l'arborescence suivante :
             (version source map du code javascript pour une utilisation en développement)
         GpSDK3D-map.css
             (version source map des css pour une utilisation en développement)
-        itowns.js
-            (version minifiée de la librairie iTowns compatible avec le SDK 3D)
 
 
 <a id="download-direct"/>
@@ -80,7 +78,7 @@ L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
 
 #### Récupération avec NPM
 
-Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/geoportal-sdk).
+Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/@ignf-geoportal/sdk-3d).
 
 Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
 
@@ -97,6 +95,10 @@ Par exemple sur Github Pages :
 ```
 https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.js
 https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D.css
+```
+OU
+
+```
 https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.js
 https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.css
 ```
@@ -165,7 +167,7 @@ var map = Gp.Map.load(
          zoom : 17,
          // Couches à afficher
          layersOptions : {
-             "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
+             "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
              }
          },
          // Outils additionnels à proposer sur la carte
@@ -362,7 +364,7 @@ var map = Gp.Map.load(
              // Couche photographies aériennes
              "ORTHOIMAGERY.ORTHOPHOTOS" : {},
              // Couche photographies aériennes
-             "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
+             "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                  opacity : 0.3
              }
          }
@@ -552,7 +554,7 @@ L'outil disponible en 3D uniquement est le suivant :
 
 <a id="switch_tools"/>
 
-*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
+*NB* : lors d'une [bascule d'une visualisation 2D vers 3D](#switchToLib) à l'aide de la fonction [switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.switch2D3D) , les outils non disponibles en 3D disparaitront de l'interface cartographique. Ils réapparaitront en cas de nouvelle bascule d'une visualisation 3D vers 2D.
 
 
 <a id="events"/>
@@ -599,7 +601,7 @@ var map = Gp.Map.load(
 
 ### Bascule entre 2D et 3D
 
-Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#switch2D3D). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
+Le SDK 3D permet de basculer d'une vue 2D à une vue 3D, et vice-versa. Pour cela, utiliser la fonction [Gp.Map.switch2D3D()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.switch2D3D). Les couches, la position de la caméra, et les outils présents sur l'interface cartographique sont conservés lors de la bascule (hormis les outils disponibles qu'en 2D, [plus d'infos](#switch_tools)).
 
 **Voir un exemple de bascule sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/fsgxk3ov/embedded/result,js,html,css/)**
 

@@ -8,7 +8,7 @@ import { MapLoader } from "../Utils/MapLoader";
  * Reloads the map with a new cartographic library. The current view options (camera position, layers, controls) will be conserved.
  * This function only works with the GpSDK3D bundle (run the "build:3d" npm task to generate it)
  *
- * @param {Integer} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
+ * @param {String} viewMode - The cartographic view mode. "2d" (for a 2D map) or "3d" (for a 3D map).
  *
  * @return {Object} the new map
  * @static
