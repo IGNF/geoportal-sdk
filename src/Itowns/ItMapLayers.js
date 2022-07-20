@@ -13,7 +13,7 @@ import {
     GeoJsonParser,
     GpxParser
 } from "itowns";
-import { itownsExtended, Helper } from "geoportal-extensions-itowns";
+import { Helper } from "geoportal-extensions-itowns";
 
 /**
  * Proprietes observables des couches pour le SDK

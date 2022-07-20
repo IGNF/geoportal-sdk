@@ -12,6 +12,8 @@
 
 * [Changed]
 
+    - ajout du tag de la version sdk dans les requetes image d'itowns du SDK 3D (#97)
+
 * [Removed]
 
 * [Fixed]
