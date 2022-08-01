@@ -14,7 +14,8 @@ ItMap.CONTROLSCLASSES = {
     attributions : "itowns.control.Attributions",
     overview : "itowns.control.MiniGlobe",
     graphicscale : "itowns.control.Scale",
-    boostrelief : "itowns.control.BoostRelief"
+    boostrelief : "itowns.control.BoostRelief",
+    buildings : "itowns.control.Buildings"
 };
 
 /**
@@ -77,6 +78,14 @@ ItMap.prototype.addMousePositionControl = function (controlOpts) {
     }
     var control = new itownsExtended.control.MousePosition(mpOpts);
     this.libMap.addWidget(control);
+    if (!isNaN(controlOpts.x)) {
+        control.getElement().style.left = Number(controlOpts.x) + "px";
+        control.getElement().style.right = "unset";
+    }
+    if (!isNaN(controlOpts.y)) {
+        control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        control.getElement().style.top = "unset";
+    }
     return control;
 };
 
@@ -141,6 +150,15 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     this.logger.trace("[ItMap]  : layerSwitcher Opts  : ... ");
     var control = new itownsExtended.control.LayerSwitcher(lsOpts);
     this.libMap.addWidget(control);
+    // modify the position of the layerswitcher button if x or y is given as option
+    if (controlOpts && !isNaN(controlOpts.x)) {
+        control.getElement().style.left = Number(controlOpts.x) + "px";
+        control.getElement().style.right = "unset";
+    }
+    if (controlOpts && !isNaN(controlOpts.y)) {
+        control.getElement().style.bottom = Number(controlOpts.y) + "px";
+        control.getElement().style.top = "unset";
+    }
     return control;
 };
 
@@ -225,9 +243,11 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
 
         if (!isNaN(controlOpts.x)) {
             control.getElement().style.left = Number(controlOpts.x) + "px";
+            control.getElement().style.right = "unset";
         }
         if (!isNaN(controlOpts.y)) {
             control.getElement().style.bottom = Number(controlOpts.y) + "px";
+            control.getElement().style.top = "unset";
         }
 
         // update the canvas to fit with the overview element size
@@ -274,9 +294,11 @@ ItMap.prototype.addGraphicScaleControl = function (controlOpts) {
         // modify the position of the scaleBar if x or y is given as option
         if (!isNaN(controlOpts.x)) {
             control.getElement().style.left = Number(controlOpts.x) + "px";
+            control.getElement().style.right = "unset";
         }
         if (!isNaN(controlOpts.y)) {
             control.getElement().style.bottom = Number(controlOpts.y) + "px";
+            control.getElement().style.top = "unset";
         }
     }
     return control;
@@ -305,8 +327,10 @@ ItMap.prototype.addAttributionsControl = function (controlOpts) {
  * Adds the boostRelief control to the map
  *
  * @param {Object} controlOpts - control options
- * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the boostrelief control is put
  * @param {Boolean} controlOpts.maximised - Display or not the control
+ * @param {Number} [controlOpts.x] - The position of the boostRelief button from the left of the container div
+ * @param {Number} [controlOpts.y] - The position of the boostRelief button from the bottom of the container div
  * @param {Object} [controlOpts.scale] - Defines the scale used to boost the relief
  * @param {Number} [controlOpts.scale.min] - Minimum of the scale - 1 by default
  * @param {Number} [controlOpts.scale.max] - Maximum of the scale - 50 by default
@@ -341,12 +365,55 @@ ItMap.prototype.addBoostReliefControl = function (controlOpts) {
         } else {
             control.getElement().style.display = "inline";
         }
-        // modify the position of the scaleBar if x or y is given as option
+        // modify the position of the boostRelief button if x or y is given as option
         if (!isNaN(controlOpts.x)) {
             control.getElement().style.left = Number(controlOpts.x) + "px";
+            control.getElement().style.right = "unset";
         }
         if (!isNaN(controlOpts.y)) {
             control.getElement().style.bottom = Number(controlOpts.y) + "px";
+            control.getElement().style.top = "unset";
+        }
+    }
+    return control;
+};
+
+/**
+ * Adds the buildings control to the globe
+ *
+ * @param {Object} controlOpts - control options
+ * @param {Boolean} controlOpts.maximised - Display or not the control
+ * @param {Number} [controlOpts.x] - The position of the buildings button from the left of the container div
+ * @param {Number} [controlOpts.y] - The position of the buildings button from the bottom of the container div
+ * @param {HTMLElement} controlOpts.div - The HTML Element where the scalebar is put
+ * @param {String} [controlOpts.key = "essentiels"] - Defines the apiKey used to add the buildings layer
+ * @param {Boolean} [controlOpts.MNT = true] - adds the MNT to the globe (ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES)
+ * @param {Boolean} [controlOpts.buildingsOnGround = false] - If true, put the buildings without elevation
+ * @param {Number} [controlOpts.defaultVisibility = true] - Display the building when the globe is initialized
+ * @param {Number} [controlOpts.minZoom = 15] - Minimum zoom level to display the buildings. 
+ *
+ * @returns {Object} control - buildings Control
+ */
+ ItMap.prototype.addBuildingsControl = function (controlOpts) {
+    this.logger.trace("[ItMap] addBuildingsControl...");
+    var buildingsControlOptions = controlOpts;
+    var control = new itownsExtended.control.Buildings(buildingsControlOptions);
+    this.libMap.addWidget(control);
+    if (control.getElement()) {
+        // hide the div if maximised option = false
+        if (buildingsControlOptions.maximised === false) {
+            control.getElement().style.display = "none";
+        } else {
+            control.getElement().style.display = "inline";
+        }
+        // modify the position of the buildings button if x or y is given as option
+        if (!isNaN(controlOpts.x)) {
+            control.getElement().style.left = Number(controlOpts.x) + "px";
+            control.getElement().style.right = "unset";
+        }
+        if (!isNaN(controlOpts.y)) {
+            control.getElement().style.bottom = Number(controlOpts.y) + "px";
+            control.getElement().style.top = "unset";
         }
     }
     return control;
