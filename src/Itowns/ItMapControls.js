@@ -151,11 +151,11 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     var control = new itownsExtended.control.LayerSwitcher(lsOpts);
     this.libMap.addWidget(control);
     // modify the position of the layerswitcher button if x or y is given as option
-    if (!isNaN(controlOpts.x)) {
+    if (controlOpts && !isNaN(controlOpts.x)) {
         control.getElement().style.left = Number(controlOpts.x) + "px";
         control.getElement().style.right = "unset";
     }
-    if (!isNaN(controlOpts.y)) {
+    if (controlOpts && !isNaN(controlOpts.y)) {
         control.getElement().style.bottom = Number(controlOpts.y) + "px";
         control.getElement().style.top = "unset";
     }
