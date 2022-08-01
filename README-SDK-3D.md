@@ -545,10 +545,11 @@ Les outils disponibles en 2D uniquement sont les suivants :
 * calcul de profil altimétrique (["elevationpath"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#elevationpath))
 
 
-L'outil disponible en 3D uniquement est le suivant :
+Les outils disponibles en 3D uniquement sont les suivants :
 
 * exagération du relief (["boostrelief"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#boostrelief))
 
+* affichage des bâtiments 3D (["buildings"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#buildings))
 
 *NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
