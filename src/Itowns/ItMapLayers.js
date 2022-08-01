@@ -13,6 +13,7 @@ import {
     GeoJsonParser,
     GpxParser
 } from "itowns";
+import { Helper } from "geoportal-extensions-itowns";
 
 /**
  * Proprietes observables des couches pour le SDK
@@ -800,6 +801,10 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
         default :
     }
     if (layer) {
+        // ajout de la version du sdk dans les requêtes image
+        layer.source.url = Helper.normalyzeUrl(layer.source.url, {
+            "gp-sdk" : Gp.sdkVersion
+        }, false);
         // le controle geoportalAttribution exploite la propriete options.originators
         if (layerOpts.hasOwnProperty("originators")) {
             layer.source.attribution = layerOpts.originators;
@@ -1054,29 +1059,33 @@ ItMap.prototype._addMarkers = function (markersOptions) {
 /**
  * set default layerOpts for visibility if none specified
  *
+ * @param {Object} opts - visibility options
+ * @returns {Object} opts - visibility options
  * @private
  */
-ItMap.prototype._setDefaultVisibilityOptions = function(opts) {
-  // Dans le cas où aucune visibilité n'est spécifiée
-  if (!opts.hasOwnProperty("visibility") || typeof opts.visibility === "undefined") {
-      // on la règle à "true" par défaut
-      opts.visibility = true;
-  }
-  return opts;
+ItMap.prototype._setDefaultVisibilityOptions = function (opts) {
+    // Dans le cas où aucune visibilité n'est spécifiée
+    if (!opts.hasOwnProperty("visibility") || typeof opts.visibility === "undefined") {
+        // on la règle à "true" par défaut
+        opts.visibility = true;
+    }
+    return opts;
 };
 
 /**
  * set default layerOpts for opacity if none specified
  *
+ * @param {Object} opts - opacity options
+ * @returns {Object} opts - opacity options
  * @private
  */
 ItMap.prototype._setDefaultOpacityOptions = function(opts) {
-  // Dans le cas où aucune opacité n'est spécifiée
-  if (!opts.hasOwnProperty("opacity") || typeof opts.opacity === "undefined") {
-      // on la règle à 1 par défaut
-      opts.opacity = 1;
-  }
-  return opts;
+    // Dans le cas où aucune opacité n'est spécifiée
+    if (!opts.hasOwnProperty("opacity") || typeof opts.opacity === "undefined") {
+        // on la règle à 1 par défaut
+        opts.opacity = 1;
+    }
+    return opts;
 };
 
 /**
