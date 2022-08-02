@@ -6,6 +6,8 @@
 
 ## Summary
 
+Mise à jour de l'extension Géoportail pour Openlayers en version 3.2.14 et modifications pour la manipulation des features issues des tuiles vectorielles
+
 ## Changelog
 
 * [Added]
