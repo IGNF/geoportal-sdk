@@ -6,20 +6,15 @@
 
 ## Summary
 
-Mise à jour d'iTowns en version 2.38.2 et ajout d'un widget d'affichage des bâtiments en boite à chaussures sur le SDK 3D.
+Mise à jour de l'extension Géoportail pour Openlayers en version 3.2.14 et modifications pour la manipulation des features issues des tuiles vectorielles
 
 ## Changelog
 
 * [Added]
 
-    - Widget d'affichage des bâtiments en 3D (#96)
-    - Généralisation des options "x" et "y" pour positionner les widget sur la div du Globe (58ec7c9ddc1fc4b4aeb06de56afca913029a978d)
-
 * [Changed]
 
-    - ajout du tag de la version sdk dans les requetes image d'itowns du SDK 3D (#97)
-    - Mise à jour des extensions géoportail pour iTowns (#96)
-    - Mise à jour d'iTowns en version 2.38.2 (#96)
+    - Modification de la gestion des features (FeatureClass en mode 'read/write') sur le vecteur tuilé (#96)
 
 * [Removed]
 
