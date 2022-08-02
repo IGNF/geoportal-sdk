@@ -150,6 +150,26 @@ describe("-- Test ItMap --", function () {
                 return Utils.cleanContextOnRenderingOverPromise(map);
             });
         });
+
+        it('Should correctly add the boostrelief control to the map', async () => {
+            return Utils.initContext().then((map) => {
+                var control = map.addBoostReliefControl({});
+                var addedControl = map.getLibMapControl("boostrelief");
+
+                expect(control).to.equal(addedControl);
+                return Utils.cleanContextOnRenderingOverPromise(map);
+            });
+        });
+
+        it('Should correctly add the buildings control to the map', async () => {
+            return Utils.initContext().then((map) => {
+                var control = map.addBuildingsControl({});
+                var addedControl = map.getLibMapControl("buildings");
+
+                expect(control).to.equal(addedControl);
+                return Utils.cleanContextOnRenderingOverPromise(map);
+            });
+        });
     });
 
     describe("-- Remove controls --", function() {
