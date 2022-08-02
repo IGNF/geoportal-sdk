@@ -14,7 +14,7 @@ Mise à jour de l'extension Géoportail pour Openlayers en version 3.2.14 et mod
 
 * [Changed]
 
-    - Modification de la gestion des features (FeatureClass en mode 'read/write') sur le vecteur tuilé
+    - Modification de la gestion des features (FeatureClass en mode 'read/write') sur le vecteur tuilé (#96)
 
 * [Removed]
 
