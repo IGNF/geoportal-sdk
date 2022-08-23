@@ -77,7 +77,7 @@ L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
 
 #### Récupération avec NPM
 
-Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/geoportal-sdk).
+Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/@ignf-geoportal/sdk-2d).
 
 Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
 
@@ -125,13 +125,13 @@ var map = Gp.Map.load("myDivId",{
 
 ### Interfaces de programmation
 
-Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/).
+Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/latest/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/).
 
 
 
 ### Création et affichage d'une carte
 
-La création et l'affichage d'une carte se fait à l'aide de la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html). Elle prend deux paramètres en entrée :
+La création et l'affichage d'une carte se fait à l'aide de la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Utils_MapLoader.html). Elle prend deux paramètres en entrée :
 
 * l'identifiant du container HTML (typiquement un élément ```<div>```) dans lequel on veut qu'elle s'affiche.
 
@@ -148,7 +148,7 @@ var map = Gp.Map.load(
     // options d'affichage de la carte (Gp.MapOptions)
     {           
          // clef(s) d'accès à la plateforme
-         apiKey: "APIKEY-1,APIKEY-2",
+         apiKey: "cartes,essentiels",
          // centrage de la carte
          center : {
              location : "73 avenue de Paris, Saint-Mandé"
@@ -157,7 +157,7 @@ var map = Gp.Map.load(
          zoom : 17,
          // Couches à afficher
          layersOptions : {
-             "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
+             "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
              }
          },
          // Outils additionnels à proposer sur la carte
@@ -181,7 +181,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 
-* **fonds de carte** : ressource *Cartes SCAN Express Standard (GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD*). [Plus d'infos sur le paramétrage des couches...](#layers);
+* **fonds de carte** : ressource *Cartes SCAN Express Standard (GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2*). [Plus d'infos sur le paramétrage des couches...](#layers);
 
 * **outils additionnels** : barre de recherche (*controlsOptions*). [Plus d'infos sur le paramétrage des outils additionnels...](#controls) ;
 
@@ -244,7 +244,7 @@ var map = Gp.Map.load(
 
 ### Configuration du centrage de la carte
 
-Le paramétrage du cente de la carte se fait à l'aide de la propriété **[center](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Center.html)** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
+Le paramétrage du centre de la carte se fait à l'aide de la propriété **[center](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Center.html)** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
 On peut centrer la carte de differentes façons :
 
@@ -280,7 +280,7 @@ La propriété **location** permet de préciser le lieu à géocoder et la propr
 
 * "StreetAddress" : géocodage par adresses
 
-* "CadastralParcels" : géocodage d'indentifants de parcelles cadastrales
+* "CadastralParcels" : géocodage d'indentifiants de parcelles cadastrales
 
 * "location" : regroupe les types "PositionOfInterest" et "StreetAddress"
 
@@ -301,12 +301,12 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
+*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage, par exemple la clé "essentiels".
 
 
 #### Centrage par géolocalisation du terminal utilisé
 
-La propriété **geolocate**, si elle est positionée à **true**, permet de déclencher - sous réserve d'acceptation de l'internaute - une géolocalisation du terminal consultant la page et d'utiliser les coordonnées obtenues pour centrer la carte.
+La propriété **geolocate**, si elle est positionnée à **true**, permet de déclencher - sous réserve d'acceptation de l'internaute - une géolocalisation du terminal consultant la page et d'utiliser les coordonnées obtenues pour centrer la carte.
 
 **Exemple :**
 
@@ -323,7 +323,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-*NB* : on peut modifier le centre de la carte à tout moment après son chargement initial à l'aide de la méthode [setCenter()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#setCenter), de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
+*NB* : on peut modifier le centre de la carte à tout moment après son chargement initial à l'aide de la méthode [setCenter()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.setCenter), de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
 
 <a id="layers"/>
@@ -332,7 +332,7 @@ var map = Gp.Map.load(
 
 Le paramétrage des couches qui vont composer la carte se fait à l'aide de la propriété **layersOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
-C'est un objet javascript dont chaque propriété va représenter une couche composant la carte : la clef est un identifiant associé à la couche ; la valeur un objet de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) permettant de préciser les caractéristiques de la couche à afficher.
+C'est un objet javascript dont chaque propriété va représenter une couche composant la carte : la clef est un identifiant associé à la couche ; la valeur d'un objet de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) permettant de préciser les caractéristiques de la couche à afficher.
 
 Si cette propriété n'est pas renseignée, l'affichage se fera par défaut avec la couche des Photographies aériennes ("ORTHOIMAGERY.ORTHOPHOTOS") servie en images tuilées (WMTS) si la [clef d'accès utilisée pour initialiser la carte](#config) en possède les droits.
 
@@ -356,7 +356,7 @@ var map = Gp.Map.load(
              // Couche photographies aériennes
              "ORTHOIMAGERY.ORTHOPHOTOS" : {},
              // Couche photographies aériennes
-             "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
+             "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {
                  opacity : 0.3
              }
          }
@@ -432,7 +432,7 @@ var map = Gp.Map.load(
 
 **Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/pLcebctq/embedded/result,js,css,html/)**
 
-*NB* : on peut ajouter, modifier ou retirer les couches de la carte à tout moment après son chargement initial à l'aide des méthodes [addLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addLayers), [modifyLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyLayers) ou [removeLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeLayers) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
+*NB* : on peut ajouter, modifier ou retirer les couches de la carte à tout moment après son chargement initial à l'aide des méthodes [addLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.addLayers), [modifyLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.modifyLayers) ou [removeLayers()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.removeLayers) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
 <a id="markers"/>
 
@@ -466,7 +466,7 @@ var map = Gp.Map.load(
 
 ### Configuration des outils additionnels à proposer sur la carte
 
-Par défaut la carte se présente avec les boutons de zoom et l'affichage des attributions. Le SDK vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'intéragir avec la celle-ci.
+Par défaut la carte se présente avec les boutons de zoom et l'affichage des attributions. Le SDK vous permet de rajouter des outils sur la carte qui vont permettre à l'internaute d'interagir avec celle-ci.
 
 L'ajout d'outils se fait à l'aide de la propriété **controlsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html). Il s'agit d'un objet javascript dont chaque propriété a le nom de l'outil à rajouter et chaque valeur de propriété permet de préciser - si besoin - le paramétrage de l'outil. Ce paramétrage se fait à l'aide d'un objet javascript de type [Gp.ControlOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html), dont les propriétés vont varier selon l'outil.
 
@@ -508,14 +508,14 @@ Les outils disponibles sont les suivants :
 
 * calcul de profil altimétrique (["elevationpath"](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.ControlOptions.html#elevationpath))
 
-*NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
+*NB* : on peut ajouter, modifier ou retirer les outils de la carte à tout moment après son chargement initial à l'aide des méthodes [addControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.addControls), [modifyControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.modifyControls) ou [removeControls()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.removeControls) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
 
 <a id="events"/>
 
-### Abonnement aux intéractions des utilisateurs avec la carte
+### Abonnement aux interactions des utilisateurs avec la carte
 
-Le SDK permet d'écouter certains événements qui se produisent lorsque les internautes intéragissent avec la carte et de définir des comportements à appliquer lorsque ces événements se produisent.
+Le SDK permet d'écouter certains événements qui se produisent lorsque les internautes interagissent avec la carte et de définir des comportements à appliquer lorsque ces événements se produisent.
 
 Cela se fait à l'aide de la propriété **mapEventsOptions** de l'objet [mapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html).
 
@@ -550,14 +550,14 @@ var map = Gp.Map.load(
 **Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/gwxLbrdd/embedded/result,js,html,css/)**
 
 
-*NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
+*NB* : on peut s'abonner aux événements à tout moment après le chargement initial de la carte à l'aide de la méthode [listen()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html#.listen) de l'objet map retourné par la fonction Gp.map.load(). [Voir la partie "Interaction avec la carte"](#interact)
 
 
 <a id="others"/>
 
 ### Autres possibilités de paramétrage
 
-L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html) permet de jouer sur d'autres paramètres de la carte lors de son initialisation avec la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html). Entre autres :
+L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MapOptions.html) permet de jouer sur d'autres paramètres de la carte lors de son initialisation avec la fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Utils_MapLoader.html). Entre autres :
 
 * la projection
 
@@ -577,7 +577,7 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 ### Interaction avec la carte créée
 
-La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
+La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Utils_MapLoader.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'intéragir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
 Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événement à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
 
