@@ -15,7 +15,9 @@ import VectorTileLayer from "ol/layer/VectorTile";
 import VectorTileSource from "ol/source/VectorTile";
 import TileJSONSource from "ol/source/TileJSON";
 
-import RenderFeature from "ol/render/Feature"; // FIXME !?
+// FIXME choix entre le RenderFeature et Feature pour le format MVT ?
+// import RenderFeature from "ol/render/Feature";
+import Feature from "ol/Feature";
 
 import MVT from "ol/format/MVT";
 import GeoJSON from "ol/format/GeoJSON";
@@ -1210,7 +1212,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection
                                                 // featureProjection
-                                                // featureClass : RenderFeature
+                                                featureClass : Feature
                                             });
                                             // cf. https://openlayers.org/en/latest/apidoc/module-ol_source_VectorTile-VectorTile.html
                                             vectorSource = new VectorTileSource({
@@ -1245,7 +1247,7 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             vectorFormat = new MVT({
                                                 // dataProjection ?
                                                 // featureProjection ?
-                                                // featureClass : RenderFeature
+                                                featureClass : Feature
                                             });
                                             vectorLayer = new VectorTileLayer({
                                                 className : _title,
