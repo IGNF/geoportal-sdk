@@ -6,7 +6,7 @@ import { Services } from "geoportal-extensions-openlayers";
  *
  * @param {Object} opts - opts de geocodage
  * @param {String} opts.location - localisant
- * @param {Array.<String>} opts.locationType - types de localisants
+ * @param {String} opts.locationType - type de localisant
  * @fires located
  * @private
  */
@@ -37,41 +37,29 @@ IMap.prototype.centerGeocode = function (opts) {
     for (var i = 0; i < keys.length; i++) {
         layersIds[keys[i]] = Config.getLayersId(keys[i]);
     }
-    var locTypes = opts.locationType || ["StreetAddress", "PositionOfInterest"];
-    var fo = {};
-    fo.type = [];
-    fo.keys = [];
-    // pour chaque clé en entrée, on va vérifier à quelle ressource de géocodage elle a accès
-    var checkLocTypes;
-    for (var k = 0; k < keys.length; k++) {
-        checkLocTypes = locTypes.slice();
-        while (checkLocTypes.length > 0) {
-            var lt = checkLocTypes.pop();
-            if (layersIds[keys[k]].indexOf(lt + "$OGC:OPENLS;Geocode") >= 0) {
-                this.logger.trace("[IMap] centerGeocode : found rights for " + lt);
-                fo.type.push(lt);
-                // on récupère toutes les clés ayant accès à au moins une ressource de géocodage
-                fo.keys.push(keys[k]);
-            }
-        }
+    var locType = opts.locationType || "location";
+    var index = null;
+    if (layersIds.indexOf(locType + "$OGC:OPENLS;Geocode") >= 0) {
+        this.logger.trace("[IMap] centerGeocode : found rights for " + locType);
+        index = locType;
     }
     // Si on n'a rien trouve, on ne peut pas geocoder
-    if (fo.type.length === 0) {
+    if (!index) {
         this.logger.info("no rights for geocoding services");
         return;
     }
     var map = this;
     // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey : fo.keys[0],
-        location : opts.location,
-        filterOptions : fo,
+        apiKey : keys[0],
+        query : opts.location,
+        index : index,
         // si le service de geocodage répond
         onSuccess : function (geocodeResponse) {
-            map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.x + ", " + geocodeResponse.locations[0].position.y + ")");
+            map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.lon + ", " + geocodeResponse.locations[0].position.lat + ")");
             var point = {
-                x : geocodeResponse.locations[0].position.y,
-                y : geocodeResponse.locations[0].position.x,
+                x : geocodeResponse.locations[0].position.lon,
+                y : geocodeResponse.locations[0].position.lat,
                 projection : "EPSG:4326"
             };
             map.setAutoCenter(point);

@@ -12,7 +12,7 @@
  * @property {Float} y - y coordinates for center
  * @property {String} projection - center coordinates srs
  * @property {String} location - place or address where to center the map
- * @property {Array.<String>} locationType - location types ("StreetAddress", "PositionOfInterest", "CadastralParcel"). Default is ["StreetAddress", "PositionOfInterest"]
+ * @property {String} locationType - location type ("StreetAddress", "PositionOfInterest", "CadastralParcel", "location"). Default is "location"
  * @property {Boolean} geolocate - center the map by geolocation
  */
 var center = {
@@ -852,7 +852,7 @@ var layerOptions = {
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
  * | resources | Object | resources to be used by geocode and autocompletion services |
- * | resources.geocode | Array(String) | resources geocoding, by default : ["PositionOfInterest", "StreetAddress"] |
+ * | resources.geocode | String | resources geocoding, by default : "location" |
  * | resources.autocomplete | Array(String) | resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"] |
  * | displayAdvancedSearch | Boolean | True to display advanced search tools. Default is false (not displayed) |
  * | advancedSearch | Object | advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode) |
@@ -871,7 +871,7 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
- * | resources | Array(String) | resources geocoding, by default : ["PositionOfInterest", "StreetAddress"] |
+ * | resources | String | resources geocoding, by default : "location" |
  * | displayAdvancedSearch | Boolean | False to disable advanced search tools (it will not be displayed). Default is true (displayed) |
  * | delimitations | Array(String) | delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list. |
  * | reverseGeocodeOptions | Object | reverse geocode service options. see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~reverseGeocode to know all reverse geocode options. |

@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour de l'extension Géoportail pour Openlayers en version 3.2.14 et modifications pour la manipulation des features issues des tuiles vectorielles
+Utilisation du Geocodage V2
 
 ## Changelog
 
@@ -14,7 +14,7 @@ Mise à jour de l'extension Géoportail pour Openlayers en version 3.2.14 et mod
 
 * [Changed]
 
-    - Modification de la gestion des features (FeatureClass en mode 'read/write') sur le vecteur tuilé (#96)
+    - mise à jour des API JavaScript Geoportail sous-jacentes et adaptations pour utilisation de la version 2 du Geocodage (#65)
 
 * [Removed]
 
