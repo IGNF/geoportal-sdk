@@ -341,7 +341,7 @@ IMap.DEFAULTOPTIONS = {
         projection : "EPSG:4326",
         geolocate : false,
         location : null,
-        locationType : ["StreetAddress", "PositionOfInterest"]
+        locationType : "location"
     },
     azimuth : 0,
     enableRotation : true,

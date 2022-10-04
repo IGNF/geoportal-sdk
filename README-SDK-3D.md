@@ -288,6 +288,7 @@ La propriété **location** permet de préciser le lieu à géocoder et la propr
 
 * "CadastralParcels" : géocodage d'indentifants de parcelles cadastrales
 
+* "location" : regroupe les types "PositionOfInterest" et "StreetAddress"
 
 **Exemple :**
 
@@ -299,7 +300,7 @@ var map = Gp.Map.load(
          // centrage de la carte
          center : {
              location : "73 avenue de Paris, Saint-Mandé",
-             locationType : ["StreetAddress"]
+             locationType : "StreetAddress"
          },
     }
 ) ;
