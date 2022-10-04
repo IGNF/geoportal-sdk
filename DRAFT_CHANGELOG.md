@@ -6,11 +6,15 @@
 
 ## Summary
 
+Utilisation du Geocodage V2
+
 ## Changelog
 
 * [Added]
 
 * [Changed]
+
+    - mise à jour des API JavaScript Geoportail sous-jacentes et adaptations pour utilisation de la version 2 du Geocodage (#65)
 
 * [Removed]
 
