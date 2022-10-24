@@ -669,7 +669,8 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             var MapBoxdefaultStyle = new Style(geoJSONdefaultStyleOptions);
             importOpts.vectorStyleOptions.MapBox = {
                 defaultStyle : MapBoxdefaultStyle,
-                editor : userMapBoxDefaultStyles.editor
+                editor : userMapBoxDefaultStyles.editor,
+                display : userMapBoxDefaultStyles.display
             };
         }
     }
