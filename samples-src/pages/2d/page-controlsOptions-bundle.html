@@ -271,7 +271,7 @@
                 search : {
                     maximised : false,
                     resources : {
-                        geocode : ["PositionOfInterest"],
+                        geocode : "PositionOfInterest",
                         autocomplete : ["StreetAddress"]
                     },
                     displayAdvancedSearch : false,
@@ -279,7 +279,7 @@
                 },
                 reverseSearch : {
                     maximised : false,
-                    resources : ["PositionOfInterest"],
+                    resources : "PositionOfInterest",
                     delimitations : ["Point", "Extent", "Circle"]
                 },
                 drawing : {
@@ -352,7 +352,7 @@
                 if (elem.value.toLowerCase() == "search") {
                     ctrlOpts[elem.value]["displayAdvancedSearch"] = true ;
                     ctrlOpts[elem.value]["resources"] = {
-                        geocode : ["StreetAddress"],
+                        geocode : "StreetAddress",
                         autocomplete : ["StreetAddress"]
                     } ;
                 }

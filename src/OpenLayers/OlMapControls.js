@@ -1002,7 +1002,7 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
  * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
  * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
  * @param {Object} controlOpts.resources - resources to be used by geocode and autocompletion services
- * @param {Array.<String>} controlOpts.resources.geocode - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
+ * @param {String} controlOpts.resources.geocode - resources geocoding, by default : "location"
  * @param {Array.<String>} controlOpts.resources.autocomplete - resources autocompletion, by default : ["PositionOfInterest", "StreetAddress"]
  * @param {Boolean} [controlOpts.displayAdvancedSearch = false] - True to display advanced search tools. Default is false (not displayed)
  * @param {Object} controlOpts.advancedSearch - advanced search options for geocoding (filters). Properties can be found among geocode options.filterOptions (see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~geocode)
@@ -1057,7 +1057,7 @@ OlMap.prototype.addSearchControl = function (controlOpts) {
  * @param {Object} controlOpts - control options
  * @param {String|Element} controlOpts.div - target HTML element container. Default is chosen by implementation.
  * @param {Boolean} controlOpts.maximised - if the control has to be opened or not.
- * @param {Array.<String>} controlOpts.resources - resources geocoding, by default : ["PositionOfInterest", "StreetAddress"]
+ * @param {String} controlOpts.resources - resources geocoding, by default : "location"
  * @param {Array.<String>} controlOpts.delimitations - delimitations for reverse geocoding, by default : ["Point", "Circle", "Extent"]. Possible values are : "Point", "Circle", "Extent". Delimitations will be displayed in the same order in widget list.
  * @param {Object} [controlOpts.reverseGeocodeOptions = {}] - reverse geocode service options. see https://ignf.github.io/geoportal-access-lib/latest/jsdoc/module-Services.html#~reverseGeocode to know all reverse geocode options.
  *
