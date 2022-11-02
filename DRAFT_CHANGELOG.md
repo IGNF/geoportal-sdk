@@ -10,6 +10,8 @@
 
 * [Added]
 
+  - Appliquer une contrainte d’échelle avec le zoom "mousewheel" et la touche SHIFT  
+
 * [Changed]
 
 * [Removed]
