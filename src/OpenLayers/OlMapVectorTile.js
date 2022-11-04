@@ -2,6 +2,7 @@
 // la complexité du code de la fonction principale : _addVectorLayer().
 
 import { OlMap } from "./OlMapBase";
+import { IMap } from "../Interface/IMap";
 
 import { olUtils as Utils } from "geoportal-extensions-openlayers";
 
@@ -1642,12 +1643,30 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                         }
                                                     })
                                                     .then(function () {
-                                                        // other stuff..
+                                                        var event = IMap.CustomEvent("render:success", {
+                                                            detail : {
+                                                                id : p.id,
+                                                                style : p.styles
+                                                            }
+                                                        });
+                                                        Object.defineProperty(event, "target", {
+                                                            writable : true
+                                                        });
+                                                        map.dispatchEvent(event);
                                                     })
                                                     .catch(function (e) {
                                                         // TODO styles utilisateurs par defaut !
-                                                        // throw new Error("Apply Style error = " + e.message);
                                                         self.logger.warn("DEBUG:Apply Style error = " + e.message);
+                                                        var event = IMap.CustomEvent("render:failure", {
+                                                            detail : {
+                                                                id : p.id,
+                                                                error : e
+                                                            }
+                                                        });
+                                                        Object.defineProperty(event, "target", {
+                                                            writable : true
+                                                        });
+                                                        map.dispatchEvent(event);
                                                     });
                                             };
 

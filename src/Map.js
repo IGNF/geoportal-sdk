@@ -362,6 +362,30 @@ var autoPanOptions = {
  * | grayScaled | Boolean |  If true, the layer is displayed in gray-scale. |
  * | zoomToExtent | Boolean | If true, zoom into the extent of features. |
  *
+ * Event :
+ *
+ * | Name | Attached on | Description |
+ * | - | - | - |
+ * | render:success | map | Event triggered when the rendering of the style on the map layer was successful |
+ * | render:failure  | map | Event fired when style rendering on map layer fails |
+ *
+ * Example :
+ * ```js
+ * // listener
+ * map.getLibMap().on("render:failure", function (evt) {
+ *   console.error(evt);
+ *   // object :
+ *   // detail : { id, error, target }
+ * });
+ *
+ * map.getLibMap().on("render:success", function (evt) {
+ *   console.info(evt);
+ *   // object :
+ *   // detail : { id, style, target }
+ *  });
+ * ```
+ *
+ *
  * **Specific 3D properties**
  *
  * | property | Type | Description |

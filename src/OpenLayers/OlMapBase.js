@@ -3,6 +3,15 @@ import { IMap } from "../Interface/IMap";
 import View from "ol/View";
 import Map from "ol/Map";
 
+import {
+    MouseWheelZoom,
+    defaults as defaultInteractions
+} from "ol/interaction";
+
+import {
+    shiftKeyOnly as eventShiftKeyOnly
+} from "ol/events/condition";
+
 /**
  * OpenLayers IMap implementation class.
  *
@@ -69,7 +78,10 @@ OlMap.prototype._initMap = function () {
 
     // creation de la map vide
     this.libMap = new Map({
-        // interactions : interactions,
+        interactions : defaultInteractions().extend([new MouseWheelZoom({
+            constrainResolution : true,
+            condition : eventShiftKeyOnly
+        })]),
         target : this.div,
         view : view
         // controls : controls
