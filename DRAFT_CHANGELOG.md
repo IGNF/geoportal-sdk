@@ -18,6 +18,8 @@
 
 * [Fixed]
 
+  - Ajout des evenements (map) : "render:success" / "render:failure" pour l'application du rendu des styles sur des couches MapBox
+
 * [Deprecated]
 
 * [Security]

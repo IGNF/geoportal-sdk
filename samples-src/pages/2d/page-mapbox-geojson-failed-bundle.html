@@ -21,7 +21,7 @@
 
 {{#content "js"}}
     <script>
-        Gp.Map.load('geoportalMap',{
+        var map = Gp.Map.load('geoportalMap',{
             configUrl : "{{resources}}/autoconf.js",
             center:{
                 x : 407444,
@@ -53,6 +53,9 @@
                 }
             },
             zoom : 6
+        });
+        map.getLibMap().on("render:failure", function (e) {
+            console.error(e);
         });
     </script>
 {{/content}}
