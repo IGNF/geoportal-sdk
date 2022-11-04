@@ -390,11 +390,11 @@ ItMap.prototype.addBoostReliefControl = function (controlOpts) {
  * @param {Boolean} [controlOpts.MNT = true] - adds the MNT to the globe (ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES)
  * @param {Boolean} [controlOpts.buildingsOnGround = false] - If true, put the buildings without elevation
  * @param {Number} [controlOpts.defaultVisibility = true] - Display the building when the globe is initialized
- * @param {Number} [controlOpts.minZoom = 15] - Minimum zoom level to display the buildings. 
+ * @param {Number} [controlOpts.minZoom = 15] - Minimum zoom level to display the buildings.
  *
  * @returns {Object} control - buildings Control
  */
- ItMap.prototype.addBuildingsControl = function (controlOpts) {
+ItMap.prototype.addBuildingsControl = function (controlOpts) {
     this.logger.trace("[ItMap] addBuildingsControl...");
     var buildingsControlOptions = controlOpts;
     var control = new itownsExtended.control.Buildings(buildingsControlOptions);
