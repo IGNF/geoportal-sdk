@@ -803,6 +803,7 @@ ItMap.prototype._addRasterLayer = function (layerObj) {
     if (layer) {
         // ajout de la version du sdk dans les requêtes image
         layer.source.url = Helper.normalyzeUrl(layer.source.url, {
+            // eslint-disable-next-line no-undef
             "gp-sdk" : Gp.sdkVersion
         }, false);
         // le controle geoportalAttribution exploite la propriete options.originators
@@ -1079,7 +1080,7 @@ ItMap.prototype._setDefaultVisibilityOptions = function (opts) {
  * @returns {Object} opts - opacity options
  * @private
  */
-ItMap.prototype._setDefaultOpacityOptions = function(opts) {
+ItMap.prototype._setDefaultOpacityOptions = function (opts) {
     // Dans le cas où aucune opacité n'est spécifiée
     if (!opts.hasOwnProperty("opacity") || typeof opts.opacity === "undefined") {
         // on la règle à 1 par défaut
