@@ -70,6 +70,13 @@ export { MapLoader as Map };
 export const sdkVersion = Pkg.SDK2DVersion;
 export const sdkDate = Pkg.date;
 
+// Editeur MapBox
+var Editor = olExtended.style.Editor;
+export {
+    /** Expose Editor Style */
+    Editor
+};
+
 // "ol" is exposed into window (for a build bundle) with webpack.
 if (window && window.ol) {
     window.ol = olDist;

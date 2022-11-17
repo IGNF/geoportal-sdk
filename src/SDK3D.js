@@ -162,6 +162,13 @@ export const sdkVersion = Pkg.SDK3DVersion;
 /** Publication date */
 export const sdkDate = Pkg.date;
 
+// Editeur MapBox
+var Editor = olExtended.style.Editor;
+export {
+    /** Expose Editor Style */
+    Editor
+};
+
 // fusion des fonctionnalités openlayers
 // Gp.olExtended -> ol
 deepCopy(olExtended, olDist);

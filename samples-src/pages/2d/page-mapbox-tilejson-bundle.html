@@ -158,7 +158,7 @@
                 }
             }
             // on ajoute l'éditeur minimaliste
-            editorLegendes = new ol.style.Editor({
+            editorLegendes = new Gp.Editor({
                 target : divEditorLegendes,
                 style : _url,
                 tools : {
@@ -229,7 +229,7 @@
                         divEditorFiltres.appendChild(label);
 
                         // Editeur de filtres
-                        var editor = new ol.style.Editor({
+                        var editor = new Gp.Editor({
                             target : divEditorFiltres,
                             id : i.toString(),
                             style : _style,
@@ -308,7 +308,7 @@
 
                 var _styles = layer.get("mapbox-themes").styles;
                 // Editeur de themes
-                editorThemes = new ol.style.Editor({
+                editorThemes = new Gp.Editor({
                     target : divEditorThemes,
                     style : _styles[0].url, // le 1er style par defaut...
                     themes: {
