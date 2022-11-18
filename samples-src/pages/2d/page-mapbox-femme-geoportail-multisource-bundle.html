@@ -14,7 +14,7 @@
 {{/content}}
 
 {{#content "body"}}
-    <h1>Une carte affichant une couche MapBox de type MapBox avec accesstoken</h1>
+    <h1>Une carte affichant une couche MapBox (Multi-source)</h1>
     <p>NB : le clic sur les features s'obtient par l'ajout du controle GetFeatureInfo (ici : caché et activé).</p>
     <div id="geoportalMap"></div>
 {{/content}}
@@ -22,7 +22,8 @@
 {{#content "js"}}
     <script>
         var map = Gp.Map.load('geoportalMap',{
-            configUrl : "{{resources}}/autoconf.js",
+            reloadConfig : false,
+            apiKey : "{{apikey}}",
             center:{
                 x : 407444,
                 y : 5856585
@@ -38,21 +39,12 @@
                 "layerimport" : {}
             },
             layersOptions : {
-                'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {
-                },
-                'monMapBoxWithTokenAcces' : {
+                "FEMME" : {
                     format : "MapBox",
-                    url : "https://api.mapbox.com/styles/v1/mapbox/bright-v9?access_token=pk.eyJ1IjoibG93em9uZW5vc2UiLCJhIjoiY2pqNW9pM3BnMDh3YzNxc3d1NDBrOXJiYiJ9.fpJA4mi3Dau4qgEHiqdbpw",
-                    queryable : false
+                    url : "{{resources}}/MAPBOX/styles/carte_journee_femme.json"
                 }
             },
-            zoom : 6
-        });
-        map.getLibMap().on("render:failure", function (e) {
-            console.error(e);
-        });
-        map.getLibMap().on("render:success", function (e) {
-            console.info(e);
+            zoom : 10
         });
     </script>
 {{/content}}

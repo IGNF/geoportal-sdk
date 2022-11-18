@@ -2,6 +2,7 @@
 // la complexité du code de la fonction principale : _addVectorLayer().
 
 import { OlMap } from "./OlMapBase";
+import { IMap } from "../Interface/IMap";
 
 import { olUtils as Utils } from "geoportal-extensions-openlayers";
 
@@ -577,9 +578,9 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
 
                             // finalisation du style attributaire
                             _style.layers.push({
-                                "id" : _tjsonvalue,
-                                "type" : _addTypeGeometryTagEntry(_tjsongeometry), // FIXME symbol ou circle ?
-                                "source" : source,
+                                id : _tjsonvalue,
+                                type : _addTypeGeometryTagEntry(_tjsongeometry), // FIXME symbol ou circle ?
+                                source : source,
                                 "source-layer" : _tjsonid,
                                 /* tag metadata :
                                 // utiliser le tag metadata pour faire passer des informations
@@ -592,7 +593,7 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                 //  - type de configuration (filter): 0, 1 ou 2
                                 //  - l'ordre interne des filtres
                                 */
-                                "metadata" : {
+                                metadata : {
                                     "geoportail:category" : _mtdFilterCategory,
                                     "geoportail:filter" : _mtdFilterMode, // configuration : 0, 1 ou 2
                                     "geoportail:group" : null, // notion de groupe renseignée via l'editeur
@@ -600,11 +601,11 @@ var _createCustomFilterStyle = function (source, urls, filter, tilejson, stylejs
                                     "geoportail:index" : _mtdLayersIdx,
                                     "geoportail:order" : null // notion d'ordre renseigné via l'editeur
                                 },
-                                "layout" : {
-                                    "visibility" : _tagVisible
+                                layout : {
+                                    visibility : _tagVisible
                                 },
-                                "paint" : _tagPaint,
-                                "filter" : _tagFilter
+                                paint : _tagPaint,
+                                filter : _tagFilter
                             });
                         }
                         if (bFound) {
@@ -1642,12 +1643,30 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                         }
                                                     })
                                                     .then(function () {
-                                                        // other stuff..
+                                                        var event = IMap.CustomEvent("render:success", {
+                                                            detail : {
+                                                                id : p.id,
+                                                                style : p.styles
+                                                            }
+                                                        });
+                                                        Object.defineProperty(event, "target", {
+                                                            writable : true
+                                                        });
+                                                        map.dispatchEvent(event);
                                                     })
                                                     .catch(function (e) {
                                                         // TODO styles utilisateurs par defaut !
-                                                        // throw new Error("Apply Style error = " + e.message);
                                                         self.logger.warn("DEBUG:Apply Style error = " + e.message);
+                                                        var event = IMap.CustomEvent("render:failure", {
+                                                            detail : {
+                                                                id : p.id,
+                                                                error : e
+                                                            }
+                                                        });
+                                                        Object.defineProperty(event, "target", {
+                                                            writable : true
+                                                        });
+                                                        map.dispatchEvent(event);
                                                     });
                                             };
 
@@ -1662,7 +1681,6 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             }
 
                                             // enregistrement du layer
-                                            var _id = (_multiSources) ? layerId + "-" + p.id : layerId;
                                             self._layers.push({
                                                 id : _id,
                                                 obj : p.layer,
@@ -1735,9 +1753,9 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                             // ces statuts sont aussi transmis au permalien...
                                             // > layer.set("mapbox-status")
                                             p.layer.set(OlMap.MAPBOXPROPERTIES["status"], {
-                                                "theme" : p.selectedTheme,
-                                                "layers" : p.selectedLayers, // TODO !
-                                                "filters" : p.selectedFilters
+                                                theme : p.selectedTheme,
+                                                layers : p.selectedLayers, // TODO !
+                                                filters : p.selectedFilters
                                             });
 
                                             // gestion du style N/B
@@ -1940,12 +1958,12 @@ OlMap.prototype._updateStyleMapBoxLayer = function (layer, id, options) {
                                         }
                                     }
                                     var o = {
-                                        "theme" : {
+                                        theme : {
                                             index : options.index,
                                             key : options.url.match(/([^/]+)(?=\.\w+$)/)[1]
                                         },
-                                        "layers" : _status.layers,
-                                        "filters" : filters
+                                        layers : _status.layers,
+                                        filters : filters
                                     };
                                     layer.set(OlMap.MAPBOXPROPERTIES["status"], o);
                                 }
@@ -2137,7 +2155,7 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
                         _filterlayout.visibility = (options.active) ? "visible" : "none";
                     } else {
                         _filterlayer.layout = {
-                            "visibility" : (options.active) ? "visible" : "none"
+                            visibility : (options.active) ? "visible" : "none"
                         };
                     }
                 }
@@ -2149,7 +2167,7 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
                         _layout.visibility = (options.active) ? "visible" : "none";
                     } else {
                         _filterlayer.layout = {
-                            "visibility" : (options.active) ? "visible" : "none"
+                            visibility : (options.active) ? "visible" : "none"
                         };
                     }
                 }
@@ -2234,9 +2252,9 @@ OlMap.prototype._updateFilterMapBoxLayer = function (layer, id, options) {
                     }
                 }
                 var o = {
-                    "theme" : _status.theme,
-                    "layers" : _status.layers,
-                    "filters" : _status.filters
+                    theme : _status.theme,
+                    layers : _status.layers,
+                    filters : _status.filters
                 };
                 layer.set(OlMap.MAPBOXPROPERTIES["status"], o);
             }

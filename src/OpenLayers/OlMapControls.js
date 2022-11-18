@@ -645,6 +645,34 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
                 defaultStyle : geoJSONdefaultStyle
             };
         }
+        if (controlOpts.defaultStyles.MapBox) {
+            var userMapBoxDefaultStyles = controlOpts.defaultStyles.MapBox;
+            var MapBoxdefaultStyleOptions = {};
+            MapBoxdefaultStyleOptions.image = new IconStyle({
+                src : userMapBoxDefaultStyles.markerSrc || defaultMarkerSrc,
+                anchor : [userMapBoxDefaultStyles.markerXAnchor || 25.5, userMapBoxDefaultStyles.markerYAnchor || 38],
+                anchorOrigin : "top-left",
+                anchorXUnits : "pixels",
+                anchorYUnits : "pixels"
+            });
+            strokeOpacity = userMapBoxDefaultStyles.strokeOpacity || 0.8;
+            strokeColor = userMapBoxDefaultStyles.strokeColor || "#002A50";
+            MapBoxdefaultStyleOptions.stroke = new StrokeStyle({
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
+                width : userMapBoxDefaultStyles.strokeWidth || 4
+            });
+            fillOpacity = userMapBoxDefaultStyles.polyFillOpacity || 0.5;
+            fillColor = userMapBoxDefaultStyles.polyFillColor || "#00B798";
+            MapBoxdefaultStyleOptions.fill = new FillStyle({
+                color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity)
+            });
+            var MapBoxdefaultStyle = new Style(geoJSONdefaultStyleOptions);
+            importOpts.vectorStyleOptions.MapBox = {
+                defaultStyle : MapBoxdefaultStyle,
+                editor : userMapBoxDefaultStyles.editor,
+                display : userMapBoxDefaultStyles.display
+            };
+        }
     }
     var control = new Ol.control.LayerImport(importOpts);
     this.libMap.addControl(control);
