@@ -6,15 +6,18 @@
 
 ## Summary
 
-* maj des extensions OpenLayers
+* maj des extensions OpenLayers 3.2.18
 
 ## Changelog
 
 * [Added]
 
-  - Appliquer une contrainte d’échelle avec le zoom "mousewheel" et la touche SHIFT  
+  - Appliquer une contrainte d’échelle avec le zoom "mousewheel" et la touche SHIFT
+  - Ajout d'un exemple de couche MapBox de type multi-source
 
 * [Changed]
+
+  - Exposer l'éditeur de style avec la variable *Gp.Editor*
 
 * [Removed]
 
