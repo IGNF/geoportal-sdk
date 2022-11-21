@@ -16,6 +16,8 @@
 
 * [Fixed]
 
+    - Fix sur le centrage par geocodage pour Itowns
+
 * [Deprecated]
 
 * [Security]
