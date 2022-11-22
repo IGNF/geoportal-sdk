@@ -205,9 +205,12 @@ IMap.prototype.addLayers = function (layersOptions) {
             continue;
         }
         if (!layerOpts.hasOwnProperty("url") || typeof layerOpts.url !== "string") {
-            this.logger.info("Impossible to add layer [" + layerId + "] : no url given");
-            continue;
+            if (!layerOpts.hasOwnProperty("data") || typeof layerOpts.data !== "string") {
+                this.logger.info("Impossible to add layer [" + layerId + "] : no url given");
+                continue;
+            }
         }
+
         // verification des parametres obligatoires en fonction du format
         if (!this._checkLayerParams(layerOpts)) {
             this.logger.info("Impossible to add layer [" + layerId + "] : unsufficient or inadapted parameters given");

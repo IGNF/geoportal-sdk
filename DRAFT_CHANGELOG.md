@@ -10,6 +10,8 @@
 
 * [Added]
 
+    - Possibilité de charger un KML, GPX ou GeoJSON directement avec les données sans passer par une URL en utilisant l'option *layerOptions:data*
+
 * [Changed]
 
 * [Removed]
