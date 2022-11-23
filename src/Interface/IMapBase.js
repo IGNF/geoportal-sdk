@@ -1,7 +1,11 @@
 /* global __SWITCH2D3D_ALLOWED__ */
 import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
-import { Services, ProxyUtils } from "geoportal-extensions-openlayers";
+import {
+    Services,
+    ProxyUtils,
+    olExtended as Ol
+} from "geoportal-extensions-openlayers";
 import { MapLoader } from "../Utils/MapLoader";
 
 /**
@@ -30,6 +34,57 @@ var switch2D3D = function (viewMode) {
     oldMap.isWebGL2 = this.mapOptions.isWebGL2;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
+
+    // add all compute layer to 3D map with layersOptions
+    if (viewMode === "3d") {
+        for (var index = 0; index < this._layers.length; index++) {
+            var layer = this._layers[index];
+            // traitement des couches de calcul
+            if (layer.options.format.toUpperCase() === "COMPUTE") {
+                // FIXME
+                // le calcul d'itineraire fournit 2 trajets en superposition.
+
+                // transform features to geojson
+                var oGeoJson = new Ol.format.GeoJSONExtended({});
+                var _featureProjection = layer.obj.getSource().getProjection();
+                _featureProjection = _featureProjection || this.getLibMap().getView().getProjection();
+
+                var geojson = oGeoJson.writeFeatures(layer.obj.getSource().getFeatures(), {
+                    dataProjection : "EPSG:4326",
+                    featureProjection : _featureProjection
+                });
+
+                // get options available to layersOptions
+                oldMap.layersOptions[layer.id] = layer.options;
+                // add data...
+                oldMap.layersOptions[layer.id].data = geojson;
+                // ... and a human title
+                oldMap.layersOptions[layer.id].title = layer.options.control + "(" + layer.options.graph + ")";
+
+                // TODO :
+                // * transmettre les bons styles à la couche 2D<->3D
+                // * ajouter les points !?
+                // * modifier le nom de la couche dans le gestionnaire en 3D
+
+                // EVOL :
+                // les controles fournissent leurs méta-informations utiles à leur reconstruction en 2D.
+                // il faut completer les infos issues de la methode getData()
+                switch (layer.options.control) {
+                    case "Itineraire":
+                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("route").getData();
+                        break;
+                    case "Isocurve":
+                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("isocurve").getData();
+                        break;
+                    default:
+                        // TODO other format...
+                        // * les mesures
+                        // * profil alti
+                        break;
+                }
+            }
+        }
+    }
 
     // remove old controls and associated listeners
     for (var controlId in oldMap.controlsOptions) {
@@ -224,6 +279,11 @@ var switch2D3D = function (viewMode) {
             mapEventsOptions : oldMap.mapEventsOptions
         }
     );
+
+    // TODO
+    // une fois la carte chargée en 2D, on reconstruit les controles avec les couches
+    // de calcul...
+
     return newMap;
 };
 

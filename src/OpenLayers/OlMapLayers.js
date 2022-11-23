@@ -388,6 +388,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
         case "GEORSS":
             // TODO GeoRSS
             break;
+        case "COMPUTE":
         case "GEOJSON":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
             if (layerOpts.url) {
@@ -776,6 +777,13 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
     } else if (layerId.indexOf("layerimport:MAPBOX") === 0) {
         options.format = "MAPBOX";
     }
+
+    if (layerObj.hasOwnProperty("gpResultLayerId")) {
+        options.format = "COMPUTE";
+        options.graph = layerObj.gpResultLayerId.split(/[$:;]/)[0];
+        options.control = layerObj.gpResultLayerId.split(/[$:;]/).slice(-1)[0];
+    }
+
     this._layers.push({
         id : layerId,
         obj : layerObj,
