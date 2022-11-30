@@ -735,7 +735,7 @@ OlMap.prototype._getLayerOpts = function (layerObj, layersStack) {
  * @returns {Object} - new layer index in this._layers
  */
 OlMap.prototype._registerUnknownLayer = function (layerObj) {
-    // couches de résultat (itineraire, isochrone)
+    // couches de résultats ou de calcul (itineraire, isochrone, ...)
     var layerId = "unknownLayer";
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
         // isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
@@ -779,9 +779,18 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
     }
 
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
+        // result layer name
         options.format = "COMPUTE";
+        // graph name (voiture / pieton)
         options.graph = layerObj.gpResultLayerId.split(/[$:;]/)[0];
+        // control name (isocurve / itineraire)
         options.control = layerObj.gpResultLayerId.split(/[$:;]/).slice(-1)[0];
+        // title by default
+        options.title = options.control + " (" + options.graph + ")";
+        // options control
+        options.controlOptions = {};
+        // features to geojson
+        options.data = {};
     }
 
     this._layers.push({

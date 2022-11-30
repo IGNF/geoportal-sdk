@@ -3,8 +3,7 @@ import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
 import {
     Services,
-    ProxyUtils,
-    olExtended as Ol
+    ProxyUtils
 } from "geoportal-extensions-openlayers";
 import { MapLoader } from "../Utils/MapLoader";
 
@@ -41,40 +40,32 @@ var switch2D3D = function (viewMode) {
             var layer = this._layers[index];
             // traitement des couches de calcul
             if (layer.options.format.toUpperCase() === "COMPUTE") {
-                // FIXME
-                // le calcul d'itineraire fournit 2 trajets en superposition.
-
-                // transform features to geojson
-                var oGeoJson = new Ol.format.GeoJSONExtended({});
-                var _featureProjection = layer.obj.getSource().getProjection();
-                _featureProjection = _featureProjection || this.getLibMap().getView().getProjection();
-
-                var geojson = oGeoJson.writeFeatures(layer.obj.getSource().getFeatures(), {
-                    dataProjection : "EPSG:4326",
-                    featureProjection : _featureProjection
-                });
-
-                // get options available to layersOptions
-                oldMap.layersOptions[layer.id] = layer.options;
-                // add data...
-                oldMap.layersOptions[layer.id].data = geojson;
-                // ... and a human title
-                oldMap.layersOptions[layer.id].title = layer.options.control + "(" + layer.options.graph + ")";
-
                 // TODO :
-                // * transmettre les bons styles à la couche 2D<->3D
-                // * ajouter les points !?
+                // * transmettre les bons styles à la couche 2D->3D
+                //      isocurve   = fill-color : "rgba(0, 183, 152, 0.7)"
+                //      itineraire = stroke-color : "rgba(0,183,152,0.9)",
+                //                   stroke-width : 12
                 // * modifier le nom de la couche dans le gestionnaire en 3D
 
-                // EVOL :
                 // les controles fournissent leurs méta-informations utiles à leur reconstruction en 2D.
-                // il faut completer les infos issues de la methode getData()
+                // les infos issues de la methode getData() :
+                // * point de départ
+                // * point intermédiares
+                // * point d'arrivée
+                // * mode de transport
+                // * mode de calcul
+                // * passage
+                // * résultats
+                // idem pour la couche..., on récupere uniquement le tracé au format GeoJSON.
+                // la couche au format natif n'est pas utile pour la switch 2D<->3D.
                 switch (layer.options.control) {
                     case "Itineraire":
                         oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("route").getData();
+                        oldMap.layersOptions[layer.id].data = this.getLibMapControl("route").getGeoJSON();
                         break;
                     case "Isocurve":
                         oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("isocurve").getData();
+                        oldMap.layersOptions[layer.id].data = this.getLibMapControl("isocurve").getGeoJSON();
                         break;
                     default:
                         // TODO other format...
@@ -280,9 +271,38 @@ var switch2D3D = function (viewMode) {
         }
     );
 
-    // TODO
     // une fois la carte chargée en 2D, on reconstruit les controles avec les couches
     // de calcul...
+    if (viewMode === "2d") {
+        newMap.listen("mapLoaded", function () {
+            for (var i = 0; i < this._layers.length; i++) {
+                var clayer = this._layers[i];
+                // traitement des couches de calcul
+                if (clayer.options.format.toUpperCase() === "COMPUTE") {
+                    var control = null;
+                    switch (clayer.options.control) {
+                        case "Itineraire":
+                            control = this.getLibMapControl("route");
+                            break;
+                        case "Isocurve":
+                            control = this.getLibMapControl("isocurve");
+                            break;
+                        default:
+                            // TODO other format...
+                            // * les mesures
+                            // * profil alti
+                            break;
+                    }
+                    if (control) {
+                        control.setData(clayer.options.controlOptions);
+                        control.setLayer(clayer.obj);
+                        control.setGeoJSON(clayer.options.data); // inutile ?
+                        control.init();
+                    }
+                }
+            }
+        });
+    }
 
     return newMap;
 };
