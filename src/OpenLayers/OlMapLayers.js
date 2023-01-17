@@ -1,7 +1,7 @@
 import { OlMap } from "./OlMapBase";
 import { IMap } from "../Interface/IMap";
 import {
-    Protocols,
+    // Protocols,
     olExtended as Ol
 } from "geoportal-extensions-openlayers";
 
@@ -280,7 +280,6 @@ OlMap.prototype._addRasterLayer = function (layerObj) {
  * @private
  */
 OlMap.prototype._addVectorLayer = function (layerObj) {
-    var self = this;
     // FIXME : ajout d'un parametre projection pour les donnees
     var layerId = Object.keys(layerObj)[0];
     var layerOpts = layerObj[layerId];
@@ -325,57 +324,65 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
     switch (layerOpts.format.toUpperCase()) {
         case "KML":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche KML");
-
-            // FIXME !?
-            // constructorOpts.source = new VectorSource({
-            //     url : this.setProxy(layerOpts.url),
-            //     format : new Ol.format.KMLExtended({
-            //         extractStyles : layerOpts.extractStyles,
-            //         showPointNames : false
-            //     })
-            // });
-
-            var urlKml = this.setProxy(layerOpts.url);
-            var formatKml = new Ol.format.KMLExtended({
-                extractStyles : layerOpts.extractStyles,
-                showPointNames : layerOpts.showPointNames,
-                defaultStyle : [vectorStyle]
-            });
-            constructorOpts.source = new VectorSource({
-                features : new Collection(),
-                // features loader
-                loader : function (extent, resolution, projectionFeature) {
-                    Protocols.XHR.call({
-                        url : urlKml,
-                        method : "GET",
-                        timeOut : 15000,
-                        // callback on success
-                        onResponse : function (response) {
-                            var projectionData = formatKml.readProjection(response);
-                            var features = formatKml.readFeatures(response, {
-                                dataProjection : projectionData,
-                                featureProjection : projectionFeature
-                            });
-                            if (features.length > 0) {
-                                constructorOpts.source.addFeatures(features);
-                            }
-                        },
-                        // callback on failure
-                        onFailure : function (error) {
-                            self.logger.info("[_addVectorLayer] : Kml request failed : ", error);
+            if (layerOpts.url) {
+                constructorOpts.source = new VectorSource({
+                    url : this.setProxy(layerOpts.url),
+                    format : new Ol.format.KMLExtended({
+                        extractStyles : layerOpts.extractStyles,
+                        showPointNames : false
+                    })
+                });
+            } else if (layerOpts.data) {
+                var formatKml = new Ol.format.KMLExtended({
+                    extractStyles : layerOpts.extractStyles,
+                    showPointNames : layerOpts.showPointNames,
+                    defaultStyle : [vectorStyle]
+                });
+                constructorOpts.source = new VectorSource({
+                    features : new Collection(),
+                    // features loader
+                    loader : function (extent, resolution, projectionFeature) {
+                        var projectionData = formatKml.readProjection(layerOpts.data);
+                        var features = formatKml.readFeatures(layerOpts.data, {
+                            dataProjection : projectionData,
+                            featureProjection : projectionFeature
+                        });
+                        if (features.length > 0) {
+                            constructorOpts.source.addFeatures(features);
                         }
-                    });
-                }
-            });
+                    }
+                });
+            }
+            constructorOpts.style = vectorStyle; // utile ?
             break;
         case "GPX":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GPX");
-            constructorOpts.source = new VectorSource({
-                url : this.setProxy(layerOpts.url),
-                format : new Ol.format.GPXExtended({
+            if (layerOpts.url) {
+                constructorOpts.source = new VectorSource({
+                    url : this.setProxy(layerOpts.url),
+                    format : new Ol.format.GPXExtended({
+                        defaultStyle : vectorStyle
+                    })
+                });
+            } else if (layerOpts.data) {
+                var formatGpx = new Ol.format.GPXExtended({
                     defaultStyle : vectorStyle
-                })
-            });
+                });
+                constructorOpts.source = new VectorSource({
+                    features : new Collection(),
+                    // features loader
+                    loader : function (extent, resolution, projectionFeature) {
+                        var projectionData = formatGpx.readProjection(layerOpts.data);
+                        var features = formatGpx.readFeatures(layerOpts.data, {
+                            dataProjection : projectionData,
+                            featureProjection : projectionFeature
+                        });
+                        if (features.length > 0) {
+                            constructorOpts.source.addFeatures(features);
+                        }
+                    }
+                });
+            }
             constructorOpts.style = vectorStyle; // utile ?
             break;
         case "GEORSS":
@@ -383,12 +390,32 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "GEOJSON":
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
-            constructorOpts.source = new VectorSource({
-                url : this.setProxy(layerOpts.url),
-                format : new Ol.format.GeoJSONExtended({
+            if (layerOpts.url) {
+                constructorOpts.source = new VectorSource({
+                    url : this.setProxy(layerOpts.url),
+                    format : new Ol.format.GeoJSONExtended({
+                        defaultStyle : vectorStyle
+                    })
+                });
+            } else if (layerOpts.data) {
+                var formatGeojson = new Ol.format.GeoJSONExtended({
                     defaultStyle : vectorStyle
-                })
-            });
+                });
+                constructorOpts.source = new VectorSource({
+                    features : new Collection(),
+                    // features loader
+                    loader : function (extent, resolution, projectionFeature) {
+                        var projectionData = formatGeojson.readProjection(layerOpts.data);
+                        var features = formatGeojson.readFeatures(layerOpts.data, {
+                            dataProjection : projectionData,
+                            featureProjection : projectionFeature
+                        });
+                        if (features.length > 0) {
+                            constructorOpts.source.addFeatures(features);
+                        }
+                    }
+                });
+            }
             constructorOpts.style = vectorStyle; // utile ?
             break;
         case "WFS":

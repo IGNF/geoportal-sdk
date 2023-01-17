@@ -33,16 +33,20 @@ IMap.prototype.centerGeocode = function (opts) {
     // On cherche les types de géocodage disponibles
     var layersIds = {};
 
-    // si plusieurs clés en entrée, on récupère toutes les ressources par clé
+    // si plusieurs clés en entrée, on récupère toutes les ressources par clé,
+    // et on recherche une clef qui autorise le geocodage
+    var locType = opts.locationType || "StreetAddress"; // par defaut dans le service
+    var index = null;
+    var key = null;
     for (var i = 0; i < keys.length; i++) {
         layersIds[keys[i]] = Config.getLayersId(keys[i]);
+        if (layersIds[keys[i]].indexOf(locType + "$OGC:OPENLS;Geocode") >= 0) {
+            this.logger.trace("[IMap] centerGeocode : found rights for " + locType);
+            index = locType;
+            key = keys[i];
+        }
     }
-    var locType = opts.locationType || "location";
-    var index = null;
-    if (layersIds.indexOf(locType + "$OGC:OPENLS;Geocode") >= 0) {
-        this.logger.trace("[IMap] centerGeocode : found rights for " + locType);
-        index = locType;
-    }
+
     // Si on n'a rien trouve, on ne peut pas geocoder
     if (!index) {
         this.logger.info("no rights for geocoding services");
@@ -51,7 +55,7 @@ IMap.prototype.centerGeocode = function (opts) {
     var map = this;
     // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
     Services.geocode({
-        apiKey : keys[0],
+        apiKey : key,
         query : opts.location,
         index : index,
         // si le service de geocodage répond

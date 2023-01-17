@@ -279,7 +279,7 @@ var autoPanOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | format | String | The layer's format. Supported values are : 'kml', 'gpx', 'geojson', 'wmts', 'wms', 'wfs', 'mapbox' or 'osm'. This property is optionnal for Geoportal layers but mandatory for others. |
- * | url | String | Mandatory for non Geoportal layers. The url to the file or the Web Service providing the layer. |
+ * | url | String | Mandatory for non Geoportal layers, except if data option is set (at least one needs to be present) for the formats: KML, GeoJSON and GPX. The url to the file or the Web Service providing the layer. |
  * | title | String | The layer's name displayed in the LayerSwitcher control. |
  * | description | String | The layer's description. |
  * | opacity | Float | The layer's opacity (between 0 and 1). Default value is 1. |
@@ -399,6 +399,7 @@ var autoPanOptions = {
  *
  * | property | Type | Description |
  * | - | - | - |
+ * | data | String | Mandatory if url is not set (at least one needs to be present) for non Geoportal layers. The data of the file |
  * | styleOptions | {@link Gp.StyleOptions} | options for layer style (points, strokes, polygons) |
  *
  * ### WMS specific properties

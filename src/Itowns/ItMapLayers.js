@@ -499,6 +499,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche KML");
             layer.source = new FileSource({
                 url : layerOpts.url,
+                fetchedData : layerOpts.data,
                 crs : "EPSG:4326",
                 fetcher : Fetcher.xml,
                 parser : KMLParser.parse
@@ -522,6 +523,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche GEOJSON");
             layer.source = new FileSource({
                 url : layerOpts.url,
+                fetchedData : layerOpts.data,
                 crs : "EPSG:4326",
                 fetcher : Fetcher.json,
                 parser : GeoJsonParser.parse
@@ -549,6 +551,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
             this.logger.trace("ajout d'une couche GPX");
             layer.source = new FileSource({
                 url : layerOpts.url,
+                fetchedData : layerOpts.data,
                 crs : "EPSG:4326",
                 fetcher : Fetcher.xml,
                 parser : GpxParser.parse

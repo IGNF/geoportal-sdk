@@ -6,25 +6,23 @@
 
 ## Summary
 
-* maj des extensions OpenLayers 3.2.18
+Corrections diverses et Maj des extensions
 
 ## Changelog
 
 * [Added]
 
-  - Appliquer une contrainte d’échelle avec le zoom "mousewheel" et la touche SHIFT
-  - Ajout d'un exemple de couche MapBox de type multi-source
+    - Possibilité de charger un KML, GPX ou GeoJSON directement avec les données sans passer par une URL en utilisant l'option *layerOptions:data* (1f3f5ca85638cea5e36440cdefcdb970b221e0f0)
 
 * [Changed]
 
-  - Exposer l'éditeur de style avec la variable *Gp.Editor*
+    - Mise à jour des extensions (38bcdb2cba387e186d8f9a8edcdefc207d4017ce)
 
 * [Removed]
 
 * [Fixed]
 
-    - Passage des options de l'editeur de style dans l'outil d'import de couche pour le vecteur tuilé (mapbox)
-    - Ajout des evenements (map) : "render:success" / "render:failure" pour l'application du rendu des styles sur des couches MapBox
+    - Fix sur le centrage par geocodage pour Itowns (da5c02c547d81c68bd49d2ff4ea5c4f347b89985)
 
 * [Deprecated]
 
