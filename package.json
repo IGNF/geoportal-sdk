@@ -1,9 +1,9 @@
 {
     "name": "geoportal-sdk",
-    "version": "3.3.19",
-    "date": "18/11/2022",
-    "SDK2DVersion": "3.3.19",
-    "SDK3DVersion": "3.3.19",
+    "version": "3.3.22",
+    "date": "02/02/2023",
+    "SDK2DVersion": "3.3.22",
+    "SDK3DVersion": "3.3.22",
     "description": "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
     "main": "dist/2d/GpSDK2D-src.js, dist/3d/GpSDK3d-src.js",
     "module": "src/SDK2D.js, src/SDK3D.js",

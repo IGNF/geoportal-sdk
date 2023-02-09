@@ -329,7 +329,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
                     url : this.setProxy(layerOpts.url),
                     format : new Ol.format.KMLExtended({
                         extractStyles : layerOpts.extractStyles,
-                        showPointNames : false
+                        showPointNames : layerOpts.showPointNames
                     })
                 });
             } else if (layerOpts.data) {
