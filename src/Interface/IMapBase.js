@@ -41,11 +41,10 @@ var switch2D3D = function (viewMode) {
             // traitement des couches de calcul
             if (layer.options.format.toUpperCase() === "COMPUTE") {
                 // TODO :
-                // * transmettre les bons styles à la couche 2D->3D
+                // transmettre les bons styles à la couche 2D->3D
                 //      isocurve   = fill-color : "rgba(0, 183, 152, 0.7)"
                 //      itineraire = stroke-color : "rgba(0,183,152,0.9)",
                 //                   stroke-width : 12
-                // * modifier le nom de la couche dans le gestionnaire en 3D
 
                 // les controles fournissent leurs méta-informations utiles à leur reconstruction en 2D.
                 // les infos issues de la methode getData() :
