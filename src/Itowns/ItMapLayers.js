@@ -519,6 +519,7 @@ ItMap.prototype._addVectorLayer = function (layerObj) {
                 };
             }
             break;
+        case "COMPUTE":
         case "GEOJSON":
             this.logger.trace("ajout d'une couche GEOJSON");
             layer.source = new FileSource({

@@ -220,6 +220,7 @@ IMap.prototype.addLayers = function (layersOptions) {
             case "GEORSS":
                 // TODO GeoRSS
                 break;
+            case "COMPUTE":
             case "KML":
             case "GPX":
             case "GEOJSON":

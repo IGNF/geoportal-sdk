@@ -10,7 +10,7 @@
       "webservice",
       "javascript"
    ],
-   "version" : "3.3.19",
+   "version" : "3.3.23",
    "name" : "@ignf-geoportal/sdk-2d",
    "main" : "dist/GpSDK2D-src.js",
    "files" : [
@@ -23,7 +23,7 @@
    "description" : "French Geoportal SDK based on OpenLayers (2D)",
    "scripts" : {},
    "directories" : {},
-   "date" : "18/11/2022",
+   "date" : "22/02/2023",
    "author" : "IGNF",
    "repository" : {
       "type" : "git",
@@ -33,7 +33,7 @@
    "dependencies" : {
       "node-fetch" : "^2.6.1",
       "ol" : "6.9.0",
-      "geoportal-extensions-openlayers" : "3.2.18",
+      "geoportal-extensions-openlayers" : "3.2.20",
       "xmldom" : "^0.1.27"
    }
 }

@@ -1,7 +1,10 @@
 /* global __SWITCH2D3D_ALLOWED__ */
 import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
-import { Services, ProxyUtils } from "geoportal-extensions-openlayers";
+import {
+    Services,
+    ProxyUtils
+} from "geoportal-extensions-openlayers";
 import { MapLoader } from "../Utils/MapLoader";
 
 /**
@@ -30,6 +33,64 @@ var switch2D3D = function (viewMode) {
     oldMap.isWebGL2 = this.mapOptions.isWebGL2;
     oldMap.enableRotation = this.mapOptions.enableRotation !== undefined ? this.mapOptions.enableRotation : null;
     oldMap.mapEventsOptions = this.mapOptions.mapEventsOptions !== undefined ? this.mapOptions.mapEventsOptions : null;
+
+    // add all compute layer to 3D map with layersOptions
+    if (viewMode === "3d") {
+        for (var index = 0; index < this._layers.length; index++) {
+            var layer = this._layers[index];
+            // traitement des couches de calcul
+            if (layer.options.format.toUpperCase() === "COMPUTE") {
+                // TODO :
+                // transmettre les bons styles à la couche 2D->3D
+                //      isocurve   = fill-color : "rgba(0, 183, 152, 0.7)"
+                //      itineraire = stroke-color : "rgba(0,183,152,0.9)",
+                //                   stroke-width : 12
+
+                // les controles fournissent leurs méta-informations utiles à leur reconstruction en 2D.
+                // les infos issues de la methode getData() :
+                // * point de départ
+                // * point intermédiares
+                // * point d'arrivée
+                // * mode de transport
+                // * mode de calcul
+                // * passage
+                // * résultats
+                // idem pour la couche..., on récupere uniquement le tracé au format GeoJSON.
+                // la couche au format natif n'est pas utile pour la switch 2D<->3D.
+                var geojsonStr = null;
+                var geojsonObj = null;
+                switch (layer.options.control) {
+                    case "Itineraire":
+                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("route").getData();
+                        geojsonStr = this.getLibMapControl("route").getGeoJSON();
+                        geojsonObj = JSON.parse(geojsonStr);
+                        geojsonObj.features.forEach(feature => {
+                            if (feature.geometry.type === "Point") {
+                                feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
+                            }
+                        });
+                        oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
+                        break;
+                    case "Isocurve":
+                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("isocurve").getData();
+                        geojsonStr = this.getLibMapControl("isocurve").getGeoJSON();
+                        geojsonObj = JSON.parse(geojsonStr);
+                        geojsonObj.features.forEach(feature => {
+                            if (feature.geometry.type === "Point") {
+                                feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
+                            }
+                        });
+                        oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
+                        break;
+                    default:
+                        // TODO other format...
+                        // * les mesures
+                        // * profil alti
+                        break;
+                }
+            }
+        }
+    }
 
     // remove old controls and associated listeners
     for (var controlId in oldMap.controlsOptions) {
@@ -224,6 +285,40 @@ var switch2D3D = function (viewMode) {
             mapEventsOptions : oldMap.mapEventsOptions
         }
     );
+
+    // une fois la carte chargée en 2D, on reconstruit les controles avec les couches
+    // de calcul...
+    if (viewMode === "2d") {
+        newMap.listen("mapLoaded", function () {
+            for (var i = 0; i < this._layers.length; i++) {
+                var clayer = this._layers[i];
+                // traitement des couches de calcul
+                if (clayer.options.format.toUpperCase() === "COMPUTE") {
+                    var control = null;
+                    switch (clayer.options.control) {
+                        case "Itineraire":
+                            control = this.getLibMapControl("route");
+                            break;
+                        case "Isocurve":
+                            control = this.getLibMapControl("isocurve");
+                            break;
+                        default:
+                            // TODO other format...
+                            // * les mesures
+                            // * profil alti
+                            break;
+                    }
+                    if (control) {
+                        control.setData(clayer.options.controlOptions);
+                        control.setLayer(clayer.obj);
+                        control.setGeoJSON(clayer.options.data); // inutile ?
+                        control.init();
+                    }
+                }
+            }
+        });
+    }
+
     return newMap;
 };
 
