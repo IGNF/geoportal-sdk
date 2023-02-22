@@ -5,7 +5,7 @@
 {{/content}}
 
 {{#content "vendor"}}
-        <script src="{{ resources }}/vendor/jspdf.min.js"></script>
+        <script src="{{ resources }}/vendor/jspdf.umd.min.js"></script>
 {{/content}}
 
 {{#content "style"}}
@@ -39,28 +39,27 @@
         function printRender() {
             map.getLibMap().once('rendercomplete', function(event) {
                 const { jsPDF } = window.jspdf;
-                var canvas = event.context.canvas;
-
-                // var canvas = document.createElement('canvas');
+                // var canvas = event.context.canvas;
+                var canvas = document.querySelector("canvas");
                 var size = map.getLibMap().getSize();
                 canvas.width = size[0];
                 canvas.height = size[1];
                 ctx = canvas.getContext('2d');
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(0,0,canvas.width,canvas.height);
-                ctx.globalAlpha = 1;
-                var c = document.querySelector("canvas");
-                ctx.drawImage(c, 0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0,0,100,100);
+                ctx.globalAlpha = 0.5;
+                ctx.drawImage(canvas, 0, 0, 100, 100);
                 // ctx.restore();
                 ctx.save();
 
-                var data = canvas.toDataURL('image/png');
+                var data = canvas.toDataURL('image/jpeg', 1.0);
                 var pdf = new jsPDF({
                     orientation: 'landscape',
                     unit :'mm',
                     format : 'a4'
                 });
-                pdf.addImage(data, 'PNG', 0, 0, canvas.width, canvas.height);
+                console.log(data);
+                pdf.addImage(data, 'JPEG', 0, 0, canvas.width, canvas.height);
                 pdf.save("download.pdf");
 
             });

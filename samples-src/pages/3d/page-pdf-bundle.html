@@ -1,11 +1,11 @@
 {{#extend "sample-bundle-layout-3d"}}
 
 {{#content "head"}}
-    <title>Sample SDK 3D PDF</title>
+    <title>Sample SDK 3D PDF (failed)</title>
 {{/content}}
 
 {{#content "vendor"}}
-        <script src="{{ resources }}/vendor/jspdf.min.js"></script>
+        <script src="{{ resources }}/vendor/jspdf.umd.min.js"></script>
 {{/content}}
 
 {{#content "style"}}
@@ -48,14 +48,13 @@
         // You can try to render the PDF on a canvas element via PDF.js and then use it
         // to create an instance of THREE.CanvasTexture for a plane mesh.
         function printRender() {
-            var imgData = map.getLibMap().getGlobeView().mainLoop.gfxEngine.getRenderer().domElement.toDataURL("image/jpeg", 1.0);
-            // option preserveDrawingBuffer !?
-            // renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
+            var render = map.getLibMap().getGlobeView().mainLoop.gfxEngine.getRenderer();
+            var imgData = render.domElement.toDataURL('image/jpeg', 1.0);
 
             console.log(imgData);
             const { jsPDF } = window.jspdf;
             var pdf = new jsPDF();
-            pdf.addImage(imgData, 'JPEG', 0, 0);
+            pdf.addImage(imgData, 'JPEG', 100, 100, 100, 100);
             pdf.save("download.pdf");
         };
 

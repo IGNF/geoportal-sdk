@@ -114,7 +114,10 @@ ItMap.prototype.addLayerSwitcherControl = function (controlOpts) {
     for (var i = 0; i < this._layers.length; i++) {
         var layer = this._layers[i];
         // Si la couche est un MNT, on ne l'ajoute pas au layerSwitcher
-        if (layer.obj.type !== "color" && !layer.obj.isColorLayer) {
+        if (layer.options.format.toLowerCase() !== "kml" &&
+            layer.options.format.toLowerCase() !== "compute" &&
+            layer.obj.type !== "color" &&
+            !layer.obj.isColorLayer) {
             continue;
         }
         this.logger.trace("[ItMap]  : layerSwitcher  : configuring layer  : " + layer.id);
