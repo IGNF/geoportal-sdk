@@ -12,6 +12,8 @@
 
 * [Changed]
 
+    - mise à jour ol-ext 3.2.21
+
 * [Removed]
 
 * [Fixed]
