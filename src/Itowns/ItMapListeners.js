@@ -35,15 +35,15 @@ ItMap.prototype.listen = function (eventId, action, context) {
     var map = this;
     var key = null;
     switch (eventId) {
-        case "mapFailure" :
+        case "mapFailure":
             break;
-        case "mapLoaded" :
-        case "located" :
-        case "geolocated" :
-        case "configured" :
+        case "mapLoaded":
+        case "located":
+        case "geolocated":
+        case "configured":
             // handled in IMap
             break;
-        case "centerChanged" :
+        case "centerChanged":
             var callBackCenterChanged = function (itEvent) {
                 var centerChangedEvt = {};
                 if (!itEvent) {
@@ -51,62 +51,62 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
                 if (itEvent.previous) {
                     centerChangedEvt.oldCenter = {
-                        x : itEvent.previous.x,
-                        y : itEvent.previous.y
+                        x: itEvent.previous.x,
+                        y: itEvent.previous.y
                     };
                 }
 
                 if (itEvent.new) {
                     centerChangedEvt.newCenter = {
-                        x : itEvent.new.x,
-                        y : itEvent.new.y
+                        x: itEvent.new.x,
+                        y: itEvent.new.y
                     };
                 }
                 action.call(context, centerChangedEvt);
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.CENTER_CHANGED, callBackCenterChanged);
             break;
-        case "zoomChanged" :
+        case "zoomChanged":
             var callbackZoomchange = function (itEvent) {
                 // si le zoom n'a pas changé, on sort
                 if (itEvent.new === itEvent.previous) {
                     return;
                 }
                 action.call(context, {
-                    oldZoom : itEvent.previous,
-                    newZoom : itEvent.new
+                    oldZoom: itEvent.previous,
+                    newZoom: itEvent.new
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
             break;
-        case "azimuthChanged" :
+        case "azimuthChanged":
             var callbackAzimuthChange = function (itEvent) {
                 if (itEvent.new.heading === itEvent.previous.heading) {
                     return;
                 }
                 action.call(context, {
-                    oldAzimuth : itEvent.previous.heading,
-                    newAzimuth : itEvent.new.heading
+                    oldAzimuth: itEvent.previous.heading,
+                    newAzimuth: itEvent.new.heading
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
             break;
-        case "tiltChanged" :
+        case "tiltChanged":
             var callbackTiltChange = function (itEvent) {
                 if (itEvent.new.tilt === itEvent.previous.tilt) {
                     return;
                 }
                 action.call(context, {
-                    oldTilt : itEvent.previous.tilt,
-                    newTilt : itEvent.new.tilt
+                    oldTilt: itEvent.previous.tilt,
+                    newTilt: itEvent.new.tilt
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
             break;
-        case "projectionChanged" :
+        case "projectionChanged":
             // TODO  : interet ?
             break;
-        case "layerChanged" :
+        case "layerChanged":
             var callbackLayerAdded = function (itevt) {
                 var ladded = itevt;
                 var layerIndex;
@@ -132,8 +132,8 @@ ItMap.prototype.listen = function (eventId, action, context) {
 
                 // if itColorLayer is undefined, it is an MNT  : the sequence is set to -1
                 action.call(context, {
-                    layerAdded : layerOpts,
-                    position : layerIndex
+                    layerAdded: layerOpts,
+                    position: layerIndex
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
@@ -149,7 +149,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
 
                 action.call(context, {
-                    layerRemoved : layerOpts
+                    layerRemoved: layerOpts
                 });
                 // FIXME comment faire le menage des ecouteurs internes ?
                 setTimeout(function () {
@@ -175,10 +175,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                         var newCommonProp = map._getCommonLayerParams(newItObj);
 
                         action.call(context, {
-                            property : ItMap.LAYERPROPERTIES[k],
-                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[k]],
-                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[k]],
-                            layerChanged : layerOpts
+                            property: ItMap.LAYERPROPERTIES[k],
+                            oldValue: oldCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            newValue: newCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            layerChanged: layerOpts
                         });
                     };
 
@@ -192,11 +192,11 @@ ItMap.prototype.listen = function (eventId, action, context) {
             };
             key = null;
             break;
-        case "controlChanged" :
+        case "controlChanged":
             break;
-        default :
+        default:
             this.logger.info("unhandled event  : " + eventId);
-    } ;
+    };
     if (key) {
         // ajout de l'evenement au tableau des événements
         this._registerEvent(key, eventId, action, context);
@@ -267,8 +267,8 @@ ItMap.prototype._onMapClick = function (evt) {
             var content = self._features2html(feats);
             // Affichage des features.
             var position = {
-                x : evt.layerX,
-                y : evt.layerY
+                x: evt.layerX,
+                y: evt.layerY
             };
             self._displayInfo(position, content.innerHTML);
         }
@@ -300,6 +300,7 @@ ItMap.prototype._removeInfoDivs = function () {
 ItMap.prototype._features2html = function (features) {
     this.logger.trace("[ItMap] : _features2html...");
     var content = document.createElement("div");
+    var content2display = false;
     features.forEach(function (f) {
         var props = {};
         if (f.geometry.properties) {
@@ -311,12 +312,14 @@ ItMap.prototype._features2html = function (features) {
         if (props.hasOwnProperty("name")) {
             nameDiv.innerHTML = props.name;
             content.appendChild(nameDiv);
+            content2display = true;
         }
         if (props.hasOwnProperty("description")) {
             var descDiv = document.createElement("div");
             descDiv.className = "gp-att-description-div";
             descDiv.innerHTML = props["description"];
             content.appendChild(descDiv);
+            content2display = true;
         }
         var p = null;
         var others = false;
@@ -324,12 +327,13 @@ ItMap.prototype._features2html = function (features) {
         var ul = null;
         var li = null;
         for (p in props) {
-            if (p === "name" || p === "description" || p === "styleUrl" || p === "styleHash") {
+            // on ne prend que les propriété affichables (string)
+            if (typeof props[p] !== "string" || p === "name" || p === "description" || p === "styleUrl" || p === "styleHash") {
                 continue;
             }
 
             // patch en attendant que les proprietes de style et autres attributs indesirables soient dissocies des autres proprietes dans itowns
-            if (p === "stroke" || p === "stroke-opacity" || p === "stroke-width" || p === "fill" || p === "fill-opacity" || p === "_idx" || p === "_meshIdx" || p === "coordTimes" || p === "style") {
+            if (p === "icon" || p === "stroke" || p === "stroke-opacity" || p === "stroke-width" || p === "fill" || p === "fill-opacity" || p === "_idx" || p === "_meshIdx" || p === "coordTimes" || p === "style") {
                 continue;
             }
 
@@ -338,6 +342,7 @@ ItMap.prototype._features2html = function (features) {
                 oDiv.className = "gp-att-others-div";
                 ul = document.createElement("ul");
                 others = true;
+                content2display = true;
             }
             li = document.createElement("li");
             var span = document.createElement("span");
@@ -352,7 +357,9 @@ ItMap.prototype._features2html = function (features) {
             content.appendChild(oDiv);
         }
     }, this);
-
+    if (!content2display) {
+        return;
+    }
     return content;
 };
 
