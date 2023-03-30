@@ -738,53 +738,80 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
     // couches de résultats ou de calcul (itineraire, isochrone, ...)
     var layerId = "unknownLayer";
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
-        // isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
-        // itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
         layerId = layerObj.gpResultLayerId;
     }
-    // on rajoute un timestamp
-    layerId += "-" + Date.now();
     // on rajoute des infos quand on en a
     var options = {};
-    if (layerId.indexOf("drawing-") === 0) {
-        options.format = "drawing";
-    } else if (layerId.indexOf("layerimport:KML") === 0) {
-        options.format = "KML";
-    } else if (layerId.indexOf("layerimport:GPX") === 0) {
-        options.format = "GPX";
-    } else if (layerId.indexOf("layerimport:GeoJSON") === 0) {
-        options.format = "GeoJSON";
-    } else if (layerId.indexOf("layerimport:WMS") === 0) {
-        options.format = "WMS";
-        if (layerObj.gpGFIparams) {
-            if (layerObj.gpGFIparams.queryable) {
-                options.queryable = true;
-            }
-            if (Array.isArray(layerObj.gpGFIparams.formats)) {
-                // par défaut on prend le premier
-                options.gfiFormat = layerObj.gpGFIparams.formats[0];
-                // si on trouve "text/html" dans les formats disponibles, on prend "text/html" par défaut
-                for (var i = 0; i < layerObj.gpGFIparams.formats.length; i++) {
-                    if (layerObj.gpGFIparams.formats[i] === "text/html") {
-                        options.gfiFormat = "text/html";
-                        break;
+
+    switch (layerId) {
+        case "drawing":
+            options.format = "drawing";
+            break;
+        case "layerimport:KMl":
+            options.format = "KML";
+            break;
+        case "layerimport:GPX":
+            options.format = "GPX";
+            break;
+        case "layerimport:GeoJSON":
+            options.format = "GeoJSON";
+            break;
+        case "layerimport:WMS":
+            options.format = "WMS";
+            if (layerObj.gpGFIparams) {
+                if (layerObj.gpGFIparams.queryable) {
+                    options.queryable = true;
+                }
+                if (Array.isArray(layerObj.gpGFIparams.formats)) {
+                    // par défaut on prend le premier
+                    options.gfiFormat = layerObj.gpGFIparams.formats[0];
+                    // si on trouve "text/html" dans les formats disponibles, on prend "text/html" par défaut
+                    for (var i = 0; i < layerObj.gpGFIparams.formats.length; i++) {
+                        if (layerObj.gpGFIparams.formats[i] === "text/html") {
+                            options.gfiFormat = "text/html";
+                            break;
+                        }
                     }
                 }
             }
-        }
-    } else if (layerId.indexOf("layerimport:WMTS") === 0) {
-        options.format = "WMTS";
-    } else if (layerId.indexOf("layerimport:MAPBOX") === 0) {
-        options.format = "MAPBOX";
+            break;
+        case "layerimport:WMTS":
+            options.format = "WMTS";
+            break;
+        case "layerimport:MAPBOX":
+            options.format = "MAPBOX";
+            break;
+        case "layerimport:COMPUTE":
+            // ex. isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
+            // ex. itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
+
+            // result layer name
+            options.format = "COMPUTE";
+            // graph name (voiture / pieton)
+            options.graph = layerId.split(/[$:;]/)[0];
+            // control name (isocurve / itineraire)
+            options.control = layerId.split(/[$:;]/).slice(-1)[0];
+            // title by default
+            options.title = options.control + " (" + options.graph + ")";
+            // options control
+            options.controlOptions = {};
+            // features to geojson
+            options.data = {};
+            break;
+        default:
+            break;
     }
 
-    if (layerObj.hasOwnProperty("gpResultLayerId")) {
+    // FIXME
+    // la couche est encore inconnue !?
+    // on la traite comme une couche de calcul...
+    if (layerId === "unknownLayer") {
         // result layer name
         options.format = "COMPUTE";
         // graph name (voiture / pieton)
-        options.graph = layerObj.gpResultLayerId.split(/[$:;]/)[0];
+        options.graph = layerId.split(/[$:;]/)[0];
         // control name (isocurve / itineraire)
-        options.control = layerObj.gpResultLayerId.split(/[$:;]/).slice(-1)[0];
+        options.control = layerId.split(/[$:;]/).slice(-1)[0];
         // title by default
         options.title = options.control + " (" + options.graph + ")";
         // options control
@@ -792,6 +819,9 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         // features to geojson
         options.data = {};
     }
+
+    // on rajoute un timestamp
+    layerId += "-" + Date.now();
 
     this._layers.push({
         id : layerId,
