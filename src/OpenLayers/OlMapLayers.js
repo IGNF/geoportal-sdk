@@ -743,20 +743,20 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
     // on rajoute des infos quand on en a
     var options = {};
 
-    switch (layerId) {
+    switch (layerId.toLowerCase()) {
         case "drawing":
             options.format = "drawing";
             break;
-        case "layerimport:KMl":
+        case "layerimport:kml":
             options.format = "KML";
             break;
-        case "layerimport:GPX":
+        case "layerimport:gpx":
             options.format = "GPX";
             break;
-        case "layerimport:GeoJSON":
+        case "layerimport:geojson":
             options.format = "GeoJSON";
             break;
-        case "layerimport:WMS":
+        case "layerimport:wms":
             options.format = "WMS";
             if (layerObj.gpGFIparams) {
                 if (layerObj.gpGFIparams.queryable) {
@@ -775,22 +775,45 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
                 }
             }
             break;
-        case "layerimport:WMTS":
+        case "layerimport:wmts":
             options.format = "WMTS";
             break;
-        case "layerimport:MAPBOX":
+        case "layerimport:mapbox":
             options.format = "MAPBOX";
+            break;
+        case "layerimport:compute":
+            // TODO
+            // Evolution : à mettre en place au niveau des extensions
+            // Le widget d'import recherche si le fichier KML, GeoJSON ou GPX
+            // est un fichier de calcul avec la lecture de la balise 'geoportail:compute'.
+            // Si oui, on modifie la property 'gpResultLayerId' -> layerimport:COMPUTE
+            // Et, on ajoute les options du calcul dans les properties de la couche.
+            options.format = "COMPUTE";
+            var prop = layerObj.getProperties();
+            options.graph = prop.graph || "";
+            options.control = prop.control || "";
+            options.title = prop.title || "";
+            options.controlOptions = prop.controlOptions || {};
+            options.data = prop.data || {};
             break;
         default:
             // FIXME 
             // cas où l'ID est de la forme : 
-            //  ex. isochrones : Voiture$OGC:OPENLS;Isocurve ou VOITURE$GEOPORTAIL:GPP:Isocurve
-            //  ex. itineraire : Voiture$OGC:OPENLS;Itineraire ou VOITURE$GEOPORTAIL:GPP:Itineraire
-            var key = layerId.toUpperCase();
-            if (key.includes("OGC:OPENLS;ISOCURVE") || 
-                key.includes("OGC:OPENLS;ITINERAIRE") || 
-                key.includes("GEOPORTAIL:GPP:ISOCURVE") ||
-                key.includes("GEOPORTAIL:GPP:ITINERAIRE")) {
+            //  ex. isochrones : 
+            //      Voiture$OGC:OPENLS;Isocurve
+            //      Voiture$GEOPORTAIL:GPP:Isocurve
+            //      Pieton$OGC:OPENLS;Isocurve
+            //      Pieton$GEOPORTAIL:GPP:Isocurve
+            //  ex. itineraire : 
+            //      Voiture$OGC:OPENLS;Itineraire
+            //      Voiture$GEOPORTAIL:GPP:Itineraire
+            //      Pieton$OGC:OPENLS;Itineraire
+            //      Pieton$GEOPORTAIL:GPP:Itineraire
+            var key = layerId.toLowerCase();
+            if (key.includes("ogc:openls;isocurve") || 
+                key.includes("ogc:openls;itineraire") || 
+                key.includes("geoportail:gpp:isocurve") ||
+                key.includes("geoportail:gpp:itineraire")) {
                 // result layer name
                 options.format = "COMPUTE";
                 // graph name (voiture / pieton)
@@ -809,7 +832,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
 
     // Et, si la couche est toujours non reconnue !?
     if (layerId === "unknownLayer") {
-        return;
+        return; // pas super...
     }
 
     // on rajoute un timestamp
