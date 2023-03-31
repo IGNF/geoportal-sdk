@@ -735,7 +735,7 @@ OlMap.prototype._getLayerOpts = function (layerObj, layersStack) {
  * @returns {Object} - new layer index in this._layers
  */
 OlMap.prototype._registerUnknownLayer = function (layerObj) {
-    // couches de résultats ou de calcul (itineraire, isochrone, ...)
+    // couches de résultats (imports) ou de calcul (itineraire, isochrone, ...)
     var layerId = "unknownLayer";
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
         layerId = layerObj.gpResultLayerId;
@@ -781,43 +781,35 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         case "layerimport:MAPBOX":
             options.format = "MAPBOX";
             break;
-        case "layerimport:COMPUTE":
-            // ex. isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
-            // ex. itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
-
-            // result layer name
-            options.format = "COMPUTE";
-            // graph name (voiture / pieton)
-            options.graph = layerId.split(/[$:;]/)[0];
-            // control name (isocurve / itineraire)
-            options.control = layerId.split(/[$:;]/).slice(-1)[0];
-            // title by default
-            options.title = options.control + " (" + options.graph + ")";
-            // options control
-            options.controlOptions = {};
-            // features to geojson
-            options.data = {};
-            break;
         default:
+            // FIXME 
+            // cas où l'ID est de la forme : 
+            //  ex. isochrones : Voiture$OGC:OPENLS;Isocurve ou VOITURE$GEOPORTAIL:GPP:Isocurve
+            //  ex. itineraire : Voiture$OGC:OPENLS;Itineraire ou VOITURE$GEOPORTAIL:GPP:Itineraire
+            var key = layerId.toUpperCase();
+            if (key.includes("OGC:OPENLS;ISOCURVE") || 
+                key.includes("OGC:OPENLS;ITINERAIRE") || 
+                key.includes("GEOPORTAIL:GPP:ISOCURVE") ||
+                key.includes("GEOPORTAIL:GPP:ITINERAIRE")) {
+                // result layer name
+                options.format = "COMPUTE";
+                // graph name (voiture / pieton)
+                options.graph = layerId.split(/[$:;]/)[0];
+                // control name (isocurve / itineraire)
+                options.control = layerId.split(/[$:;]/).slice(-1)[0];
+                // title by default
+                options.title = options.control + " (" + options.graph + ")";
+                // options control
+                options.controlOptions = {};
+                // features to geojson
+                options.data = {};
+            }
             break;
     }
 
-    // FIXME
-    // la couche est encore inconnue !?
-    // on la traite comme une couche de calcul...
+    // Et, si la couche est toujours non reconnue !?
     if (layerId === "unknownLayer") {
-        // result layer name
-        options.format = "COMPUTE";
-        // graph name (voiture / pieton)
-        options.graph = layerId.split(/[$:;]/)[0];
-        // control name (isocurve / itineraire)
-        options.control = layerId.split(/[$:;]/).slice(-1)[0];
-        // title by default
-        options.title = options.control + " (" + options.graph + ")";
-        // options control
-        options.controlOptions = {};
-        // features to geojson
-        options.data = {};
+        return;
     }
 
     // on rajoute un timestamp
