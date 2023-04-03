@@ -735,63 +735,108 @@ OlMap.prototype._getLayerOpts = function (layerObj, layersStack) {
  * @returns {Object} - new layer index in this._layers
  */
 OlMap.prototype._registerUnknownLayer = function (layerObj) {
-    // couches de résultats ou de calcul (itineraire, isochrone, ...)
+    // couches de résultats (imports) ou de calcul (itineraire, isochrone, ...)
     var layerId = "unknownLayer";
     if (layerObj.hasOwnProperty("gpResultLayerId")) {
-        // isochrones : [GraphName]$GEOPORTAIL:GPP:Isocurve
-        // itineraire : [GraphName]$GEOPORTAIL:GPP:Itineraire
         layerId = layerObj.gpResultLayerId;
     }
-    // on rajoute un timestamp
-    layerId += "-" + Date.now();
     // on rajoute des infos quand on en a
     var options = {};
-    if (layerId.indexOf("drawing-") === 0) {
-        options.format = "drawing";
-    } else if (layerId.indexOf("layerimport:KML") === 0) {
-        options.format = "KML";
-    } else if (layerId.indexOf("layerimport:GPX") === 0) {
-        options.format = "GPX";
-    } else if (layerId.indexOf("layerimport:GeoJSON") === 0) {
-        options.format = "GeoJSON";
-    } else if (layerId.indexOf("layerimport:WMS") === 0) {
-        options.format = "WMS";
-        if (layerObj.gpGFIparams) {
-            if (layerObj.gpGFIparams.queryable) {
-                options.queryable = true;
-            }
-            if (Array.isArray(layerObj.gpGFIparams.formats)) {
-                // par défaut on prend le premier
-                options.gfiFormat = layerObj.gpGFIparams.formats[0];
-                // si on trouve "text/html" dans les formats disponibles, on prend "text/html" par défaut
-                for (var i = 0; i < layerObj.gpGFIparams.formats.length; i++) {
-                    if (layerObj.gpGFIparams.formats[i] === "text/html") {
-                        options.gfiFormat = "text/html";
-                        break;
+
+    switch (layerId.toLowerCase()) {
+        case "drawing":
+            options.format = "drawing";
+            break;
+        case "layerimport:kml":
+            options.format = "KML";
+            break;
+        case "layerimport:gpx":
+            options.format = "GPX";
+            break;
+        case "layerimport:geojson":
+            options.format = "GeoJSON";
+            break;
+        case "layerimport:wms":
+            options.format = "WMS";
+            if (layerObj.gpGFIparams) {
+                if (layerObj.gpGFIparams.queryable) {
+                    options.queryable = true;
+                }
+                if (Array.isArray(layerObj.gpGFIparams.formats)) {
+                    // par défaut on prend le premier
+                    options.gfiFormat = layerObj.gpGFIparams.formats[0];
+                    // si on trouve "text/html" dans les formats disponibles, on prend "text/html" par défaut
+                    for (var i = 0; i < layerObj.gpGFIparams.formats.length; i++) {
+                        if (layerObj.gpGFIparams.formats[i] === "text/html") {
+                            options.gfiFormat = "text/html";
+                            break;
+                        }
                     }
                 }
             }
-        }
-    } else if (layerId.indexOf("layerimport:WMTS") === 0) {
-        options.format = "WMTS";
-    } else if (layerId.indexOf("layerimport:MAPBOX") === 0) {
-        options.format = "MAPBOX";
+            break;
+        case "layerimport:wmts":
+            options.format = "WMTS";
+            break;
+        case "layerimport:mapbox":
+            options.format = "MAPBOX";
+            break;
+        case "layerimport:compute":
+            // TODO
+            // Evolution : à mettre en place au niveau des extensions
+            // Le widget d'import recherche si le fichier KML, GeoJSON ou GPX
+            // est un fichier de calcul avec la lecture de la balise 'geoportail:compute'.
+            // Si oui, on modifie la property 'gpResultLayerId' -> layerimport:COMPUTE
+            // Et, on ajoute les options du calcul dans les properties de la couche.
+            options.format = "COMPUTE";
+            var prop = layerObj.getProperties();
+            options.graph = prop.graph || "";
+            options.control = prop.control || "";
+            options.title = prop.title || "";
+            options.controlOptions = prop.controlOptions || {};
+            options.data = prop.data || {};
+            break;
+        default:
+            // FIXME 
+            // cas où l'ID est de la forme : 
+            //  ex. isochrones : 
+            //      Voiture$OGC:OPENLS;Isocurve
+            //      Voiture$GEOPORTAIL:GPP:Isocurve
+            //      Pieton$OGC:OPENLS;Isocurve
+            //      Pieton$GEOPORTAIL:GPP:Isocurve
+            //  ex. itineraire : 
+            //      Voiture$OGC:OPENLS;Itineraire
+            //      Voiture$GEOPORTAIL:GPP:Itineraire
+            //      Pieton$OGC:OPENLS;Itineraire
+            //      Pieton$GEOPORTAIL:GPP:Itineraire
+            var key = layerId.toLowerCase();
+            if (key.includes("ogc:openls;isocurve") || 
+                key.includes("ogc:openls;itineraire") || 
+                key.includes("geoportail:gpp:isocurve") ||
+                key.includes("geoportail:gpp:itineraire")) {
+                // result layer name
+                options.format = "COMPUTE";
+                // graph name (voiture / pieton)
+                options.graph = layerId.split(/[$:;]/)[0];
+                // control name (isocurve / itineraire)
+                options.control = layerId.split(/[$:;]/).slice(-1)[0];
+                // title by default
+                options.title = options.control + " (" + options.graph + ")";
+                // options control
+                options.controlOptions = {};
+                // features to geojson
+                options.data = {};
+            }
+            break;
     }
 
-    if (layerObj.hasOwnProperty("gpResultLayerId")) {
-        // result layer name
-        options.format = "COMPUTE";
-        // graph name (voiture / pieton)
-        options.graph = layerObj.gpResultLayerId.split(/[$:;]/)[0];
-        // control name (isocurve / itineraire)
-        options.control = layerObj.gpResultLayerId.split(/[$:;]/).slice(-1)[0];
-        // title by default
-        options.title = options.control + " (" + options.graph + ")";
-        // options control
-        options.controlOptions = {};
-        // features to geojson
-        options.data = {};
+    // Et, si la couche est toujours non reconnue !?
+    if (layerId === "unknownLayer") {
+        return; // pas super...
     }
+
+    // on rajoute un timestamp
+    layerId += "-" + Date.now();
 
     this._layers.push({
         id : layerId,
