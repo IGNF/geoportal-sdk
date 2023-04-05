@@ -883,6 +883,7 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
         case "KML":
         case "GPX":
         case "WFS":
+        case "COMPUTE":
         case "DRAWING":
             this.logger.warn("[_changeLayerColor] : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;
