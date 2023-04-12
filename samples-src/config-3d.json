@@ -2,9 +2,8 @@
     "baseurl" : "../..",
     "resources" : "../resources",
     "proxy" : "https://localhost/proxy/proxy.php",
-    "apikey" : "essentiels,altimetrie,calcul",
+    "apikey" : "essentiels,altimetrie",
     "apikey2" : "an7nvfzojv5wa96dsga5nk8w",
     "apikey3" : "essentiels",
-    "apikey4" : "altimetrie",
-    "apikey5" : "calcul"
+    "apikey4" : "altimetrie"
 }

@@ -39,8 +39,7 @@
         import * as Gp from "{{ baseurl }}/dist/2d/GpSDK2D{{ mode }}.js";
         
         self.Gp.Map.load('geoportalMap1',{
-            // apiKey : "{{apikey}}",
-            configUrl : "{{resources}}/autoconf.js",
+            apiKey : "{{apikey}}",
             mapEventsOptions : {
                 "mapLoaded" : function () {
                     loadMap2()
