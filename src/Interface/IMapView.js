@@ -13,7 +13,7 @@ import { Services } from "geoportal-extensions-openlayers";
 IMap.prototype.centerGeocode = function (opts) {
     // FIXME Config est créé en runtime dans la variable globale Gp
     var scope = typeof window !== "undefined" ? window : {};
-    var Config = scope.Gp ? scope.Gp.Config : undefined;
+    var Config = scope.Gp ? scope.Gp.Services.Config : undefined;
     var keys;
 
     // le centrage par geocodage n'est possible que si l'utilisateur a les

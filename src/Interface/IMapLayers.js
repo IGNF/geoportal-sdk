@@ -141,7 +141,7 @@ IMap.prototype.addLayers = function (layersOptions) {
 
         // FIXME Config est créé en runtime dans la variable globale Gp
         var scope = typeof window !== "undefined" ? window : {};
-        var Config = scope.Gp ? scope.Gp.Config : undefined;
+        var Config = scope.Gp ? scope.Gp.Services.Config : undefined;
 
         // Est-ce un layer Geoportail ?
         // si on a donné une URL, on ne cherche pas à découvrir la couche Géoportail

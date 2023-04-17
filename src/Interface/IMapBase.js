@@ -561,7 +561,7 @@ IMap.prototype = {
 
         // FIXME Config est créé en runtime dans la variable globale Gp
         var scope = typeof window !== "undefined" ? window : {};
-        var Config = scope.Gp ? scope.Gp.Config : undefined;
+        var Config = scope.Gp ? scope.Gp.Services.Config : undefined;
 
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
@@ -628,6 +628,11 @@ IMap.prototype = {
 
         // TODO : detecter si on a le bon objet (error ou success)
         this._isConfLoaded = !(typeof configResponse === "undefined");
+
+        // on assigne à Gp la configuration récupérée
+        // var scope = typeof window !== "undefined" ? window : {};
+        // // if (scope.Gp && scope.Gp.Services && scope.Gp.Services.Config && Object.keys(scope.Gp.Services.Config).length !== 0)
+        // scope.Gp ? scope.Gp.Config.configuration = configResponse : undefined;
 
         // declenchement de l'evenement "configured"
         var e = IMap.CustomEvent("configured", {
