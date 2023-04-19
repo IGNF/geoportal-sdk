@@ -421,6 +421,9 @@ OlMap.prototype.addRouteControl = function (controlOpts) {
     if (!this._isConfLoaded) {
         rteOpts.apiKey = this.apiKey;
     }
+    if (controlOpts.export) {
+        rteOpts.export = controlOpts.export;
+    }
     if (controlOpts.graphs) {
         rteOpts.graphs = controlOpts.graphs;
     }
@@ -479,6 +482,9 @@ OlMap.prototype.addIsocurveControl = function (controlOpts) {
     isoOpts.collapsed = !controlOpts.maximised;
     if (!this._isConfLoaded) {
         isoOpts.apiKey = this.apiKey;
+    }
+    if (controlOpts.export) {
+        isoOpts.export = controlOpts.export;
     }
     if (controlOpts.graphs) {
         isoOpts.graphs = controlOpts.graphs;
@@ -989,6 +995,9 @@ OlMap.prototype.addElevationPathControl = function (controlOpts) {
     // displayProfileOptions
     if (controlOpts.displayProfileOptions) {
         elevOpts.displayProfileOptions = controlOpts.displayProfileOptions;
+    }
+    if (controlOpts.export) {
+        elevOpts.export = controlOpts.export;
     }
     var control = new Ol.control.ElevationPath(elevOpts);
     this.libMap.addControl(control);

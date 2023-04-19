@@ -109,6 +109,7 @@
                 route : {
                     // div : "extControlDiv",
                     // maximised : true,
+                    export : true,
                     exclusions : {
                         toll : true,
                         bridge : false,
@@ -125,6 +126,12 @@
                 isocurve : {
                     // div : "extControlDiv",
                     // maximised : true,
+                    export : {
+                        format : "gpx",
+                        name : "export-iso",
+                        title : "Exporter",
+                        menu : true
+                    },
                     exclusions : {
                         toll : true,
                         bridge : false,
@@ -237,6 +244,7 @@
                 },
                 elevationPath : {
                     // div : "extControlDiv",
+                    export : true,
                     styles : {
                         pointer : {
                             strokeColor : "rgba(19, 141, 117, 0.7)",

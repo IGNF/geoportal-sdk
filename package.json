@@ -73,7 +73,7 @@
         "expose-loader": "^0.7.5",
         "fs-extra": "^9.0.0",
         "geoportal-extensions-itowns": "2.3.10",
-        "geoportal-extensions-openlayers": "3.2.21",
+        "geoportal-extensions-openlayers": "https://raw.githubusercontent.com/IGNF/geoportal-extensions/feature/read-compute-extensions-format/build/scripts/release/geoportal-extensions-openlayers-3.2.21.tgz",
         "handlebars": "^4.7.5",
         "handlebars-layouts": "^3.1.4",
         "html-webpack-plugin": "^4.0.4",

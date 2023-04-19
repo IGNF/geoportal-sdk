@@ -590,6 +590,7 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | exclusions | Object | exclusions to be proposed for control. Il null all exclusions will be proposed by default. |
  * | exclusions.toll | Boolean | proposing toll exclusion. If true, this exclusion will be checked by default. |
  * | exclusions.bridge | Boolean | proposing bridge exclusion. If true, this exclusion will be checked by default. |
@@ -610,6 +611,7 @@ var layerOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | maximised | Boolean | if the control has to be opened or not. |
  * | exclusions | Object | exclusions to be proposed for control. Il null all exclusions will be proposed by default. |
  * | exclusions.toll | Boolean | proposing toll exclusion. If true, this exclusion will be checked by default. |
@@ -812,6 +814,7 @@ var layerOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | styles | Object | Styles to use to display the polygon area |
  * | styles.pointer | Object | Pointer (circle) style while measuring |
  * | styles.pointer.strokeColor | String | Stroke color |
