@@ -570,7 +570,7 @@ IMap.prototype = {
             needsGetConfig = false;
         } else if (this.apiKey || this.mapOptions.configUrl || this.mapOptions.autoconfUrl) {
             // TODO : this.apiKey.length > 1
-            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
+            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isKeyConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
         } else { // une clef n'est pas fournie
             // on essaye de trouver une configuration existante
@@ -658,17 +658,10 @@ IMap.prototype = {
         if (this._isConfLoaded &&
             (!this.mapOptions.center.hasOwnProperty("x") || this.mapOptions.center.x === 0) &&
             (!this.mapOptions.center.hasOwnProperty("y") || this.mapOptions.center.y === 0)) {
-            var autoconfCenter;
-            var territories = configResponse.getTerritories();
-            for (var terrCode in territories) {
-                if (territories[terrCode].isDefault) {
-                    autoconfCenter = territories[terrCode].geoCenter;
-                    // autoconfProj = territories[terrCode].defaultCRS;
-                }
-            }
-            this.logger.trace("[IMap] : _afterGetConfig : setting default map center to (" + autoconfCenter.lon + ", " + autoconfCenter.lat + ")");
-            this.mapOptions.center.x = autoconfCenter.lon;
-            this.mapOptions.center.y = autoconfCenter.lat;
+            // default autoconf "FXX" territory from the old autoconf
+            this.logger.trace("[IMap] : _afterGetConfig : setting default map center to (2.345274398, 48.860832558)");
+            this.mapOptions.center.x = "2.345274398";
+            this.mapOptions.center.y = "48.860832558";
             this.mapOptions.center.projection = "EPSG:4326";
         }
 
