@@ -300,7 +300,6 @@ var switch2D3D = function (viewMode) {
             // proxyUrl
             // noProxyDomains
             // reloadConfig
-            // autoconfUrl
             layersOptions : oldMap.layersOptions,
             controlsOptions : oldMap.controlsOptions,
             mapEventsOptions : oldMap.mapEventsOptions
@@ -561,14 +560,14 @@ IMap.prototype = {
 
         // FIXME Config est créé en runtime dans la variable globale Gp
         var scope = typeof window !== "undefined" ? window : {};
-        var Config = scope.Gp ? scope.Gp.Services.Config : undefined;
+        var Config = scope.Gp ? scope.Gp.Config : undefined;
 
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
         if (this.apiKey && !this.mapOptions.reloadConfig) { // une clef est fournie
-            // et l'utilisateur ne souhaite pas faire un appel à l'autoconf
+            // et l'utilisateur ne souhaite pas faire un appel à la configuration
             needsGetConfig = false;
-        } else if (this.apiKey || this.mapOptions.configUrl || this.mapOptions.autoconfUrl) {
+        } else if (this.apiKey || this.mapOptions.customConfigFile) {
             // TODO : this.apiKey.length > 1
             needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isKeyConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
@@ -583,17 +582,15 @@ IMap.prototype = {
         // Dans tous les cas, le reste s'exécute dans _afterGetConfig
         var map = this;
         if (needsGetConfig) {
-            // autoconf locale ? on met par defaut un callbackSuffix à ""
+            // config locale ? on met par defaut un callbackSuffix à ""
             // à moins qu'on ne le surcharge (non documenté).
             var callbackSuffix = this.mapOptions.callbackSuffix;
-            // deprecated param autoconfUrl
-            if (this.mapOptions.configUrl ||
-                this.mapOptions.autoconfUrl) {
+            if (this.mapOptions.customConfigFile) {
                 callbackSuffix = callbackSuffix || "";
             }
             Services.getConfig({
                 apiKey : this.apiKey,
-                serverUrl : this.mapOptions.configUrl || this.mapOptions.autoconfUrl,
+                customConfigFile : this.mapOptions.customConfigFile,
                 callbackSuffix : callbackSuffix,
                 // fonction de rappel onSuccess
                 onSuccess : function (configResponse) {
@@ -628,11 +625,6 @@ IMap.prototype = {
 
         // TODO : detecter si on a le bon objet (error ou success)
         this._isConfLoaded = !(typeof configResponse === "undefined");
-
-        // on assigne à Gp la configuration récupérée
-        // var scope = typeof window !== "undefined" ? window : {};
-        // // if (scope.Gp && scope.Gp.Services && scope.Gp.Services.Config && Object.keys(scope.Gp.Services.Config).length !== 0)
-        // scope.Gp ? scope.Gp.Config.configuration = configResponse : undefined;
 
         // declenchement de l'evenement "configured"
         var e = IMap.CustomEvent("configured", {

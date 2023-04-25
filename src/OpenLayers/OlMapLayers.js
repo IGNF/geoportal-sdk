@@ -542,7 +542,7 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
  * Add a geoportal Layer to the map
  *
  * @param {Object} layerObj - geoportalLayer to add.
- * @param {Object} layerConf - options of the layer conf (Gp.Services.Config)
+ * @param {Object} layerConf - options of the layer conf (Gp.Config)
  *
  * @private
  */
