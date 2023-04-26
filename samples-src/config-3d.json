@@ -5,5 +5,7 @@
     "apikey" : "essentiels,altimetrie",
     "apikey2" : "an7nvfzojv5wa96dsga5nk8w",
     "apikey3" : "essentiels",
-    "apikey4" : "altimetrie"
+    "apikey4" : "altimetrie",
+    "apikey5" : "cartes",
+    "apikey6" : "full"
 }
