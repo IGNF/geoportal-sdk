@@ -50,7 +50,7 @@
 
         function loadMap2() {
             Gp.Map.load('geoportalMap2', {
-                configUrl : "{{resources}}/autoconf.js",
+                customConfigFile : "{{resources}}/ConfigFile/fullConfig.json",
                 apiKey : "{{apikey}}",
                 center : {
                     geolocate : true,
@@ -67,7 +67,7 @@
 
         function loadMap3() {
             Gp.Map.load('geoportalMap3', {
-                configUrl : "{{resources}}/autoconf.js",
+                customConfigFile : "{{resources}}/ConfigFile/fullConfig.json",
                 apiKey : "{{apikey}}",
                 center : {
                     location : "Nimes",
