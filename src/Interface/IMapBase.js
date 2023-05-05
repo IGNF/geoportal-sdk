@@ -411,7 +411,7 @@ function IMap (opts) {
      */
     this._markers = [];
 
-    // l'autoconf est elle chargée ?
+    // la configuration est elle chargée ?
     this._isConfLoaded = false;
 
     if (this._opts.mapOptions) {
@@ -578,7 +578,7 @@ IMap.prototype = {
             }
         }
 
-        // appel du service d'autoconfiguration si nécessaire
+        // appel de la configuration si nécessaire
         // Dans tous les cas, le reste s'exécute dans _afterGetConfig
         var map = this;
         if (needsGetConfig) {
@@ -613,7 +613,7 @@ IMap.prototype = {
     },
 
     /**
-     * callback d'appel à l'autoconf (ou non).
+     * callback d'appel à la configuration (ou non).
      *
      * @param {Object} configResponse - configuration associée à apiKey.
      * @fires mapLoaded
@@ -621,7 +621,7 @@ IMap.prototype = {
      * @private
      */
     _afterGetConfig : function (configResponse) {
-        this.logger.trace("[IMap] : Autoconfiguration chargée ... ou pas");
+        this.logger.trace("[IMap] : Configuration chargée ... ou pas");
 
         // TODO : detecter si on a le bon objet (error ou success)
         this._isConfLoaded = !(typeof configResponse === "undefined");
@@ -637,7 +637,6 @@ IMap.prototype = {
         // recuperation couche par defaut si aucune specifiee
         if (!this.mapOptions.hasOwnProperty("layersOptions")) {
             if (this._isConfLoaded) {
-                // FIXME : trouver l'info dans l'autoconf ... ou pas ?
                 this.mapOptions.layersOptions = {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {}
                 };
