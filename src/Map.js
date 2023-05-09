@@ -957,6 +957,7 @@ var layerOptions = {
  * | defaultStyles | Object | Styles to apply by default to drawn features. |
  * | defaultStyles.textFillColor | String | Text fill color for labels (RGB hex value). |
  * | defaultStyles.textStrokeColor | String | Text surrounding color for labels (RGB hex value). |
+ * | defaultStyles.textStrokeWidth | Number | Text surrounding width for labels (RGB hex value). |
  * | defaultStyles.strokeColor | String | Stroke color (RGB hex value). |
  * | defaultStyles.polyFillColor | String | Polygons fill color (RGB hex value). |
  * | defaultStyles.polyFillOpacity | Number | Polygon fill opacity (alpha value between 0:transparent and 1:opaque). |
@@ -1010,6 +1011,7 @@ var controlOptions = {
 * | markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38. |
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
+* | textStrokeWidth | Number | Text surrounding width for labels (RGB hex value). Default is 4. |
 *
 * **Specific 3D properties (for GeoJSON only)**
 *

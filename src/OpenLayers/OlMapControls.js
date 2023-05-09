@@ -618,10 +618,10 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             kmldefaultStyleOptions.text = new TextStyle({
                 font : "16px Sans",
                 textAlign : "left",
-                fill : new Fill({
+                fill : new FillStyle({
                     color : IMap.prototype._hexToRgba.call(this, textColor, 1)
                 }),
-                stroke : new Stroke({
+                stroke : new StrokeStyle({
                     color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
                     width : userKMLDefaultStyles.textStrokeWidth || 4
                 })
@@ -652,10 +652,10 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             gpxdefaultStyleOptions.text = new TextStyle({
                 font : "16px Sans",
                 textAlign : "left",
-                fill : new Fill({
+                fill : new FillStyle({
                     color : IMap.prototype._hexToRgba.call(this, textColor, 1)
                 }),
-                stroke : new Stroke({
+                stroke : new StrokeStyle({
                     color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
                     width : userGPXDefaultStyles.textStrokeWidth || 4
                 })
@@ -691,10 +691,10 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             geoJSONdefaultStyleOptions.text = new TextStyle({
                 font : "16px Sans",
                 textAlign : "left",
-                fill : new Fill({
+                fill : new FillStyle({
                     color : IMap.prototype._hexToRgba.call(this, textColor, 1)
                 }),
-                stroke : new Stroke({
+                stroke : new StrokeStyle({
                     color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
                     width : userGeoJSONDefaultStyles.textStrokeWidth || 4
                 })
