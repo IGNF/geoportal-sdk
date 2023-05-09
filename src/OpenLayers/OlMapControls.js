@@ -22,7 +22,8 @@ import {
     Icon as IconStyle,
     Stroke as StrokeStyle,
     Style,
-    Circle as CircleStyle
+    Circle as CircleStyle,
+    Text as TextStyle
 } from "ol/style";
 
 import TileLayer from "ol/layer/Tile";
@@ -532,6 +533,9 @@ OlMap.prototype.addIsocurveControl = function (controlOpts) {
  * @param {Number} [controlOpts.defaultStyles.KML.strokeOpacity = 0.8] - Stroke opacity for KML lines styling (alpha value between 0:transparent and 1:opaque)
  * @param {String} [controlOpts.defaultStyles.KML.polyFillColor = "#00B798"] - KML polygons fill color (RGB hex value).
  * @param {Number} [controlOpts.defaultStyles.KML.polyFillOpacity = 0.5] - KML polygons fill opacity (alpha value between 0:transparent and 1:opaque).
+ * @param {String} [controlOpts.defaultStyles.KML.textColor = "#FFFFFF"] - Text color for KML labels styling (RGB hex value).
+ * @param {String} [controlOpts.defaultStyles.KML.textStrokeColor = "#000000"] - Text surrounding color for KML labels styling (RGB hex value).
+ * @param {Number} [controlOpts.defaultStyles.KML.textStrokeWidth = 4] - Text surrounding width in pixels for KML labels styling.
  * @param {Object} [controlOpts.defaultStyles.GPX] - Styles to apply by default to imported GPX layers
  * @param {String} [controlOpts.defaultStyles.GPX.markerSrc] - URL of a marker image (for GPX waypoints styling). Default is an orange marker.
  * @param {Float} [controlOpts.defaultStyles.GPX.markerXAnchor = 25.5] - position of marker anchor in X from left of the image expressed in proportion of 1 (for GPX waypoints styling).
@@ -539,6 +543,9 @@ OlMap.prototype.addIsocurveControl = function (controlOpts) {
  * @param {String} [controlOpts.defaultStyles.GPX.strokeColor = "#002A50"] - Stroke color for GPX routes or tracks styling (RGB hex value).
  * @param {Number} [controlOpts.defaultStyles.GPX.strokeWidth = 4] - Stroke width in pixels for GPX routes or tracks styling.
  * @param {Number} [controlOpts.defaultStyles.GPX.strokeOpacity = 0.8] - Stroke opacity for GPX routes or tracks styling (alpha value between 0:transparent and 1:opaque)
+ * @param {String} [controlOpts.defaultStyles.GPX.textColor = "#FFFFFF"] - Text color for GPX labels styling (RGB hex value).
+ * @param {String} [controlOpts.defaultStyles.GPX.textStrokeColor = "#000000"] - Text surrounding color for GPX labels styling (RGB hex value).
+ * @param {Number} [controlOpts.defaultStyles.GPX.textStrokeWidth = 4] - Text surrounding width in pixels for GPX labels styling.
  * @param {Object} [controlOpts.defaultStyles.GeoJSON] - Styles to apply by default to imported GeoJSON layers
  * @param {String} [controlOpts.defaultStyles.GeoJSON.markerSrc] - URL of a marker image (for GeoJSON points styling). Default is an orange marker.
  * @param {Float} [controlOpts.defaultStyles.GeoJSON.markerXAnchor = 25.5] - position of marker anchor in X from left of the image expressed in proportion of 1 (for GeoJSON points styling).
@@ -548,6 +555,9 @@ OlMap.prototype.addIsocurveControl = function (controlOpts) {
  * @param {Number} [controlOpts.defaultStyles.GeoJSON.strokeOpacity = 0.8] - Stroke opacity for GeoJSON lines styling (alpha value between 0:transparent and 1:opaque)
  * @param {String} [controlOpts.defaultStyles.GeoJSON.polyFillColor = "#00B798"] - GeoJSON polygons fill color (RGB hex value).
  * @param {Number} [controlOpts.defaultStyles.GeoJSON.polyFillOpacity = 0.5] - GeoJSON polygons fill opacity (alpha value between 0:transparent and 1:opaque).
+ * @param {String} [controlOpts.defaultStyles.GeoJSON.textColor = "#FFFFFF"] - Text color for GeoJSON labels styling (RGB hex value).
+ * @param {String} [controlOpts.defaultStyles.GeoJSON.textStrokeColor = "#000000"] - Text surrounding color for GeoJSON labels styling (RGB hex value).
+ * @param {Number} [controlOpts.defaultStyles.GeoJSON.textStrokeWidth = 4] - Text surrounding width in pixels for GeoJSON labels styling.
  *
  * @return {Ol.control.LayerImport} control
  */
@@ -578,6 +588,10 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
         var strokeColor;
         var fillOpacity;
         var fillColor;
+        var textColor;
+        var textStrokeWidth;
+        var textStrokeColor;
+
         if (controlOpts.defaultStyles.KML) {
             var userKMLDefaultStyles = controlOpts.defaultStyles.KML;
             var kmldefaultStyleOptions = {};
@@ -599,6 +613,19 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             kmldefaultStyleOptions.fill = new FillStyle({
                 color : IMap.prototype._hexToRgba.call(this, fillColor, fillOpacity)
             });
+            textColor = userKMLDefaultStyles.textColor || "#FFFFFF";
+            textStrokeColor = userKMLDefaultStyles.textStrokeColor || "#000000";
+            kmldefaultStyleOptions.text = new TextStyle({
+                font : "16px Sans",
+                textAlign : "left",
+                fill : new Fill({
+                    color : IMap.prototype._hexToRgba.call(this, textColor, 1)
+                }),
+                stroke : new Stroke({
+                    color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
+                    width : userKMLDefaultStyles.textStrokeWidth || 4
+                })
+            });
             var kmldefaultStyle = new Style(kmldefaultStyleOptions);
             importOpts.vectorStyleOptions.KML = {
                 defaultStyle : kmldefaultStyle
@@ -619,6 +646,19 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             gpxdefaultStyleOptions.stroke = new StrokeStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity),
                 width : userGPXDefaultStyles.strokeWidth || 4
+            });
+            textColor = userGPXDefaultStyles.textColor || "#FFFFFF";
+            textStrokeColor = userGPXDefaultStyles.textStrokeColor || "#000000";
+            gpxdefaultStyleOptions.text = new TextStyle({
+                font : "16px Sans",
+                textAlign : "left",
+                fill : new Fill({
+                    color : IMap.prototype._hexToRgba.call(this, textColor, 1)
+                }),
+                stroke : new Stroke({
+                    color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
+                    width : userGPXDefaultStyles.textStrokeWidth || 4
+                })
             });
             var gpxdefaultStyle = new Style(gpxdefaultStyleOptions);
             importOpts.vectorStyleOptions.GPX = {
@@ -645,6 +685,19 @@ OlMap.prototype.addLayerImportControl = function (controlOpts) {
             fillColor = userGeoJSONDefaultStyles.polyFillColor || "#00B798";
             geoJSONdefaultStyleOptions.fill = new FillStyle({
                 color : IMap.prototype._hexToRgba.call(this, strokeColor, strokeOpacity)
+            });
+            textColor = userGeoJSONDefaultStyles.textColor || "#FFFFFF";
+            textStrokeColor = userGeoJSONDefaultStyles.textStrokeColor || "#000000";
+            geoJSONdefaultStyleOptions.text = new TextStyle({
+                font : "16px Sans",
+                textAlign : "left",
+                fill : new Fill({
+                    color : IMap.prototype._hexToRgba.call(this, textColor, 1)
+                }),
+                stroke : new Stroke({
+                    color : IMap.prototype._hexToRgba.call(this, textStrokeColor, 1),
+                    width : userGeoJSONDefaultStyles.textStrokeWidth || 4
+                })
             });
             var geoJSONdefaultStyle = new Style(geoJSONdefaultStyleOptions);
             importOpts.vectorStyleOptions.GeoJSON = {
