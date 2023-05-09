@@ -854,7 +854,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         options : options
     });
     var layerOpts = {};
-    layerOpts[layerId] = {};
+    layerOpts[layerId] = options;
 
     return layerOpts;
 };
