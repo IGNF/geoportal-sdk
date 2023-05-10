@@ -1019,7 +1019,8 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     }
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
     if (layerConf) {
-        layerObj[layerId].url = layerConf.serviceParams.serverUrl[layerConf.apiKeys[0]];
+        // on prend la première et unique url
+        layerObj[layerId].url = layerConf.serviceParams.serverUrl[Object.keys(layerConf.serviceParams.serverUrl)[0]];
         layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.formats[0].name;
         layerObj[layerId].projection = layerObj[layerId].projection || layerConf.defaultProjection;
         layerObj[layerId].bbox = layerObj[layerId].bbox || layerConf.globalConstraint.bbox;
