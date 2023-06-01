@@ -6,20 +6,52 @@
 
 ## Summary
 
-Corrections styles couches COMPUTE et imports
+- Option d'export et import des couches de calcul
 
 ## Changelog
 
 * [Added]
 
+    - Option d'export des tracés et des calculs au format GPX, KML et GeoJSON sur les contôles d'itineraire, d'isochrone et de profil altimétrique (#105):
+
+        ```js
+            Gp.Map.load('map', {
+                configUrl : ,
+                azimuth : ,
+                zoom : ,
+                center : {},
+                layersOptions : {},
+                controlsOptions : {
+                    route : {
+                        export : true
+                    },
+                    isocurve : {
+                        export : {
+                            format : "gpx",
+                            name : "export-iso",
+                            title : "Exporter",
+                            menu : true
+                        }
+                    },
+                    elevationPath : {
+                        export : false
+                    }
+                }
+            });
+        ```
+
+    - Imports des couches de calculs (itineraire, isochrone et profil altimétrique) au format GPX, KML et GeoJSON (#105).
+
 * [Changed]
+
+    - Mise à jour de l'extension geoportail pour itowns en version 2.3.11
+    - Mise à jour de l'extension geoportail pour openlayers en version 3.2.22 (#105)
 
 * [Removed]
 
 * [Fixed]
 
-    - fix sur le styles des couches COMPUTE (6c2f07f7a743825ce52fd7c0093941d5dd2ac8eb)
-    - fix import KML (e3ff993104854c45a87e71b702a40c42f0d2479d et 450e32de52b60624a22f6d60ddc11b0c57116d38)
+    - Correction du passage des options du service d'alti pour le controle de profil altimetrique (#104)
 
 * [Deprecated]
 

@@ -744,6 +744,14 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
     var options = {};
 
     switch (layerId.toLowerCase()) {
+        case "measure:profil":
+            options.format = "COMPUTE";
+            options.graph = null;
+            options.control = "elevationpath";
+            options.title = "Profil altimétrique";
+            options.controlOptions = {};
+            options.data = {};
+            break;
         case "drawing":
             options.format = "drawing";
             break;
@@ -782,51 +790,53 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
             options.format = "MAPBOX";
             break;
         case "layerimport:compute":
-            // TODO
-            // Evolution : à mettre en place au niveau des extensions
+            // INFO
             // Le widget d'import recherche si le fichier KML, GeoJSON ou GPX
             // est un fichier de calcul avec la lecture de la balise 'geoportail:compute'.
-            // Si oui, on modifie la property 'gpResultLayerId' -> layerimport:COMPUTE
-            // Et, on ajoute les options du calcul dans les properties de la couche.
+            // Si oui, property 'gpResultLayerId' -> 'layerimport:COMPUTE'
+            // Et, les options utiles au calcul sont dans les properties de la couche.
             options.format = "COMPUTE";
             var prop = layerObj.getProperties();
-            options.graph = prop.graph || "";
-            options.control = prop.control || "";
-            options.title = prop.title || "";
-            options.controlOptions = prop.controlOptions || {};
-            options.data = prop.data || {};
+            options.graph = prop.graph;
+            options.name = prop.name;
+            options.control = prop.control;
+            options.title = prop.title;
+            options.controlOptions = prop.data || {};
+            options.data = prop.geojson || {};
+            break;
+        case "voiture$ogc:openls;isocurve":
+        case "voiture$geoportail:gpp:isocurve":
+        case "voiture$ogc:openls;itineraire":
+        case "voiture$geoportail:gpp:itineraire":
+        case "pieton$ogc:openls;isocurve":
+        case "pieton$geoportail:gpp:isocurve":
+        case "pieton$ogc:openls;itineraire":
+        case "pieton$geoportail:gpp:itineraire":
+            // INFO
+            // Couches de calculs en cours avec les widgets : 
+            // - isocurve
+            // - route
+            var key = layerId.toLowerCase();
+            // result layer name
+            options.format = "COMPUTE";
+            // graph name (voiture / pieton)
+            options.graph = key.split(/[$:;]/)[0];
+            // control name (isocurve / itineraire)
+            options.name = key.split(/[$:;]/).slice(-1)[0];
+            // control real name
+            options.control = options.name;
+            if (options.name === "itineraire") {
+                options.control = "route";
+            }
+            // title by default
+            options.title = options.name + " (" + options.graph + ")";
+            // options control
+            options.controlOptions = {};
+            // features to geojson
+            options.data = {};
             break;
         default:
-            // FIXME 
-            // cas où l'ID est de la forme : 
-            //  ex. isochrones : 
-            //      Voiture$OGC:OPENLS;Isocurve
-            //      Voiture$GEOPORTAIL:GPP:Isocurve
-            //      Pieton$OGC:OPENLS;Isocurve
-            //      Pieton$GEOPORTAIL:GPP:Isocurve
-            //  ex. itineraire : 
-            //      Voiture$OGC:OPENLS;Itineraire
-            //      Voiture$GEOPORTAIL:GPP:Itineraire
-            //      Pieton$OGC:OPENLS;Itineraire
-            //      Pieton$GEOPORTAIL:GPP:Itineraire
-            var key = layerId.toLowerCase();
-            if (key.includes("ogc:openls;isocurve") || 
-                key.includes("ogc:openls;itineraire") || 
-                key.includes("geoportail:gpp:isocurve") ||
-                key.includes("geoportail:gpp:itineraire")) {
-                // result layer name
-                options.format = "COMPUTE";
-                // graph name (voiture / pieton)
-                options.graph = layerId.split(/[$:;]/)[0];
-                // control name (isocurve / itineraire)
-                options.control = layerId.split(/[$:;]/).slice(-1)[0];
-                // title by default
-                options.title = options.control + " (" + options.graph + ")";
-                // options control
-                options.controlOptions = {};
-                // features to geojson
-                options.data = {};
-            }
+            options.format = ""; // ???
             break;
     }
 
@@ -844,7 +854,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         options : options
     });
     var layerOpts = {};
-    layerOpts[layerId] = {};
+    layerOpts[layerId] = options;
 
     return layerOpts;
 };
@@ -883,6 +893,7 @@ OlMap.prototype._changeLayerColor = function (layerId, toGrayScale) {
         case "KML":
         case "GPX":
         case "WFS":
+        case "COMPUTE":
         case "DRAWING":
             this.logger.warn("[_changeLayerColor] : _changeLayerColor not allowed on vector layers (layer id: " + layerId + ")");
             return;

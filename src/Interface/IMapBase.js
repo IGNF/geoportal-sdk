@@ -40,7 +40,7 @@ var switch2D3D = function (viewMode) {
             var layer = this._layers[index];
             // traitement des couches de calcul
             if (layer.options.format.toUpperCase() === "COMPUTE") {
-                // TODO :
+                // INFO :
                 // les styles pour la 2D et 3D sont ajoutés à la volée,
                 // une evolution est à mettre en place sur les contrôles, 
                 // les contrôles doivent transmettre les styles à la couche 2D & 3D.
@@ -61,52 +61,42 @@ var switch2D3D = function (viewMode) {
                 // la couche au format natif n'est pas utile pour la switch 2D<->3D.
                 var geojsonStr = null;
                 var geojsonObj = null;
-                switch (layer.options.control) {
-                    case "Itineraire":
-                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("route").getData();
-                        geojsonStr = this.getLibMapControl("route").getGeoJSON();
-                        geojsonObj = JSON.parse(geojsonStr);
-                        geojsonObj.features.forEach(feature => {
-                            if (!feature.properties) {
-                                feature.properties = {};
-                            }
-                            if (feature.geometry.type === "Point") {
+                switch (layer.options.control.toUpperCase()) {
+                    case "ROUTE":
+                    case "ISOCURVE":
+                    case "ELEVATIONPATH":
+                            // on distingue le cas d'un import de calcul et un calcul en cours...
+                            oldMap.layersOptions[layer.id].controlOptions = (Object.keys(layer.options.controlOptions).length === 0)
+                                ? this.getLibMapControl(layer.options.control.toLowerCase()).getData() : layer.options.controlOptions;
+                            // on distingue le cas d'un import de calcul et un calcul en cours...
+                            geojsonStr = (Object.keys(layer.options.data).length === 0)
+                                ? this.getLibMapControl(layer.options.control.toLowerCase()).getGeoJSON() : layer.options.data;
+                            // on parse le geojson pour y ajouter des properties de styles (2D et 3D)
+                            geojsonObj = JSON.parse(geojsonStr);
+                            geojsonObj.features.forEach(feature => {
+                                if (!feature.properties) {
+                                    feature.properties = {};
+                                }
                                 // style propre à la 3D
-                                feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
-                            }
-                            // style pour la 2D et 3D
-                            if (feature.geometry.type === "LineString") {
-                                feature.properties["stroke"] = "#00B798";
-                                feature.properties["stroke-opacity"] = 0.9;
-                                feature.properties["stroke-width"] = 12;
-                            }
-                        });
-                        oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
-                        break;
-                    case "Isocurve":
-                        oldMap.layersOptions[layer.id].controlOptions = this.getLibMapControl("isocurve").getData();
-                        geojsonStr = this.getLibMapControl("isocurve").getGeoJSON();
-                        geojsonObj = JSON.parse(geojsonStr);
-                        geojsonObj.features.forEach(feature => {
-                            if (!feature.properties) {
-                                feature.properties = {};
-                            }
-                            if (feature.geometry.type === "Point") {
-                                // style propre à la 3D
-                                feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
-                            }
-                            // style pour la 2D et 3D
-                            if (feature.geometry.type === "Polygon") {
-                                feature.properties["fill"] = "#00B798";
-                                feature.properties["fill-opacity"] = 0.7;
-                            }
-                        });
-                        oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
-                        break;
+                                if (feature.geometry.type === "Point") {
+                                    feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
+                                }
+                                // style pour la 2D et 3D
+                                if (feature.geometry.type === "LineString") {
+                                    feature.properties["stroke"] = "#00B798";
+                                    feature.properties["stroke-opacity"] = 0.9;
+                                    feature.properties["stroke-width"] = 12;
+                                }
+                                // style pour la 2D et 3D
+                                if (feature.geometry.type === "Polygon") {
+                                    feature.properties["fill"] = "#00B798";
+                                    feature.properties["fill-opacity"] = 0.7;
+                                }
+                            });
+                            oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
+                            break;
                     default:
                         // TODO other format...
-                        // * les mesures
-                        // * profil alti
                         break;
                 }
             }
@@ -316,23 +306,20 @@ var switch2D3D = function (viewMode) {
                 // traitement des couches de calcul
                 if (clayer.options.format.toUpperCase() === "COMPUTE") {
                     var control = null;
-                    switch (clayer.options.control) {
-                        case "Itineraire":
-                            control = this.getLibMapControl("route");
-                            break;
-                        case "Isocurve":
-                            control = this.getLibMapControl("isocurve");
+                    switch (clayer.options.control.toUpperCase()) {
+                        case "ROUTE":
+                        case "ISOCURVE":
+                        case "ELEVATIONPATH":
+                            control = this.getLibMapControl(clayer.options.control.toLowerCase());
                             break;
                         default:
                             // TODO other format...
-                            // * les mesures
-                            // * profil alti
                             break;
                     }
                     if (control) {
                         control.setData(clayer.options.controlOptions);
                         control.setLayer(clayer.obj);
-                        control.setGeoJSON(clayer.options.data); // inutile ?
+                        // control.setGeoJSON(clayer.options.data); // inutile ?
                         control.init();
                     }
                 }
