@@ -12,7 +12,7 @@
 
 * [Added]
 
-    - Option d'export des tracés et des calculs au format GPX, KML et GeoJSON sur les contôles d'itineraire, d'isochrone et de profil altimétrique :
+    - Option d'export des tracés et des calculs au format GPX, KML et GeoJSON sur les contôles d'itineraire, d'isochrone et de profil altimétrique (#105):
 
         ```js
             Gp.Map.load('map', {
@@ -40,13 +40,18 @@
             });
         ```
 
-    - Imports des couches de calculs (itineraire, isochrone et profil altimétrique) au format GPX, KML et GeoJSON.
+    - Imports des couches de calculs (itineraire, isochrone et profil altimétrique) au format GPX, KML et GeoJSON (#105).
 
 * [Changed]
+
+    - Mise à jour de l'extension geoportail pour itowns en version 2.3.11
+    - Mise à jour de l'extension geoportail pour openlayers en version 3.2.22 (#105)
 
 * [Removed]
 
 * [Fixed]
+
+    - Correction du passage des options du service d'alti pour le controle de profil altimetrique (#104)
 
 * [Deprecated]
 
