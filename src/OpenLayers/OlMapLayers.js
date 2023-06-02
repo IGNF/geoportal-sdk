@@ -591,15 +591,15 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
             // car le type n'est determiné qu'après le téléchargement du style...
             // Donc, il nous faut les infos suivantes :
             //     format: "MapBox",
-            //     url : "", // -> autoconf
+            //     url : "", // -> config
             //     urlService : "", // -> opts
-            //     projection : "", // -> autoconf / opts
-            //     outputFormat : "", // -> autoconf / opts
-            //     defaultStyleThumbnail : "", // -> autoconf / opts
-            //     defaultStyleName : "", // -> autoconf / opts
-            //     defaultStyleDescription : "", // -> autoconf / opts
+            //     projection : "", // -> config / opts
+            //     outputFormat : "", // -> config / opts
+            //     defaultStyleThumbnail : "", // -> config / opts
+            //     defaultStyleName : "", // -> config / opts
+            //     defaultStyleDescription : "", // -> config / opts
             //     stylesSummary : "", // not used !
-            //     styles : [ // -> autoconf / opts
+            //     styles : [ // -> config / opts
             //         {
             //             thumbnail : "",
             //             name : "",
@@ -688,7 +688,7 @@ OlMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     var olLayer = new LayerClass(opts);
 
     // le controle geoportalAttribution exploite la propriete _originators
-    // si l'utilisateur en a passé des originators en paramètres, on écrase ceux de l'autoconf.
+    // les originators doivent être passés par l'utilisateur (non présents dans la configuration)
     if (layerOpts.hasOwnProperty("originators")) {
         olLayer.getSource()._originators = layerOpts.originators;
     }

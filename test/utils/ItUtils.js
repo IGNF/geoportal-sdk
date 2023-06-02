@@ -51,7 +51,12 @@ var ItUtils = {
     initMap : function initMap(mapOptions) {
         const div = this.createDiv();
 
-        if (!mapOptions) mapOptions = {};
+        if (!mapOptions) mapOptions = {
+            center : {
+                x: 2,
+                y: 48
+            }
+        };
         mapOptions.apiKey = apiKey;
 
         return new ItMap({

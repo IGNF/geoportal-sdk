@@ -290,7 +290,6 @@ var switch2D3D = function (viewMode) {
             // proxyUrl
             // noProxyDomains
             // reloadConfig
-            // autoconfUrl
             layersOptions : oldMap.layersOptions,
             controlsOptions : oldMap.controlsOptions,
             mapEventsOptions : oldMap.mapEventsOptions
@@ -399,7 +398,7 @@ function IMap (opts) {
      */
     this._markers = [];
 
-    // l'autoconf est elle chargée ?
+    // la configuration est elle chargée ?
     this._isConfLoaded = false;
 
     if (this._opts.mapOptions) {
@@ -553,11 +552,11 @@ IMap.prototype = {
         // Gestion du paramètre apiKeys
         var needsGetConfig = false;
         if (this.apiKey && !this.mapOptions.reloadConfig) { // une clef est fournie
-            // et l'utilisateur ne souhaite pas faire un appel à l'autoconf
+            // et l'utilisateur ne souhaite pas faire un appel à la configuration
             needsGetConfig = false;
-        } else if (this.apiKey || this.mapOptions.configUrl || this.mapOptions.autoconfUrl) {
+        } else if (this.apiKey || this.mapOptions.customConfigFile) {
             // TODO : this.apiKey.length > 1
-            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
+            needsGetConfig = (this.mapOptions.reloadConfig || !Config || !Config.isKeyConfLoaded((Array.isArray(this.apiKey) ? this.apiKey[0] : this.apiKey))
             );
         } else { // une clef n'est pas fournie
             // on essaye de trouver une configuration existante
@@ -566,21 +565,19 @@ IMap.prototype = {
             }
         }
 
-        // appel du service d'autoconfiguration si nécessaire
+        // appel de la configuration si nécessaire
         // Dans tous les cas, le reste s'exécute dans _afterGetConfig
         var map = this;
         if (needsGetConfig) {
-            // autoconf locale ? on met par defaut un callbackSuffix à ""
+            // config locale ? on met par defaut un callbackSuffix à ""
             // à moins qu'on ne le surcharge (non documenté).
             var callbackSuffix = this.mapOptions.callbackSuffix;
-            // deprecated param autoconfUrl
-            if (this.mapOptions.configUrl ||
-                this.mapOptions.autoconfUrl) {
+            if (this.mapOptions.customConfigFile) {
                 callbackSuffix = callbackSuffix || "";
             }
             Services.getConfig({
                 apiKey : this.apiKey,
-                serverUrl : this.mapOptions.configUrl || this.mapOptions.autoconfUrl,
+                customConfigFile : this.mapOptions.customConfigFile,
                 callbackSuffix : callbackSuffix,
                 // fonction de rappel onSuccess
                 onSuccess : function (configResponse) {
@@ -603,7 +600,7 @@ IMap.prototype = {
     },
 
     /**
-     * callback d'appel à l'autoconf (ou non).
+     * callback d'appel à la configuration (ou non).
      *
      * @param {Object} configResponse - configuration associée à apiKey.
      * @fires mapLoaded
@@ -611,7 +608,7 @@ IMap.prototype = {
      * @private
      */
     _afterGetConfig : function (configResponse) {
-        this.logger.trace("[IMap] : Autoconfiguration chargée ... ou pas");
+        this.logger.trace("[IMap] : Configuration chargée ... ou pas");
 
         // TODO : detecter si on a le bon objet (error ou success)
         this._isConfLoaded = !(typeof configResponse === "undefined");
@@ -627,7 +624,6 @@ IMap.prototype = {
         // recuperation couche par defaut si aucune specifiee
         if (!this.mapOptions.hasOwnProperty("layersOptions")) {
             if (this._isConfLoaded) {
-                // FIXME : trouver l'info dans l'autoconf ... ou pas ?
                 this.mapOptions.layersOptions = {
                     "ORTHOIMAGERY.ORTHOPHOTOS" : {}
                 };
@@ -640,17 +636,10 @@ IMap.prototype = {
         if (this._isConfLoaded &&
             (!this.mapOptions.center.hasOwnProperty("x") || this.mapOptions.center.x === 0) &&
             (!this.mapOptions.center.hasOwnProperty("y") || this.mapOptions.center.y === 0)) {
-            var autoconfCenter;
-            var territories = configResponse.getTerritories();
-            for (var terrCode in territories) {
-                if (territories[terrCode].isDefault) {
-                    autoconfCenter = territories[terrCode].geoCenter;
-                    // autoconfProj = territories[terrCode].defaultCRS;
-                }
-            }
-            this.logger.trace("[IMap] : _afterGetConfig : setting default map center to (" + autoconfCenter.lon + ", " + autoconfCenter.lat + ")");
-            this.mapOptions.center.x = autoconfCenter.lon;
-            this.mapOptions.center.y = autoconfCenter.lat;
+            // default autoconf "FXX" territory from the old autoconf
+            this.logger.trace("[IMap] : _afterGetConfig : setting default map center to (2.345274398, 48.860832558)");
+            this.mapOptions.center.x = "2.345274398";
+            this.mapOptions.center.y = "48.860832558";
             this.mapOptions.center.projection = "EPSG:4326";
         }
 

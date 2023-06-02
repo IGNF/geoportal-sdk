@@ -127,6 +127,7 @@ IMap.prototype.addLayers = function (layersOptions) {
     // abonnement perso à l'evnement layerChanged pour tenir à jour l'objet this._layers
     this.listen("layerChanged", this._onLayerChanged, this);
     var layerId = null;
+    var gpLayerId = null;
     for (layerId in layersOptions) {
         // on ne peut pas rajouter la même couche avec le même identifiant
         if (this._getLayersObj([layerId]).length > 0) {
@@ -153,19 +154,22 @@ IMap.prototype.addLayers = function (layersOptions) {
             var layerConf = null;
             // on essaye d'abord WMTS
             if (format == null || format.toUpperCase() === "WMTS") {
-                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMTS");
+                gpLayerId = layerId + "$GEOPORTAIL:OGC:WMTS";
+                layerConf = Config.getLayerConf(gpLayerId);
                 if (layerConf) {
                     format = "WMTS";
                 }
             }
             // ... puis WMS GEOPORTAIL
             if (format == null || format.toUpperCase() === "WMS") {
-                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:OGC:WMS");
+                gpLayerId = layerId + "$GEOPORTAIL:OGC:WMS";
+                layerConf = Config.getLayerConf(gpLayerId);
                 if (layerConf) {
                     format = "WMS";
                 } else {
                     // ... puis WMS INSPIRE
-                    layerConf = Config.getLayerConf(layerId + "$INSPIRE:OGC:WMS");
+                    gpLayerId = layerId + "$INSPIRE:OGC:WMS";
+                    layerConf = Config.getLayerConf(gpLayerId);
                     if (layerConf) {
                         format = "WMS";
                     }
@@ -174,17 +178,21 @@ IMap.prototype.addLayers = function (layersOptions) {
             // ... puis MAPBOX GEOPORTAIL
             if (format == null || format.toUpperCase() === "MAPBOX") {
                 // FIXME je ne comprends pas ce code !?
-                layerConf = Config.getLayerConf(layerId + "$GEOPORTAIL:GPP:TMS");
+                gpLayerId = layerId + "$GEOPORTAIL:GPP:TMS";
+                layerConf = Config.getLayerConf(gpLayerId);
                 if (layerConf) {
                     format = "MAPBOX";
                 }
             }
             // FIXME / TODO : WFS Geoportail ?
             if (layerConf) {
+                // save the gpLayerId and the apiKey in the layerConf
+                layerConf.gpLayerId = gpLayerId;
+                layerConf.apiKeys = Config.getLayerKey(layerConf.gpLayerId);
                 // on a trouve la couche Geoportail : on rajoute sa configuration à ses options.
                 this.logger.trace("[IMap] addLayers : [" + layerId + "] is a geoportalLayer. Adding inner properties.");
                 addLayerParam[layerId].format = format;
-                addLayerParam[layerId].originators = addLayerParam[layerId].originators || layerConf.originators;
+                addLayerParam[layerId].originators = addLayerParam[layerId].originators;
                 // options du layerswitcher
                 addLayerParam[layerId] = this._layerOptions2layerConf(layerConf, addLayerParam[layerId]);
             }

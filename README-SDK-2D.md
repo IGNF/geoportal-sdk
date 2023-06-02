@@ -222,9 +222,9 @@ Lors du chargement de la carte, le SDK récupèrera automatiquement la configura
 
 ### Optimisation du chargement : configuration locale
 
-Vous pouvez améliorer le temps de chargement de votre page en mettant en cache sur votre plateforme la configuration associée à votre ou vos clefs d'accès. Il vous suffit pour cela de récupérer le fichier de configuration (autoconf.json) obtenu à l'aide [du formulaire de ce tutoriel](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html).
+Vous pouvez améliorer le temps de chargement de votre page en mettant en cache sur votre plateforme la configuration associée à votre ou vos clefs d'accès. Il vous suffit pour cela de récupérer le fichier de configuration (customConfig.json) obtenu à l'aide [du formulaire de ce tutoriel](https://geoportal-configuration.onrender.com/).
 
-Enregistrez ce fichier sur votre plateforme et paramétrez le SDK à l'aide de la propriété **configUrl** lors de l'initialisation de la carte :
+Enregistrez ce fichier sur votre plateforme et paramétrez le SDK à l'aide de la propriété **customConfigFile** lors de l'initialisation de la carte :
 
 ``` javascript
 var map = Gp.Map.load(
@@ -233,7 +233,7 @@ var map = Gp.Map.load(
     {
          ...
          // configuration de l'accès à la plateforme
-         configUrl : "chemin/vers/autoconf.json",
+         configUrl : "chemin/vers/customConfig.json",
          ...
     }
 ) ;

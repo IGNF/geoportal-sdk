@@ -1012,15 +1012,16 @@ ItMap.prototype._addMapBoxLayer = function (layerObj) {
 ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
     // FIXME à faire ailleurs
     var layerId = Object.keys(layerObj)[0];
-    // FIXME verrue pour gestion projection MNT = IGNF:WGS84 dans autoconf...
+    // FIXME verrue pour gestion projection MNT = IGNF:WGS84...
     // itowns ne gere que 3857 et 4326
     if (layerConf && layerConf.defaultProjection !== "EPSG:3857") {
         layerConf.defaultProjection = "EPSG:4326";
     }
     // Si on a bien un objet layerConf passé, on ajoute les params spécifiques iTowns
     if (layerConf) {
-        layerObj[layerId].url = layerConf.getServerUrl(layerConf.apiKeys[0]);
-        layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.getDefaultFormat();
+        // on prend la première et unique url
+        layerObj[layerId].url = layerConf.serviceParams.serverUrl[Object.keys(layerConf.serviceParams.serverUrl)[0]];
+        layerObj[layerId].outputFormat = layerObj[layerId].outputFormat || layerConf.formats[0].name;
         layerObj[layerId].projection = layerObj[layerId].projection || layerConf.defaultProjection;
         layerObj[layerId].bbox = layerObj[layerId].bbox || layerConf.globalConstraint.bbox;
         // Paramètres spécifiques aux couches WMS pour ajout avec iTowns
@@ -1030,10 +1031,10 @@ ItMap.prototype._addGeoportalLayer = function (layerObj, layerConf) {
         }
         // Paramètres spécifiques aux couches WMTS pour ajout avec iTowns
         if (layerObj[layerId].format === "WMTS") {
-            layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.getTMSID();
+            layerObj[layerId].tileMatrixSet = layerObj[layerId].tileMatrixSet || layerConf.wmtsOptions.tileMatrixSetLink;
             layerObj[layerId].tileMatrixSetLimits = layerObj[layerId].tileMatrixSetLimits || layerConf.wmtsOptions.tileMatrixSetLimits;
-            layerObj[layerId].layer = layerId || layerConf.getName();
-            layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.getStyles()[0].name;
+            layerObj[layerId].layer = layerId || layerConf.name;
+            layerObj[layerId].styleName = layerObj[layerId].styleName || layerConf.styles[0].name;
         }
     }
     // Ajout de la couche avec iTowns via l'interface du SDK
