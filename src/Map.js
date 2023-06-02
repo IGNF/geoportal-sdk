@@ -588,6 +588,7 @@ var layerOptions = {
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
  * | maximised | Boolean | if the control has to be opened or not. |
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | exclusions | Object | exclusions to be proposed for control. Il null all exclusions will be proposed by default. |
  * | exclusions.toll | Boolean | proposing toll exclusion. If true, this exclusion will be checked by default. |
  * | exclusions.bridge | Boolean | proposing bridge exclusion. If true, this exclusion will be checked by default. |
@@ -608,6 +609,7 @@ var layerOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | maximised | Boolean | if the control has to be opened or not. |
  * | exclusions | Object | exclusions to be proposed for control. Il null all exclusions will be proposed by default. |
  * | exclusions.toll | Boolean | proposing toll exclusion. If true, this exclusion will be checked by default. |
@@ -810,6 +812,7 @@ var layerOptions = {
  * | property | Type | Description |
  * | - | - | - |
  * | div | String / DOMElement | Target HTML element container or its id. Default is chosen by map implementation.
+ * | export | Boolean / Object | Specify if button "Export" is displayed. For the use of the options of the "Export" control, see {@link https://ignf.github.io/geoportal-extensions/openlayers-latest/jsdoc/ol.control.Export.html} |
  * | styles | Object | Styles to use to display the polygon area |
  * | styles.pointer | Object | Pointer (circle) style while measuring |
  * | styles.pointer.strokeColor | String | Stroke color |
@@ -952,6 +955,7 @@ var layerOptions = {
  * | defaultStyles | Object | Styles to apply by default to drawn features. |
  * | defaultStyles.textFillColor | String | Text fill color for labels (RGB hex value). |
  * | defaultStyles.textStrokeColor | String | Text surrounding color for labels (RGB hex value). |
+ * | defaultStyles.textStrokeWidth | Number | Text surrounding width for labels (RGB hex value). |
  * | defaultStyles.strokeColor | String | Stroke color (RGB hex value). |
  * | defaultStyles.polyFillColor | String | Polygons fill color (RGB hex value). |
  * | defaultStyles.polyFillOpacity | Number | Polygon fill opacity (alpha value between 0:transparent and 1:opaque). |
@@ -1005,6 +1009,7 @@ var controlOptions = {
 * | markerYAnchor | Float | Position of marker anchor in Y from top of the image expressed in pixels (for points styling). Default is 38. |
 * | textColor | String | Text fill color for labels (RGB hex value). Default is "#FFFFFF". |
 * | textStrokeColor | String | Text surrounding color for labels (RGB hex value). Default is "#000000". |
+* | textStrokeWidth | Number | Text surrounding width for labels (RGB hex value). Default is 4. |
 *
 * **Specific 3D properties (for GeoJSON only)**
 *
