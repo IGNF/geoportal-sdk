@@ -51,15 +51,15 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
                 if (itEvent.previous) {
                     centerChangedEvt.oldCenter = {
-                        x: itEvent.previous.x,
-                        y: itEvent.previous.y
+                        x : itEvent.previous.x,
+                        y : itEvent.previous.y
                     };
                 }
 
                 if (itEvent.new) {
                     centerChangedEvt.newCenter = {
-                        x: itEvent.new.x,
-                        y: itEvent.new.y
+                        x : itEvent.new.x,
+                        y : itEvent.new.y
                     };
                 }
                 action.call(context, centerChangedEvt);
@@ -73,8 +73,8 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     return;
                 }
                 action.call(context, {
-                    oldZoom: itEvent.previous,
-                    newZoom: itEvent.new
+                    oldZoom : itEvent.previous,
+                    newZoom : itEvent.new
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.RANGE_CHANGED, callbackZoomchange);
@@ -85,8 +85,8 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     return;
                 }
                 action.call(context, {
-                    oldAzimuth: itEvent.previous.heading,
-                    newAzimuth: itEvent.new.heading
+                    oldAzimuth : itEvent.previous.heading,
+                    newAzimuth : itEvent.new.heading
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackAzimuthChange);
@@ -97,8 +97,8 @@ ItMap.prototype.listen = function (eventId, action, context) {
                     return;
                 }
                 action.call(context, {
-                    oldTilt: itEvent.previous.tilt,
-                    newTilt: itEvent.new.tilt
+                    oldTilt : itEvent.previous.tilt,
+                    newTilt : itEvent.new.tilt
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.ORIENTATION_CHANGED, callbackTiltChange);
@@ -132,8 +132,8 @@ ItMap.prototype.listen = function (eventId, action, context) {
 
                 // if itColorLayer is undefined, it is an MNT  : the sequence is set to -1
                 action.call(context, {
-                    layerAdded: layerOpts,
-                    position: layerIndex
+                    layerAdded : layerOpts,
+                    position : layerIndex
                 });
             };
             key = map.libMap.listen(itownsExtended.GlobeViewExtended.EVENTS.LAYER_ADDED, callbackLayerAdded);
@@ -149,7 +149,7 @@ ItMap.prototype.listen = function (eventId, action, context) {
                 }
 
                 action.call(context, {
-                    layerRemoved: layerOpts
+                    layerRemoved : layerOpts
                 });
                 // FIXME comment faire le menage des ecouteurs internes ?
                 setTimeout(function () {
@@ -175,10 +175,10 @@ ItMap.prototype.listen = function (eventId, action, context) {
                         var newCommonProp = map._getCommonLayerParams(newItObj);
 
                         action.call(context, {
-                            property: ItMap.LAYERPROPERTIES[k],
-                            oldValue: oldCommonProp[ItMap.LAYERPROPERTIES[k]],
-                            newValue: newCommonProp[ItMap.LAYERPROPERTIES[k]],
-                            layerChanged: layerOpts
+                            property : ItMap.LAYERPROPERTIES[k],
+                            oldValue : oldCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            newValue : newCommonProp[ItMap.LAYERPROPERTIES[k]],
+                            layerChanged : layerOpts
                         });
                     };
 
@@ -265,10 +265,13 @@ ItMap.prototype._onMapClick = function (evt) {
     this.libMap.getFeaturesAtMousePosition(evt).then(feats => {
         if (feats.length !== 0) {
             var content = self._features2html(feats);
+            if (!content) {
+                return;
+            }
             // Affichage des features.
             var position = {
-                x: evt.layerX,
-                y: evt.layerY
+                x : evt.layerX,
+                y : evt.layerY
             };
             self._displayInfo(position, content.innerHTML);
         }

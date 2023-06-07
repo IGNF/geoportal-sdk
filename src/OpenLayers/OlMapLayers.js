@@ -749,8 +749,9 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
             options.graph = null;
             options.control = "elevationpath";
             options.title = "Profil altimétrique";
-            options.controlOptions = {};
-            options.data = {};
+            options.description = "Profil altimétrique";
+            options.controlOptions = this.getLibMapControl(options.control.toLowerCase()).getData();
+            options.data = this.getLibMapControl(options.control.toLowerCase()).getGeoJSON();
             break;
         case "drawing":
             options.format = "drawing";
@@ -803,6 +804,16 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
             options.title = prop.title;
             options.controlOptions = prop.data || {};
             options.data = prop.geojson || {};
+            // description by default
+            if (options.name === "isocurve") {
+                options.description = "Isochrone basé sur un graphe";
+            }
+            if (options.name === "itineraire") {
+                options.description = "Itinéraire basé sur un graphe";
+            }
+            if (options.name === "profil altimetrique") {
+                options.description = "Profil altimétrique";
+            }
             break;
         case "voiture$ogc:openls;isocurve":
         case "voiture$geoportail:gpp:isocurve":
@@ -813,7 +824,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         case "pieton$ogc:openls;itineraire":
         case "pieton$geoportail:gpp:itineraire":
             // INFO
-            // Couches de calculs en cours avec les widgets : 
+            // Couches de calculs en cours avec les widgets :
             // - isocurve
             // - route
             var key = layerId.toLowerCase();
@@ -825,15 +836,22 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
             options.name = key.split(/[$:;]/).slice(-1)[0];
             // control real name
             options.control = options.name;
+            if (options.name === "isocurve") {
+                // description by default
+                options.description = "Isochrone basé sur un graphe";
+            }
             if (options.name === "itineraire") {
+                // real control name
                 options.control = "route";
+                // description by default
+                options.description = "Itinéraire basé sur un graphe";
             }
             // title by default
             options.title = options.name + " (" + options.graph + ")";
             // options control
-            options.controlOptions = {};
+            options.controlOptions = this.getLibMapControl(options.control.toLowerCase()).getData();
             // features to geojson
-            options.data = {};
+            options.data = this.getLibMapControl(options.control.toLowerCase()).getGeoJSON();
             break;
         default:
             options.format = ""; // ???
