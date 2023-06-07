@@ -1,18 +1,18 @@
 {
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
-   "scripts" : {},
-   "directories" : {},
-   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
-   "module" : "src/SDK3D.js",
    "name" : "@ignf-geoportal/sdk-3d",
+   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
+   "dependencies" : {
+      "ol" : "6.9.0",
+      "geoportal-extensions-openlayers" : "3.3.1",
+      "itowns" : "2.38.2",
+      "geoportal-extensions-itowns" : "2.4.1",
+      "node-fetch" : "^2.6.1",
+      "xmldom" : "^0.1.27"
+   },
+   "directories" : {},
+   "module" : "src/SDK3D.js",
    "main" : "dist/GpSDK3D-src.js",
    "author" : "IGNF",
-   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "license" : "CECILL-B",
-   "date" : "03/04/2023",
-   "version" : "3.3.25",
    "files" : [
       "dist/",
       "src/",
@@ -20,6 +20,16 @@
       "README.md",
       "package.json"
    ],
+   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/IGNF/geoportal-sdk.git"
+   },
+   "version" : "3.4.0",
+   "scripts" : {},
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
    "keywords" : [
       "openlayers",
       "itowns",
@@ -27,16 +37,6 @@
       "webservice",
       "javascript"
    ],
-   "dependencies" : {
-      "ol" : "6.9.0",
-      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/feature/adaptations-gpf/build/scripts/release/geoportal-extensions-openlayers-3.2.21.tgz",
-      "geoportal-extensions-itowns" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/feature/adaptations-gpf/build/scripts/release/geoportal-extensions-itowns-2.3.10.tgz",
-      "xmldom" : "^0.1.27",
-      "node-fetch" : "^2.6.1",
-      "itowns" : "2.38.2"
-   },
-   "repository" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk.git",
-      "type" : "git"
-   }
+   "license" : "CECILL-B",
+   "date" : "07/06/2023"
 }
