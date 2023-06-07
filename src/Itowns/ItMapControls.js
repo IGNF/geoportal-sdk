@@ -197,7 +197,7 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
     }
     if (opts.layer) {
         ovControlOptions.layer = opts.layer;
-        // conf d'une couche, possibilité de ne pas utiliser l'autoconf !
+        // conf d'une couche, possibilité de ne pas utiliser la configuration !
         if (!this._isConfLoaded) {
             ovControlOptions.layer.apiKey = this.apiKey;
         }
@@ -211,14 +211,14 @@ ItMap.prototype.addOverviewControl = function (controlOpts) {
         ovControlOptions.layer.source = new WMTSSource(ovControlOptions.layer.source);
         ovControlOptions.layer = new ColorLayer(ovControlOptions.layer.id, ovControlOptions.layer);
     } else if (controlOpts.layerId) {
-        // utilisation de l'autoconf !
+        // utilisation de la config !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : controlOpts.layerId,
             ssl : true
         });
     } else {
         // orthophotos layer by default on the miniglobe
-        // utilisation de l'autoconf !
+        // utilisation de la config !
         ovControlOptions.layer = new itownsExtended.layer.GeoportalWMTS({
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             ssl : true

@@ -193,8 +193,8 @@ var mapLoadedEvent = {
  * | mapEventsOptions | Object | optional | | Map's events to listen for interaction. Associative array mapping an event from the map (keys) with a function triggered by this event (values given as {Function}). See [Gp.Map.listen()](Gp.Map.html#.listen) for available event Ids and their associated events objects. |
  * | minZoom | Integer | optional | 0 | Zoom level beyond which the user can't zoom out. |
  * | maxZoom | Integer | optional | 21 | Zoom level beyond which the user can't zoom in. |
- * | configUrl or AutoConfUrl | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param. See this [tutorial](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/tutorial-optimize-getconfig.html) to generate a config file suitable with this parameter. |
- * | reloadConfig | Boolean | optional | true | Disable / enable autoconfiguration service. If true, the autoconfiguration service is load for loading the map. If false, the autoconfiguration service is not used, if configUrl is not specified and if apiKey is specified. Only use if you know what you're doing. |
+ * | customConfigFile | String | optional | | Geoportal config url to use instead of the default dynamic configuration service based on apiKey param.|
+ * | reloadConfig | Boolean | optional | true | Disable / enable use of the Config service. If true, the configuration service is load for loading the map. If false, the configuration is not used, if customConfigFile is not specified and if apiKey is specified. Only use if you know what you're doing. |
  * | proxyUrl | String | optional | | Proxy URL to avoid cross-domain problems on external resources. Only use if you know what you're doing. |
  * | noProxyDomains | Array.<String> | optional | | Proxy will not be used for this list of domain names. Only use if you know what you're doing. |
  *
@@ -284,12 +284,10 @@ var autoPanOptions = {
  * | description | String | The layer's description. |
  * | opacity | Float | The layer's opacity (between 0 and 1). Default value is 1. |
  * | visibility | Boolean |  If true, the layer is visible. Default value is true. |
- * | minZoom | Integer | If the current zoom level is lower than the minZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the minZoom of the map. |
- * | maxZoom | Integer | If the current zoom level is upper than the maxZoom of the layer, the layer is not displayed. Default value is given by the autoconfiguration service for Geoportal layers. For others layers, default value is the maxZoom of the map. |
+ * | minZoom | Integer | If the current zoom level is lower than the minZoom of the layer, the layer is not displayed. Default value is given by the configuration service for Geoportal layers. For others layers, default value is the minZoom of the map. |
+ * | maxZoom | Integer | If the current zoom level is upper than the maxZoom of the layer, the layer is not displayed. Default value is given by the configuration service for Geoportal layers. For others layers, default value is the maxZoom of the map. |
  * | position | Number | The layer's position in map, compared to other layers positions. Allows to organize layers order explicitely. By default the layer will be displayed above other layers. |
- * | legends | Array[[Gp.Services.Config.Legend](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Legend.html)] | The layer's legends links. |
- * | metadata | Array[[Gp.Services.Config.Metadata](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Metadata.html)] | The layer's metadata links. |
- * | originators | Array[[Gp.Services.Config.Originator](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Services.Config.Originator.html)] | Options about the layers's providers. |
+ * | legends | Array[[Gp.Config.Legend](https://ignf.github.io/geoportal-access-lib/latest/jsdoc/Gp.Config.Legend.html)] | The layer's legends links. |
  *
  * ### WMTS specific properties
  *

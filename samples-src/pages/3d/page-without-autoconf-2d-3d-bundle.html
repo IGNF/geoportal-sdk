@@ -255,18 +255,21 @@
                 // }
                 overview : {
                     maximised : true,
-                    layers : [{
-                        format : "wmts",
-                        minZoom : 0,
-                        maxZoom : 16,
+                    layer : [{
                         visibility : true,
                         opacity : 0.5,
-                        url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
-                        layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
-                        tileMatrixSet : "PM",
-                        styleName : "normal",
-                        outputFormat : "image/jpeg",
-                        projection : "EPSG:3857"
+                        source: {
+                          url : "https://wxs.ign.fr/{{apikey5}}/geoportail/wmts",
+                          layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+                          tileMatrixSet : "PM",
+                          styleName : "normal",
+                          format : "image/png",
+                          projection : "EPSG:3857",
+                          zoom : {
+                                min : 1,
+                                max : 21
+                            }
+                        }
                     }]
                 }
             }

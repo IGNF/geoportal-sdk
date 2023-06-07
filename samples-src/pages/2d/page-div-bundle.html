@@ -37,7 +37,7 @@
 {{#content "js"}}
     <script>
         var map1 = Gp.Map.load('geoportalMap1', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            apiKey : "{{apikey}}",
             layersOptions : {
                 "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" : {}
             },
@@ -51,7 +51,7 @@
             mapEventsOptions : {
                 "mapLoaded" : function (evt) {
                     var map2 = Gp.Map.load(document.getElementById('geoportalMap2'), {
-                        configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                        customConfigFile : "{{resources}}/ConfigFile/fullConfig.json", // apiKey : "{{apikey}}",
                         layersOptions : {
                             "ORTHOIMAGERY.ORTHOPHOTOS" : {}
                         },

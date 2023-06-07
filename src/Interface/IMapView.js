@@ -11,53 +11,12 @@ import { Services } from "geoportal-extensions-openlayers";
  * @private
  */
 IMap.prototype.centerGeocode = function (opts) {
-    // FIXME Config est créé en runtime dans la variable globale Gp
-    var scope = typeof window !== "undefined" ? window : {};
-    var Config = scope.Gp ? scope.Gp.Config : undefined;
-    var keys;
-
-    // le centrage par geocodage n'est possible que si l'utilisateur a les
-    // droits sur le service.
-    if (this.apiKey) {
-        // on transforme la liste de clés en tableau
-        this.logger.info("retrieve apiKeys from apiKey list");
-        keys = this.apiKey.split(",");
-    } else if (Config && Config.generalOptions && Config.generalOptions.apiKeys) {
-        this.logger.info("retrieve apiKeys from config");
-        keys = Object.keys(Config.generalOptions.apiKeys);
-    } else {
-        this.logger.info("no rights for geocoding services");
-        return;
-    }
-
-    // On cherche les types de géocodage disponibles
-    var layersIds = {};
-
-    // si plusieurs clés en entrée, on récupère toutes les ressources par clé,
-    // et on recherche une clef qui autorise le geocodage
-    var locType = opts.locationType || "StreetAddress"; // par defaut dans le service
-    var index = null;
-    var key = null;
-    for (var i = 0; i < keys.length; i++) {
-        layersIds[keys[i]] = Config.getLayersId(keys[i]);
-        if (layersIds[keys[i]].indexOf(locType + "$OGC:OPENLS;Geocode") >= 0) {
-            this.logger.trace("[IMap] centerGeocode : found rights for " + locType);
-            index = locType;
-            key = keys[i];
-        }
-    }
-
-    // Si on n'a rien trouve, on ne peut pas geocoder
-    if (!index) {
-        this.logger.info("no rights for geocoding services");
-        return;
-    }
     var map = this;
-    // On appelle le service de geocodage avec la première clé ayant accès à une ressource de géocodage
+    // On appelle le service de geocodage avec la clé calcul
     Services.geocode({
-        apiKey : key,
+        apiKey : "calcul",
         query : opts.location,
-        index : index,
+        index : "StreetAddress",
         // si le service de geocodage répond
         onSuccess : function (geocodeResponse) {
             map.logger.trace("[IMap] found center by geocoding (" + geocodeResponse.locations[0].position.lon + ", " + geocodeResponse.locations[0].position.lat + ")");

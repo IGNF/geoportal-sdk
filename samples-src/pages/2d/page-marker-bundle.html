@@ -34,7 +34,7 @@
 {{#content "js"}}
     <script>
         Gp.Map.load('geoportalMap1', {
-            configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+            apiKey : "{{apikey}}",
             zoom : 18,
             center : {
                 x : 261419,
@@ -60,7 +60,7 @@
 
         function loadMap2() {
             Gp.Map.load('geoportalMap2', {
-                configUrl : "{{resources}}/autoconf.js",
+                customConfigFile : "{{resources}}/ConfigFile/fullConfig.json",
                 apiKey : "{{apikey}}",
                 zoom : 18,
                 center : {
@@ -88,7 +88,7 @@
 
         function loadMap3() {
             Gp.Map.load('geoportalMap3', {
-                configUrl : "{{resources}}/autoconf.js", // apiKey : "{{apikey}}",
+                customConfigFile : "{{resources}}/ConfigFile/fullConfig.json", // apiKey : "{{apikey}}",
                 zoom : 18,
                 center : {
                     x : 261419,
