@@ -3,7 +3,8 @@ import Logger from "../Utils/LoggerByDefault";
 import { transform as olTransformProj } from "ol/proj";
 import {
     Services,
-    ProxyUtils
+    ProxyUtils,
+    ColorUtils
 } from "geoportal-extensions-openlayers";
 import { MapLoader } from "../Utils/MapLoader";
 
@@ -65,32 +66,58 @@ var switch2D3D = function (viewMode) {
                     case "ROUTE":
                     case "ISOCURVE":
                     case "ELEVATIONPATH":
+                        var control = this.getLibMapControl(layer.options.control.toLowerCase());
+
                         // on distingue le cas d'un import de calcul et un calcul en cours...
-                        oldMap.layersOptions[layer.id].controlOptions = (Object.keys(layer.options.controlOptions).length === 0)
-                            ? this.getLibMapControl(layer.options.control.toLowerCase()).getData() : layer.options.controlOptions;
-                        // on distingue le cas d'un import de calcul et un calcul en cours...
-                        geojsonStr = (Object.keys(layer.options.data).length === 0)
-                            ? this.getLibMapControl(layer.options.control.toLowerCase()).getGeoJSON() : layer.options.data;
+                        oldMap.layersOptions[layer.id].controlOptions = (Object.keys(layer.options.controlOptions).length === 0) ? control.getData() : layer.options.controlOptions;
+
+                        geojsonStr = (Object.keys(layer.options.data).length === 0) ? control.getGeoJSON() : layer.options.data;
+
                         // on parse le geojson pour y ajouter des properties de styles (2D et 3D)
                         geojsonObj = JSON.parse(geojsonStr);
+
+                        // transmettre les styles du controles 2D vers 3D
+                        var styles = control.getStyle();
                         geojsonObj.features.forEach(feature => {
                             if (!feature.properties) {
                                 feature.properties = {};
                             }
-                            // style propre à la 3D
                             if (feature.geometry.type === "Point") {
-                                feature.properties.icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAmCAYAAABpuqMCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQxSURBVFiF3ZldaBxVFMd/d2ayTRtjQpo2mlilWBEMshoj+FAERZIHIdA3iw+V1icRREFIQAKNgsUHQfBFwZI2WgWxqYUiVTDBBj9ILC5Nu2tjdjemsR+mSZNNNvsxO8eHTTRuk+zMnQmCf9iHnXvO+Z//nDvn3rmjRIT/C6zAI4ZVFRbtKDpQNCM0AvXANIo/EC4inMbmLBFZDJJaBVaZJ9Sd2HQCrwDbXHikgfewOMKPMh9ECsGIeVx1IHxEsQJeMY3iEMNy2m8aht8AtKpOhH70hADUI/TTqjr9puKvMsUE3vabxCp0MSJHdJ31xRSnVj9BVPcfOCj26U45PTHFh30c/am1EaaxuF+nKejd1WLX2gwhAPXL8T3De2XCqooKbuCu/eoiTZ6dXtch75WxaMeNENOyOXx8kHOpGMPOIudSMQ4fH8S0bBcs25Z5PMF7ZVpVL3BgQxvTsvn6+kVq6sK3jc3NRGhraKZgl9t9HGNEXvCSmvfKKJrL2nQfHVpTCEBNXZjuo0OB8JTAu5jiXmtjPL3vLl/jbnlKoNPN6spaVFbt8jXulqcEOmKSZS0yi5O+xt3ylEBHTLSsxbf913yNu+UpgU4DKE/Sc3AvczORNcfmZiL0HNwbCE8JvItxWDvJ1SjYFm0NzZzpG2RpIYbIIksLMc70Dbpsy+54SqCzzlQAY8B9Xsk8YAJ4gBHJe3HyXpkRyaN407OfN7zlVQjobjTv4BgQ1/ItjzjV9Oo46okZEBuhS8u3PDoZEDf7t9vg903zBLBfP8C/4cAnD87teclIGyFlLoVyllWh8vmQYRgVAOI4OQmFciKSFZFsMpmck1UC/Il5VNViEgHu9StkQYyb7bNNH1wrmDm3PgqWUHLBhl+SyeRV/6czLepJDAbw8fos4HTNb+/9PFv9u3YMU/X6f38/L98B7/gJ8U2uasiPEADTcRqDOozoBn7WcbzqmFOvpnYM+uTPpvP5SDBiimvP8xRPKV3DFpV7fX7HyYyD44M96xicmpqaSgd3TDQsv6J4zYvLx5nqsz/kK29qcyq5kFpafD+RSMSKf4P+CvCY+hJFRzmzmB2KPTvb+JnX8CsdzDGM8/F4/PrqseC/AggvZlGXtyipXc8kLcbCy6mdrg/6lBIbR41DYXR8cjIqIoW17IIXc17+nHnEOnS3VfhiHQt5d7HmVMK2Nn6+DHLiOGMmRLdMVI+NymjZ9Sf4abaMqZbQp01G/rnS60P5rT8duNXw1TpuGaXksmMYlxKJxLiIt23NponhKVV5a874rdZwmlYuTTvmjWdmGj9Mifl3kkpJ2hGJGY4THb9yJS4i2p0t+Gm2ggHJxMNb94eNzIAJZgEKbyxsP5kS00ZJSkG0oFQ0mZyYkKDuqIhs6u/7hyt75luM2RMPVfft3rW7bU9T0z2bxbV50+w/wF8f81R5OpwBhwAAAABJRU5ErkJggg==";
-                            }
-                            // style pour la 2D et 3D
-                            if (feature.geometry.type === "LineString") {
-                                feature.properties["stroke"] = "#00B798";
-                                feature.properties["stroke-opacity"] = 0.9;
-                                feature.properties["stroke-width"] = 12;
-                            }
-                            // style pour la 2D et 3D
-                            if (feature.geometry.type === "Polygon") {
-                                feature.properties["fill"] = "#00B798";
-                                feature.properties["fill-opacity"] = 0.7;
+                                // INFO
+                                // le style est propre à la 3D
+                                // les controles ne fournissent pas les styles des icones
+                                // le style est present dans le format
+                                feature.properties.icon = feature.properties["marker-symbol"];
+                                // FIXME transmettre l'offset !
+                            } else if (feature.geometry.type === "LineString") {
+                                // style pour la 2D et 3D
+                                var colorStroke = {};
+                                if (ColorUtils.isRGB(styles.getStroke().getColor())) {
+                                    colorStroke = ColorUtils.rgbaToHex(styles.getStroke().getColor());
+                                } else {
+                                    colorStroke = {
+                                        hex : styles.getStroke().getColor(),
+                                        opacity : 1
+                                    };
+                                }
+                                feature.properties["stroke"] = colorStroke.hex || "#00B798";
+                                feature.properties["stroke-opacity"] = colorStroke.opacity || 0.9;
+                                feature.properties["stroke-width"] = styles.getStroke().getWidth() || 12;
+                            } else if (feature.geometry.type === "Polygon") {
+                                // style pour la 2D et 3D
+                                var colorFill = {};
+                                if (ColorUtils.isRGB(styles.getFill().getColor())) {
+                                    colorFill = ColorUtils.rgbaToHex(styles.getFill().getColor());
+                                } else {
+                                    colorFill = {
+                                        hex : styles.getFill().getColor(),
+                                        opacity : 1
+                                    };
+                                }
+                                feature.properties["fill"] = colorFill.hex || "#00B798";
+                                feature.properties["fill-opacity"] = colorFill.opacity || 0.7;
+                            } else {
+                                // ...
                             }
                         });
                         oldMap.layersOptions[layer.id].data = JSON.stringify(geojsonObj);
