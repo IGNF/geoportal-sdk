@@ -192,7 +192,7 @@ IMap.prototype.addLayers = function (layersOptions) {
                 // on a trouve la couche Geoportail : on rajoute sa configuration à ses options.
                 this.logger.trace("[IMap] addLayers : [" + layerId + "] is a geoportalLayer. Adding inner properties.");
                 addLayerParam[layerId].format = format;
-                addLayerParam[layerId].originators = addLayerParam[layerId].originators;
+                addLayerParam[layerId].originators = [];
                 // options du layerswitcher
                 addLayerParam[layerId] = this._layerOptions2layerConf(layerConf, addLayerParam[layerId]);
             }
