@@ -860,7 +860,10 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
 
     // Et, si la couche est toujours non reconnue !?
     if (layerId === "unknownLayer") {
-        return; // pas super...
+        if (layerObj.getProperties) {
+            layerId = layerObj.getProperties().id;
+        }
+        // return; // pas super...
     }
 
     // on rajoute un timestamp
