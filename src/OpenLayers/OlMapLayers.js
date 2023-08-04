@@ -867,11 +867,16 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
 
     // Et, si la couche est toujours non reconnue !?
     if (layerId === "unknownLayer") {
-        return; // pas super...
+        // la couche est-elle une couche openlayers ?
+        if (layerObj.getProperties) {
+            // le layerId est l'id renseigné par l'utilisateur
+            layerId = layerObj.getProperties().id;
+        }
+    } else {
+        // dans le cas des couches import/compute
+        // on rajoute au layer Id un timestamp pour utilisation sur le portail
+        layerId += "-" + Date.now();
     }
-
-    // on rajoute un timestamp
-    layerId += "-" + Date.now();
 
     this._layers.push({
         id : layerId,

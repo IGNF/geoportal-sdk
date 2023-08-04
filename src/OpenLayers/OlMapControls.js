@@ -766,7 +766,9 @@ OlMap.prototype.addLayerSwitcherControl = function (controlOpts) {
         // INFO : les couches Geoportail sont aussi configurées.
         var layerConf = {
             layer : layer.obj,
-            config : {}
+            config : {
+                id : layer.id
+            }
         };
         if (layer.options.title) {
             this.logger.trace("[OlMap] : layerSwitcher : setting title to [" + layer.options.title + "] for layer " + layer.id);
