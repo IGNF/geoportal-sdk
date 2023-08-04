@@ -1,35 +1,4 @@
 {
-   "name" : "@ignf-geoportal/sdk-3d",
-   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "dependencies" : {
-      "ol" : "6.9.0",
-      "geoportal-extensions-openlayers" : "3.3.1",
-      "itowns" : "2.38.2",
-      "geoportal-extensions-itowns" : "2.4.1",
-      "node-fetch" : "^2.6.1",
-      "xmldom" : "^0.1.27"
-   },
-   "directories" : {},
-   "module" : "src/SDK3D.js",
-   "main" : "dist/GpSDK3D-src.js",
-   "author" : "IGNF",
-   "files" : [
-      "dist/",
-      "src/",
-      "LICENCE.md",
-      "README.md",
-      "package.json"
-   ],
-   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
-   "repository" : {
-      "type" : "git",
-      "url" : "https://github.com/IGNF/geoportal-sdk.git"
-   },
-   "version" : "3.4.0",
-   "scripts" : {},
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
    "keywords" : [
       "openlayers",
       "itowns",
@@ -37,6 +6,37 @@
       "webservice",
       "javascript"
    ],
+   "scripts" : {},
+   "date" : "04/08/2023",
+   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "main" : "dist/GpSDK3D-src.js",
+   "module" : "src/SDK3D.js",
+   "directories" : {},
    "license" : "CECILL-B",
-   "date" : "07/06/2023"
+   "files" : [
+      "dist/",
+      "src/",
+      "LICENCE.md",
+      "README.md",
+      "package.json"
+   ],
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
+   "version" : "3.4.2",
+   "dependencies" : {
+      "geoportal-extensions-openlayers" : "3.3.3",
+      "ol" : "6.9.0",
+      "node-fetch" : "^2.6.1",
+      "geoportal-extensions-itowns" : "2.4.3",
+      "itowns" : "2.38.2",
+      "xmldom" : "^0.1.27"
+   },
+   "name" : "@ignf-geoportal/sdk-3d",
+   "repository" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk.git",
+      "type" : "git"
+   },
+   "author" : "IGNF",
+   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html"
 }

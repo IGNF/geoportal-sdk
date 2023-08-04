@@ -390,6 +390,8 @@ OlMap.prototype._addVectorLayer = function (layerObj) {
             break;
         case "COMPUTE":
         case "GEOJSON":
+            // INFO
+            // par defaut, les couches de calculs sont au format GeoJSON depuis l'espace personnel.
             this.logger.trace("[_addVectorLayer] : ajout d'une couche GeoJSON");
             if (layerOpts.url) {
                 constructorOpts.source = new VectorSource({
@@ -745,10 +747,13 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
 
     switch (layerId.toLowerCase()) {
         case "measure:profil":
+            // INFO
+            // C'est une couche issue de l'outil d'import
             options.format = "COMPUTE";
             options.graph = null;
             options.control = "elevationpath";
             options.title = "Profil altimétrique";
+            options.name = "profil altimetrique";
             options.description = "Profil altimétrique";
             options.controlOptions = this.getLibMapControl(options.control.toLowerCase()).getData();
             options.data = this.getLibMapControl(options.control.toLowerCase()).getGeoJSON();
@@ -792,10 +797,12 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
             break;
         case "layerimport:compute":
             // INFO
-            // Le widget d'import recherche si le fichier KML, GeoJSON ou GPX
-            // est un fichier de calcul avec la lecture de la balise 'geoportail:compute'.
-            // Si oui, property 'gpResultLayerId' -> 'layerimport:COMPUTE'
-            // Et, les options utiles au calcul sont dans les properties de la couche.
+            // C'est une couche issue de l'outil d'import.
+            // Les étapes de l'import :
+            // * recherche si le fichier KML, GeoJSON ou GPX est un fichier de calcul avec la lecture de la balise 'geoportail:compute'.
+            // * modification de la property 'gpResultLayerId' -> 'layerimport:COMPUTE'
+            // * ajout des options du calcul dans les properties de la couche
+            // * initialisation du contrôle avec les params de calcul
             options.format = "COMPUTE";
             var prop = layerObj.getProperties();
             options.graph = prop.graph;
@@ -824,7 +831,7 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
         case "pieton$ogc:openls;itineraire":
         case "pieton$geoportail:gpp:itineraire":
             // INFO
-            // Couches de calculs en cours avec les widgets :
+            // C'est une couche de calcul en cours de traitement avec les widgets :
             // - isocurve
             // - route
             var key = layerId.toLowerCase();
@@ -860,11 +867,16 @@ OlMap.prototype._registerUnknownLayer = function (layerObj) {
 
     // Et, si la couche est toujours non reconnue !?
     if (layerId === "unknownLayer") {
-        return; // pas super...
+        // la couche est-elle une couche openlayers ?
+        if (layerObj.getProperties) {
+            // le layerId est l'id renseigné par l'utilisateur
+            layerId = layerObj.getProperties().id;
+        }
+    } else {
+        // dans le cas des couches import/compute
+        // on rajoute au layer Id un timestamp pour utilisation sur le portail
+        layerId += "-" + Date.now();
     }
-
-    // on rajoute un timestamp
-    layerId += "-" + Date.now();
 
     this._layers.push({
         id : layerId,

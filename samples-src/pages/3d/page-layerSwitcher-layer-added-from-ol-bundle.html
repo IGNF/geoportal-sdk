@@ -1,0 +1,102 @@
+{{#extend "sample-bundle-layout-3d"}}
+
+{{#content "head"}}
+<title>Sample SDK 3D Layer Switcher</title>
+{{/content}}
+
+{{#content "style"}}
+<style>
+  #viewerDiv {
+    height: 600px;
+    width: 100%;
+    position: "relative";
+  }
+</style>
+{{/content}}
+
+{{#content "body"}}
+<h1>Test de l'ajout du control LayerSwitcher</h1>
+<div id="BoutonSwitchToItowns">
+  <input type="button" name="switch" onclick="switchTo3D();" value="Switch from 2D to 3D" /><br />
+</div>
+<div id="BoutonSwitchToOl" hidden>
+  <input type="button" name="switch" onclick="switchTo2D();" value="Switch from 3D to 2D" /><br />
+</div>
+<div id="viewerDiv"></div>
+{{/content}}
+
+{{#content "js"}}
+<script>
+  var map = Gp.Map.load("viewerDiv", {
+    customConfigFile: "{{resources}}/ConfigFile/fullConfig.json",
+    viewMode: "2d",
+    controlsOptions: {
+      layerSwitcher: {
+        maximised: true
+      }
+    },
+    layersOptions: {
+      "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2": {
+        originators: [{
+          "name": "IGN",
+          "attribution": "Institut national de l'information géographique et forestière",
+          "url": "http://www.ign.fr",
+          "constraints": [{ "crs": "EPSG:4326", "bbox": { "left": -63.09696, "right": 55.826077, "top": 51.073032, "bottom": -21.385712 }, "minScaleDenominator": 0, "maxScaleDenominator": 559082265, "temporalExtent": ["2016-02-18", "2016-02-18"] }]
+        }]
+      }
+    },
+    center: {
+      x: 850357,
+      y: 6204583
+    },
+    zoom: 14
+  });
+
+  const resolutions = [];
+  const matrixIds = [];
+  const proj3857 = ol.proj.get('EPSG:3857');
+  const maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
+
+  for (let i = 0; i < 20; i++) {
+    matrixIds[i] = i.toString();
+    resolutions[i] = maxResolution / Math.pow(2, i);
+  }
+
+  const tileGrid = new ol.tilegrid.WMTS({
+    origin: [-20037508, 20037508],
+    resolutions: resolutions,
+    matrixIds: matrixIds
+  });
+
+  var orthoSource = new ol.source.WMTS({
+    url: 'https://wxs.ign.fr/{{apikey3}}/geoportail/wmts',
+    layer: 'ORTHOIMAGERY.ORTHOPHOTOS',
+    matrixSet: 'PM',
+    format: 'image/jpeg',
+    projection: 'EPSG:3857',
+    tileGrid: tileGrid,
+    style: 'normal',
+    wrapX: true
+  });
+
+  var orthoLayer = new ol.layer.Tile({
+    source: orthoSource,
+    id: 'orthoIGN'
+  });
+
+  map.getLibMap().addLayer(orthoLayer);
+  function switchTo3D() {
+    map = map.switch2D3D("3d");
+    document.getElementById("BoutonSwitchToOl").style.display = "inline";
+    document.getElementById("BoutonSwitchToItowns").style.display = "none";
+  };
+
+  function switchTo2D() {
+    map = map.switch2D3D("2d");
+    document.getElementById("BoutonSwitchToItowns").style.display = "inline";
+    document.getElementById("BoutonSwitchToOl").style.display = "none";
+  };
+  
+</script>
+{{/content}}
+{{/extend}}
