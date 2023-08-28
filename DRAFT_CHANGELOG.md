@@ -6,15 +6,11 @@
 
 ## Summary
 
-Mise à jour des extensions Géoportail pour OpenLayers en version 3.3.4
-
 ## Changelog
 
 * [Added]
 
 * [Changed]
-
-    - ext-ol 3.3.4
 
 * [Removed]
 
