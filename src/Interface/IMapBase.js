@@ -589,6 +589,8 @@ IMap.prototype = {
             // on essaye de trouver une configuration existante
             if (Config) {
                 this.apiKey = Object.keys(Config.generalOptions.apiKeys);
+            } else {
+                this.apiKey = "full";
             }
         }
 
