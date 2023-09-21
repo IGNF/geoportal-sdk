@@ -590,7 +590,9 @@ IMap.prototype = {
             if (Config) {
                 this.apiKey = Object.keys(Config.generalOptions.apiKeys);
             } else {
+                // clé full par défaut et on charge la config
                 this.apiKey = "full";
+                needsGetConfig = true;
             }
         }
 
