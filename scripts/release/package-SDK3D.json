@@ -1,34 +1,24 @@
 {
-   "directories" : {},
-   "module" : "src/SDK3D.js",
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
-   "dependencies" : {
-      "geoportal-extensions-itowns" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/releases-gpf-beta/build/scripts/release/geoportal-extensions-itowns-2.5.0-beta2.tgz",
-      "xmldom" : "^0.1.27",
-      "ol" : "6.9.0",
-      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/releases-gpf-beta/build/scripts/release/geoportal-extensions-openlayers-3.4.0-beta2.tgz",
-      "itowns" : "2.38.2",
-      "node-fetch" : "^2.6.1"
-   },
-   "files" : [
-      "dist/",
-      "src/",
-      "LICENCE.md",
-      "README.md",
-      "package.json"
-   ],
-   "name" : "@ignf-geoportal/sdk-3d",
    "main" : "dist/GpSDK3D-src.js",
-   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
-   "version" : "3.5.0-beta",
    "repository" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk.git",
-      "type" : "git"
+      "type" : "git",
+      "url" : "https://github.com/IGNF/geoportal-sdk.git"
    },
-   "date" : "21/09/2023",
    "license" : "CECILL-B",
+   "dependencies" : {
+      "geoportal-extensions-itowns" : "2.5.0-beta2",
+      "itowns" : "2.38.2",
+      "node-fetch" : "^2.6.1",
+      "xmldom" : "^0.1.27",
+      "geoportal-extensions-openlayers" : "3.4.0-beta2",
+      "ol" : "6.9.0"
+   },
+   "scripts" : {},
+   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "directories" : {},
+   "name" : "@ignf-geoportal/sdk-3d",
+   "version" : "3.5.0-beta2",
+   "date" : "30/10/2023",
    "keywords" : [
       "openlayers",
       "itowns",
@@ -36,7 +26,17 @@
       "webservice",
       "javascript"
    ],
-   "scripts" : {},
+   "files" : [
+      "dist/",
+      "src/",
+      "LICENCE.md",
+      "README.md",
+      "package.json"
+   ],
+   "author" : "IGNF",
    "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "author" : "IGNF"
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
+   "module" : "src/SDK3D.js"
 }
