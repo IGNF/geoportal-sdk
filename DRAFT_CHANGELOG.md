@@ -6,7 +6,7 @@
 
 ## Summary
 
-Release 3.5.0-beta2 : utilisation du service de Geocodage de la Geoplateforme
+Release 3.5.0-beta3 : ajout possible de couches à accès restreint avec clé personnelle via un fichier de configuration custom
 
 ## Changelog
 
@@ -14,9 +14,8 @@ Release 3.5.0-beta2 : utilisation du service de Geocodage de la Geoplateforme
 
 * [Changed]
 
-    - Les widgets utilisent le service d'automplétion, de geocodage direct et inverse de la Geoplateforme
-    - Extensions en beta2
-    - Bibliothèque d'accès en beta2
+    - L'ajout simplifié de couches WMTS/WMS en accès restreint de l'IGN sur la Géoplateforme est possible.
+    - Extensions en beta3
 
 * [Removed]
 
