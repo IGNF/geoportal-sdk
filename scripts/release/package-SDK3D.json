@@ -1,5 +1,5 @@
 {
-   "date" : "23/11/2023",
+   "date" : "15/12/2023",
    "author" : "IGNF",
    "bugs" : {
       "url" : "https://github.com/IGNF/geoportal-sdk/issues"
@@ -10,8 +10,8 @@
       "itowns" : "2.38.2",
       "ol" : "6.9.0",
       "xmldom" : "^0.1.27",
-      "geoportal-extensions-openlayers" : "3.4.0-beta3",
-      "geoportal-extensions-itowns" : "2.5.0-beta3",
+      "geoportal-extensions-openlayers" : "3.4.0-beta4",
+      "geoportal-extensions-itowns" : "2.5.0-beta4",
       "node-fetch" : "^2.6.1"
    },
    "license" : "CECILL-B",
@@ -23,7 +23,7 @@
       "url" : "https://github.com/IGNF/geoportal-sdk.git",
       "type" : "git"
    },
-   "version" : "3.5.0-beta3",
+   "version" : "3.5.0-beta4",
    "files" : [
       "dist/",
       "src/",

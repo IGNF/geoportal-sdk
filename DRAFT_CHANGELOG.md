@@ -6,7 +6,7 @@
 
 ## Summary
 
-Release 3.5.0-beta3 : ajout possible de couches à accès restreint avec clé personnelle via un fichier de configuration custom
+Release 3.5.0-beta4 : branchement au service d'altimétrie de la Géoplateforme
 
 ## Changelog
 
@@ -14,8 +14,8 @@ Release 3.5.0-beta3 : ajout possible de couches à accès restreint avec clé pe
 
 * [Changed]
 
-    - L'ajout simplifié de couches WMTS/WMS en accès restreint de l'IGN sur la Géoplateforme est possible.
-    - Extensions en beta3
+    - Bibliothèque d'accès aux services en beta 4
+    - Extensions en beta 4
 
 * [Removed]
 
