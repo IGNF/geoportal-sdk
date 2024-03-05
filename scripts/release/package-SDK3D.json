@@ -1,28 +1,21 @@
 {
    "date" : "15/12/2023",
-   "author" : "IGNF",
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
-   "scripts" : {},
-   "main" : "dist/GpSDK3D-src.js",
-   "dependencies" : {
-      "itowns" : "2.38.2",
-      "ol" : "6.9.0",
-      "xmldom" : "^0.1.27",
-      "geoportal-extensions-openlayers" : "3.4.0-beta4",
-      "geoportal-extensions-itowns" : "2.5.0-beta4",
-      "node-fetch" : "^2.6.1"
-   },
-   "license" : "CECILL-B",
-   "module" : "src/SDK3D.js",
    "name" : "@ignf-geoportal/sdk-3d",
-   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
-   "directories" : {},
+   "author" : "IGNF",
+   "keywords" : [
+      "openlayers",
+      "itowns",
+      "geoportail",
+      "webservice",
+      "javascript"
+   ],
    "repository" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk.git",
-      "type" : "git"
+      "type" : "git",
+      "url" : "https://github.com/IGNF/geoportal-sdk.git"
    },
+   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
+   "main" : "dist/GpSDK3D-src.js",
+   "directories" : {},
    "version" : "3.5.0-beta4",
    "files" : [
       "dist/",
@@ -31,12 +24,19 @@
       "README.md",
       "package.json"
    ],
-   "keywords" : [
-      "openlayers",
-      "itowns",
-      "geoportail",
-      "webservice",
-      "javascript"
-   ],
-   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html"
+   "scripts" : {},
+   "dependencies" : {
+      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/version_portail_temp/build/scripts/release/geoportal-extensions-openlayers-3.4.0-beta4.tgz",
+      "geoportal-extensions-itowns" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/version_portail_temp/build/scripts/release/geoportal-extensions-itowns-2.5.0-beta4.tgz",
+      "xmldom" : "^0.1.27",
+      "ol" : "6.9.0",
+      "node-fetch" : "^2.6.1",
+      "itowns" : "2.38.2"
+   },
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
+   "module" : "src/SDK3D.js",
+   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "license" : "CECILL-B"
 }
