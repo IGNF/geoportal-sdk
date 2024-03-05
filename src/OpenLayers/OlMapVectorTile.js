@@ -1308,14 +1308,15 @@ OlMap.prototype._addMapBoxLayer = function (layerObj) {
                                                     vectorSource = new VectorTileSource({
                                                         attributions : vectorTileJson.getAttributions() || tileJSONContent.attribution,
                                                         format : vectorFormat,
-                                                        // overlaps ?
-                                                        // projection ?
-                                                        tileGrid : olCreateXYZTileGrid({
-                                                            extent : _glSource.bounds, // [minx, miny, maxx, maxy]
-                                                            maxZoom : tileJSONContent.maxzoom || _glSource.maxzoom || 22,
-                                                            minZoom : tileJSONContent.minzoom || _glSource.minzoom || 0,
-                                                            tileSize : tileJSONContent.tileSize || _glSource.tileSize || 256
-                                                        }),
+                                                        // INFO 
+                                                        // on supprime la grille pour forcer l'utilisation par defaut des tuiles en 512
+                                                        // sur du vecteur tuilé
+                                                        // tileGrid : olCreateXYZTileGrid({ // TODO scheme tms ?
+                                                        //     extent : _glSource.bounds, // [minx, miny, maxx, maxy]
+                                                        //     maxZoom : _glSource.maxzoom || 22,
+                                                        //     minZoom : _glSource.minzoom || 1,
+                                                        //     tileSize : _glSource.tileSize || 256
+                                                        // }),
                                                         urls : tiles
                                                     });
                                                     vectorSource._title = _title;
