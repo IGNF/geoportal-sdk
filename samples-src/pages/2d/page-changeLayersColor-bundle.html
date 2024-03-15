@@ -50,7 +50,7 @@
                 maCoucheWFS : {
                     title : "maCoucheWFS",
                     format : "wfs",
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wfs",
+                    url : "https://data.geopf.fr/wfs/ows",
                     typeNames : "BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:commune",
                     version : "2.0.0",
                     outputFormat : "application/json",
@@ -63,7 +63,7 @@
                     format : "wms",
                     queryable : true,
                     tiled : false, // pour test
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
+                    url : "https://data.geopf.fr/wms-v/wms",
                     layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                     outputFormat : "image/png"
                 },
@@ -83,7 +83,7 @@
                     maxZoom : 16,
                     visibility : true,
                     opacity : 0.7,
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                    url : "https://data.geopf.fr/wmts",
                     layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
                     tileMatrixSet : "PM",
                     styleName : "normal",

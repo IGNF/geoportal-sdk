@@ -129,7 +129,7 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
     //      * si déjà chargées sur la carte, on utilise les conf des couches
     //      * si pas chargées sur la carte, on doit les creer :
     //          * si une conf est fournie, on met en place une couche classique
-    //          * si pas de conf fournie, on utlise la couche geoportail avec la configuration
+    //          * si pas de conf fournie, on utlise la couche geoplateforme avec la configuration
     // ex. options layers :
     //  OK  : [LAYER1, LAYER2, LAYER3]
     //  OK  : [{layer:LAYER1...}, {layer:LAYER2...}, {layer:LAYER3...}]
@@ -152,9 +152,9 @@ OlMap.prototype.addOverviewControl = function (controlOpts) {
                 this.logger.trace("[OlMap] addOverviewControl : adding geoportal layer : " + controlOpts.layers[i] + " to map");
                 // la structure du layer est soit :
                 //  (on ajoute l'option apiKey si configuration non chargée)
-                //  - un nom => creation geoportail
+                //  - un nom => creation geoplateforme
                 //  - un objet :
-                //      - avec conf vide => creation geoportail
+                //      - avec conf vide => creation geoplateforme
                 //      - avec conf complete => creation personnalisée
                 var isConfGpp = false;
                 if (typeof controlOpts.layers[i] === "object") {
