@@ -10,8 +10,8 @@
       "itowns" : "2.38.2",
       "ol" : "6.9.0",
       "xmldom" : "^0.1.27",
-      "geoportal-extensions-openlayers" : "3.4.0-beta4",
-      "geoportal-extensions-itowns" : "2.5.0-beta4",
+      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/develop/build/scripts/release/geoportal-extensions-openlayers-3.4.0-beta4.tgz",
+      "geoportal-extensions-itowns" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/develop/build/scripts/release/geoportal-extensions-itowns-2.5.0-beta4.tgz",
       "node-fetch" : "^2.6.1"
    },
    "license" : "CECILL-B",
