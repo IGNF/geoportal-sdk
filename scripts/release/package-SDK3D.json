@@ -1,36 +1,29 @@
 {
-   "license" : "CECILL-B",
+   "date" : "15/12/2023",
    "author" : "IGNF",
-   "name" : "@ignf-geoportal/sdk-3d",
-   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
-   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "bugs" : {
+      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
+   },
    "scripts" : {},
+   "main" : "dist/GpSDK3D-src.js",
+   "dependencies" : {
+      "itowns" : "2.38.2",
+      "ol" : "6.9.0",
+      "xmldom" : "^0.1.27",
+      "geoportal-extensions-openlayers" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/develop/build/scripts/release/geoportal-extensions-openlayers-3.4.0-beta4.tgz",
+      "geoportal-extensions-itowns" : "https://raw.githubusercontent.com/IGNF/geoportal-extensions/develop/build/scripts/release/geoportal-extensions-itowns-2.5.0-beta4.tgz",
+      "node-fetch" : "^2.6.1"
+   },
+   "license" : "CECILL-B",
+   "module" : "src/SDK3D.js",
+   "name" : "@ignf-geoportal/sdk-3d",
+   "description" : "French Geoportal SDK based on OpenLayers (2D) and iTowns (3D) libraries",
+   "directories" : {},
    "repository" : {
       "url" : "https://github.com/IGNF/geoportal-sdk.git",
       "type" : "git"
    },
-   "main" : "dist/GpSDK3D-src.js",
-   "keywords" : [
-      "openlayers",
-      "itowns",
-      "geoportail",
-      "webservice",
-      "javascript"
-   ],
-   "module" : "src/SDK3D.js",
-   "dependencies" : {
-      "geoportal-extensions-openlayers" : "3.3.3",
-      "itowns" : "2.38.2",
-      "node-fetch" : "^2.6.1",
-      "xmldom" : "^0.1.27",
-      "geoportal-extensions-itowns" : "2.4.3",
-      "ol" : "6.9.0"
-   },
-   "version" : "3.4.3",
-   "directories" : {},
-   "bugs" : {
-      "url" : "https://github.com/IGNF/geoportal-sdk/issues"
-   },
+   "version" : "3.5.0-beta4",
    "files" : [
       "dist/",
       "src/",
@@ -38,5 +31,12 @@
       "README.md",
       "package.json"
    ],
-   "date" : "28/08/2023"
+   "keywords" : [
+      "openlayers",
+      "itowns",
+      "geoportail",
+      "webservice",
+      "javascript"
+   ],
+   "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html"
 }

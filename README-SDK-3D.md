@@ -1,8 +1,8 @@
-# Kit de Développement (SDK) Géoportail - version 3D
+# Kit de Développement (SDK) Web Géoplateforme - version 3D
 
 <!-- toc -->
 
-- [Kit de Développement (SDK) Géoportail - version 3D](#kit-de-développement-sdk-géoportail---version-3d)
+- [Kit de Développement (SDK) Web Géoplateforme - version 3D](#kit-de-développement-sdk-web-géoplateforme---version-3d)
   - [Mise en oeuvre](#mise-en-oeuvre)
     - [Téléchargement](#téléchargement)
       - [Téléchargement direct](#téléchargement-direct)
@@ -12,15 +12,15 @@
     - [Utilisation dans module ES6](#utilisation-dans-module-es6)
     - [Interfaces de programmation](#interfaces-de-programmation)
     - [Création et affichage d'une carte](#création-et-affichage-dune-carte)
-    - [Configuration de l'accès à la plateforme Géoportail](#configuration-de-laccès-à-la-plateforme-géoportail)
+    - [Configuration de l'accès à la Géoplateforme](#configuration-de-laccès-à-la-géoplateforme)
     - [Configuration dynamique](#configuration-dynamique)
     - [Optimisation du chargement : configuration locale](#optimisation-du-chargement--configuration-locale)
     - [Configuration du centrage de la carte](#configuration-du-centrage-de-la-carte)
       - [Centrage par coordonnées](#centrage-par-coordonnées)
-      - [Centrage en utilisant le service de géocodage du Géoportail](#centrage-en-utilisant-le-service-de-géocodage-du-géoportail)
+      - [Centrage en utilisant le service de géocodage du Géoplateforme](#centrage-en-utilisant-le-service-de-géocodage-du-géoplateforme)
       - [Centrage par géolocalisation du terminal utilisé](#centrage-par-géolocalisation-du-terminal-utilisé)
     - [Configuration des couches utilisées pour composer la carte](#configuration-des-couches-utilisées-pour-composer-la-carte)
-      - [Affichage des couches Géoportail WMS et WMTS](#affichage-des-couches-géoportail-wms-et-wmts)
+      - [Affichage des couches Géoplateforme WMS et WMTS](#affichage-des-couches-géoplateforme-wms-et-wmts)
       - [Affichage des couches "externes"](#affichage-des-couches-externes)
     - [Configuration des markers - visu 2D uniquement](#configuration-des-markers---visu-2d-uniquement)
     - [Configuration des outils additionnels à proposer sur la carte](#configuration-des-outils-additionnels-à-proposer-sur-la-carte)
@@ -31,7 +31,7 @@
 
 <!-- tocstop -->
 
-Le Kit de Développement Géoportail dans sa version "SDK 3D" s’adresse à des gestionnaires de site internet désireux de proposer rapidement une cartographie dynamique en 2D et 3D utilisant les fonds IGN sur leur site et faisant appel à des fonctionnalités simples :
+Le Kit de Développement Web Géoplateforme dans sa version "SDK 3D" s’adresse à des gestionnaires de site internet désireux de proposer rapidement une cartographie dynamique en 2D et 3D utilisant les fonds IGN sur leur site et faisant appel à des fonctionnalités simples :
 
 * positionnement de la carte ([centrage, orientation, niveau de zoom](#center))
 
@@ -45,12 +45,12 @@ Le Kit de Développement Géoportail dans sa version "SDK 3D" s’adresse à des
 
 ### Téléchargement
 
-Vous pouvez récupérer le Kit de Développement Géoportail soit par [téléchargement direct](#download-direct), soit en utilisant le [gestionnaire de dépendances javascript NPM](#download-npm).
+Vous pouvez récupérer le Kit de Développement Web Géoplateforme soit par [téléchargement direct](#download-direct), soit en utilisant le [gestionnaire de dépendances javascript NPM](#download-npm).
 
 
 Il contient l'arborescence suivante :
 
-    <Kit de Développement Géoportail>/
+    <Kit de Développement Web Géoplateforme>/
         GpSDK3D.js
             (version minifiée du code javascript pour une utilisation en production)
         GpSDK3D.css
@@ -69,7 +69,7 @@ Il contient l'arborescence suivante :
 
 #### Téléchargement direct
 
-Vous pouvez télécharger la dernière version du Kit de Développement Géoportail directement sur [la page Github des releases du SDK](https://github.com/IGNF/geoportal-sdk/releases).
+Vous pouvez télécharger la dernière version du Kit de Développement Web Géoplateforme directement sur [la page Github des releases du SDK](https://github.com/IGNF/geoportal-sdk/releases).
 
 L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
 
@@ -78,7 +78,7 @@ L'archive téléchargée (GpSDK.zip) comprend l'arborescence décrite ci-dessus.
 
 #### Récupération avec NPM
 
-Le Kit de Développement Géoportail est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/@ignf-geoportal/sdk-3d).
+Le Kit de Développement Web Géoplateforme est aussi disponible dans les dépôts [NPM](https://www.npmjs.com/package/@ignf-geoportal/sdk-3d).
 
 Prérequis : [NodeJS](https://nodejs.org/en/) et [npm](https://www.npmjs.com/) installés.
 
@@ -106,12 +106,12 @@ https://ignf.github.io/geoportal-sdk/latest/dist/3d/GpSDK3D-src.css
 
 ### Intégration dans une page web
 
-Placez les fichiers du SDK géoportail dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
+Placez les fichiers du SDK géoplateforme dans l'arborescence de votre serveur web. Vous pouvez positionner à votre guise les fichiers css et javascript. Le répertoire img doit cependant être positionné au même niveau que le fichier css pour que les ressources images qui y sont référencées soient correctement chargées.
 
-Intégrez le SDK géoportail dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
+Intégrez le SDK géoplateforme dans votre page web classiquement à l'aide d'une balise **script** pour charger le fichier javascript et d'une balise **link** pour charger le fichier css.
 
 ``` html
-<!-- SDK Géoportail -->
+<!-- SDK web Géoplateforme -->
 <script src="chemin/vers/GpSDK3D.js"></script>
 <link rel="stylesheet" href="chemin/vers/GpSDK3D.css" />
 ```
@@ -132,7 +132,7 @@ var map = Gp.Map.load("myDivId",{
 
 ### Interfaces de programmation
 
-Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/); d'[iTowns](https://www.itowns-project.org/itowns/API_Doc/) et de son [extension géoportail dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/).
+Le chargement du SDK vous donne accès à son [interface de programmation](https://ignf.github.io/geoportal-sdk/latest/jsdoc/index.html) en plus des interfaces de programmation de [la bibliothèque d'accès](http://ignf.github.io/geoportal-access-lib/latest/jsdoc/index.html) ; d'[OpenLayers](https://openlayers.org/en/v4.0.1/apidoc/) et de son [extension géoplateforme dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/openlayers/); d'[iTowns](https://www.itowns-project.org/itowns/API_Doc/) et de son [extension géoplateforme dédiée](http://ignf.github.io/geoportal-extensions/current/jsdoc/itowns/).
 
 
 
@@ -187,7 +187,7 @@ Permet, d'afficher une carte avec les options suivantes :
 
 * **viewMode** : "**3d**" pour un chargement de la cartographie en 3D, **avec la librairie iTowns,** ou "**2d**" (par défaut) pour un chargement de la cartographie en 2D, **avec la librairie OpenLayers.** Il sera ensuite possible de basculer d'un mode de visualisation à l'autre (Voir la partie "Bascule entre 2D et 3D).
 
-* **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage du Géoportail) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
+* **centrage** sur l'adresse *"73 avenue de Paris, Saint-Mandé"* (en utilisant le service de géocodage de la Géoplateforme) zoomée au niveau 17 ; ([Plus d'infos sur les possibilités de centrage...](#center))
 
 * **fonds de carte** : ressource *Cartes SCAN Express Standard (GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD*). [Plus d'infos sur le paramétrage des couches...](#layers);
 
@@ -198,9 +198,9 @@ Permet, d'afficher une carte avec les options suivantes :
 
 <a id="config"/>
 
-### Configuration de l'accès à la plateforme Géoportail
+### Configuration de l'accès à la Géoplateforme
 
-Le SDK Géoportail exploite les services web exposés par la plateforme Géoportail. Ceux-ci sont soumis à l'obtention d'une ou de plusieurs **clefs d'accès génériques** obtenues sur le site [geoservices.ign.fr](https://geoservices.ign.fr/services-web) ayant les droits sur les ressources que vous souhaitez exploiter. Il est possible de savoir quelle clef est associée à quelle ressource [ici](https://geoservices.ign.fr/documentation/services/tableau_ressources).
+Le SDK web Géoplateforme exploite les services web exposés par la Géoplateforme. Ceux-ci sont soumis à l'obtention d'une ou de plusieurs **clefs d'accès génériques** obtenues sur le site [geoservices.ign.fr](https://geoservices.ign.fr/services-web) ayant les droits sur les ressources que vous souhaitez exploiter. Il est possible de savoir quelle clef est associée à quelle ressource [ici](https://geoservices.ign.fr/documentation/services/tableau_ressources).
 
 
 ### Configuration dynamique
@@ -278,9 +278,9 @@ var map = Gp.Map.load(
 Plus d'informations sur le paramétrage des projections [ici](#projections).
 
 
-#### Centrage en utilisant le service de géocodage du Géoportail
+#### Centrage en utilisant le service de géocodage de la Géoplateforme
 
-La propriété **location** permet de préciser le lieu à géocoder et la propriété **locationType** permet de préciser le type de Géocodage à appliquer, selon la terminologie suivante (rendez vous [ici](https://geoservices.ign.fr/documentation/geoservices/geocodage.html) pour plus d'informations sur le service de Géocodage du Géoportail...) :
+La propriété **location** permet de préciser le lieu à géocoder et la propriété **locationType** permet de préciser le type de Géocodage à appliquer, selon la terminologie suivante (rendez vous [ici](https://geoservices.ign.fr/documentation/geoservices/geocodage.html) pour plus d'informations sur le service de Géocodage de la Géoplateforme...) :
 
 * "PositionOfInterest" : géocodage par noms de lieux
 
@@ -306,7 +306,7 @@ var map = Gp.Map.load(
 ) ;
 ```
 
-*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la plateforme Géoportail utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
+*NB* : Cette possibilité de centrage ne fonctionne que si au moins [une clef d'accès à la Géoplateforme utilisée pour paramétrer le SDK](#config) possède les droits nécessaires sur les ressources utilisées pour le Géocodage.
 
 
 #### Centrage par géolocalisation du terminal utilisé
@@ -343,12 +343,12 @@ C'est un objet javascript dont chaque propriété va représenter une couche com
 
 Si cette propriété n'est pas renseignée, l'affichage se fera par défaut avec la couche des Photographies aériennes ("ORTHOIMAGERY.ORTHOPHOTOS") servie en images tuilées (WMTS) si la [clef d'accès utilisée pour initialiser la carte](#config) en possède les droits.
 
-Selon le type de couches à afficher ("Géoportail" ou externe), le paramétrage varie.
+Selon le type de couches à afficher ("Géoplateforme" ou externe), le paramétrage varie.
 
 
-#### Affichage des couches Géoportail WMS et WMTS
+#### Affichage des couches Géoplateforme WMS et WMTS
 
-Les couches Géoportail sont les couches auxquelles donne droit [les clefs utilisées pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
+Les couches Géoplateforme sont les couches auxquelles donne droit [les clefs utilisées pour paramétrer la carte](#config). Pour ajouter une telle couche à la carte, il suffit d'utiliser son nom technique comme clef de l'objet **layersOptions** et de passer comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant, si besoin, des propriétés particulières ou vide si la configuration par défaut convient.
 
 Pour afficher un MNT IGN dans un contexte 3D, il suffit de renseigner le paramètre "isElevation" à true.
 
@@ -377,7 +377,7 @@ var map = Gp.Map.load(
 **Voir l'exemple complet sur [jsFiddle](http://jsfiddle.net/ignfgeoportail/ewe0ms98/embedded/result,js,css,html/)**
 
 
-**Exemple 2** : ajout de couches WMS INSPIRE servies par la plateforme Géoportail.
+**Exemple 2** : ajout de couches WMS INSPIRE servies par la Géoplateforme.
 
 ``` javascript
 var map = Gp.Map.load(
@@ -422,7 +422,7 @@ var map = Gp.Map.load(
 
 #### Affichage des couches "externes"
 
-Les couches externes sont des données issues d'autres serveurs que ceux de la plateforme Géoportail. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
+Les couches externes sont des données issues d'autres serveurs que ceux de la Géoplateforme. Pour ajouter de telles couches à la carte, vous utilisez un identifiant de votre choix comme clef de l'objet **layersOptions** et passez comme valeur associée, un objet javascript de type [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html) contenant le paramétrage nécessaire qui permettra au SDK d'afficher la couche.
 
 Les formats supportés par le SDK pour les couches externes sont les suivants :
 
@@ -430,7 +430,7 @@ Pour les données images : WMS, WMTS (Open Street Map uniquement en 2D)
 
 Pour les données vecteur : KML, GPX, GeoJSON (WFS uniquement en 2D)
 
-Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoportail, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
+Le type de couches à afficher, lorsqu'il ne s'agit pas d'une couche Géoplateforme, doit être passé via la propriété "format" de l'objet [Gp.LayerOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.LayerOptions.html).
 
 
 **Exemple** : ajout d'une couche WMS externe.
@@ -637,7 +637,7 @@ L'objet [Gp.MapOptions](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map
 
 La fonction [Gp.Map.load()](https://ignf.github.io/geoportal-sdk/latest/jsdoc/module-Map.html) retourne un objet de type [Gp.Map](https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.Map.html) avec lequel il sera possible d'interagir programmatiquement **à partir du moment où l'événement "mapLoaded" sera émis**.
 
-Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événement à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK Géoportail aura donc l'allure générale suivante :
+Pour un bon fonctionnement, il faut donc conditionner les traitements ultérieurs au chargement de la carte à la réception de cet événement à l'aide de la propriété mapEventsOptions [comme décrit précédemment](#events). Un script javascript utilisant le SDK web Géoplateforme aura donc l'allure générale suivante :
 
 ``` javascript
 

@@ -31,6 +31,12 @@
         var map = Gp.Map.load("viewerDiv", {
             apiKey : "{{apikey}}",
             viewMode : "3d",
+            layersOptions : {
+                "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN50.1950" : {},
+                "ELEVATION.ELEVATIONGRIDCOVERAGE" : {
+                    type : "elevation"
+                }
+            },
             center : {
                 // locationType : "PositionOfInterest",
                 location : "73 avenue de Paris, 94160 Saint Mandé"
