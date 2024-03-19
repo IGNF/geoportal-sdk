@@ -75,7 +75,7 @@
                 maCoucheWFS : {
                     title : "maCoucheWFS",
                     format : "wfs",
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wfs",
+                    url : "https://data.geopf.fr/wfs/ows",
                     typeNames : "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:arrondissement_departemental",
                     version : "2.0.0",
                     outputFormat : "application/json",
@@ -88,7 +88,7 @@
                     format : "wms",
                     queryable : true,
                     tiled : false, // pour test
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
+                    url : "https://data.geopf.fr/wms-v/wms",
                     layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                     outputFormat : "image/png"
                 },
@@ -108,7 +108,7 @@
                     maxZoom : 16,
                     visibility : true,
                     opacity : 1 ,
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/wmts",
+                    url : "https://data.geopf.fr/wmts",
                     layer : "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
                     tileMatrixSet : "PM",
                     styleName : "normal",

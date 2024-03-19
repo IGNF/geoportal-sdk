@@ -27,8 +27,6 @@
     <script>
         Gp.Map.load('geoportalMap',{
             apiKey : "{{apikey}}",
-            // proxyUrl : "{{ proxy }}?url=",
-            // noProxyDomains : ["wxs.ign.fr"/*,"gpp3-wxs-v-ign-fr.aw.atosorigin.com"*/],
             center : {
                 x : 22700,
                 y : 6395900
@@ -85,7 +83,7 @@
                     format : "wms",
                     title : "Ecoles maternelles et élémentaires",
                     description : "L'école maternelle peut accueillir les enfants avant l'instruction obligatoire qui débute à 6 ans. L'école élémentaire accueille les enfants scolarisés de 6 à 11 ans. Elle est mixte et gratuite si elle est publique. <a href='http://www.education.gouv.fr/pid24/les-niveaux-et-les-etablissements-d-enseignement.html'>En savoir plus.</a>. Source des données : MENESR février 2014, BD TOPO 2016",
-                    url : "https://wxs.ign.fr/{{apikey}}/geoportail/v/wms",
+                    url : "https://data.geopf.fr/wms-v/wms",
                     layers : ["UTILITYANDGOVERNMENTALSERVICES.IGN.POI.ENSEIGNEMENTPRIMAIRE"],
                     outputFormat : "image/png",
                     gfiFormat : "text/html",
@@ -135,7 +133,7 @@
                     format : "wmts",
                     title : "RPG 2012",
                     description : "blah blah",
-                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
+                    url : "https://data.geopf.fr/wmts",
                     layer : "LANDUSE.AGRICULTURE2012",
                     tileMatrixSet : "PM",
                     styleName : "normal",
@@ -151,7 +149,7 @@
                     format : "wmts",
                     title : "Réseau ferroviaire",
                     description : "blah blah",
-                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/wmts",
+                    url : "https://data.geopf.fr/wmts",
                     layer : "TRANSPORTNETWORKS.RAILWAYS",
                     tileMatrixSet : "PM",
                     styleName : "normal",
@@ -167,7 +165,7 @@
                     format : "wms",
                     title : "Plan d'exposition au bruit (PEB)",
                     description : "blah blah",
-                    url : "https://wxs.ign.fr/{{apikey3}}/geoportail/v/wms",
+                    url : "https://data.geopf.fr/wms-v/wms",
                     layers : ["DGAC-PEB-POI_BDD_WLD_WM"],
                     outputFormat : "image/png",
                     queryable : true,

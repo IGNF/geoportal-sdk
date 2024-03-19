@@ -505,7 +505,7 @@ IMap.DEFAULTLAYER = function (apiKey) {
             position : 0,
             title : "Photographies aériennes",
             description : "Photographies aériennes",
-            url : "https://wxs.ign.fr/" + apiKey + "/geoportail/wmts",
+            url : "https://data.geopf.fr/wmts",
             layer : "ORTHOIMAGERY.ORTHOPHOTOS",
             projection : "EPSG:3857",
             tileMatrixSet : "PM",
@@ -589,6 +589,10 @@ IMap.prototype = {
             // on essaye de trouver une configuration existante
             if (Config) {
                 this.apiKey = Object.keys(Config.generalOptions.apiKeys);
+            } else {
+                // clé full par défaut et on charge la config
+                this.apiKey = "full";
+                needsGetConfig = true;
             }
         }
 
