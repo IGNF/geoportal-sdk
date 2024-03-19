@@ -1,8 +1,8 @@
-# SDK Geoportail 2D/3D, version __VERSION__
+# SDK Web Geoplateforme 2D/3D, version __VERSION__
 
 **__DATE__ : version __VERSION__**
 
-> Release SDK Geoportail 2D/3D
+> Release SDK Web Geoplateforme 2D/3D
 
 ## Summary
 
