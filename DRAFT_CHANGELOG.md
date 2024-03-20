@@ -16,6 +16,8 @@
 
 * [Fixed]
 
+    - correction itineraire pieton en mode fastest avec mise à jour des extensions Geoplateforme pour OpenLayers
+
 * [Deprecated]
 
 * [Security]
