@@ -6,8 +6,6 @@
 
 ## Summary
 
-Correction du calcul d'itinéraire et de l'affichage des tuiles vectorielles
-
 ## Changelog
 
 * [Added]
@@ -17,9 +15,6 @@ Correction du calcul d'itinéraire et de l'affichage des tuiles vectorielles
 * [Removed]
 
 * [Fixed]
-
-    - corrige tileGrid Vector Tile en 512px (16e7bd521012c52de10384a4a15b8b3889228d4b)
-    - widget itineraire utilise ressource bdtopo-valhalla dans le cas d'un itinéraire pieton en mode fastest (b80d384e72f6a752930a8c13a52bd7db09766351)
 
 * [Deprecated]
 
