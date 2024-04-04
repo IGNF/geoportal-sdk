@@ -16,6 +16,8 @@
 
 * [Fixed]
 
+    - corrige tileGrid Vector Tile (512px)
+
 * [Deprecated]
 
 * [Security]
