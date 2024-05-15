@@ -6,8 +6,6 @@
 
 ## Summary
 
-Mise à jour de la bibliothèque d'accès et des extensions
-
 ## Changelog
 
 * [Added]
@@ -17,9 +15,6 @@ Mise à jour de la bibliothèque d'accès et des extensions
 * [Removed]
 
 * [Fixed]
-
-    - isodistance de plus de 50km possible
-    - correction de la normalisation des URLs des services image
 
 * [Deprecated]
 
