@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour de la bibliothèque d'accès et des extensions
+Mise à jour de jour de l'extension Géoplateforme pour iTowns
 
 ## Changelog
 
@@ -14,12 +14,11 @@ Mise à jour de la bibliothèque d'accès et des extensions
 
 * [Changed]
 
+    - update de l'extensions itowns en version 2.5.1
+
 * [Removed]
 
 * [Fixed]
-
-    - isodistance de plus de 50km possible
-    - correction de la normalisation des URLs des services image
 
 * [Deprecated]
 
