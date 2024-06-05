@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour de jour de l'extension Géoplateforme pour iTowns
+Mise à jour extensions Géoplateforme pour openlayers en version 3.4.4
 
 ## Changelog
 
@@ -14,11 +14,13 @@ Mise à jour de jour de l'extension Géoplateforme pour iTowns
 
 * [Changed]
 
-    - update de l'extensions itowns en version 2.5.1
+    - Mise à jour extensions Géoplateforme pour openlayers en version 3.4.4
 
 * [Removed]
 
 * [Fixed]
+
+    - Affichage de couches ayant des TileMatrices restreints
 
 * [Deprecated]
 
