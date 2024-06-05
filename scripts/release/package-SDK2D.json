@@ -16,7 +16,7 @@
    ],
    "module" : "src/SDK2D.js",
    "author" : "IGNF",
-   "version" : "3.5.3",
+   "version" : "3.5.4",
    "repository" : {
       "type" : "git",
       "url" : "https://github.com/IGNF/geoportal-sdk.git"
@@ -24,7 +24,7 @@
    "name" : "@ignf-geoportal/sdk-2d",
    "description" : "French Geoportal SDK based on OpenLayers (2D)",
    "license" : "CECILL-B",
-   "date" : "16/05/2024",
+   "date" : "05/06/2024",
    "homepage" : "https://geoservices.ign.fr/documentation/utilisation_web/sdk.html",
    "directories" : {},
    "bugs" : {
@@ -34,7 +34,7 @@
       "node-fetch" : "^2.6.1",
       "xmldom" : "^0.1.27",
       "ol" : "6.9.0",
-      "geoportal-extensions-openlayers" : "3.4.3"
+      "geoportal-extensions-openlayers" : "3.4.4"
    },
    "scripts" : {}
 }
