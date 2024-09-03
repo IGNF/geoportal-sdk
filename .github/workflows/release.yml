@@ -122,7 +122,7 @@ jobs:
           mkdir -p ${{ steps.get_tagname.outputs.TAGNAME }}/dist/
 
       - name: Download JSDoc artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: jsdoc
           path: tmp/jsdoc/
@@ -133,13 +133,13 @@ jobs:
           cp -r tmp/jsdoc/ ${{ steps.get_tagname.outputs.TAGNAME }}
 
       - name: Download Binary 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: dist-2d
           path: tmp/dist/2d/
 
       - name: Download Binary 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: dist-3d
           path: tmp/dist/3d/
@@ -210,7 +210,7 @@ jobs:
           prerelease: false
 
       - name: Download bundles 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: bundles-2d
 
@@ -225,7 +225,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Download bundles 3D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: bundles-3d
 
@@ -264,13 +264,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Download Package 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: package-2d
           path: package-2d
 
       - name: Download Package 3D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: package-3d
           path: package-3d
@@ -302,7 +302,7 @@ jobs:
           token: ${{ secrets.ADMIN_GEOPORTAL_TOKEN }}
 
       - name: Download ChangeLog artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: changelog
 
