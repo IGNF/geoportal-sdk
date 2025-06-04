@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use nodejs
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '12.x'
 
@@ -52,49 +52,49 @@ jobs:
 
       - name: Upload JSDoc artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: jsdoc
           path: jsdoc
 
       - name: Upload Binary 2D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: dist-2d
           path: dist/2d
 
       - name: Upload Binary 3D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: dist-3d
           path: dist/3d
 
       - name: Upload Bundles 2D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: bundles-2d
           path: bundles-2d.zip
 
       - name: Upload Bundles 3D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: bundles-3d
           path: bundles-3d.zip
 
       - name: Upload Package 2D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: package-2d
           path: scripts/release/geoportal-sdk-2d
 
       - name: Upload Package 3D artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: package-3d
           path: scripts/release/geoportal-sdk-3d
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: IGNF/geoportal-sdk
           ref: gh-pages
@@ -122,7 +122,7 @@ jobs:
           mkdir -p ${{ steps.get_tagname.outputs.TAGNAME }}/dist/
 
       - name: Download JSDoc artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: jsdoc
           path: tmp/jsdoc/
@@ -133,13 +133,13 @@ jobs:
           cp -r tmp/jsdoc/ ${{ steps.get_tagname.outputs.TAGNAME }}
 
       - name: Download Binary 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: dist-2d
           path: tmp/dist/2d/
 
       - name: Download Binary 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: dist-3d
           path: tmp/dist/3d/
@@ -173,7 +173,7 @@ jobs:
           sudo apt-get install perl-base
 
       - name: Checkout # checkout repository to get DRAFT_CHANGELOG.md !
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get the version
         id: get_version
@@ -192,7 +192,7 @@ jobs:
 
       - name: Upload ChangeLog artifacts
         if: github.event_name == 'push' && contains(github.ref, '/tags/') # Only for tags !
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: changelog
           path: DRAFT_CHANGELOG.md
@@ -210,7 +210,7 @@ jobs:
           prerelease: false
 
       - name: Download bundles 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: bundles-2d
 
@@ -225,7 +225,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Download bundles 3D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: bundles-3d
 
@@ -245,7 +245,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Initialize
         run: |
@@ -253,24 +253,24 @@ jobs:
           mkdir -p package-3d
 
       - name: Use nodejs
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '12.x'
 
       - name: Use registry npm
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Download Package 2D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: package-2d
           path: package-2d
 
       - name: Download Package 3D artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: package-3d
           path: package-3d
@@ -295,14 +295,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: IGNF/geoportal-sdk
           ref: develop
           token: ${{ secrets.ADMIN_GEOPORTAL_TOKEN }}
 
       - name: Download ChangeLog artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: changelog
 
