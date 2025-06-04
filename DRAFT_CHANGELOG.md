@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour extensions Géoplateforme pour openlayers en version 3.4.4
+Mise à jour ext 3.4.5.
 
 ## Changelog
 
@@ -14,13 +14,11 @@ Mise à jour extensions Géoplateforme pour openlayers en version 3.4.4
 
 * [Changed]
 
-    - Mise à jour extensions Géoplateforme pour openlayers en version 3.4.4
-
 * [Removed]
 
 * [Fixed]
 
-    - Affichage de couches ayant des TileMatrices restreints
+  - correction profil alti circulaire
 
 * [Deprecated]
 
