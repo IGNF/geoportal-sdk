@@ -6,8 +6,6 @@
 
 ## Summary
 
-Mise à jour ext 3.4.5.
-
 ## Changelog
 
 * [Added]
@@ -17,8 +15,6 @@ Mise à jour ext 3.4.5.
 * [Removed]
 
 * [Fixed]
-
-  - correction profil alti circulaire
 
 * [Deprecated]
 
