@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour ext 3.4.5
+Mise à jour ext 3.4.5.
 
 ## Changelog
 
