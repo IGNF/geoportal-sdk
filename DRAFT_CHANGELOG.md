@@ -6,7 +6,7 @@
 
 ## Summary
 
-Release corrective mineure
+Release corrective mineure, mise à jour ext-ol 3.4.6
 
 ## Changelog
 
