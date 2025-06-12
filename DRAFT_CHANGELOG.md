@@ -6,8 +6,6 @@
 
 ## Summary
 
-Release corrective mineure, mise à jour ext-ol 3.4.6
-
 ## Changelog
 
 * [Added]
@@ -17,8 +15,6 @@ Release corrective mineure, mise à jour ext-ol 3.4.6
 * [Removed]
 
 * [Fixed]
-
-  * correction du calcul de pente de profil altimétrique par la mise à jour des extensions pour ol en 3.4.6
 
 * [Deprecated]
 
