@@ -6,7 +6,7 @@
 
 ## Summary
 
-Mise à jour ext 3.4.5.
+Release corrective mineure, mise à jour ext-ol 3.4.6
 
 ## Changelog
 
@@ -18,7 +18,7 @@ Mise à jour ext 3.4.5.
 
 * [Fixed]
 
-  - correction profil alti circulaire
+  * correction du calcul de pente de profil altimétrique par la mise à jour des extensions pour ol en 3.4.6
 
 * [Deprecated]
 
