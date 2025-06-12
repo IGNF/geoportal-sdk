@@ -6,6 +6,8 @@
 
 ## Summary
 
+Release corrective mineure
+
 ## Changelog
 
 * [Added]
@@ -15,6 +17,8 @@
 * [Removed]
 
 * [Fixed]
+
+  * correction du calcul de pente de profil altimétrique par la mise à jour des extensions pour ol en 3.4.6
 
 * [Deprecated]
 
